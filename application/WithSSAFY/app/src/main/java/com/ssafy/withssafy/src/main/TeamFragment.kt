@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.ssafy.withssafy.R
 
-class HomeFragment : Fragment() {
+
+class TeamFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+
         }
     }
 
@@ -19,14 +21,15 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_team, container, false)
     }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
+            TeamFragment().apply {
                 arguments = Bundle().apply {
+
                 }
             }
     }
