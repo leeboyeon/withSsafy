@@ -1,17 +1,13 @@
 package com.ssafy.withssafy.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "tbl_board")
 @Getter
 @NoArgsConstructor
-
 public class Board {
     @Id
     @GeneratedValue
@@ -38,7 +34,8 @@ public class Board {
     private String write_dt;
 
     @Builder
-    public Board(User user, BoardType type, String title, String content, String photo_path, String write_dt){
+    public Board(Long id, User user, BoardType type, String title, String content, String photo_path, String write_dt){
+        this.id = id;
         this.user = user;
         this.type = type;
         this.title = title;

@@ -20,7 +20,8 @@ public class BoardType {
     private String type;
 
     @Builder
-    public BoardType(String type){
+    public BoardType(Long id, String type){
+        this.id = id;
         this.type = type;
     }
 }
