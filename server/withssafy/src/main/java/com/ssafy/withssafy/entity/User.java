@@ -1,8 +1,8 @@
 package com.ssafy.withssafy.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "tbl_user")
 @Getter
-@Setter
 @NoArgsConstructor
 public class User {
 
@@ -48,6 +47,21 @@ public class User {
 
     private int s_gen;
 
+    @Builder
+    public User(Long id, String email, String password, String nickname, int state,
+                String device_token, String profileImage, int auth, int s_id, String s_area, int s_gen){
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.state = state;
+        this.device_token = device_token;
+        this.profileImage = profileImage;
+        this.auth = auth;
+        this.s_id = s_id;
+        this.s_area = s_area;
+        this.s_gen = s_gen;
+    }
 
     public void encodePassword(PasswordEncoder passwordEncoder) { password = passwordEncoder.encode(password);}
 }
