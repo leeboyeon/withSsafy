@@ -1,4 +1,4 @@
-package com.ssafy.withssafy.src.main
+package com.ssafy.withssafy.src.main.notification
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import com.ssafy.withssafy.R
 
 
-class ScheduleFragment : Fragment() {
-
+class NotificationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -22,14 +21,13 @@ class ScheduleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule, container, false)
+        return inflater.inflate(R.layout.fragment_notification, container, false)
     }
 
     companion object {
-
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            ScheduleFragment().apply {
+            NotificationFragment().apply {
                 arguments = Bundle().apply {
 
                 }
