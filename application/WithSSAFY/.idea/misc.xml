@@ -15,10 +15,21 @@
         <entry key="..\:/GitHub/withssafy/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_sing_in.xml" value="0.36614583333333334" />
         <entry key="..\:/GitHub/withssafy/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_team.xml" value="0.36614583333333334" />
         <entry key="..\:/GitHub/withssafy/S06P31D201/application/WithSSAFY/app/src/main/res/menu/bottom_nav_menu.xml" value="0.31851851851851853" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/cell_shape.xml" value="0.1355" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/chip_background.xml" value="0.1355" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/dialog_backgroud.xml" value="0.1355" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/drawable_button_stroke_left.xml" value="0.1355" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/dialog_team_request.xml" value="0.259375" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_home.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_schedule.xml" value="0.33" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_team.xml" value="0.25" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_team_detail.xml" value="0.33" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_team_write.xml" value="0.22" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_team.xml" value="0.5" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -13,14 +13,13 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 public class User {
-
     @Id
     @GeneratedValue
     private Long id;
 
     @Size(max= 25)
-    @Column(length = 25)
-    private String email;
+    @Column(length = 25, unique = true)
+    private String u_id;
 
     @Size(max = 255)
     private String password;
@@ -48,10 +47,10 @@ public class User {
     private int s_gen;
 
     @Builder
-    public User(Long id, String email, String password, String nickname, int state,
+    public User(Long id, String u_id, String password, String nickname, int state,
                 String device_token, String profileImage, int auth, int s_id, String s_area, int s_gen){
         this.id = id;
-        this.email = email;
+        this.u_id = u_id;
         this.password = password;
         this.nickname = nickname;
         this.state = state;

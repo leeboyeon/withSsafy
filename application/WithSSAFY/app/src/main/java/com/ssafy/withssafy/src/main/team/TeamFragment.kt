@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.BaseFragment
+import com.ssafy.withssafy.databinding.FragmentTeamBinding
 
 
-class TeamFragment : Fragment() {
+class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind,R.layout.fragment_team) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -16,14 +19,18 @@ class TeamFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_team, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setListener()
     }
-
+    private fun setListener(){
+        initButtons()
+    }
+    private fun initButtons(){
+        binding.fragmentTeamWrite.setOnClickListener {
+//            this@TeamFragment.findNavController().navigate(R.id.)
+        }
+    }
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
