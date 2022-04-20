@@ -9,12 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 import java.lang.reflect.Member;
 
 public interface UserRepository extends JpaRepository<User,Long> {
-    @Query("SELECT * FROM tbl_user WHERE u_id=:u_id")
+    @Query(value = "SELECT * FROM tbl_user WHERE u_id=:u_id", nativeQuery = true)
     User findByUid(String u_id);
 
-    @Query("DELETE FROM tbl_user WHERE u_id=:u_id")
+    @Query(value = "DELETE FROM tbl_user WHERE u_id=:u_id", nativeQuery = true)
     boolean deleteByUid(String u_id);
 
-    @Query("UPDATE tbl_user SET password=:password WHERE email=:email")
+    @Query(value = "UPDATE tbl_user SET password=:password WHERE email=:email", nativeQuery = true)
     User updatePasswordByEmail(String email, String password);
 }
