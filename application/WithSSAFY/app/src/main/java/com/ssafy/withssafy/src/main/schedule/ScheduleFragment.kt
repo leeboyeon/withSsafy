@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.BaseFragment
+import com.ssafy.withssafy.databinding.FragmentScheduleBinding
 
 
-class ScheduleFragment : Fragment() {
+class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::bind,R.layout.fragment_schedule) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,12 +19,9 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     companion object {
