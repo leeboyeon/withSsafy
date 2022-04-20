@@ -17,19 +17,7 @@ public class Recruit {
     private Long id;
 
     @Column(length = 50)
-    private String name;
-
-    @Column(length = 50)
-    private String title;
-
-    @Column(length = 10)
-    private String startDate;
-
-    @Column(length = 10)
-    private String endDate;
-
-    @Column(length = 500)
-    private String content;
+    private String company;
 
     @Column(length = 50)
     private String career;
@@ -37,14 +25,52 @@ public class Recruit {
     @Column(length = 50)
     private String education;
 
+    @Column(length = 50)
+    private String job;
+
+    @Column(length = 50)
+    private String employType;
+
+    @Column(length = 50)
+    private String salary;
+
+    @Column(length = 50)
+    private String location;
+
+    @Column(length = 500)
+    private String taskDescription;
+
+    @Column(length = 500)
+    private String preferenceDescription;
+
+    @Column(length = 500)
+    private String welfare;
+
+    @Column(length = 100)
+    private String workingHours;
+
+    @Column(length = 10)
+    private String startDate;
+
+    @Column(length = 10)
+    private String endDate;
+
+
     @Builder
-    public Recruit(String name, String title, String startDate, String endDate, String content, String career, String education) {
-        this.name = name;
-        this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.content = content;
+    public Recruit(Long id, String company, String career, String education, String job, String employType, String salary, String location, String taskDescription, String preferenceDescription, String welfare, String workingHours, String startDate, String endDate) {
+        this.id = id;
+        this.company = company;
         this.career = career;
         this.education = education;
+        this.job = job;
+        this.employType = employType;
+        this.salary = salary;
+        this.location = location;
+        this.taskDescription = taskDescription;
+        this.preferenceDescription = preferenceDescription;
+        this.welfare = welfare;
+        this.workingHours = workingHours;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }
