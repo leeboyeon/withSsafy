@@ -17,7 +17,8 @@ class FavoriteBoardAdapter() : RecyclerView.Adapter<FavoriteBoardAdapter.Favorit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteBoardHolder {
-        return FavoriteBoardHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.recyclerview_favorite_board_item, parent, false))
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_favorite_board_item, parent, false)
+        return FavoriteBoardHolder(view)
     }
 
     override fun onBindViewHolder(holder: FavoriteBoardHolder, position: Int) {

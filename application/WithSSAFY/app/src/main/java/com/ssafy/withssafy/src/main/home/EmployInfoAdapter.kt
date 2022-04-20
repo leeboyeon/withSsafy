@@ -17,7 +17,8 @@ class EmployInfoAdapter() : RecyclerView.Adapter<EmployInfoAdapter.EmployInfoHol
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployInfoHolder {
-        return EmployInfoHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.recyclerview_employ_item, parent, false))
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_employ_item, parent, false)
+        return EmployInfoHolder(view)
     }
 
     override fun onBindViewHolder(holder: EmployInfoHolder, position: Int) {

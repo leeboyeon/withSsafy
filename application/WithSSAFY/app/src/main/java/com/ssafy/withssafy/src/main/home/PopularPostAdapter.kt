@@ -17,7 +17,8 @@ class PopularPostAdapter() : RecyclerView.Adapter<PopularPostAdapter.PopularPost
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularPostdHolder {
-        return PopularPostdHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.recyclerview_popular_item, parent, false))
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_popular_item, parent, false)
+        return PopularPostdHolder(view)
     }
 
     override fun onBindViewHolder(holder: PopularPostdHolder, position: Int) {

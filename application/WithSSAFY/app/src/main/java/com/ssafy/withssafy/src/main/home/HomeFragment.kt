@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenResumed
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.FragmentHomeBinding
@@ -24,6 +25,10 @@ class HomeFragment : Fragment(){
     private val homeViewModel: HomeViewModel by activityViewModels()
 
     private lateinit var mainActivity: MainActivity
+
+    lateinit var favoriteBoardAdapter: FavoriteBoardAdapter
+    lateinit var popularPostAdapter: PopularPostAdapter
+    lateinit var employInfoAdapter: EmployInfoAdapter
 
     // 롤링 배너
     private lateinit var bannerViewPagerAdapter: BannerViewPagerAdapter
@@ -56,6 +61,28 @@ class HomeFragment : Fragment(){
         initViewPager()
         subscribeObservers()
         autoScrollViewPage()
+
+        initAdapter()
+    }
+
+    private fun initAdapter() {
+        favoriteBoardAdapter = FavoriteBoardAdapter()
+        binding.homeRvFavoriteBoard.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = favoriteBoardAdapter
+        }
+
+        popularPostAdapter = PopularPostAdapter()
+        binding.homeRvPopular.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = popularPostAdapter
+        }
+
+        employInfoAdapter = EmployInfoAdapter()
+        binding.homeRvEmploy.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = employInfoAdapter
+        }
     }
 
     /**
