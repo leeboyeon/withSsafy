@@ -4,24 +4,26 @@ import com.ssafy.withssafy.dto.study.StudyDto;
 import com.ssafy.withssafy.entity.StudyBoard;
 import com.ssafy.withssafy.repository.StudyBoardRepository;
 import com.ssafy.withssafy.util.FileManager;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class StudyServiceImpl implements StudyService {
 
-    @Autowired
-    StudyBoardRepository studyBoardRepository;
+    private final StudyBoardRepository studyBoardRepository;
 
-    @Autowired
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public void save(StudyDto studyDto) {
         StudyBoard studyBoard = modelMapper.map(studyDto, StudyBoard.class);
 
@@ -29,6 +31,7 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    @Transactional
     public void save(StudyDto studyDto, Long id) {
         studyDto.setId(id);
         StudyBoard studyBoard = modelMapper.map(studyDto, StudyBoard.class);
@@ -65,6 +68,7 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         studyBoardRepository.deleteById(id);
     }
