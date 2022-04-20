@@ -231,25 +231,28 @@
                         app:layout_constraintTop_toTopOf="@+id/textView4">
 
                         <TextView
+                            android:id="@+id/textView5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginEnd="5dp"
                             android:text="더 보기"
                             android:textColor="@color/purple_200"
                             android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/arrow"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/arrow"
-                            app:layout_constraintTop_toTopOf="@+id/arrow" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:id="@+id/arrow"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:paddingTop="4dp"
                             android:backgroundTint="@color/purple_200"
                             android:src="@drawable/ic_arrow_right_blue_512px"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView5"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="@+id/textView5" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
