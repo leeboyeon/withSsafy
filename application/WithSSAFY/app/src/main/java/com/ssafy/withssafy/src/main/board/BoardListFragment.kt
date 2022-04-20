@@ -1,60 +1,60 @@
 package com.ssafy.withssafy.src.main.board
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.BaseFragment
+import com.ssafy.withssafy.databinding.FragmentBoardListBinding
+import com.ssafy.withssafy.src.main.MainActivity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [BoardListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class BoardListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardListBinding::bind, R.layout.fragment_board_list) {
+    private lateinit var mainActivity: MainActivity
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var boardListAdapter: BoardListRecyclerviewAdapter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initFaqAdapter()
+    }
+
+    private fun initFaqAdapter() {
+
+        boardListAdapter = BoardListRecyclerviewAdapter()
+//        boardListAdapter.list = list
+
+        binding.boardListFragmentRvBoardList.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = boardListAdapter
+            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_board_list, container, false)
-    }
+        boardListAdapter.setItemClickListener(object : BoardListRecyclerviewAdapter.ItemClickListener {
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BoardListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BoardListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+            override fun onClick(view: View, contentView: TextView, position: Int) {
+//                val arrow = view as ImageButton
+//                if(contentView.visibility == View.GONE) { // content가 숨겨져 있는 경우
+//                    arrow.setImageResource(R.drawable.ic_up_arrow)
+//                    contentView.visibility = View.VISIBLE
+//                } else if(contentView.visibility == View.VISIBLE) {
+//                    arrow.setImageResource(R.drawable.ic_arrow_down)
+//                    contentView.visibility = View.GONE
+//                }
+
             }
+        })
     }
 }
