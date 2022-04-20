@@ -26,15 +26,15 @@ public class BoardController {
         return new ResponseEntity<BoardDto>(boardService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<Object> save(@RequestBody BoardDto boardSave){
         boardService.save(boardSave);
         return new ResponseEntity<Object>(null, HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity<Object> update(@RequestBody BoardDto boardSave){
-        boardService.save(boardSave);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@RequestBody BoardDto boardSave, @PathVariable("id") Long id){
+        boardService.save(boardSave, id);
         return new ResponseEntity<Object>(null, HttpStatus.OK);
     }
 
