@@ -1,29 +1,36 @@
 package com.ssafy.withssafy.service.user;
 
+import com.ssafy.withssafy.dto.board.BoardDto;
+import com.ssafy.withssafy.dto.user.UserDto;
+import com.ssafy.withssafy.entity.Board;
 import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    ModelMapper modelMapper;
 
     /**
      * 새로운 사용자를 등록한다.
-     * @param user
+     * @param userDto
      * @return user
      */
     @Override
-    public User insertUser(User user){
-        if(userRepository.findByUid(user.getU_id()).isEmpty()) userRepository.save(user);
-        else return null;
-        return user;
+    public UserDto insertUser(UserDto userDto){
+        User user = modelMapper.map(userDto, User.class);
+        User result = userRepository.save(user);
+        return modelMapper.map(result, UserDto.class);
     }
 
     /**
@@ -47,15 +54,19 @@ public class UserServiceImpl implements UserService{
      */
     @Transactional
     @Override
-    public Optional<User> updatePasswordByUid(Long id, String password) {
+    public UserDto updatePasswordByUid(Long id, String password) {
         if(userRepository.findById(id).isEmpty()) return null;
         userRepository.updatePasswordById(id, password);
-        return userRepository.findById(id);
+        User user = userRepository.findById(id).get();
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
-    public Optional<User> findById(Long u_id) {
-        return userRepository.findById(u_id);
+    public UserDto findById(Long u_id) {
+        if (userRepository.findById(u_id).isEmpty()) return null;
+
+        User user = userRepository.findById(u_id).get();
+        return modelMapper.map(user, UserDto.class);
     }
 
     /**
@@ -64,8 +75,9 @@ public class UserServiceImpl implements UserService{
      * @return 해당 사용자 User
      */
     @Override
-    public Optional<User> findByUid(String u_id) {
-        return userRepository.findByUid(u_id);
+    public UserDto findByUid(String u_id) {
+        User user = userRepository.findByUid(u_id);
+        return modelMapper.map(user, UserDto.class);
     }
 
     /**
@@ -73,8 +85,9 @@ public class UserServiceImpl implements UserService{
      * @return List<User>
      */
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDto> findAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(user -> modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
     }
 
 
@@ -85,7 +98,8 @@ public class UserServiceImpl implements UserService{
      * @return User
      */
     @Override
-    public Optional<User> login(String u_id, String password) {
-        return userRepository.login(u_id, password);
+    public UserDto login(String u_id, String password) {
+        User user = userRepository.login(u_id, password);
+        return modelMapper.map(user, UserDto.class);
     }
 }

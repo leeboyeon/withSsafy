@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.api;
 
+import com.ssafy.withssafy.dto.message.MessageDto;
 import com.ssafy.withssafy.entity.Message;
 import com.ssafy.withssafy.service.message.MessageService;
 import io.swagger.annotations.ApiOperation;
@@ -21,13 +22,25 @@ public class MessageController {
 
     @PostMapping
     @ApiOperation(value = "특정 상대에게 메세지를 전송한다.")
-    public ResponseEntity<Message> sendMessage(@RequestParam("보내는 사람")Long u_from, @RequestParam("받는 사람")Long u_to, @RequestParam("내용")String content, @RequestParam("보낸 시간")String send_dt){
-        return new ResponseEntity<>(messageService.sendMessage(u_from, u_to, content, send_dt), HttpStatus.OK);
+    public ResponseEntity<MessageDto> sendMessage(@RequestBody MessageDto messageDto){
+        return new ResponseEntity<>(messageService.sendMessage(messageDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/receive")
+    @ApiOperation(value = "특정 유저가 받은 모든 메세지를 가져온다.")
+    public ResponseEntity<List<MessageDto>> findReceiveMessageByUid(@RequestParam("유저 id")Long id){
+        return new ResponseEntity<>(messageService.findReceiveMessageByUid(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/send")
+    @ApiOperation(value = "특정 유저가 보낸 모든 메세지를 가져온다.")
+    public ResponseEntity<List<MessageDto>> findSendMessageByUid(@RequestParam("유저 id")Long id){
+        return new ResponseEntity<>(messageService.findSendMessageByUid(id), HttpStatus.OK);
     }
 
     @GetMapping
-    @ApiOperation(value = "특정 유저의 메세지를 모두 가져온다.")
-    public ResponseEntity<List<Message>> getMessagesById(@RequestParam("유저 id")Long id){
-        return new ResponseEntity<>(messageService.findById(id), HttpStatus.OK);
+    @ApiOperation(value = "모든 메세지를 가져온다.")
+    public ResponseEntity<List<MessageDto>> findAll(){
+        return new ResponseEntity<>(messageService.findAll(), HttpStatus.OK);
     }
 }

@@ -24,17 +24,10 @@ public class User {
     @Size(max = 255)
     private String password;
 
-    @Size(max = 50)
-    @Column(length = 50)
-    private String nickname;
-
     private int state;
 
     @Size(max = 255)
     private String device_token;
-
-    @Size(max = 255)
-    private String profileImage;
 
     private int auth;
 
@@ -47,15 +40,13 @@ public class User {
     private int s_gen;
 
     @Builder
-    public User(Long id, String u_id, String password, String nickname, int state,
-                String device_token, String profileImage, int auth, int s_id, String s_area, int s_gen){
+    public User(Long id, String u_id, String password, int state,
+                String device_token, int auth, int s_id, String s_area, int s_gen){
         this.id = id;
         this.u_id = u_id;
         this.password = password;
-        this.nickname = nickname;
         this.state = state;
         this.device_token = device_token;
-        this.profileImage = profileImage;
         this.auth = auth;
         this.s_id = s_id;
         this.s_area = s_area;
