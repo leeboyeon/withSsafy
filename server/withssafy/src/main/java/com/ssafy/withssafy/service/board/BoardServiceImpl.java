@@ -22,11 +22,20 @@ public class BoardServiceImpl implements BoardService {
     ModelMapper modelMapper;
 
     @Override
-    public void save(BoardDto boardSave) {
+    public void save(BoardDto boardDto) {
         // PK 유무에 따라 insert, update 분기
-        Board board = modelMapper.map(boardSave, Board.class);
+        Board board = modelMapper.map(boardDto, Board.class);
         boardRepository.save(board);
     }
+
+    @Override
+    public void save(BoardDto boardDto, Long id) {
+        boardDto.setId(id);
+        Board board = modelMapper.map(boardDto, Board.class);
+
+        boardRepository.save(board);
+    }
+
 
     @Override
     public List<BoardDto> findAll() {
