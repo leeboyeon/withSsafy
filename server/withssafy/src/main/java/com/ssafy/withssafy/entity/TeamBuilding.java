@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -31,23 +32,20 @@ public class TeamBuilding {
     @Column(length = 500)
     private String photo_path;
 
-    @Column(length = 500)
-    private String time;
+    @Column(length = 500, name = "CREATED_AT")
+    private LocalDateTime createdAt;
 
     @Column
     private int tb_limit;
 
-    @Column(length = 500)
-    private String write_dt;
-
     @Builder
-    public TeamBuilding(User user, String title, String content, String photo_path, String time, int tb_limit, String write_dt){
+    public TeamBuilding(User user, String title, String content, String photo_path,LocalDateTime createdAt, int tb_limit){
         this.user = user;
         this.title = title;
         this.content = content;
         this.photo_path = photo_path;
-        this.time = time;
+        this.createdAt = createdAt;
         this.tb_limit = tb_limit;
-        this.write_dt = write_dt;
+
     }
 }
