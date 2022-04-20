@@ -47,8 +47,8 @@
 
                         <ImageView
                             android:id="@+id/boardListFragment_ivMyWrotePost"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:padding="3dp"
                             android:src="@drawable/ic_mywrotepost_512px"
                             app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvEventFcm"
@@ -78,8 +78,8 @@
 
                         <ImageView
                             android:id="@+id/boardListFragment_ivPostInComment"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:padding="3dp"
                             android:src="@drawable/ic_comment_512px"
                             app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvPostInComment"
@@ -109,8 +109,8 @@
 
                         <ImageView
                             android:id="@+id/boardListFragment_ivClippingPost"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:padding="3dp"
                             android:src="@drawable/ic_clipping_512px"
                             app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvClippingPost"
@@ -139,8 +139,8 @@
 
                         <ImageView
                             android:id="@+id/boardListFragment_ivHotBoard"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:padding="3dp"
                             android:src="@drawable/ic_hotpost_512px"
                             app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvHotBoard"
