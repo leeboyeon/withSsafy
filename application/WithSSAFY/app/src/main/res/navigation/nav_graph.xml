@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ssafy.withssafy.src.main.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.ssafy.withssafy.src.main.schedule.ScheduleFragment"
+        android:label="fragment_schedule"
+        tools:layout="@layout/fragment_schedule" />
+
+    <fragment
+        android:id="@+id/boardFragment"
+        android:name="com.ssafy.withssafy.src.main.board.BoardFragment"
+        android:label="fragment_board"
+        tools:layout="@layout/fragment_board" />
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.ssafy.withssafy.src.main.notification.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" />
+
+    <fragment
+        android:id="@+id/teamFragment"
+        android:name="com.ssafy.withssafy.src.main.team.TeamFragment"
+        android:label="fragment_team"
+        tools:layout="@layout/fragment_team" />
+
+
+</navigation>
