@@ -44,8 +44,11 @@ public class StudyBoard {
     @Column(length = 500)
     private String write_dt;
 
+    @Column
+    private byte is_outing;
+
     @Builder
-    public StudyBoard(Long id, User user, String title, String content, String area, String photo_path, String category, int sb_limit, String write_dt){
+    public StudyBoard(Long id, User user, String title, String content, String area, String photo_path, String category, int sb_limit, String write_dt, byte is_outing){
         this.id = id;
         this.user = user;
         this.title = title;
@@ -55,5 +58,6 @@ public class StudyBoard {
         this.category = category;
         this.sb_limit = sb_limit;
         this.write_dt = write_dt;
+        this.is_outing = is_outing;
     }
 }
