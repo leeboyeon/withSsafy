@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenResumed
 import androidx.viewpager2.widget.ViewPager2
 import com.ssafy.withssafy.R
-import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentHomeBinding
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.viewmodel.HomeViewModel
