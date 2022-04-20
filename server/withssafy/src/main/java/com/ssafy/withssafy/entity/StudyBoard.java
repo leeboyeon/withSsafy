@@ -29,14 +29,14 @@ public class StudyBoard {
     @Column(length = 500)
     private String content;
 
-    @Column(length = 500)
-    private String photo_path;
-
-    @Column(length = 500)
-    private String time;
+    @Column
+    private String category;
 
     @Column
-    private int category;
+    private String area;
+
+    @Column(length = 500)
+    private String photo_path;
 
     @Column
     private int sb_limit;
@@ -45,12 +45,13 @@ public class StudyBoard {
     private String write_dt;
 
     @Builder
-    public StudyBoard(User user, String title, String content, String photo_path, String time, int category, int sb_limit, String write_dt){
+    public StudyBoard(Long id, User user, String title, String content, String area, String photo_path, String category, int sb_limit, String write_dt){
+        this.id = id;
         this.user = user;
         this.title = title;
         this.content = content;
+        this.area = area;
         this.photo_path = photo_path;
-        this.time = time;
         this.category = category;
         this.sb_limit = sb_limit;
         this.write_dt = write_dt;
