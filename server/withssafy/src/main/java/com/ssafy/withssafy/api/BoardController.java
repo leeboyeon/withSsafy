@@ -2,6 +2,7 @@ package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.board.BoardDto;
 import com.ssafy.withssafy.service.board.BoardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/boards")
 public class BoardController {
-    @Autowired
-    BoardService boardService;
+
+    private final BoardService boardService;
 
     @GetMapping()
     public ResponseEntity<List<BoardDto>> findAll(){
