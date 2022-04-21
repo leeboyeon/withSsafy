@@ -30,12 +30,15 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        arguments?.apply {
+            boardId = getInt("boardId")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initListener()
     }
 
     private fun initListener() {
@@ -45,12 +48,12 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
             this@BoardDetailFragment.findNavController().popBackStack()
         }
 
-//        // 글 작성 버튼 클릭 이벤트
-//        binding.boardDetailFragmentBtnWritePost.setOnClickListener {
-//            this@BoardDetailFragment.findNavController().navigate(R.id.action_localBoardFragment_to_writeLocalBoardFragment,
-//                bundleOf("postId" to -1)
-//            )
-//        }
+        // 글 작성 버튼 클릭 이벤트
+        binding.boardDetailFragmentBtnWritePost.setOnClickListener {
+            this@BoardDetailFragment.findNavController().navigate(R.id.action_boardDetailFragment_to_postWritefragment,
+                bundleOf("postId" to -1)
+            )
+        }
 
     }
 

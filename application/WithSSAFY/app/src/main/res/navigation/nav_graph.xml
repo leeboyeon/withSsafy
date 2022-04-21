@@ -36,7 +36,16 @@
         android:id="@+id/boardFragment"
         android:name="com.ssafy.withssafy.src.main.board.BoardFragment"
         android:label="fragment_board"
-        tools:layout="@layout/fragment_board" />
+        tools:layout="@layout/fragment_board" >
+        <action
+            android:id="@+id/action_boardListFragment_to_boardDetailFragment"
+            app:destination="@id/boardDetailFragment" />
+        <argument
+            android:name="boardId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+    </fragment>
+
 
     <fragment
         android:id="@+id/notificationFragment"
@@ -67,13 +76,13 @@
         android:name="com.ssafy.withssafy.src.main.board.BoardListFragment"
         android:label="fragment_boardList"
         tools:layout="@layout/fragment_board_list">
-        <action
-            android:id="@+id/action_boardListFragment_to_boardDetailFragment"
-            app:destination="@id/boardDetailFragment" />
-        <argument
-            android:name="boardId"
-            app:argType="integer"
-            android:defaultValue="-1"/>
+<!--        <action-->
+<!--            android:id="@+id/action_boardListFragment_to_boardDetailFragment"-->
+<!--            app:destination="@id/boardDetailFragment" />-->
+<!--        <argument-->
+<!--            android:name="boardId"-->
+<!--            app:argType="integer"-->
+<!--            android:defaultValue="-1"/>-->
     </fragment>
 
     <fragment

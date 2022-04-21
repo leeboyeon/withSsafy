@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
@@ -30,7 +32,11 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
     private fun initFaqAdapter() {
 
         boardListAdapter = BoardListAdapter()
-//        boardListAdapter.list = list
+        val list = mutableListOf<Int>()
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        boardListAdapter.list = list
 
         binding.boardListFragmentRvBoardList.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -40,16 +46,10 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
 
         boardListAdapter.setItemClickListener(object : BoardListAdapter.ItemClickListener {
 
-            override fun onClick(view: View, contentView: TextView, position: Int) {
-//                val arrow = view as ImageButton
-//                if(contentView.visibility == View.GONE) { // content가 숨겨져 있는 경우
-//                    arrow.setImageResource(R.drawable.ic_up_arrow)
-//                    contentView.visibility = View.VISIBLE
-//                } else if(contentView.visibility == View.VISIBLE) {
-//                    arrow.setImageResource(R.drawable.ic_arrow_down)
-//                    contentView.visibility = View.GONE
-//                }
-
+            override fun onClick(view: View, position: Int, boardId: Int) {
+                this@BoardListFragment.findNavController().navigate(R.id.action_boardListFragment_to_boardDetailFragment,
+                    bundleOf("boardId" to boardId)
+                )
             }
         })
     }

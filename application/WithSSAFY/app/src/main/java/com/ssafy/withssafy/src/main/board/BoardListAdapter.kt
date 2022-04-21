@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.animation.content.Content
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemBoardBinding
 
@@ -13,7 +14,7 @@ class BoardListAdapter : RecyclerView.Adapter<BoardListAdapter.ViewHolder>() {
     var list = mutableListOf<Int>()
 
     inner class ViewHolder(private val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
-
+        val boardItem = binding.boardListItemClBoard
 
         fun bind() {
 
@@ -29,9 +30,10 @@ class BoardListAdapter : RecyclerView.Adapter<BoardListAdapter.ViewHolder>() {
         val item = list[position]
         holder.apply {
             bind()
-//           .setOnClickListener {
-//                itemClickListener.onClick(it, Content, position)
-//            }
+            boardItem.setOnClickListener {
+//                itemClickListener.onClick(it, position, item.id)
+                itemClickListener.onClick(it, position, -1)
+            }
         }
     }
 
@@ -40,7 +42,7 @@ class BoardListAdapter : RecyclerView.Adapter<BoardListAdapter.ViewHolder>() {
     }
 
     interface ItemClickListener{
-        fun onClick(view: View, contentView: TextView, position: Int)
+        fun onClick(view: View, position: Int, boardId: Int)
     }
 
     private lateinit var itemClickListener : ItemClickListener

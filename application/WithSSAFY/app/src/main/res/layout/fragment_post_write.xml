@@ -142,55 +142,58 @@
                         app:layout_constraintTop_toBottomOf="@+id/postWriteFragment_clTitle">
 
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/postWriteFragment_clAddPhoto"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:background="@color/grey"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                            android:id="@+id/postWriteFragment_clAddPhoto"-->
+<!--                            android:layout_width="80dp"-->
+<!--                            android:layout_height="80dp"-->
+<!--                            android:background="@color/grey"-->
+<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent">-->
 
-                            <ImageView
-                                android:id="@+id/postWriteFragment_ibCamera"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_marginStart="30dp"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginEnd="30dp"
-                                android:src="@drawable/camera"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+<!--                            <ImageView-->
+<!--                                android:id="@+id/postWriteFragment_ibCamera"-->
+<!--                                android:layout_width="25dp"-->
+<!--                                android:layout_height="25dp"-->
+<!--                                android:layout_marginStart="30dp"-->
+<!--                                android:layout_marginTop="15dp"-->
+<!--                                android:layout_marginEnd="30dp"-->
+<!--                                android:src="@drawable/camera"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintStart_toStartOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent" />-->
 
-                            <TextView
-                                android:id="@+id/postWriteFragment_tvPhotoCnt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="14dp"
-                                android:text=""
-                                android:textColor="@color/black"
-                                android:textSize="16sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/postWriteFragment_ibCamera" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                            <TextView-->
+<!--                                android:id="@+id/postWriteFragment_tvPhotoCnt"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginTop="8dp"-->
+<!--                                android:layout_marginBottom="14dp"-->
+<!--                                android:text=""-->
+<!--                                android:textColor="@color/black"-->
+<!--                                android:textSize="16sp"-->
+<!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintStart_toStartOf="parent"-->
+<!--                                app:layout_constraintTop_toBottomOf="@+id/postWriteFragment_ibCamera" />-->
+<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/postWriteFragment_rvPhoto"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:orientation="horizontal"
-                            tools:listitem="@layout/item_photo_list"
-                            app:layout_constraintBottom_toBottomOf="@+id/postWriteFragment_clAddPhoto"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/postWriteFragment_clAddPhoto"
-                            app:layout_constraintTop_toTopOf="@+id/postWriteFragment_clAddPhoto" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:listitem="@layout/item_photo_list" />
+<!--                            app:layout_constraintBottom_toBottomOf="@+id/postWriteFragment_clAddPhoto"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toEndOf="@+id/postWriteFragment_clAddPhoto"-->
+<!--                            app:layout_constraintTop_toTopOf="@+id/postWriteFragment_clAddPhoto" />-->
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -226,8 +229,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="20dp"
                             app:boxBackgroundMode="outline"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
