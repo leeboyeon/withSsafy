@@ -70,7 +70,7 @@ class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListB
             add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
             add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
         }
-        notiListAdapter = NotiListAdapter(data)
+        notiListAdapter = NotiListAdapter(requireContext(), data)
         binding.notiListRv.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = notiListAdapter

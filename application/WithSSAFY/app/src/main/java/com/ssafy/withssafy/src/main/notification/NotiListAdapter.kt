@@ -1,18 +1,26 @@
 package com.ssafy.withssafy.src.main.notification
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
 import java.util.*
 
-class NotiListAdapter(private val items : ArrayList<Data>) : RecyclerView.Adapter<NotiListAdapter.NotiListHolder>() {
+class NotiListAdapter(val context: Context, private val items : ArrayList<Data>) : RecyclerView.Adapter<NotiListAdapter.NotiListHolder>() {
 
     inner class NotiListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item : Data) {
 
+            itemView.findViewById<TextView>(R.id.rv_item_tv_noti_list_delete).setOnClickListener {
+                removeData(this.layoutPosition)
+                Toast.makeText(context, "삭제했습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
