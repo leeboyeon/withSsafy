@@ -14,13 +14,17 @@ import com.ssafy.withssafy.databinding.FragmentNotiListBinding
 import com.ssafy.withssafy.src.main.MainActivity
 
 
-class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListBinding::bind, R.layout.fragment_noti_list) {
+class NotiListFragment : BaseFragment<FragmentNotiListBinding>(
+    FragmentNotiListBinding::bind,
+    R.layout.fragment_noti_list
+) {
     private lateinit var mainActivity: MainActivity
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSpinner()
@@ -34,16 +38,15 @@ class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListB
         // spin.selectedItem.toString()
         spin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+            ) {
 
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
-
         }
-
     }
 
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/rv_item_cv_noti_list_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_500"
+        app:cardElevation = "0dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius = "160dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+    <ImageView
+        android:id="@+id/rv_item_iv_noti_list_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/alert"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        app:tint="@color/white" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/rv_item_tv_noti_list_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="2dp"
+        android:text="현대백화점 그룹"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toRightOf="@id/rv_item_cv_noti_list_icon"
+        app:layout_constraintTop_toTopOf="@id/rv_item_cv_noti_list_icon"/>
+
+    <TextView
+        android:id="@+id/rv_item_tv_noti_list_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="5dp"
+        android:text="현대백화점 IT 개발 운영(서버, 안드로이드)"
+        android:textColor="@color/more_dark_grey"
+        app:layout_constraintTop_toBottomOf="@id/rv_item_tv_noti_list_title"
+        app:layout_constraintLeft_toRightOf="@id/rv_item_cv_noti_list_icon"/>
+
+    <TextView
+        android:id="@+id/rv_item_tv_noti_list_period"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="1dp"
+        android:text="2022년 4월 12일 ~ 2022년 5월 10일"
+        android:textColor="@color/more_dark_grey"
+        app:layout_constraintTop_toBottomOf="@id/rv_item_tv_noti_list_content"
+        app:layout_constraintLeft_toRightOf="@id/rv_item_cv_noti_list_icon"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
