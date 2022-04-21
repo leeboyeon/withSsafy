@@ -18,12 +18,10 @@ public class Message {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "u_to_id")
-//    @JoinColumn
     private User u_to;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "u_from_id")
-//    @JoinColumn
     private User u_from;
 
     @Column

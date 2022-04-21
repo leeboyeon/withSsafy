@@ -1,8 +1,6 @@
 package com.ssafy.withssafy.service.user;
 
-import com.ssafy.withssafy.dto.board.BoardDto;
 import com.ssafy.withssafy.dto.user.UserDto;
-import com.ssafy.withssafy.entity.Board;
 import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +38,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public Boolean deleteByUid(Long id){
-        if(userRepository.findById(id).isEmpty()) return false;
+        if(!userRepository.findById(id).isPresent()) return false;
         userRepository.deleteById(id);
         return true;
     }
@@ -55,7 +52,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public UserDto updatePasswordByUid(Long id, String password) {
-        if(userRepository.findById(id).isEmpty()) return null;
+        if(!userRepository.findById(id).isPresent()) return null;
         userRepository.updatePasswordById(id, password);
         User user = userRepository.findById(id).get();
         return modelMapper.map(user, UserDto.class);
@@ -63,7 +60,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDto findById(Long u_id) {
-        if (userRepository.findById(u_id).isEmpty()) return null;
+        if (!userRepository.findById(u_id).isPresent()) return null;
 
         User user = userRepository.findById(u_id).get();
         return modelMapper.map(user, UserDto.class);

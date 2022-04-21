@@ -6,6 +6,8 @@ import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.repository.MessageRepository;
 import com.ssafy.withssafy.repository.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,7 @@ import java.util.stream.Collectors;
 public class MessageServiceImpl implements MessageService{
     @Autowired
     MessageRepository messageRepository;
-    @Autowired
-    UserRepository userRepository;
+
     @Autowired
     ModelMapper modelMapper;
 
@@ -38,7 +39,6 @@ public class MessageServiceImpl implements MessageService{
     @Override
     public List<MessageDto> findAll() {
         List<Message> messages = messageRepository.findAll();
-        System.out.println(messages.stream().map(it-> it.toString()));
         return messages.stream().map(message -> modelMapper.map(message, MessageDto.class)).collect(Collectors.toList());
     }
 
