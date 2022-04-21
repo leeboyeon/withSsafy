@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
     companion object{
-        const val SERVER_URL = "http://SERVER_URL/"   // local 서버 실행 시
+        const val SERVER_URL = "http://61.85.38.39:8889/"   // local 서버 실행 시
         //AWS servoer
 
         const val IMGS_URL = "${SERVER_URL}imgs/"

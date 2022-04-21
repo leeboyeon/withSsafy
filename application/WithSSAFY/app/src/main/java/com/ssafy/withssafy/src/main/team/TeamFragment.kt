@@ -25,11 +25,15 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
     }
     private fun setListener(){
         initButtons()
+        initAdapter()
     }
     private fun initButtons(){
         binding.fragmentTeamWrite.setOnClickListener {
 //            this@TeamFragment.findNavController().navigate(R.id.)
         }
+    }
+    private fun initAdapter(){
+        
     }
     companion object {
         @JvmStatic
