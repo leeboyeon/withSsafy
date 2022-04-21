@@ -1,6 +1,8 @@
 package com.ssafy.withssafy.src.main.home
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenResumed
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.ssafy.withssafy.R
@@ -58,13 +61,37 @@ class HomeFragment : Fragment(){
 
         val bannerList = arrayListOf<Int>(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
         homeViewModel.setBannerItems(bannerList)
+
+        setListener()
+    }
+    private fun setListener(){
         initViewPager()
+        initButtons()
         subscribeObservers()
         autoScrollViewPage()
-
         initAdapter()
     }
-
+    private fun initButtons(){
+        binding.fragmentHomeLinkEduSsafy.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://edu.ssafy.com/comm/login/SecurityLoginForm.do"))
+            startActivity(intent)
+        }
+        binding.fragmentHomeLinkUser.setOnClickListener {
+            this@HomeFragment.findNavController().navigate(R.id.userFragment)
+        }
+        binding.fragmentHomeLinkGitSsafy.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://project.ssafy.com/home"))
+            startActivity(intent)
+        }
+        binding.fragmentHomeLinkJobSsafy.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://job.ssafy.com/job/main/index.do"))
+            startActivity(intent)
+        }
+        binding.fragmentHomeLinkYoutubeSsafy.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UC_XI3ByFO1uZIIH-g-zJZiw"))
+            startActivity(intent)
+        }
+    }
     private fun initAdapter() {
         favoriteBoardAdapter = FavoriteBoardAdapter()
         binding.homeRvFavoriteBoard.apply {
