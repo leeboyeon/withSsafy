@@ -7,6 +7,9 @@ spring:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    username: root
 #    password: ssafy
+  devtools:
+    livereload:
+      enabled: true
 
   datasource:
     url: jdbc:mysql://suho.asuscomm.com:3333/withssafy?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
@@ -17,7 +20,7 @@ spring:
   # JPA 세팅
   jpa:
     hibernate:
-      ddl-auto: create # 애플리케이션 실행시점에 테이블 다 지우고 새로 생성
+      ddl-auto: update # 애플리케이션 실행시점에 테이블 다 지우고 새로 생성
 #      ddl-auto: update  # 개발 단계에서는
     #      ddl-auto: create-drop
     #      ddl-auto: validate  # 최종 배포 운영 단계

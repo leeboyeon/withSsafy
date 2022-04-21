@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +16,12 @@ public class Message {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "u_to_id")
     private User u_to;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "u_from_id")
     private User u_from;
 
     @Column
@@ -32,7 +31,8 @@ public class Message {
     private String send_dt;
 
     @Builder
-    public Message(User u_from, User u_to, String content, String send_dt){
+    public Message(Long id, User u_from, User u_to, String content, String send_dt){
+        this.id = id;
         this.u_from = u_from;
         this.u_to = u_to;
         this.content = content;
