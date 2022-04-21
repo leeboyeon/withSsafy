@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "SELECT * FROM tbl_user WHERE u_id=:u_id", nativeQuery = true)
-    Optional<User> findByUid(String u_id);
+    User findByUid(String u_id);
 
     @Transactional
     @Modifying
@@ -22,5 +22,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     void updatePasswordById(Long id, String password);
 
     @Query(value = "SELECT * FROM tbl_user WHERE u_id=:u_id AND password=:password", nativeQuery = true)
-    Optional<User> login(String u_id, String password);
+    User login(String u_id, String password);
 }
