@@ -328,7 +328,7 @@
                     android:layout_marginTop="20dp"
                     android:scaleType="fitXY"
                     android:visibility="gone"
-                    tools:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/ssafy_attendance" />
             </LinearLayout>
 
             <LinearLayout
@@ -394,7 +394,7 @@
                     android:layout_marginTop="20dp"
                     android:scaleType="fitXY"
                     android:visibility="gone"
-                    tools:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/ssafy_liferule" />
             </LinearLayout>
 
             <LinearLayout
@@ -460,7 +460,7 @@
                     android:layout_marginTop="20dp"
                     android:scaleType="fitXY"
                     android:visibility="gone"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/ssafy_mileage" />
             </LinearLayout>
 
             </LinearLayout>
