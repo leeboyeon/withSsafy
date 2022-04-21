@@ -2,12 +2,10 @@ package com.ssafy.withssafy.src.main.board
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
@@ -19,7 +17,7 @@ import com.ssafy.withssafy.src.main.MainActivity
 class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardListBinding::bind, R.layout.fragment_board_list) {
     private lateinit var mainActivity: MainActivity
 
-    private lateinit var boardListAdapter: BoardListRecyclerviewAdapter
+    private lateinit var boardListAdapter: BoardListAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -33,8 +31,12 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
 
     private fun initFaqAdapter() {
 
-        boardListAdapter = BoardListRecyclerviewAdapter()
-//        boardListAdapter.list = list
+        boardListAdapter = BoardListAdapter()
+        val list = mutableListOf<Int>()
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        boardListAdapter.list = list
 
         binding.boardListFragmentRvBoardList.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -42,18 +44,12 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
             adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
 
-        boardListAdapter.setItemClickListener(object : BoardListRecyclerviewAdapter.ItemClickListener {
+        boardListAdapter.setItemClickListener(object : BoardListAdapter.ItemClickListener {
 
-            override fun onClick(view: View, contentView: TextView, position: Int) {
-//                val arrow = view as ImageButton
-//                if(contentView.visibility == View.GONE) { // content가 숨겨져 있는 경우
-//                    arrow.setImageResource(R.drawable.ic_up_arrow)
-//                    contentView.visibility = View.VISIBLE
-//                } else if(contentView.visibility == View.VISIBLE) {
-//                    arrow.setImageResource(R.drawable.ic_arrow_down)
-//                    contentView.visibility = View.GONE
-//                }
-
+            override fun onClick(view: View, position: Int, boardId: Int) {
+                this@BoardListFragment.findNavController().navigate(R.id.action_boardListFragment_to_boardDetailFragment,
+                    bundleOf("boardId" to boardId)
+                )
             }
         })
     }

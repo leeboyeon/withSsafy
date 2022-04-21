@@ -10,11 +10,11 @@ import com.airbnb.lottie.animation.content.Content
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemBoardBinding
 
-class BoardListRecyclerviewAdapter : RecyclerView.Adapter<BoardListRecyclerviewAdapter.ViewHolder>() {
+class BoardListAdapter : RecyclerView.Adapter<BoardListAdapter.ViewHolder>() {
     var list = mutableListOf<Int>()
 
     inner class ViewHolder(private val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
-
+        val boardItem = binding.boardListItemClBoard
 
         fun bind() {
 
@@ -30,9 +30,10 @@ class BoardListRecyclerviewAdapter : RecyclerView.Adapter<BoardListRecyclerviewA
         val item = list[position]
         holder.apply {
             bind()
-//           .setOnClickListener {
-//                itemClickListener.onClick(it, Content, position)
-//            }
+            boardItem.setOnClickListener {
+//                itemClickListener.onClick(it, position, item.id)
+                itemClickListener.onClick(it, position, -1)
+            }
         }
     }
 
@@ -41,7 +42,7 @@ class BoardListRecyclerviewAdapter : RecyclerView.Adapter<BoardListRecyclerviewA
     }
 
     interface ItemClickListener{
-        fun onClick(view: View, contentView: TextView, position: Int)
+        fun onClick(view: View, position: Int, boardId: Int)
     }
 
     private lateinit var itemClickListener : ItemClickListener
