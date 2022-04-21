@@ -91,6 +91,9 @@ class HomeFragment : Fragment(){
             var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UC_XI3ByFO1uZIIH-g-zJZiw"))
             startActivity(intent)
         }
+        binding.fragmentHomeMoreJob.setOnClickListener {
+            this@HomeFragment.findNavController().navigate(R.id.boardJobFragment)
+        }
     }
     private fun initAdapter() {
         favoriteBoardAdapter = FavoriteBoardAdapter()
