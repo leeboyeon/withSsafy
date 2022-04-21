@@ -6,7 +6,8 @@ plugins {
 
 group = 'com.ssafy'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = "11"
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 configurations {
 	compileOnly {
@@ -35,9 +36,11 @@ dependencies {
 
 	// model mapper
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+
+	// devtools
+	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
-targetCompatibility = JavaVersion.VERSION_11

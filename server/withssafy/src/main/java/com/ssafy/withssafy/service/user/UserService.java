@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.service.user;
 
+import com.ssafy.withssafy.dto.user.UserDto;
 import com.ssafy.withssafy.entity.User;
 
 import java.util.List;
@@ -7,11 +8,11 @@ import java.util.Optional;
 
 
 public interface UserService {
-    public User insertUser(User user);
+    public UserDto insertUser(UserDto UserDto);
     public Boolean deleteByUid(Long id);
-    public Optional<User> updatePasswordByUid(Long id, String password);
-    public Optional<User> findById(Long id);
-    public Optional<User> findByUid(String u_id);
-    public List<User> findAll();
-    public Optional<User> login(String id, String password);
+    public UserDto updatePasswordByUid(Long id, String password);
+    public UserDto findById(Long id);
+    public UserDto findByUid(String u_id);
+    public List<UserDto> findAll();
+    public UserDto login(String id, String password);
 }
