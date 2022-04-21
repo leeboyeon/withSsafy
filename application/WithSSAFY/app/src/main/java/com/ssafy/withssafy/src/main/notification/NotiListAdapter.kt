@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
+import java.util.*
 
-class NotiListAdapter() : RecyclerView.Adapter<NotiListAdapter.NotiListHolder>() {
+class NotiListAdapter(private val items : ArrayList<Data>) : RecyclerView.Adapter<NotiListAdapter.NotiListHolder>() {
 
     inner class NotiListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind() {
+        fun bind(item : Data) {
 
         }
 
@@ -23,12 +24,17 @@ class NotiListAdapter() : RecyclerView.Adapter<NotiListAdapter.NotiListHolder>()
 
     override fun onBindViewHolder(holder: NotiListHolder, position: Int) {
         holder.apply {
-            bind()
+            bind(items[position])
         }
     }
 
+    fun removeData(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     override fun getItemCount(): Int {
-        return 5
+        return items.size
     }
 
 }

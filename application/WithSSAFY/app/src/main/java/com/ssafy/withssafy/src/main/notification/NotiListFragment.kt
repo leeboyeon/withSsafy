@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
@@ -16,6 +17,15 @@ import com.ssafy.withssafy.databinding.FragmentNotiListBinding
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.home.FavoriteBoardAdapter
 
+// 임시로 해놓은 data class
+data class Data (
+    val id: Int,
+    val title:String,
+    val content:String,
+    val period:String
+) {
+    constructor(title: String, content: String, period: String) : this(0, title, content, period)
+}
 
 class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListBinding::bind, R.layout.fragment_noti_list) {
     private lateinit var mainActivity: MainActivity
@@ -53,13 +63,33 @@ class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListB
     }
 
     private fun initAdapter() {
-        notiListAdapter = NotiListAdapter()
+        val data = arrayListOf<Data>()
+        data.apply {
+            add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
+            add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
+            add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
+            add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
+        }
+        notiListAdapter = NotiListAdapter(data)
         binding.notiListRv.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = notiListAdapter
         }
         // 구분선 추가
         binding.notiListRv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+
+        // Recyclerview 스와이프해서 DELETE
+        val notiListRvHelperCallback = NotiListRvHelperCallback(notiListAdapter).apply {
+            setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)
+        }
+
+        ItemTouchHelper(notiListRvHelperCallback).attachToRecyclerView(binding.notiListRv)
+
+        binding.notiListRv.setOnTouchListener{ _, _ ->
+            notiListRvHelperCallback.removePreviousClamp(binding.notiListRv)
+            false
+        }
+
     }
 
 }

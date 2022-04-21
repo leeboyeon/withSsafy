@@ -41,6 +41,9 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(FragmentN
         TabLayoutMediator(binding.notificationFragmentTabLayout, binding.notificationFragmentVp) { tab, position ->
             tab.text = tabList[position]
         }.attach()
+
+        // ViewPager 스와이프 막기
+        binding.notificationFragmentVp.isUserInputEnabled = false
     }
 
 
