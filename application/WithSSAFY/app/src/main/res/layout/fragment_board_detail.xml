@@ -11,7 +11,7 @@
         tools:context=".src.main.board.BoardDetailFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/fragment_boardWrite_appbar"
+            android:id="@+id/boardDetailFragment_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
-                android:id="@+id/fragment_boardWrite_back"
+                android:id="@+id/boardDetailFragment_ibBack"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="10dp"
@@ -33,21 +33,21 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/fragment_boardWrite"
+                android:id="@+id/boardDetailFragment_tvBoardTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="자유 게시판"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/fragment_boardWrite_back"
+                app:layout_constraintBottom_toBottomOf="@+id/boardDetailFragment_ibBack"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/fragment_boardWrite_back"
+                app:layout_constraintTop_toTopOf="@+id/boardDetailFragment_ibBack"
                 app:layout_constraintVertical_bias="0.625" />
 
             <Button
-                android:id="@+id/fragment_boardWrite_SuccessBtn"
+                android:id="@+id/boardDetailFragment_btnWritePost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
@@ -66,12 +66,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/boardDetailFragment_rvPostList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_boardWrite_appbar"
+            app:layout_constraintTop_toBottomOf="@+id/boardDetailFragment_appbar"
             tools:listitem="@layout/item_post_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
