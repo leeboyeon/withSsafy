@@ -1,7 +1,6 @@
 package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.user.UserDto;
-import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +59,7 @@ public class UserController {
      */
     @PostMapping
     @ApiOperation(value = "해당 회원 정보로 가입한다.")
-    public ResponseEntity<UserDto> save(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> join(@RequestBody UserDto userDto){
         return new ResponseEntity<>(userService.insertUser(userDto), HttpStatus.OK);
     }
 
