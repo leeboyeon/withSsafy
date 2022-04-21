@@ -15,6 +15,7 @@ import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardDetailBinding
 import com.ssafy.withssafy.src.main.MainActivity
 
+// 자유게시판 내 게시글 리스트 화면
 class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoardDetailBinding::bind, R.layout.fragment_board_detail) {
     private val TAG = "BoardDetailFragment_ws"
     private lateinit var mainActivity: MainActivity
@@ -58,5 +59,6 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
      */
     private fun initRecyclerView() {
 
+        // 아이템 클릭하면 게시글 상세 화면(PostDetail)으로 이동
     }
 }

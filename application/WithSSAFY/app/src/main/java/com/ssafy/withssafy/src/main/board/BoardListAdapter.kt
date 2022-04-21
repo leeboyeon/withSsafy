@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.lottie.animation.content.Content
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemBoardBinding
 
-class BoardListRecyclerviewAdapter : RecyclerView.Adapter<BoardListRecyclerviewAdapter.ViewHolder>() {
+class BoardListAdapter : RecyclerView.Adapter<BoardListAdapter.ViewHolder>() {
     var list = mutableListOf<Int>()
 
     inner class ViewHolder(private val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
