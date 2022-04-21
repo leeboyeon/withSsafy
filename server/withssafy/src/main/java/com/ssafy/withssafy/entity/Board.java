@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.entity;
 
+import com.ssafy.withssafy.dto.board.BoardRequest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,20 +28,27 @@ public class Board {
     @Column
     private String content;
 
-    @Column
-    private String photo_path;
+    @Column(name = "photo_path")
+    private String photoPath;
 
-    @Column
-    private String write_dt;
+    @Column(name = "write_dt")
+    private String writeDateTime;
+
+    public void updateBoard(BoardRequest boardRequest){
+        title = boardRequest.getTitle();
+        content = boardRequest.getContent();
+        photoPath = boardRequest.getPhotoPath();
+        writeDateTime = boardRequest.getWriteDateTime();
+    }
 
     @Builder
-    public Board(Long id, User user, BoardType type, String title, String content, String photo_path, String write_dt){
+    public Board(Long id, User user, BoardType type, String title, String content, String photoPath, String writeDateTime){
         this.id = id;
         this.user = user;
         this.type = type;
         this.title = title;
         this.content = content;
-        this.photo_path = photo_path;
-        this.write_dt = write_dt;
+        this.photoPath = photoPath;
+        this.writeDateTime = writeDateTime;
     }
 }

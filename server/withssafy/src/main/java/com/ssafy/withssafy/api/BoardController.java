@@ -1,9 +1,9 @@
 package com.ssafy.withssafy.api;
 
-import com.ssafy.withssafy.dto.board.BoardDto;
+import com.ssafy.withssafy.dto.board.BoardRequest;
+import com.ssafy.withssafy.dto.board.BoardResponse;
 import com.ssafy.withssafy.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,30 +19,30 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping()
-    public ResponseEntity<List<BoardDto>> findAll(){
-        return new ResponseEntity<List<BoardDto>>(boardService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<BoardResponse>> getBoards() {
+        return new ResponseEntity<>(boardService.getBoards(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BoardDto> findById(@PathVariable("id") Long id){
-        return new ResponseEntity<BoardDto>(boardService.findById(id), HttpStatus.OK);
+    public ResponseEntity<BoardResponse> getBoardById(@PathVariable("id") Long id) {
+        return new ResponseEntity<BoardResponse>(boardService.getBoardById(id), HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseEntity<Object> save(@RequestBody BoardDto boardSave){
-        boardService.save(boardSave);
-        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    public ResponseEntity<?> addBoard(@RequestBody BoardRequest boardRequest) {
+        boardService.addBoard(boardRequest);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@RequestBody BoardDto boardSave, @PathVariable("id") Long id){
-        boardService.save(boardSave, id);
-        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    public ResponseEntity<?> modifyBoardById(@RequestBody BoardRequest boardRequest, @PathVariable("id") Long id) {
+        boardService.modifyBoardById(boardRequest, id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable("id") Long id){
-        boardService.deleteById(id);
-        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    public ResponseEntity<?> removeBoardById(@PathVariable("id") Long id) {
+        boardService.removeBoardById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
