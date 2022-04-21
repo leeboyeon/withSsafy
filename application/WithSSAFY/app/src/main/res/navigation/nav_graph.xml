@@ -39,6 +39,11 @@
         android:name="com.ssafy.withssafy.src.main.home.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/boardJobFragment"
+        android:name="com.ssafy.withssafy.src.main.board.BoardJobFragment"
+        android:label="fragment_board_job"
+        tools:layout="@layout/fragment_board_job" />
 
 
 </navigation>
