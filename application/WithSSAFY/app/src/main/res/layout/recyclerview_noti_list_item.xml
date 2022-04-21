@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:textSize="13sp"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="3dp"
         android:text="현대백화점 그룹"
         android:textStyle="bold"
         android:textColor="@color/black"

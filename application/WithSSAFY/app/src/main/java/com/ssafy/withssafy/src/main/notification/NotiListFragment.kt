@@ -8,17 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentNotiListBinding
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.main.home.FavoriteBoardAdapter
 
 
-class NotiListFragment : BaseFragment<FragmentNotiListBinding>(
-    FragmentNotiListBinding::bind,
-    R.layout.fragment_noti_list
-) {
+class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListBinding::bind, R.layout.fragment_noti_list) {
     private lateinit var mainActivity: MainActivity
+
+    lateinit var notiListAdapter: NotiListAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -28,6 +30,7 @@ class NotiListFragment : BaseFragment<FragmentNotiListBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSpinner()
+        initAdapter()
     }
 
     private fun initSpinner() {
@@ -47,6 +50,16 @@ class NotiListFragment : BaseFragment<FragmentNotiListBinding>(
 
             }
         }
+    }
+
+    private fun initAdapter() {
+        notiListAdapter = NotiListAdapter()
+        binding.notiListRv.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = notiListAdapter
+        }
+        // 구분선 추가
+        binding.notiListRv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
 }
