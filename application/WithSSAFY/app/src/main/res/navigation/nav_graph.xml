@@ -9,7 +9,22 @@
         android:id="@+id/homeFragment"
         android:name="com.ssafy.withssafy.src.main.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_homeFragment_to_userFragment"
+            app:destination="@+id/userFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_boardDetailFragment"
+            app:destination="@id/boardDetailFragment" >
+            <argument
+                android:name="boardId"
+                app:argType="integer"
+                android:defaultValue="-1"/>
+        </action>
+
+    </fragment>
 
     <fragment
         android:id="@+id/scheduleFragment"
@@ -21,7 +36,16 @@
         android:id="@+id/boardFragment"
         android:name="com.ssafy.withssafy.src.main.board.BoardFragment"
         android:label="fragment_board"
-        tools:layout="@layout/fragment_board" />
+        tools:layout="@layout/fragment_board" >
+        <action
+            android:id="@+id/action_boardListFragment_to_boardDetailFragment"
+            app:destination="@id/boardDetailFragment" />
+        <argument
+            android:name="boardId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+    </fragment>
+
 
     <fragment
         android:id="@+id/notificationFragment"
@@ -35,5 +59,62 @@
         android:label="fragment_team"
         tools:layout="@layout/fragment_team" />
 
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.ssafy.withssafy.src.main.home.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" />
+
+    <fragment
+        android:id="@+id/boardJobFragment"
+        android:name="com.ssafy.withssafy.src.main.board.BoardJobFragment"
+        android:label="fragment_board_job"
+        tools:layout="@layout/fragment_board_job" />
+
+    <fragment
+        android:id="@+id/boardListFragment"
+        android:name="com.ssafy.withssafy.src.main.board.BoardListFragment"
+        android:label="fragment_boardList"
+        tools:layout="@layout/fragment_board_list">
+<!--        <action-->
+<!--            android:id="@+id/action_boardListFragment_to_boardDetailFragment"-->
+<!--            app:destination="@id/boardDetailFragment" />-->
+<!--        <argument-->
+<!--            android:name="boardId"-->
+<!--            app:argType="integer"-->
+<!--            android:defaultValue="-1"/>-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/boardDetailFragment"
+        android:name="com.ssafy.withssafy.src.main.board.BoardDetailFragment"
+        android:label="fragment_boardDetail"
+        tools:layout="@layout/fragment_board_detail" >
+
+        <action
+            android:id="@+id/action_boardDetailFragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
+
+        <action
+            android:id="@+id/action_boardDetailFragment_to_postWritefragment"
+            app:destination="@id/postWriteFragment" />
+
+        <argument
+            android:name="postId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="com.ssafy.withssafy.src.main.board.PostDetailFragment"
+        android:label="fragment_postDetail"
+        tools:layout="@layout/fragment_post_detail" />
+
+    <fragment
+        android:id="@+id/postWriteFragment"
+        android:name="com.ssafy.withssafy.src.main.board.PostWriteFragment"
+        android:label="fragment_postWrite"
+        tools:layout="@layout/fragment_post_write" />
 
 </navigation>
