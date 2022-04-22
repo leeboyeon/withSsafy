@@ -48,11 +48,7 @@ public class BoardService {
 
     public BoardResponse getBoardById(Long id) {
         Optional<Board> board = boardRepository.findById(id);
-        if (board.isPresent()) {
-            return modelMapper.map(board.get(), BoardResponse.class);
-        } else {
-            return modelMapper.map(null, BoardResponse.class);
-        }
+        return board.map(value -> modelMapper.map(value, BoardResponse.class)).orElse(null);
     }
 
     @Transactional
