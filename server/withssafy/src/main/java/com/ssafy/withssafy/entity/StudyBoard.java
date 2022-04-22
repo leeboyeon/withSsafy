@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.entity;
 
 
+import com.ssafy.withssafy.dto.studyboard.StudyBoardRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,29 +36,40 @@ public class StudyBoard {
     @Column
     private String area;
 
-    @Column(length = 500)
-    private String photo_path;
+    @Column(length = 500, name = "photo_path")
+    private String photoPath;
 
-    @Column
-    private int sb_limit;
+    @Column(name = "sb_limit")
+    private int sbLimit;
 
-    @Column(length = 500)
-    private String write_dt;
+    @Column(length = 500, name = "write_datetime")
+    private String writeDateTime;
 
-    @Column
-    private byte is_outing;
+    @Column(name = "is_outing")
+    private byte isOuting;
+
+    public void updateStudyBoard(StudyBoardRequest studyBoardRequest){
+        this.title = studyBoardRequest.getTitle();
+        this.content = studyBoardRequest.getContent();
+        this.category = studyBoardRequest.getCategory();
+        this.area = studyBoardRequest.getArea();
+        this.photoPath = studyBoardRequest.getPhotoPath();
+        this.sbLimit = studyBoardRequest.getSbLimit();
+        this.isOuting = studyBoardRequest.getIsOuting();
+    }
+
 
     @Builder
-    public StudyBoard(Long id, User user, String title, String content, String area, String photo_path, String category, int sb_limit, String write_dt, byte is_outing){
+    public StudyBoard(Long id, User user, String title, String content, String area, String photoPath, String category, int sbLimit, String writeDateTime, byte isOuting){
         this.id = id;
         this.user = user;
         this.title = title;
         this.content = content;
         this.area = area;
-        this.photo_path = photo_path;
+        this.photoPath = photoPath;
         this.category = category;
-        this.sb_limit = sb_limit;
-        this.write_dt = write_dt;
-        this.is_outing = is_outing;
+        this.sbLimit = sbLimit;
+        this.writeDateTime = writeDateTime;
+        this.isOuting = isOuting;
     }
 }
