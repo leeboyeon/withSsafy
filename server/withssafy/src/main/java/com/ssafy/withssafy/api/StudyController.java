@@ -1,9 +1,9 @@
 package com.ssafy.withssafy.api;
 
-import com.ssafy.withssafy.dto.study.StudyDto;
-import com.ssafy.withssafy.service.study.StudyService;
+import com.ssafy.withssafy.dto.studyboard.StudyBoardRequest;
+import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
+import com.ssafy.withssafy.service.studyboard.StudyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,39 +12,39 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/studies")
+@RequestMapping("/study-boards")
 public class StudyController {
 
     private final StudyService studyService;
 
     @GetMapping()
-    public ResponseEntity<List<StudyDto>> findAll() {
-        List<StudyDto> studies = studyService.findAll();
-        return new ResponseEntity<List<StudyDto>>(studies, HttpStatus.OK);
+    public ResponseEntity<List<StudyBoardResponse>> getStudyBoards() {
+        List<StudyBoardResponse> studyBoardResponses = studyService.getStudyBoards();
+        return new ResponseEntity<>(studyBoardResponses, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudyDto> findById(@PathVariable("id") Long id) {
-        StudyDto study = studyService.findById(id);
-        return new ResponseEntity<StudyDto>(study, HttpStatus.OK);
+    public ResponseEntity<StudyBoardResponse> getStudyBoardById(@PathVariable("id") Long id) {
+        StudyBoardResponse studyBoardResponse = studyService.getStudyBoardById(id);
+        return new ResponseEntity<>(studyBoardResponse, HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseEntity<Object> save(@RequestBody StudyDto studyDto) {
-        studyService.save(studyDto);
-        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    public ResponseEntity<?> addStudyBoard(@RequestBody StudyBoardRequest studyDto) {
+        studyService.addStudyBoard(studyDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@RequestBody StudyDto studyDto, @PathVariable("id") Long id) {
-        studyService.save(studyDto, id);
-        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    public ResponseEntity<?> modifyStudyBoard(@RequestBody StudyBoardRequest studyBoardRequest, @PathVariable("id") Long id) {
+        studyService.modifyStudyBoard(studyBoardRequest, id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable("id") Long id) {
-        studyService.deleteById(id);
-        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    public ResponseEntity<?> removeStudyBoardById(@PathVariable("id") Long id) {
+        studyService.removeStudyBoardById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.ssafy.withssafy.dto.study;
+package com.ssafy.withssafy.dto.studyboard;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -7,7 +7,7 @@ import org.springframework.core.io.FileSystemResource;
 
 @Data
 @ToString
-public class StudyDto {
+public class StudyBoardRequest {
     private Long id;
 
     private Long userId;
@@ -18,14 +18,13 @@ public class StudyDto {
 
     private String category;
 
+    private String area;
+
     private int sbLimit;
 
-    private String writeDt;
+    private String writeDateTime;
 
-    @JsonIgnore
     private String photoPath;
 
-    private FileSystemResource photoFile;
-
-    private int isOuting;
+    private byte isOuting;
 }
