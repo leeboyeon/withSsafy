@@ -17,41 +17,44 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @Size(max= 25)
-    @Column(length = 25, unique = true)
-    private String u_id;
+    @ManyToOne
+    @JoinColumn(name = "classroom_id")
+    private Classroom classroom;
+
+    @Size(max = 25)
+    @Column(length = 25, unique = true, name = "user_id")
+    private String userId;
+
+    @Column(name = "student_id")
+    private String studentId;
 
     @Size(max = 255)
     private String password;
 
+    @Column
+    private String name;
+
+    @Column
     private int state;
 
     @Size(max = 255)
-    private String device_token;
-
-    private int auth;
-
-    private int s_id;
-
-    @Size(max = 20)
-    @Column(length = 20)
-    private String s_area;
-
-    private int s_gen;
+    @Column(name = "device_token")
+    private String deviceToken;
 
     @Builder
-    public User(Long id, String u_id, String password, int state,
-                String device_token, int auth, int s_id, String s_area, int s_gen){
+    public User(Long id, Classroom classroom, String userId, String studentId, String password, String name, int state,
+                String deviceToken) {
         this.id = id;
-        this.u_id = u_id;
+        this.classroom = classroom;
+        this.userId = userId;
+        this.studentId = studentId;
         this.password = password;
+        this.name = name;
         this.state = state;
-        this.device_token = device_token;
-        this.auth = auth;
-        this.s_id = s_id;
-        this.s_area = s_area;
-        this.s_gen = s_gen;
+        this.deviceToken = deviceToken;
     }
 
-    public void encodePassword(PasswordEncoder passwordEncoder) { password = passwordEncoder.encode(password);}
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        password = passwordEncoder.encode(password);
+    }
 }
