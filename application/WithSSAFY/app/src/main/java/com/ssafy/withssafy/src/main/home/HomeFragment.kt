@@ -65,11 +65,15 @@ class HomeFragment : Fragment(){
         setListener()
     }
     private fun setListener(){
+        initAdmin()
         initViewPager()
         initButtons()
         subscribeObservers()
         autoScrollViewPage()
         initAdapter()
+    }
+    private fun initAdmin(){
+        binding.homeLayoutAdminRequestLayout.visibility = View.VISIBLE
     }
     private fun initButtons(){
         binding.fragmentHomeLinkEduSsafy.setOnClickListener {

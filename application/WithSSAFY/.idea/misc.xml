@@ -43,12 +43,15 @@
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/menu/popup_menu.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/drawable_toggle_background.xml" value="0.2555" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/drawable_toggle_item_background.xml" value="0.2555" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/rectangle_corner_radius.xml" value="0.165" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_class_curriculum.xml" value="0.3151041666666667" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_full_curriculum.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_home.xml" value="0.5" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_job_detail.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_schedule.xml" value="0.22" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_calender_day.xml" value="0.259375" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_calender_month.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_request_home_item.xml" value="0.5" />
       </map>
     </option>
   </component>
