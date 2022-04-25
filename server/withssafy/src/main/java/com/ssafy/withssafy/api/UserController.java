@@ -1,7 +1,9 @@
 package com.ssafy.withssafy.api;
 
+import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
 import com.ssafy.withssafy.service.user.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * User 관리 API
+ * @author Jueun
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@Api(tags = "유저 API")
 public class UserController {
     @Autowired
     UserService userService;
@@ -47,7 +54,7 @@ public class UserController {
      */
     @GetMapping("/login")
     @ApiOperation(value = "ID와 Password를 통해 사용자를 조회한다. (비밀번호나 아이디가 없으면 500 ERROR)")
-    public ResponseEntity<UserDto> login(@RequestParam("아이디")String u_id, @RequestParam("비밀번호")String password){
+    public ResponseEntity<LoginDto> login(@RequestParam("아이디")String u_id, @RequestParam("비밀번호")String password){
         return new ResponseEntity<>(userService.login(u_id, password), HttpStatus.OK);
     }
 

@@ -1,7 +1,11 @@
 package com.ssafy.withssafy.service.user;
 
+import com.ssafy.withssafy.dto.classroom.ClassRoomDto;
+import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
+import com.ssafy.withssafy.entity.ClassRoom;
 import com.ssafy.withssafy.entity.User;
+import com.ssafy.withssafy.repository.ClassRoomRepository;
 import com.ssafy.withssafy.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,9 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ClassRoomRepository classRoomRepository;
+
     @Autowired
     ModelMapper modelMapper;
 
@@ -68,12 +75,12 @@ public class UserServiceImpl implements UserService{
 
     /**
      * 해당 아이디를 가진 사용자를 조회한다.
-     * @param u_id
+     * @param userId
      * @return 해당 사용자 User
      */
     @Override
-    public UserDto findByUid(String u_id) {
-        User user = userRepository.findByUid(u_id);
+    public UserDto findByUid(String userId) {
+        User user = userRepository.findByUid(userId);
         return modelMapper.map(user, UserDto.class);
     }
 
@@ -90,13 +97,15 @@ public class UserServiceImpl implements UserService{
 
     /**
      * 비밀번호와 아이디를 통해 사용자를 조회한다.
-     * @param u_id
+     * @param userId
      * @param password
      * @return User
      */
     @Override
-    public UserDto login(String u_id, String password) {
-        User user = userRepository.login(u_id, password);
-        return modelMapper.map(user, UserDto.class);
+    public LoginDto login(String userId, String password) {
+        User user = userRepository.login(userId, password);
+        LoginDto result = modelMapper.map(user, LoginDto.class);
+        result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
+        return result;
     }
 }
