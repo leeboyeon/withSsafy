@@ -1,16 +1,17 @@
 package com.ssafy.withssafy.dto.user;
 
+import com.ssafy.withssafy.dto.classroom.ClassRoomDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
-public class UserDto {
+public class LoginDto {
     @ApiModelProperty(example = "유저 고유 아이디")
     private Long id;
     @ApiModelProperty(example = "유저 반 아이디")
-    private Long classRoomId;
+    private ClassRoomDto classRoomDto;
     @ApiModelProperty(example = "유저 계정 아이디")
     private String userId;
     @ApiModelProperty(example = "비밀번호")

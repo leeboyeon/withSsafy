@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.service.user;
 
+import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
 import com.ssafy.withssafy.entity.User;
 
@@ -14,5 +15,5 @@ public interface UserService {
     public UserDto findById(Long id);
     public UserDto findByUid(String u_id);
     public List<UserDto> findAll();
-    public UserDto login(String id, String password);
+    public LoginDto login(String id, String password);
 }
