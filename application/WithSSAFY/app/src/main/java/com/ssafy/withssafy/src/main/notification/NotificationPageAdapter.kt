@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.main.notification
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
