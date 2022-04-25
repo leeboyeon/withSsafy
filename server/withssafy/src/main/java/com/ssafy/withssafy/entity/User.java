@@ -17,15 +17,15 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "classroom_id")
-    private Classroom classroom;
+    private ClassRoom classRoom;
 
     @Size(max = 25)
-    @Column(length = 25, unique = true, name = "user_id")
+    @Column(length = 25, unique = true)
     private String userId;
 
-    @Column(name = "student_id")
+    @Column()
     private String studentId;
 
     @Size(max = 255)
@@ -42,16 +42,16 @@ public class User {
     private String deviceToken;
 
     @Builder
-    public User(Long id, Classroom classroom, String userId, String studentId, String password, String name, int state,
-                String deviceToken) {
+    public User(Long id, ClassRoom classRoom, String userId, String password, int state,
+                String deviceToken, String studentId, String name){
         this.id = id;
-        this.classroom = classroom;
         this.userId = userId;
         this.studentId = studentId;
         this.password = password;
         this.name = name;
         this.state = state;
         this.deviceToken = deviceToken;
+        this.classRoom = classRoom;
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {

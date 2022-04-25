@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "tbl_classroom")
 @Getter
 @NoArgsConstructor
-public class Classroom {
+public class ClassRoom {
     @Id
     @GeneratedValue
     private Long id;
@@ -18,16 +18,17 @@ public class Classroom {
     @Column
     private int generation;
 
-    @Column
+    @Column(length = 20)
     private String area;
 
-    @Column
-    private String classroomDescription;
+    @Column(length = 100)
+    private String classDescription;
 
     @Builder
-    public Classroom(int generation, String area, String classroomDescription){
+    public ClassRoom(Long id, int generation, String area, String classDescription){
+        this.id = id;
         this.generation = generation;
         this.area = area;
-        this.classroomDescription = classroomDescription;
+        this.classDescription = classDescription;
     }
 }
