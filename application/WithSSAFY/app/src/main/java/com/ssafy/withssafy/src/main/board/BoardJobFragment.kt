@@ -34,8 +34,12 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
         setListener()
     }
     private fun setListener(){
+        initAdmin()
         initButtons()
         initAdapter()
+    }
+    private fun initAdmin(){
+        binding.fragmentJobAdminWrite.visibility = View.VISIBLE
     }
     private fun initButtons(){
         binding.fragmentJobAppBarPrev.setOnClickListener {
