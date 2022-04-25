@@ -12,11 +12,6 @@ import com.ssafy.withssafy.databinding.FragmentSingInBinding
 
 class SingInFragment : BaseFragment<FragmentSingInBinding>(FragmentSingInBinding::bind,R.layout.fragment_sing_in) {
     private lateinit var signInActivity: SingInActivity
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -25,18 +20,40 @@ class SingInFragment : BaseFragment<FragmentSingInBinding>(FragmentSingInBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initListener()
 
-        binding.signInFragmentLoginBtn.setOnClickListener {
+    }
+
+    private fun initListener() {
+        forgotPwBtnClickEvent()
+        signUpBtnClickEvent()
+        loginBtnClickEvent()
+    }
+
+    /**
+     * Forgot Password 버튼 클릭 이벤트
+     */
+    private fun forgotPwBtnClickEvent() {
+        binding.signInFragmentLostPwTv.setOnClickListener {
             signInActivity.openFragment(1)
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SingInFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+    /**
+     * 회원가입 버튼 클릭 이벤트
+     */
+    private fun signUpBtnClickEvent() {
+        binding.signInFragmentSignUpBtn.setOnClickListener {
+            signInActivity.openFragment(3)
+        }
+    }
+
+    /**
+     * 로그인 버튼 클릭 이벤트
+     */
+    private fun loginBtnClickEvent() {
+        binding.signInFragmentLoginBtn.setOnClickListener {
+            signInActivity.openFragment(1)
+        }
     }
 }

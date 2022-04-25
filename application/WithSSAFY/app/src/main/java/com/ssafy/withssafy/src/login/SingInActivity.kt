@@ -60,6 +60,7 @@ class SingInActivity : BaseActivity<ActivitySingInBinding>(ActivitySingInBinding
         }
         transaction.commit()
     }
+
     fun sha256(pw: String) : String {
         val hash: ByteArray
         try {
