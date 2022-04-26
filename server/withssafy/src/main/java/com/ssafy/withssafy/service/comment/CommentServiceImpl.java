@@ -5,6 +5,7 @@ import com.ssafy.withssafy.entity.Comment;
 import com.ssafy.withssafy.repository.CommentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -46,6 +47,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     @Transactional
+    @Modifying(clearAutomatically = true)
     public CommentDto update(CommentDto commentDto) {
         commentRepository.update(commentDto.getId(), commentDto.getContent());
         CommentDto result = modelMapper.map(commentRepository.findById(commentDto.getId()), CommentDto.class);
@@ -53,8 +55,8 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    @Modifying(clearAutomatically = true)
     public boolean delete(Long id) {
-        if(!commentRepository.findById(id).isPresent()) return false;
         commentRepository.deleteById(id);
         return commentRepository.findById(id).isPresent();
     }
