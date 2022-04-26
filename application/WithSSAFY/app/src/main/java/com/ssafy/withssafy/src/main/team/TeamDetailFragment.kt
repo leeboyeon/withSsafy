@@ -7,20 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.activityViewModels
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentTeamDetailBinding
+import com.ssafy.withssafy.src.viewmodel.TeamViewModel
+import kotlinx.coroutines.runBlocking
 
 class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamDetailBinding::bind, R.layout.fragment_team_detail) {
-
+    private var studyId = 0
+    private val teamViewModel : TeamViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            studyId = it.getInt("studyId")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = teamViewModel
+        runBlocking {
+            teamViewModel.getStudy(studyId)
+        }
         setListener()
     }
     private fun setListener(){

@@ -179,17 +179,43 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Spinner
-                android:id="@+id/fragment_teamWrite_memeberSize"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+            <ImageButton
+                android:id="@+id/fragment_teamWrite_peopleAddBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/plus"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_teamWrite_people"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_teamWrite_people"
+                app:layout_constraintTop_toTopOf="@+id/fragment_teamWrite_people" />
+
+            <ImageButton
+                android:id="@+id/fragment_teamWrite_peopleMinusBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="10dp"
-                android:padding="15dp"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/minus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/fragment_teamWrite_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="0"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_teamWrite_peopleMinusBtn"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_teamWrite_peopleMinusBtn"
+                app:layout_constraintTop_toTopOf="@+id/fragment_teamWrite_peopleMinusBtn" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -273,5 +299,46 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/cancel" />
         </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+            <TextView
+                android:id="@+id/textView37"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="옵션"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/fragment_teamWrite_onlineCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="온라인"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_teamWrite_offlineCheck"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_teamWrite_offlineCheck"
+                app:layout_constraintTop_toTopOf="@+id/fragment_teamWrite_offlineCheck" />
+
+            <CheckBox
+                android:id="@+id/fragment_teamWrite_offlineCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="오프라인"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
