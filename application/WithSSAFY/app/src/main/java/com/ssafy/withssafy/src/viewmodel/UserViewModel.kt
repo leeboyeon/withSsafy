@@ -73,6 +73,7 @@ class UserViewModel : ViewModel() {
             if(response.code() == 200) {
                 if(res != null) {
                     setClassRoomList(res)
+                    Log.d(TAG, "getClassRoomList: $res")
                 }
             } else {
                 Log.d(TAG, "Error : ${response.message()}")
