@@ -6,12 +6,16 @@ import com.ssafy.withssafy.service.schedule.ScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Example;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -53,8 +57,11 @@ public class ScheduleController {
 
     @GetMapping("/myclass/{id}")
     @ApiOperation(value = "우리반 일정 조회")
-    public ResponseEntity<List<ScheduleDto>> getMyClassSchedule(@ApiParam("반 id") @PathVariable Long id){
-        List<ScheduleDto> scheduleDtoList = scheduleService.findMySchedule(id);
+    public ResponseEntity<List<ScheduleDto>> getMyClassSchedule(@ApiParam("반 id") @PathVariable Long id,
+                                                                @ApiParam("해당 주차의 월요일 날짜(yyyy-mm-dd)") @RequestParam String startDate){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dateTime = LocalDate.parse(startDate, formatter);
+        List<ScheduleDto> scheduleDtoList = scheduleService.findMySchedule(id, dateTime.atTime(0,0));
         return ResponseEntity.status(HttpStatus.OK).body(scheduleDtoList);
     }
 }
