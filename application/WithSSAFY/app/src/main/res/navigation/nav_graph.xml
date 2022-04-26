@@ -109,13 +109,30 @@
         android:id="@+id/postDetailFragment"
         android:name="com.ssafy.withssafy.src.main.board.PostDetailFragment"
         android:label="fragment_postDetail"
-        tools:layout="@layout/fragment_post_detail" />
+        tools:layout="@layout/fragment_post_detail" >
+        <action
+            android:id="@+id/action_postDetailFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
+        <argument
+            android:name="postId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="com.ssafy.withssafy.src.main.board.CommentFragment"
+        android:label="fragment_comment"
+        tools:layout="@layout/fragment_comment" />
 
     <fragment
         android:id="@+id/postWriteFragment"
         android:name="com.ssafy.withssafy.src.main.board.PostWriteFragment"
         android:label="fragment_postWrite"
         tools:layout="@layout/fragment_post_write" />
+
+
     <fragment
         android:id="@+id/teamWriteFragment"
         android:name="com.ssafy.withssafy.src.main.team.TeamWriteFragment"
