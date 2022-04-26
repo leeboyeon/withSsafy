@@ -79,6 +79,9 @@ class SingInFragment : BaseFragment<FragmentSingInBinding>(FragmentSingInBinding
                 } else {
                     showCustomToast("로그인 되었습니다.")
                     ApplicationClass.sharedPreferencesUtil.addUser(User(user.userId, user.password, user.deviceToken))
+                    if(binding.signInFragmentCbAutoLogin.isChecked) {
+                        ApplicationClass.sharedPreferencesUtil.setAutoLogin(user.id)
+                    }
                     signInActivity.openFragment(1)
                 }
             }else if(code == 500){

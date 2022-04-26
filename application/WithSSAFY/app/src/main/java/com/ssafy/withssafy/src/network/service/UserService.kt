@@ -54,4 +54,9 @@ class UserService {
             }
         })
     }
+
+    // 특정 사용자 조회
+    suspend fun getUser(userId: Int) : Response<User> {
+        return RetrofitUtil.userService.getUser(userId)
+    }
 }
