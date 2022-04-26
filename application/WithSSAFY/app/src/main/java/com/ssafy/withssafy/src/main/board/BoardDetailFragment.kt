@@ -15,7 +15,12 @@ import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardDetailBinding
 import com.ssafy.withssafy.src.main.MainActivity
 
-// 자유게시판 내 게시글 리스트 화면
+/**
+ * @since 04/21/22
+ * @author Jiwoo Choi
+ * 게시판 내 게시글 리스트 레이아웃
+ */
+
 class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoardDetailBinding::bind, R.layout.fragment_board_detail) {
     private val TAG = "BoardDetailFragment_ws"
     private lateinit var mainActivity: MainActivity
@@ -37,9 +42,11 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initListener()
+
+
     }
+
 
     private fun initListener() {
 
@@ -54,7 +61,6 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
                 bundleOf("postId" to -1)
             )
         }
-
     }
 
     /**

@@ -2,6 +2,8 @@ package com.ssafy.withssafy.util
 
 import com.google.gson.Gson
 import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.util.*
 
 object CommonUtils {
     fun convertEnglishMonth(month:Int):String{
@@ -67,5 +69,13 @@ object CommonUtils {
             return "토요일"
         }
         return ""
+    }
+
+    fun unixTimeToDateFormatByBoard(unixTime: Long): String {
+        val simpleDateFormat = SimpleDateFormat("yy/MM/dd HH:mm") //"YYYY-MM-dd HH:mm:ss.SSS"
+        val date = Date()
+        date.time = unixTime
+
+        return simpleDateFormat.format(date)
     }
 }
