@@ -3,11 +3,14 @@ package com.ssafy.withssafy.service.classroom;
 import com.ssafy.withssafy.dto.classroom.ClassRoomDto;
 import com.ssafy.withssafy.entity.ClassRoom;
 import com.ssafy.withssafy.repository.ClassRoomRepository;
+import org.hibernate.annotations.OnDelete;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,8 +33,13 @@ public class ClassRoomServiceImpl implements ClassRoomService{
     }
 
     @Override
-    public void delete(Long id) {
-        classRoomRepository.deleteById(id);
+    @Modifying(clearAutomatically = true)
+    public ClassRoomDto delete(Long id) {
+        Optional<ClassRoom> classRoom = classRoomRepository.findById(id);
+        if(!classRoom.isPresent()) return null;
+
+        classRoomRepository.delete(classRoom.get());
+        return modelMapper.map(classRoom, ClassRoomDto.class);
     }
 
     @Override
