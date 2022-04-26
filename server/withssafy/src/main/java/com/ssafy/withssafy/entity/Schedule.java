@@ -22,8 +22,7 @@ public class Schedule {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
-    private int type;
+
 
     @Column(length = 25)
     private String end_date;
@@ -38,9 +37,8 @@ public class Schedule {
     private String start_date;
     
     @Builder
-    public Schedule(User user, int type, String end_date, String title, String memo, String start_date){
+    public Schedule(User user, String end_date, String title, String memo, String start_date){
         this.user = user;
-        this.type = type;
         this.end_date = end_date;
         this.title = title;
         this.memo = memo;
