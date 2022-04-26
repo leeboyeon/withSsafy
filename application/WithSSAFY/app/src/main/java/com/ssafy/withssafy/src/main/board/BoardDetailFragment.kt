@@ -26,7 +26,7 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
     private lateinit var mainActivity: MainActivity
     private lateinit var boardDetailAdapter: BoardDetailAdapter
 
-    private var boardId: Int = -1
+    private var typeId: Int = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,7 +36,7 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.apply {
-            boardId = getInt("boardId")
+            typeId = getInt("typeId")
         }
     }
 
@@ -57,8 +57,8 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
 
         // 글 작성 버튼 클릭 이벤트
         binding.boardDetailFragmentBtnWritePost.setOnClickListener {
-            this@BoardDetailFragment.findNavController().navigate(R.id.action_boardDetailFragment_to_postWritefragment,
-                bundleOf("postId" to -1)
+            this@BoardDetailFragment.findNavController().navigate(R.id.action_boardDetailFragment_to_postWriteFragment,
+                bundleOf("typeId" to typeId)
             )
         }
     }

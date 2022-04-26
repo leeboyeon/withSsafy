@@ -48,7 +48,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
 
             override fun onClick(view: View, position: Int, boardId: Int) {
                 this@BoardListFragment.findNavController().navigate(R.id.action_boardListFragment_to_boardDetailFragment,
-                    bundleOf("boardId" to boardId)
+                    bundleOf("boardId" to boardId)  // 게시판 타입
                 )
             }
         })

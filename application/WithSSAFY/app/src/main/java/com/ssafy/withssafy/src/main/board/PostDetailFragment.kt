@@ -25,14 +25,11 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
     private val TAG = "PostDetailFragment_ws"
     private lateinit var mainActivity: MainActivity
 
-    private var postId by Delegates.notNull<Int>()
+    private var postId = -1
+    private var typeId = -1
+
 
     private lateinit var commentAdapter: CommentAdapter
-    private lateinit var mInputMethodManager: InputMethodManager
-
-    // 대댓글 작성 시 필요한 parentId == commentId
-    private var parentId = -1
-    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -43,6 +40,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         super.onCreate(savedInstanceState)
         arguments?.apply {
             postId = getInt("postId")
+            typeId = getInt("typeId")
         }
     }
 

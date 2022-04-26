@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.network.api
 
 import com.ssafy.withssafy.src.dto.board.Board
+import com.ssafy.withssafy.src.dto.board.BoardRequest
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -21,7 +22,7 @@ interface BoardApi {
      * 게시글 등록
      */
     @POST("boards")
-    suspend fun insertPost(@Body boardRequest : Board) : Response<Any?>
+    suspend fun insertPost(@Body boardRequest : BoardRequest) : Response<Any?>
 
     /**
      * 게시글 상세 조회

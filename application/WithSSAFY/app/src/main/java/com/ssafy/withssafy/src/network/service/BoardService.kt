@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.network.service
 
 import com.ssafy.withssafy.src.dto.board.Board
+import com.ssafy.withssafy.src.dto.board.BoardRequest
 import com.ssafy.withssafy.util.RetrofitUtil
 
 /**
@@ -11,7 +12,7 @@ class BoardService {
 
     suspend fun getAllList() = RetrofitUtil.boardApi.selectAllList()
 
-    suspend fun addPost(boardRequest : Board) = RetrofitUtil.boardApi.insertPost(boardRequest)
+    suspend fun addPost(boardRequest: BoardRequest) = RetrofitUtil.boardApi.insertPost(boardRequest)
 
     suspend fun getPostDetail(postId: Int) = RetrofitUtil.boardApi.selectPostById(postId)
 

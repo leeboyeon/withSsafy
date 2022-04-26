@@ -19,7 +19,7 @@
             android:id="@+id/action_homeFragment_to_boardDetailFragment"
             app:destination="@id/boardDetailFragment" >
             <argument
-                android:name="boardId"
+                android:name="typeId"
                 app:argType="integer"
                 android:defaultValue="-1"/>
         </action>
@@ -37,11 +37,13 @@
         android:name="com.ssafy.withssafy.src.main.board.BoardFragment"
         android:label="fragment_board"
         tools:layout="@layout/fragment_board" >
+
+        <!-- 게시판 리스트 -> 게시판 detail -->
         <action
             android:id="@+id/action_boardListFragment_to_boardDetailFragment"
             app:destination="@id/boardDetailFragment" />
         <argument
-            android:name="boardId"
+            android:name="typeId"
             app:argType="integer"
             android:defaultValue="-1"/>
     </fragment>
@@ -75,15 +77,7 @@
         android:id="@+id/boardListFragment"
         android:name="com.ssafy.withssafy.src.main.board.BoardListFragment"
         android:label="fragment_boardList"
-        tools:layout="@layout/fragment_board_list">
-<!--        <action-->
-<!--            android:id="@+id/action_boardListFragment_to_boardDetailFragment"-->
-<!--            app:destination="@id/boardDetailFragment" />-->
-<!--        <argument-->
-<!--            android:name="boardId"-->
-<!--            app:argType="integer"-->
-<!--            android:defaultValue="-1"/>-->
-    </fragment>
+        tools:layout="@layout/fragment_board_list" />
 
     <fragment
         android:id="@+id/boardDetailFragment"
@@ -91,18 +85,25 @@
         android:label="fragment_boardDetail"
         tools:layout="@layout/fragment_board_detail" >
 
+        <!-- 게시글 리스트 -> 게시글 상세 조회 : postId, typeId-->
         <action
             android:id="@+id/action_boardDetailFragment_to_postDetailFragment"
             app:destination="@id/postDetailFragment" />
 
+        <!-- 게시글 리스트 -> 게시글 작성 : typeId-->
         <action
-            android:id="@+id/action_boardDetailFragment_to_postWritefragment"
+            android:id="@+id/action_boardDetailFragment_to_postWriteFragment"
             app:destination="@id/postWriteFragment" />
 
         <argument
             android:name="postId"
             app:argType="integer"
             android:defaultValue="-1"/>
+
+        <argument
+            android:name="typeId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -110,14 +111,25 @@
         android:name="com.ssafy.withssafy.src.main.board.PostDetailFragment"
         android:label="fragment_postDetail"
         tools:layout="@layout/fragment_post_detail" >
+        <!-- 게시글 상세 화면 -> 댓글 리스트 조회 : postId -->
         <action
             android:id="@+id/action_postDetailFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
+
+        <!-- 게시글 상세 화면 -> 게시글 수정 : postId, typeId -->
+        <action
+            android:id="@+id/action_postDetailFragment_to_postWriteFragment"
+            app:destination="@+id/postWriteFragment" />
+
         <argument
             android:name="postId"
             app:argType="integer"
             android:defaultValue="-1" />
 
+        <argument
+            android:name="typeId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment

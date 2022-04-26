@@ -13,6 +13,8 @@ import com.ssafy.withssafy.src.viewmodel.BoardViewModel
 import com.ssafy.withssafy.src.viewmodel.HomeViewModel
 import com.ssafy.withssafy.src.viewmodel.TeamViewModel
 import com.ssafy.withssafy.src.viewmodel.UserViewModel
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 abstract class BaseFragment <B: ViewBinding> (
     private val bind: (View) -> B,
@@ -22,10 +24,14 @@ abstract class BaseFragment <B: ViewBinding> (
     private var _binding: B? = null
     protected val binding get() = _binding!!
 
+//    protected val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
+
     protected val homeViewModel: HomeViewModel by activityViewModels()
     protected val userViewModel: UserViewModel by activityViewModels()
     protected val teamViewModel: TeamViewModel by activityViewModels()
     protected val boardViewModel: BoardViewModel by activityViewModels()
+
+    protected val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,5 +49,14 @@ abstract class BaseFragment <B: ViewBinding> (
 
     fun showCustomToast(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    protected fun Disposable.addDisposable() {
+        compositeDisposable.add(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 }

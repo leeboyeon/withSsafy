@@ -1,11 +1,11 @@
 package com.ssafy.withssafy.src.dto.board
 
 data class Board(
-    val boardType: BoardType,
-    val content: String,
     val id: Int,
-    val photoPath: String,
-    val title: String,
+    val boardType: BoardType,
     val user: User,
+    val title: String,
+    val content: String,
+    val photoPath: String,
     val writeDateTime: String
 )
