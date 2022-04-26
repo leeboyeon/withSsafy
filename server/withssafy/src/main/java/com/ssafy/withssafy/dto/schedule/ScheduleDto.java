@@ -6,16 +6,18 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Data
 @ToString
 public class ScheduleDto {
     private Long id;
     private Long userId;
     private Long classRoomId;
-    @ApiModelProperty(example = "yyyy-mm-dd hh:mm:ss")
-    private String end_date;
+    @ApiModelProperty(example = "yyyy-mm-ddThh:mm:ss")
+    private LocalDateTime endDate;
     private String title;
     private String memo;
-    @ApiModelProperty(example = "yyyy-mm-dd hh:mm:ss")
-    private String start_date;
+    @ApiModelProperty(example = "yyyy-mm-ddThh:mm:ss")
+    private LocalDateTime startDate;
 }
