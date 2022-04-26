@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,8 +36,8 @@ public class ScheduleService {
         return modelMapper.map(schedule, ScheduleDto.class);
     }
 
-    public List<ScheduleDto> findMySchedule(Long id){
-        List<Schedule> recruits = scheduleRepository.findByClassRoomId(id);
+    public List<ScheduleDto> findMySchedule(Long id, LocalDateTime startDate){
+        List<Schedule> recruits = scheduleRepository.findAllByClassRoomIdAndStartDateBetween(id, startDate, startDate.plusDays(7));
         return recruits.stream().map(recruit -> modelMapper.map(recruit, ScheduleDto.class))
                 .collect(Collectors.toList());
     }

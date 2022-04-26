@@ -51,14 +51,14 @@ class SharedPreferencesUtil (context: Context) {
         preferences.edit().remove(COOKIES_KEY_NAME).apply()
     }
 
-    fun setAutoLogin(userId: Int) {
+    fun setAutoLogin(id: Int) {
         val editor = preferences.edit()
-        editor.putInt("auto", userId)
+        editor.putInt("auto", id)
         editor.apply()
     }
 
     fun getAutoLogin() : Int {
-        return preferences.getInt("auto", 0)
+        return preferences.getInt("auto", -1)
     }
 
     fun deleteAutoLogin() {
