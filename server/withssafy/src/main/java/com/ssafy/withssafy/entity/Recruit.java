@@ -16,6 +16,10 @@ public class Recruit {
     @GeneratedValue
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(length = 50)
     private String company;
 
@@ -57,8 +61,9 @@ public class Recruit {
 
 
     @Builder
-    public Recruit(Long id, String company, String career, String education, String job, String employType, String salary, String location, String taskDescription, String preferenceDescription, String welfare, String workingHours, String startDate, String endDate) {
+    public Recruit(Long id, User user, String company, String career, String education, String job, String employType, String salary, String location, String taskDescription, String preferenceDescription, String welfare, String workingHours, String startDate, String endDate) {
         this.id = id;
+        this.user = user;
         this.company = company;
         this.career = career;
         this.education = education;
