@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
 import com.ssafy.withssafy.src.viewmodel.HomeViewModel
+import com.ssafy.withssafy.src.viewmodel.UserViewModel
 
 abstract class BaseFragment <B: ViewBinding> (
     private val bind: (View) -> B,
@@ -20,6 +21,7 @@ abstract class BaseFragment <B: ViewBinding> (
     protected val binding get() = _binding!!
 
     protected val homeViewModel: HomeViewModel by activityViewModels()
+    protected val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

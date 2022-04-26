@@ -17,13 +17,13 @@
             android:layout_marginTop="40dp"
             android:layout_marginBottom="40dp"
             android:src="@drawable/logo"
-            app:layout_constraintBottom_toTopOf="@+id/signInFragment_emailEt"
+            app:layout_constraintBottom_toTopOf="@+id/signInFragment_etId"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/signInFragment_emailEt"
+            android:id="@+id/signInFragment_etId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -31,14 +31,13 @@
             android:layout_marginBottom="15dp"
             android:background="@drawable/edit_background"
             android:ems="10"
-            android:hint="E-MAIL"
-            android:inputType="textEmailAddress"
-            app:layout_constraintBottom_toTopOf="@+id/signInFragment_pwEt"
+            android:hint="ID"
+            app:layout_constraintBottom_toTopOf="@+id/signInFragment_etPw"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/signInFragment_pwEt"
+            android:id="@+id/signInFragment_etPw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -48,12 +47,12 @@
             android:ems="10"
             android:hint="PW"
             android:inputType="textPassword"
-            app:layout_constraintBottom_toTopOf="@+id/signInFragment_autoLoginCb"
+            app:layout_constraintBottom_toTopOf="@+id/signInFragment_cbAutoLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <CheckBox
-            android:id="@+id/signInFragment_autoLoginCb"
+            android:id="@+id/signInFragment_cbAutoLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -68,9 +67,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:text="Forgot password?"
-            app:layout_constraintBottom_toBottomOf="@+id/signInFragment_autoLoginCb"
+            app:layout_constraintBottom_toBottomOf="@+id/signInFragment_cbAutoLogin"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/signInFragment_autoLoginCb" />
+            app:layout_constraintTop_toTopOf="@+id/signInFragment_cbAutoLogin" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signInFragment_LoginBtn"

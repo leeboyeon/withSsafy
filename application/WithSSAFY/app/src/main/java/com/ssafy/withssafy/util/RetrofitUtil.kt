@@ -7,5 +7,6 @@ import com.ssafy.withssafy.src.network.api.StudyApi
 class RetrofitUtil {
     companion object{
         val studyService = ApplicationClass.retrofit.create(StudyApi::class.java)
+        val userService = ApplicationClass.retrofit.create(UserApi::class.java)
     }
 }

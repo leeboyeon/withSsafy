@@ -2,26 +2,16 @@ package com.ssafy.withssafy.src.main.board
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemCommentListBinding
 import com.ssafy.withssafy.src.dto.User
-import kotlinx.coroutines.runBlocking
 import org.w3c.dom.Comment
-import retrofit2.Response
 
 class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*/) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
     private val TAG = "CommentAdapter_ws"
