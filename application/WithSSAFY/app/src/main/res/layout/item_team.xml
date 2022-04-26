@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-<!--        <variable-->
-<!--            name="team"-->
-<!--            type="" />-->
+        <variable
+            name="study"
+            type="com.ssafy.withssafy.src.dto.Study" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@{}"
+        android:text="@{study.title}"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:text="@{String.valueOf(study.sbLimit)}"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        app:converMilliSecondToString="@{study.writeDateTime}"
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
-        android:text="프로그래밍"
+        android:text="@{study.category}"
         android:textColor="@color/white"
         android:textSize="10sp"
         app:chipBackgroundColor="@color/purple_200"
@@ -90,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
-        android:text="서울"
+        android:text="@{study.area}"
         android:textColor="@color/white"
         android:textSize="10sp"
         app:chipBackgroundColor="@color/purple_200"

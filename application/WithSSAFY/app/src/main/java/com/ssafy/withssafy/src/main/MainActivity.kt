@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.main
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -14,7 +15,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
@@ -32,16 +37,19 @@ import com.ssafy.withssafy.src.main.home.HomeFragment
 import com.ssafy.withssafy.src.main.notification.NotificationFragment
 import com.ssafy.withssafy.src.main.schedule.ScheduleFragment
 import com.ssafy.withssafy.src.main.team.TeamFragment
+import com.ssafy.withssafy.src.viewmodel.TeamViewModel
 import kotlin.math.round
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     private val TAG = "MainActivity_ws"
     private lateinit var bottomNavigation: BottomNavigationView
-
+    private val STORAGE = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private val STORAGE_CODE = 99
+    private val teamViewModel : TeamViewModel by viewModels()
     // 권한 허가
     var permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() { // 권한 허가시 실행 할 내용
-            openGallery()
+//            openGallery()
         }
 
         override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
@@ -150,15 +158,62 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //            selectImg()
 //        }
     }
-
-    fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = MediaStore.Images.Media.CONTENT_TYPE
-        intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // 다중 이미지를 가져올 수 있도록 세팅
-        filterActivityLauncher.launch(intent)
+    fun checkPermission(permissions: Array<out String>, type: Int): Boolean
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (permission in permissions) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, permissions, type)
+                    return false
+                }
+            }
+        }
+        return true
     }
+    fun openGallery(code:Int) {
+        if(checkPermission(STORAGE,STORAGE_CODE)){
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            filterActivityLauncher.launch(intent)
+            startActivityForResult(intent,code)
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                STORAGE_CODE -> {
+                    teamViewModel.uploadImageUri = data?.data
+//                    mainViewModels.uploadedImageUri = data?.data
+//
+//                    Log.d(TAG, "onActivityResult: ${data?.data}")
+//                    // 이미지 검사
+//                    if(mainViewModels.uploadedImageUri == null) showCustomToast("이미지가 정상적으로 로드 되지 않았습니다.")
+//                    else {
+//                        mainViewModels.uploadedImage = MediaStore.Images.Media.getBitmap(contentResolver, mainViewModels.uploadedImageUri)
+//                        checkTheType()
+//                        photoDialog.dismiss()
+//                    }
+                }
+            }
+        }
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            STORAGE_CODE -> {
+                for (grant in grantResults) {
+                    if (grant != PackageManager.PERMISSION_GRANTED) {
+                        showCustomToast("저장소 권한을 승인해 주세요.")
+                    }
+                }
+            }
+        }
+    }
     /**
      * 갤러리 사진 선택 result
      */
