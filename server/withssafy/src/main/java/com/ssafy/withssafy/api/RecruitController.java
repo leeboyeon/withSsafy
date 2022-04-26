@@ -28,7 +28,7 @@ public class RecruitController {
 
         recruitService.saveRecruit(recruitDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @PutMapping
@@ -37,7 +37,7 @@ public class RecruitController {
 
         recruitService.saveRecruit(recruitDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @DeleteMapping("/{id}")
@@ -46,7 +46,7 @@ public class RecruitController {
 
         recruitService.deleteRecruit(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @GetMapping
