@@ -22,7 +22,9 @@ public class Schedule {
     @JoinColumn(name = "user_id")
     private User user;
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "classRoom_id")
+    private ClassRoom classRoom;
 
     @Column(length = 25)
     private String end_date;
