@@ -1,21 +1,14 @@
 package com.ssafy.withssafy.src.main.board
 
 import android.net.Uri
-import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemPhotoListBinding
-import com.ssafy.withssafy.src.dto.User
-import retrofit2.http.HEAD
 import java.lang.Exception
 
 class PostPhotoAdapter() : RecyclerView.Adapter<PostPhotoAdapter.BaseViewHolder>() {

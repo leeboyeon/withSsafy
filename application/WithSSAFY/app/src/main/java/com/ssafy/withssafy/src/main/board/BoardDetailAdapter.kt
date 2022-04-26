@@ -1,16 +1,11 @@
 package com.ssafy.withssafy.src.main.board
 
 import android.content.Context
-import android.location.Geocoder
 import android.view.*
-import android.widget.PopupMenu
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.ssafy.withssafy.R
-import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemPostListBinding
 import com.ssafy.withssafy.src.dto.User
 import java.util.*

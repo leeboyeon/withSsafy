@@ -30,7 +30,7 @@
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_board_notice.xml" value="0.26495726495726496" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_job_detail.xml" value="0.25364583333333335" />
-        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_post_detail.xml" value="0.3757716049382716" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_post_detail.xml" value="0.19972260748959778" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_post_write.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_board.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_board_noti_mustread.xml" value="0.25" />
@@ -60,7 +60,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
