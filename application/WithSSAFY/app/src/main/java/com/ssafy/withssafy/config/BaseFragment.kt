@@ -9,7 +9,9 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
+import com.ssafy.withssafy.src.viewmodel.BoardViewModel
 import com.ssafy.withssafy.src.viewmodel.HomeViewModel
+import com.ssafy.withssafy.src.viewmodel.TeamViewModel
 import com.ssafy.withssafy.src.viewmodel.UserViewModel
 
 abstract class BaseFragment <B: ViewBinding> (
@@ -22,6 +24,8 @@ abstract class BaseFragment <B: ViewBinding> (
 
     protected val homeViewModel: HomeViewModel by activityViewModels()
     protected val userViewModel: UserViewModel by activityViewModels()
+    protected val teamViewModel: TeamViewModel by activityViewModels()
+    protected val boardViewModel: BoardViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
