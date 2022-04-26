@@ -29,7 +29,7 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
     }
     private fun initButtons(){
         binding.fragmentTeamWrite.setOnClickListener {
-//            this@TeamFragment.findNavController().navigate(R.id.)
+            this@TeamFragment.findNavController().navigate(R.id.teamWriteFragment)
         }
     }
     private fun initAdapter(){

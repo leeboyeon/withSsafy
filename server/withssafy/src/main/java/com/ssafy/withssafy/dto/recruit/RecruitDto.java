@@ -15,6 +15,8 @@ import lombok.ToString;
 public class RecruitDto {
 
     private Long id;
+    @ApiModelProperty(example = "유저 id ex)243")
+    private Long userId;
     @ApiModelProperty(example = "기업명")
     private String company;
     @ApiModelProperty(example = "경력or신입")
