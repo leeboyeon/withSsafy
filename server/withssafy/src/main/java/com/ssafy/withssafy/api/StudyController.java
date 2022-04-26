@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class StudyController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> addStudyBoard(@RequestBody StudyBoardRequest studyDto) {
-        studyService.addStudyBoard(studyDto);
+    public ResponseEntity<?> addStudyBoard(@RequestPart(value = "data") StudyBoardRequest studyBoardRequest, @RequestPart(value = "file") MultipartFile file) {
+        studyService.addStudyBoard(studyBoardRequest, file);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

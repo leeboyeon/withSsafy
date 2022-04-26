@@ -3,7 +3,6 @@ package com.ssafy.withssafy.dto.studyboard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.core.io.FileSystemResource;
 
 @Data
 @ToString
@@ -27,7 +26,7 @@ public class StudyBoardResponse {
     @JsonIgnore
     private String photoPath;
 
-    private FileSystemResource photoFile;
+    private String photoFile;
 
     private int isOuting;
 }
