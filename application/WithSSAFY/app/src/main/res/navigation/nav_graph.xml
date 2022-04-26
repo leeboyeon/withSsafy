@@ -116,5 +116,10 @@
         android:name="com.ssafy.withssafy.src.main.board.PostWriteFragment"
         android:label="fragment_postWrite"
         tools:layout="@layout/fragment_post_write" />
+    <fragment
+        android:id="@+id/teamWriteFragment"
+        android:name="com.ssafy.withssafy.src.main.team.TeamWriteFragment"
+        android:label="fragment_team_write"
+        tools:layout="@layout/fragment_team_write" />
 
 </navigation>
