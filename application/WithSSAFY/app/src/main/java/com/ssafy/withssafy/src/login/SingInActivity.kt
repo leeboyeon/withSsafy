@@ -32,8 +32,7 @@ class SingInActivity : BaseActivity<ActivitySingInBinding>(ActivitySingInBinding
         Log.d(TAG, "onCreate: ${userViewModel.allUserList.value}")
 
         val userId = ApplicationClass.sharedPreferencesUtil.getAutoLogin()
-        Log.d(TAG, "onCreate: $userId")
-        if (userId != null || userId != -1){
+        if (userId != null && userId != -1){
             runBlocking {
                 userViewModel.getUser(userId)
             }
