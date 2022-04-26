@@ -16,4 +16,5 @@ public interface UserService {
     public UserDto findByUid(String u_id);
     public List<UserDto> findAll();
     public LoginDto login(String id, String password);
+    UserDto updateClassById(Long id, Long classId);
 }

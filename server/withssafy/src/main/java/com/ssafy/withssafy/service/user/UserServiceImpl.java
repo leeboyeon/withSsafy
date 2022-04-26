@@ -108,4 +108,13 @@ public class UserServiceImpl implements UserService{
         result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
         return result;
     }
+
+    @Override
+    @Transactional
+    public UserDto updateClassById(Long id, Long classId) {
+        if(!userRepository.findById(id).isPresent()) return null;
+        userRepository.updateClassById(id, classId);
+        User user = userRepository.findById(id).get();
+        return modelMapper.map(user, UserDto.class);
+    }
 }
