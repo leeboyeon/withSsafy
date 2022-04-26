@@ -91,4 +91,11 @@ public class UserController {
     public ResponseEntity<UserDto> update(@RequestParam(value="아이디")Long id, @RequestParam(value="비밀번호") String password){
         return new ResponseEntity<>(userService.updatePasswordByUid(id, password), HttpStatus.OK);
     }
+
+    @PatchMapping("/class")
+    @ApiOperation(value = "해당 아이디를 가진 유저 반정보를 수정 후 변경된 User를 반환한다. *(URL /class 주의)")
+    public ResponseEntity<UserDto> updateClass(@RequestParam Long id, @RequestParam Long classId){
+        return new ResponseEntity<>(userService.updateClassById(id, classId), HttpStatus.OK);
+    }
+
 }

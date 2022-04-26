@@ -24,4 +24,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query(value = "SELECT * FROM tbl_user WHERE user_id=:userId AND password=:password", nativeQuery = true)
     User login(@Param("userId") String userId, @Param("password") String password);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE tbl_user SET classroom_id=:classId WHERE id=:id", nativeQuery = true)
+    void updateClassById(Long id, Long classId);
 }
