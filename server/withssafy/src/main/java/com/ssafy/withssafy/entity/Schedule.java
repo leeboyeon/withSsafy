@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_schedule")
@@ -26,8 +27,8 @@ public class Schedule {
     @JoinColumn(name = "classRoom_id")
     private ClassRoom classRoom;
 
-    @Column(length = 25)
-    private String end_date;
+    @Column
+    private LocalDateTime endDate;
 
     @Column(length = 50)
     private String title;
@@ -36,14 +37,14 @@ public class Schedule {
     private String memo;
 
     @Column(length = 25)
-    private String start_date;
+    private LocalDateTime startDate;
     
     @Builder
-    public Schedule(User user, String end_date, String title, String memo, String start_date){
+    public Schedule(User user, LocalDateTime endDate, String title, String memo, LocalDateTime startDate){
         this.user = user;
-        this.end_date = end_date;
+        this.endDate = endDate;
         this.title = title;
         this.memo = memo;
-        this.start_date = start_date;
+        this.startDate = startDate;
     }
 }

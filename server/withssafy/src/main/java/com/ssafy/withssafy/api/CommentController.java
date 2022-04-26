@@ -50,13 +50,13 @@ public class CommentController {
 
     @GetMapping("{boardId}")
     @ApiOperation(value = "게시판에 해당하는 댓글을 조회합니다.")
-    public ResponseEntity<List<CommentDto>> findByBoardId(@PathVariable("게시판 아이디")Long boardId){
+    public ResponseEntity<List<CommentDto>> findByBoardId(@PathVariable Long boardId){
         return new ResponseEntity<>(commentService.findByBoardId(boardId), HttpStatus.OK);
     }
 
-    @GetMapping("u/{userId}")
+    @GetMapping("user/{userId}")
     @ApiOperation(value = "사용자가 남긴 댓글을 조회합니다. *(URL 잘 보고 할 것 comment/u/{userId})")
-    public ResponseEntity<List<CommentDto>> findByUserId(@PathVariable("유저 아이디")Long userId){
+    public ResponseEntity<List<CommentDto>> findByUserId(@PathVariable Long userId){
         return new ResponseEntity<>(commentService.findByUserId(userId), HttpStatus.OK);
     }
 }
