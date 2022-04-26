@@ -1,6 +1,8 @@
 package com.ssafy.withssafy.src.network.service
 
+import android.util.Log
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.network.response.UserInfoResponse
 import com.ssafy.withssafy.util.RetrofitCallback
 import com.ssafy.withssafy.util.RetrofitUtil
 import retrofit2.Call
@@ -29,6 +31,52 @@ class UserService {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 callback.onError(t)
             }
+        })
+    }
+
+    // 로그인
+    fun login(user: User, callback: RetrofitCallback<UserInfoResponse>) {
+        RetrofitUtil.userService.login(user.password, user.userId).enqueue(object : Callback<UserInfoResponse> {
+            override fun onResponse(call: Call<UserInfoResponse>, response: Response<UserInfoResponse>) {
+                Log.d("UserService", "onResponse: ${user.password} ${user.userId}")
+                val res = response.body()
+                if(response.code() == 200){
+                    if (res != null) {
+                        callback.onSuccess(response.code(), res)
+                        Log.d("UserService", "onResponse: $res")
+                    }
+                } else {
+                    callback.onFailure(response.code())
+                }
+            }
+            override fun onFailure(call: Call<UserInfoResponse>, t: Throwable) {
+                callback.onError(t)
+            }
+        })
+    }
+
+    // 특정 사용자 조회
+    suspend fun getUser(userId: Int) : Response<User> {
+        return RetrofitUtil.userService.getUser(userId)
+    }
+
+    // 사용자 계정 삭제
+    fun deleteUser(id: Int, callback:RetrofitCallback<Boolean>){
+        RetrofitUtil.userService.deleteUser(id).enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                val res = response.body()
+                if(response.code() == 200) {
+                    if (res != null) {
+                        callback.onSuccess(response.code(), res)
+                    }
+                } else {
+                    callback.onFailure(response.code())
+                }
+            }
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                callback.onError(t)
+            }
+
         })
     }
 }

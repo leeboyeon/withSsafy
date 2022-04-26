@@ -3,6 +3,8 @@ package com.ssafy.withssafy.config
 import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.ssafy.withssafy.config.intercepter.AddCookiesInterceptor
+import com.ssafy.withssafy.config.intercepter.ReceivedCookiesInterceptor
 import com.ssafy.withssafy.config.intercepter.XAccessTokenInterceptor
 import com.ssafy.withssafy.util.SharedPreferencesUtil
 import okhttp3.OkHttpClient
@@ -31,8 +33,8 @@ class ApplicationClass : Application() {
         sharedPreferencesUtil = SharedPreferencesUtil(applicationContext)
 
         val okHttpClient = OkHttpClient.Builder()
-//            .addInterceptor(AddCookiesInterceptor())
-//            .addInterceptor(ReceivedCookiesInterceptor())
+            .addInterceptor(AddCookiesInterceptor())
+            .addInterceptor(ReceivedCookiesInterceptor())
             .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
             .connectTimeout(30, TimeUnit.SECONDS)
             .build()

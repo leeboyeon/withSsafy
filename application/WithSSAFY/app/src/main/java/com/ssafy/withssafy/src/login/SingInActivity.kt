@@ -31,27 +31,24 @@ class SingInActivity : BaseActivity<ActivitySingInBinding>(ActivitySingInBinding
 
         Log.d(TAG, "onCreate: ${userViewModel.allUserList.value}")
 
+        val userId = ApplicationClass.sharedPreferencesUtil.getAutoLogin()
+        if (userId != null && userId != -1){
+            runBlocking {
+                userViewModel.getUser(userId)
+            }
+            if(userViewModel.isAutoLoginPossible.value == 1) {
+                openFragment(1)
+            } else {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.login_frame_layout, SingInFragment())
+                    .commit()
+            }
 
-//        val userId = ApplicationClass.sharedPreferencesUtil.getAutoLogin()
-
-//        if (userId != null || userId != -1){
-//            var isPossible = 0
-//            runBlocking {
-//                isPossible = mainViewModel.getUserInfo(userId, true)
-//            }
-//            if(isPossible == 1) {
-//                openFragment(1)
-//            } else {
-//                supportFragmentManager.beginTransaction()
-//                    .replace(R.id.login_frame_layout, SignInFragment())
-//                    .commit()
-//            }
-//
-//        } else {
+        } else {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.login_frame_layout, SingInFragment())
                 .commit()
-//        }
+        }
     }
     fun openFragment(int : Int){
         val transaction = supportFragmentManager.beginTransaction()
