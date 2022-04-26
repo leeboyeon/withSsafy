@@ -4,5 +4,5 @@ data class ClassRoom(
     val area: String,
     val classDescription: String,
     val generation: String,
-    val id: String
+    val id: Int
 )
