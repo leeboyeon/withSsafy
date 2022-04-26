@@ -3,7 +3,6 @@ package com.ssafy.withssafy.dto.studyboard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.core.io.FileSystemResource;
 
 @Data
 @ToString
@@ -24,6 +23,7 @@ public class StudyBoardRequest {
 
     private String writeDateTime;
 
+    @JsonIgnore
     private String photoPath;
 
     private byte isOuting;

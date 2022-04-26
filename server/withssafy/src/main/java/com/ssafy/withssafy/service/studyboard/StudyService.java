@@ -9,8 +9,8 @@ import com.ssafy.withssafy.repository.StudyBoardRepository;
 import com.ssafy.withssafy.util.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -26,10 +26,15 @@ public class StudyService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public void addStudyBoard(StudyBoardRequest studyDto) {
-        StudyBoard studyBoard = modelMapper.map(studyDto, StudyBoard.class);
+    public void addStudyBoard(StudyBoardRequest studyBoardRequest, MultipartFile file) {
+        if (!file.isEmpty()) {
+            String filename = FileManager.save(file, studyBoardRequest.getUserId());
+            studyBoardRequest.setPhotoPath(filename);
+        }
 
+        StudyBoard studyBoard = modelMapper.map(studyBoardRequest, StudyBoard.class);
         studyBoardRepository.save(studyBoard);
+
     }
 
     @Transactional
@@ -49,7 +54,7 @@ public class StudyService {
                 .collect(Collectors.toList());
 
         for (StudyBoardResponse studyBoardResponse : studyBoardResponses) {
-            FileSystemResource file = FileManager.getFile(studyBoardResponse.getPhotoPath());
+            String file = FileManager.getFile(studyBoardResponse.getPhotoPath());
             studyBoardResponse.setPhotoFile(file);
         }
 
@@ -61,8 +66,7 @@ public class StudyService {
 
         if (studyBoard.isPresent()) {
             StudyBoardResponse studyBoardResponse = modelMapper.map(studyBoard.get(), StudyBoardResponse.class);
-
-            FileSystemResource file = FileManager.getFile(studyBoardResponse.getPhotoPath());
+            String file = FileManager.getFile(studyBoardResponse.getPhotoPath());
             studyBoardResponse.setPhotoFile(file);
 
             return studyBoardResponse;
