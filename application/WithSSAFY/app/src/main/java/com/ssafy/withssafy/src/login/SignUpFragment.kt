@@ -16,9 +16,12 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentSignUpBinding
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.network.service.UserService
+import com.ssafy.withssafy.util.RetrofitCallback
 import kotlinx.coroutines.runBlocking
 import java.util.regex.Pattern
 
+private const val TAG = "SignUpFragment"
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding::bind, R.layout.fragment_sign_up) {
     private lateinit var signInActivity: SingInActivity
 
@@ -43,7 +46,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         binding.signUpFragmentBtnSignUp.setOnClickListener {
             var user = isAvailable()
             if(user != null) {
-                //signUp(user)
+                Log.d(TAG, "onViewCreated: $user")
+                signUp(user)
             } else {
                 Toast.makeText(requireContext(), "입력 값을 다시 확인해 주세요", Toast.LENGTH_LONG).show()
             }
@@ -270,6 +274,25 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
         }
     }
+
+    private fun signUp(user: User){
+        UserService().signUp(user, object : RetrofitCallback<User> {
+            override fun onError(t: Throwable) {
+                Log.d(TAG, t.message?:"회원가입 통신오류")
+            }
+
+            override fun onSuccess(code: Int, responseData: User) {
+                Toast.makeText(requireContext(), "회원가입이 완료되었습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show()
+                (requireActivity() as SingInActivity).onBackPressed()
+            }
+
+            override fun onFailure(code: Int) {
+                Log.d(TAG, "onFailure: resCode $code")
+            }
+
+        })
+    }
+
 
     inner class TextFieldValidation(private val view: View): TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
