@@ -4,4 +4,6 @@ import com.ssafy.withssafy.util.RetrofitUtil
 
 class UserService {
     suspend fun getUserList() = RetrofitUtil.userService.selectUserList()
+
+    suspend fun getClassRoomList() = RetrofitUtil.userService.selectClassRoomList()
 }

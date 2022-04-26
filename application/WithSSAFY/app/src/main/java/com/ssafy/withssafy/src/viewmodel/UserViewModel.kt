@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.withssafy.src.dto.ClassRoom
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.network.service.UserService
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ class UserViewModel : ViewModel() {
      */
     private val _allUserList = MutableLiveData<MutableList<User>>()
     private val _loginUserInfo = MutableLiveData<User>()
+    private val _classRoomList = MutableLiveData<MutableList<ClassRoom>>()
 
     val allUserList : LiveData<MutableList<User>>
         get() = _allUserList
@@ -24,12 +26,19 @@ class UserViewModel : ViewModel() {
     val loginUserInfo : LiveData<User>
         get() = _loginUserInfo
 
+    val classRommList : LiveData<MutableList<ClassRoom>>
+        get() = _classRoomList
+
     private fun setAllUserList(userList : MutableList<User>) = viewModelScope.launch {
         _allUserList.value = userList
     }
 
     private fun setLoginUserInfo(user: User) = viewModelScope.launch {
         _loginUserInfo.value = user
+    }
+
+    private fun setClassRoomList(classRoomList : MutableList<ClassRoom>) = viewModelScope.launch {
+        _classRoomList.value = classRoomList
     }
 
     suspend fun getAllUserList() {
@@ -54,6 +63,20 @@ class UserViewModel : ViewModel() {
 //                    }
 //                }
 //            }
+        }
+    }
+
+    suspend fun getClassRoomList() {
+        val response = UserService().getClassRoomList()
+        viewModelScope.launch {
+            var res = response.body()
+            if(response.code() == 200) {
+                if(res != null) {
+                    setClassRoomList(res)
+                }
+            } else {
+                Log.d(TAG, "Error : ${response.message()}")
+            }
         }
     }
 
