@@ -24,6 +24,10 @@ interface UserApi {
     @GET("/user/{id}")
     suspend fun getUser(@Path("id") id: Int): Response<User>
 
+    // 사용자 계정 삭제
+    @DELETE("/user")
+    fun deleteUser(@Query("아이디") id: Int) : Call<Boolean>
+
     // ClassRoom
     @GET("/classroom/all")
     suspend fun selectClassRoomList(): Response<MutableList<ClassRoom>>

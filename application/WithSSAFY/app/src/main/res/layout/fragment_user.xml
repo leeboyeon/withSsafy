@@ -177,9 +177,20 @@
                         android:layout_marginBottom="8dp"
                         android:text="로그아웃"
                         android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/fragment_user_accountInfoPwChange"
                         app:layout_constraintTop_toBottomOf="@+id/fragment_user_accountInfoPwChange" />
+
+                    <TextView
+                        android:id="@+id/fragment_user_accountDelete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="회원탈퇴"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/fragment_user_accountLogout"
+                        app:layout_constraintTop_toBottomOf="@+id/fragment_user_accountLogout" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

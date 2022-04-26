@@ -111,7 +111,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
             val pw = binding.signUpFragmentEtPw.text.toString()
             val name = binding.signUpFragmentEtName.text.toString()
             val stuId = binding.signUpFragmentEtStuId.text.toString()
-            return User(id, pw, name, stuId, classRoomId)
+            return User(name, id, pw, stuId, classRoomId)
         } else {
             return null
         }

@@ -214,6 +214,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun logout() {
         ApplicationClass.sharedPreferencesUtil.deleteUser()
+        ApplicationClass.sharedPreferencesUtil.deleteUserCookie()
         ApplicationClass.sharedPreferencesUtil.deleteAutoLogin()
 
         val intent = Intent(this, SingInActivity::class.java)
