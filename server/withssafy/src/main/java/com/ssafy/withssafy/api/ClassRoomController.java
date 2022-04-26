@@ -33,8 +33,8 @@ public class ClassRoomController {
 
     @DeleteMapping
     @ApiOperation(value = "해당 ID를 가진 반정보를 삭제합니다.")
-    public ResponseEntity<Void> delete(Long id){
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    public ResponseEntity<ClassRoomDto> delete(Long id){
+        return new ResponseEntity<>(classRoomService.delete(id), HttpStatus.OK);
     }
 
     @PostMapping

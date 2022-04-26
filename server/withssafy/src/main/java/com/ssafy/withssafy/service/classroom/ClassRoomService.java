@@ -8,7 +8,7 @@ import java.util.List;
 public interface ClassRoomService {
     List<ClassRoomDto> findAll();
     ClassRoomDto update(ClassRoomDto classRoomDto);
-    void delete(Long id);
+    ClassRoomDto delete(Long id);
     ClassRoomDto insert(ClassRoomDto classRoomDto);
     ClassRoomDto findById(Long id);
 }
