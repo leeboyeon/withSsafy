@@ -14,8 +14,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 public class SbComment {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

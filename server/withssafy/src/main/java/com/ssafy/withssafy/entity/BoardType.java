@@ -12,8 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 
 public class BoardType {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column

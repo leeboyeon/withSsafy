@@ -13,8 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class StudyBoard {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
