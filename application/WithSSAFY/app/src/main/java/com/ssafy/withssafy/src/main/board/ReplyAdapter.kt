@@ -4,13 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemReplyListBinding
 import com.ssafy.withssafy.src.dto.User
-import org.w3c.dom.Comment
+import com.ssafy.withssafy.src.dto.board.Comment
 
 class ReplyAdapter (val context: Context) : RecyclerView.Adapter<ReplyAdapter.ViewHolder>(){
     private val TAG = "LocalCommentAdapter_ws"
@@ -28,15 +29,9 @@ class ReplyAdapter (val context: Context) : RecyclerView.Adapter<ReplyAdapter.Vi
 
         fun bindInfo(comment: Comment) {
 
-//            for (user in userList) {    // 작성자 nickname, profileImg 세팅
-//                if(comment.userId == user.id) {
-//                    binding.writer = user
-//                }
-//            }
-//
 //            moreBtn.isVisible = comment.userId == ApplicationClass.sharedPreferencesUtil.getUser().id
-//
-//            binding.comment = comment
+
+            binding.comment = comment
             binding.executePendingBindings()
 
         }
