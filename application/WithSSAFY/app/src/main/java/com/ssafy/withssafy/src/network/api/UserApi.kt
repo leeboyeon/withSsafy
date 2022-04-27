@@ -28,6 +28,14 @@ interface UserApi {
     @DELETE("/user")
     fun deleteUser(@Query("아이디") id: Int) : Call<Boolean>
 
+    // 비밀번호 변경
+    @PATCH("/user")
+    fun updatePw(@Query("비밀번호") pw: String, @Query("아이디") id: Int) : Call<User>
+
+    // 반정보 변경
+    @PATCH("/user/class")
+    fun updateClass(@Query("classId") classId: Int, @Query("id") id: Int) : Call<User>
+
     // ClassRoom
     @GET("/classroom/all")
     suspend fun selectClassRoomList(): Response<MutableList<ClassRoom>>

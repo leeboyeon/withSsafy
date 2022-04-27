@@ -79,4 +79,42 @@ class UserService {
 
         })
     }
+
+    fun updatePw(pw: String, id: Int, callback:RetrofitCallback<User>){
+        RetrofitUtil.userService.updatePw(pw, id).enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                val res = response.body()
+                if(response.code() == 200) {
+                    if (res != null) {
+                        callback.onSuccess(response.code(), res)
+                    }
+                } else {
+                    callback.onFailure(response.code())
+                }
+            }
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                callback.onError(t)
+            }
+
+        })
+    }
+
+    fun updateClass(classId: Int, id: Int, callback:RetrofitCallback<User>){
+        RetrofitUtil.userService.updateClass(classId, id).enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                val res = response.body()
+                if(response.code() == 200) {
+                    if (res != null) {
+                        callback.onSuccess(response.code(), res)
+                    }
+                } else {
+                    callback.onFailure(response.code())
+                }
+            }
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                callback.onError(t)
+            }
+
+        })
+    }
 }
