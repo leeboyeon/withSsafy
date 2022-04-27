@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ssafy.withssafy.src.dto.Study
 import androidx.lifecycle.viewModelScope
-import com.ssafy.withssafy.src.dto.Study
 import com.ssafy.withssafy.src.network.service.StudyService
 import kotlinx.coroutines.launch
 

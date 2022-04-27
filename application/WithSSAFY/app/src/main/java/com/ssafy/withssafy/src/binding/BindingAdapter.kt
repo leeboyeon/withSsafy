@@ -6,11 +6,11 @@ import android.os.Build
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ssafy.withssafy.src.dto.Study
 import com.ssafy.withssafy.src.main.team.TeamAdapter
+import com.ssafy.withssafy.util.CommonUtils
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -75,3 +75,9 @@ fun onThrottleFirstClick(view: View, onClickListener: View.OnClickListener, isWi
             }
         }
     }
+}
+
+@BindingAdapter("unixToDate")
+fun bindBoardTime(textView: TextView, time: String) {
+    textView.text = CommonUtils.unixTimeToDateFormatInBoard(time.toLong())
+}

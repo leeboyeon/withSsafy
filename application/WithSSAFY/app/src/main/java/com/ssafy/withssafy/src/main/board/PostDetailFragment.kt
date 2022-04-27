@@ -54,17 +54,20 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         mainActivity.hideBottomNavi(true)
 
         runBlocking {
-//            mainViewModel.getCommentList(postId)
+//            boardViewModel.getPostDetail(postId)
+            boardViewModel.getPostDetail(54)
         }
+
         initDataBinding()
         initListener()
-        initCommentRv()
+//        initCommentRv()
 
     }
 
     private fun initDataBinding() {
-//        binding.mainViewModel = mainViewModel
-//        binding.loginUser = mainViewModel.loginUserInfo.value
+        boardViewModel.postDetail.observe(viewLifecycleOwner) {
+            binding.post = it
+        }
     }
 
     private fun initListener() {

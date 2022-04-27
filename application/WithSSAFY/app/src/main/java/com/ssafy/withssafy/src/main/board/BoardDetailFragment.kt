@@ -42,8 +42,9 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initListener()
 
+        initListener()
+        initRecyclerView()
 
     }
 
@@ -66,8 +67,27 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
     /**
      * 게시글 recyclerView 초기화 + rv 아이템 클릭 이벤트
      */
-    private fun initRecyclerView() {
+    private fun initRecyclerView() { // 아이템 클릭하면 게시글 상세 화면(PostDetail)으로 이동
+        boardDetailAdapter = BoardDetailAdapter(requireContext())
+        val list = mutableListOf<Int>()
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        boardDetailAdapter.postList = list
 
-        // 아이템 클릭하면 게시글 상세 화면(PostDetail)으로 이동
+        binding.boardDetailFragmentRvPostList.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = boardDetailAdapter
+            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
+
+        boardDetailAdapter.setItemClickListener(object : BoardDetailAdapter.ItemClickListener {
+
+            override fun onClick(view: View, position: Int, postId: Int, typeId: Int) {
+                this@BoardDetailFragment.findNavController().navigate(R.id.action_boardDetailFragment_to_postDetailFragment,
+                    bundleOf("postId" to postId, "typeId" to typeId))
+            }
+        })
+
     }
 }

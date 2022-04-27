@@ -16,7 +16,6 @@ import kotlinx.coroutines.runBlocking
 
 class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamDetailBinding::bind, R.layout.fragment_team_detail) {
     private var studyId = 0
-    private val teamViewModel : TeamViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

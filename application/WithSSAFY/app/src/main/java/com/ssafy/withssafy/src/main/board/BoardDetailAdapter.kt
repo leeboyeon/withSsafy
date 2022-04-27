@@ -20,6 +20,7 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
         val heartBtn = binding.postListItemLottieHeart
         val commentBtn = binding.postListItemLlComment
         val moreBtn = binding.postListItemBtnMore
+        val item = binding.postListItemCl
 
         fun bindInfo() {
 
@@ -48,6 +49,10 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
         val post = postList[position]
         holder.apply {
 //            bindInfo()
+            item.setOnClickListener {
+//                itemClickListener.onClick(it, position, post.id, post.typeId)
+                itemClickListener.onClick(it, position, 54, 1)
+            }
 //            setIsRecyclable(false)
 //            heartBtn.setOnClickListener {
 //                heartItemClickListener.onClick(it as LottieAnimationView, position, post.id)
@@ -116,13 +121,13 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
     }
 
     interface ItemClickListener {
-        fun onClick(view: View, postId: Int)
+        fun onClick(view: View, position: Int, postId: Int, typeId: Int)
     }
 
-    private lateinit var commentItemClickListener : ItemClickListener
+    private lateinit var itemClickListener : ItemClickListener
 
-    fun setCommentItemClickListener(itemClickListener: ItemClickListener) {
-        this.commentItemClickListener = itemClickListener
+    fun setItemClickListener(itemClickListener: ItemClickListener) {
+        this.itemClickListener = itemClickListener
     }
 
     interface MenuClickListener {

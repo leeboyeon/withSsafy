@@ -28,7 +28,6 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
 
     private lateinit var mainActivity:MainActivity
     private val STORAGE_CODE = 99
-    private val teamViewModel : TeamViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

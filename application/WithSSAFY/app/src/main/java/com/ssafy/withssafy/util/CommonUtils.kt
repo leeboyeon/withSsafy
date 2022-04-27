@@ -1,5 +1,7 @@
 package com.ssafy.withssafy.util
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
@@ -71,10 +73,10 @@ object CommonUtils {
         return ""
     }
 
-    fun unixTimeToDateFormatByBoard(unixTime: Long): String {
+    fun unixTimeToDateFormatInBoard(unixTime: Long): String {
         val simpleDateFormat = SimpleDateFormat("yy/MM/dd HH:mm") //"YYYY-MM-dd HH:mm:ss.SSS"
         val date = Date()
-        date.time = unixTime
+        date.time = unixTime * 1000L
 
         return simpleDateFormat.format(date)
     }

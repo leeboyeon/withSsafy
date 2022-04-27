@@ -19,7 +19,6 @@ import kotlinx.coroutines.runBlocking
 
 
 class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind,R.layout.fragment_team) {
-    private val teamViewModel : TeamViewModel by activityViewModels()
     private lateinit var teamAdapter: TeamAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

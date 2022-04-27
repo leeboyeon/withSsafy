@@ -16,12 +16,17 @@ import retrofit2.HttpException
  */
 class BoardViewModel : ViewModel() {
     private val TAG = "BoardViewModel_싸피"
+
+
+    /**
+     * board Table 전체 조회
+     */
     private val _allList = MutableLiveData<MutableList<Board>>()
-    
+
     val allList : LiveData<MutableList<Board>>
-        get() = allList
+        get() = _allList
     
-    private fun setAllList(list: MutableList<Board>) = viewModelScope.launch { 
+    private fun setAllList(list: MutableList<Board>) = viewModelScope.launch {
         _allList.value = list
     }
     
@@ -45,5 +50,38 @@ class BoardViewModel : ViewModel() {
             Log.e(TAG, "getAllList: ${e.message()}", )
         }
     }
-    
+
+    /**
+     * 게시글 상세 조회
+     */
+    private val _postDetail = MutableLiveData<Board>()
+
+    val postDetail : LiveData<Board>
+        get() = _postDetail
+
+    private fun setPostDetail(post: Board) = viewModelScope.launch {
+        _postDetail.value = post
+    }
+
+    suspend fun getPostDetail(postId: Int) {
+        try {
+            val response = BoardService().getPostDetail(postId)
+
+            viewModelScope.launch {
+                if(response.isSuccessful) {
+                    val res = response.body()
+                    if(res != null) {
+                        setPostDetail(res)
+                    } else {
+                        Log.e(TAG, "getAllList: ", )
+                    }
+                } else {
+                    Log.e(TAG, "getAllList: 통신 실패", )
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "getAllList: ${e.message()}", )
+        }
+    }
+
 }
