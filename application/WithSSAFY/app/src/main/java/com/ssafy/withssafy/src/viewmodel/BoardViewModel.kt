@@ -5,8 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.reflect.TypeToken
 import com.ssafy.withssafy.src.dto.board.Board
+import com.ssafy.withssafy.src.dto.board.Comment
 import com.ssafy.withssafy.src.network.service.BoardService
+import com.ssafy.withssafy.src.network.service.CommentService
+import com.ssafy.withssafy.util.CommonUtils
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -84,4 +88,47 @@ class BoardViewModel : ViewModel() {
         }
     }
 
+
+    /**
+     * 게시글에 해당하는 댓글, 대댓글 리스트
+     */
+    private val _commentList = MutableLiveData<MutableList<Comment>>()
+    private val _replyList = MutableLiveData<MutableList<Comment>>()
+
+    val commentAllList : LiveData<MutableList<Comment>>
+        get() = _commentList
+
+    val commentListWoParents : LiveData<MutableList<Comment>>
+        get() = _replyList
+
+    private fun setCommentList(commentList : MutableList<Comment>) = viewModelScope.launch {
+        _commentList.value = commentList
+    }
+
+    private fun setReplyList(commentList: MutableList<Comment>) = viewModelScope.launch {
+        _replyList.value = commentList
+    }
+
+    suspend fun getCommentList(postId : Int) {
+        val response = CommentService().getCommentListByBoardId(postId)
+
+        viewModelScope.launch {
+            if(response.isSuccessful) {
+                val res = response.body()
+                if(res != null) {
+                    val commentList = res as MutableList<Comment>
+                    setCommentList(commentList)
+
+                    val replyList = mutableListOf<Comment>()
+                    for(cmt in commentList) {
+                        if(cmt.parent == 0) {
+                            replyList.add(cmt)
+                        }
+                    }
+                    setReplyList(replyList)
+
+                }
+            }
+        }
+    }
 }
