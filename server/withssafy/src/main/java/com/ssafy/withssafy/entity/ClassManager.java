@@ -22,4 +22,10 @@ public class ClassManager {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "classroom_id")
     ClassRoom classRoom;
+
+    public ClassManager(long id, ClassRoom classRoom, User user) {
+        this.id = id;
+        this.classRoom = classRoom;
+        this.user = user;
+    }
 }
