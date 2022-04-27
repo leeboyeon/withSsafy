@@ -10,7 +10,7 @@
        android:id="@+id/layout_pw_change"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:visibility="visible">
+       android:visibility="invisible">
 
        <ImageButton
            android:id="@+id/pw_change_back"
@@ -134,7 +134,7 @@
         android:id="@+id/layout_class_change"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <ImageButton
             android:id="@+id/class_change_back"
@@ -173,16 +173,97 @@
             android:background="#d1d1d1" />
 
         <TextView
+            android:id="@+id/change_class_gen_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기수"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/class_change_view"
+            android:textColor="@color/more_dark_grey"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/change_class_gen_txt_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6기"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintLeft_toRightOf="@id/change_class_gen_txt"
+            app:layout_constraintTop_toBottomOf="@id/class_change_view"
+            android:textColor="@color/more_dark_grey"
+            />
+
+        <TextView
+            android:id="@+id/change_class_area_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지역"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/change_class_gen_txt"
+            android:textColor="@color/more_dark_grey"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/change_class_area_txt_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="구미"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintLeft_toRightOf="@id/change_class_area_txt"
+            app:layout_constraintTop_toBottomOf="@id/change_class_gen_txt"
+            android:textColor="@color/more_dark_grey"
+            />
+
+        <TextView
+            android:id="@+id/change_class_class_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="반정보"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/change_class_area_txt"
+            android:textColor="@color/more_dark_grey"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/change_class_class_txt_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="자율 2반"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintLeft_toRightOf="@id/change_class_class_txt"
+            app:layout_constraintTop_toBottomOf="@id/change_class_area_txt"
+            android:textColor="@color/more_dark_grey"
+            />
+        <TextView
             android:id="@+id/class_change_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="반정보 선택"
+            android:text="변경할 반정보 선택"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:textSize="16sp"
+            android:textStyle="bold"
             android:textColor="@color/more_dark_grey"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/class_change_view"/>
+            app:layout_constraintTop_toBottomOf="@id/change_class_class_txt"/>
 
         <Spinner
             android:id="@+id/class_change_spinner"

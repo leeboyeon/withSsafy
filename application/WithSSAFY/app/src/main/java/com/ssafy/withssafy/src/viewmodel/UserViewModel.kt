@@ -106,6 +106,7 @@ class UserViewModel : ViewModel() {
                 if(res != null) {
                     Log.d(TAG, "getUser: $res")
                     setIsAutoLoginPossible(1)
+                    setLoginUserInfo(res)
                 } else {
                     setIsAutoLoginPossible(0)
                 }
@@ -113,13 +114,21 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    suspend fun getClassRoom(id: Int){
-        val response = UserService().getClassRoom(id)
+    suspend fun getClassRoom(userId: Int){
+        val response = UserService().getUser(userId)
         viewModelScope.launch {
             val res = response.body()
             if(response.code() == 200) {
                 if(res != null) {
-                    setClassRoomInfo(res)
+                    val responseClassRoom = UserService().getClassRoom(res.classRoomId)
+                    val resClassRoom = responseClassRoom.body()
+                    if(responseClassRoom.code() == 200) {
+                        if(resClassRoom != null) {
+                            setClassRoomInfo(resClassRoom)
+                        }
+                    } else {
+                        Log.d(TAG, "Error : ${response.message()}")
+                    }
                 }
             } else {
                 Log.d(TAG, "Error : ${response.message()}")

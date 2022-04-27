@@ -6,12 +6,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
@@ -30,6 +26,8 @@ private const val TAG = "UserInfoChangeFragment"
 class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(FragmentUserInfoChangeBinding::bind, R.layout.fragment_user_info_change) {
     private lateinit var mainActivity: MainActivity
     private var changeType: Int = -1
+    private var gen = ""
+    private var area = ""
 
 
     override fun onAttach(context: Context) {
@@ -75,8 +73,9 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
         }
     }
 
-    private fun getClassRoomListInit() {
+    private fun getClassRoomInit() {
         runBlocking {
+            userViewModel.getClassRoom(ApplicationClass.sharedPreferencesUtil.getUser().id)
             userViewModel.getClassRoomList()
         }
     }
@@ -105,7 +104,8 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
         } else if(changeType == 1) {
             binding.layoutPwChange.visibility = View.GONE
             binding.layoutClassChange.visibility = View.VISIBLE
-            getClassRoomListInit()
+            getClassRoomInit()
+            initData()
             initSpinner()
         }
     }
@@ -113,6 +113,16 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
     private fun initListeners() {
         binding.pwChangeEt.addTextChangedListener(TextFieldValidation(binding.pwChangeEt))
         binding.pwChangeAgainEt.addTextChangedListener(TextFieldValidation(binding.pwChangeAgainEt))
+    }
+
+    private fun initData() {
+        userViewModel.classRoomInfo.observe(viewLifecycleOwner) {
+            gen = it.generation
+            area = it.area
+            binding.changeClassGenTxtContent.text = gen
+            binding.changeClassAreaTxtContent.text = area
+            binding.changeClassClassTxtContent.text = it.classDescription
+        }
     }
 
     private fun validatedPw() : Boolean {
