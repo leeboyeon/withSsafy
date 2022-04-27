@@ -1,8 +1,11 @@
 package com.ssafy.withssafy.service.recruit;
 
 import com.ssafy.withssafy.dto.recruit.RecruitDto;
+import com.ssafy.withssafy.dto.recruit.RecruitLikeDto;
 import com.ssafy.withssafy.dto.recruit.RecruitListResDto;
 import com.ssafy.withssafy.entity.Recruit;
+import com.ssafy.withssafy.entity.RecruitLikeManagement;
+import com.ssafy.withssafy.repository.RecruitLikeManagementRepository;
 import com.ssafy.withssafy.repository.RecruitRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,7 +20,7 @@ import java.util.stream.Collectors;
 public class RecruitService {
 
     private final RecruitRepository recruitRepository;
-
+    private final RecruitLikeManagementRepository recruitLikeRepository;
     private final ModelMapper modelMapper;
 
     @Transactional
@@ -40,5 +43,25 @@ public class RecruitService {
         List<Recruit> recruits = recruitRepository.findAll();
         return recruits.stream().map(recruit -> modelMapper.map(recruit, RecruitListResDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void doLike(RecruitLikeDto recruitLikeDto){
+        RecruitLikeManagement recruitLikeManagement = recruitLikeRepository.findByRecruitIdAndUserId(recruitLikeDto.getRecruitId(), recruitLikeDto.getUserId());
+        if(recruitLikeManagement == null){
+            recruitLikeManagement = modelMapper.map(recruitLikeDto,RecruitLikeManagement.class);
+            recruitLikeRepository.save(recruitLikeManagement);
+        }else{
+            recruitLikeRepository.delete(recruitLikeManagement);
+        }
+    }
+
+    public boolean isLike(Long recruitId, Long userId){
+        RecruitLikeManagement recruitLikeManagement = recruitLikeRepository.findByRecruitIdAndUserId(recruitId, userId);
+        if(recruitLikeManagement == null){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
