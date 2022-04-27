@@ -1,25 +1,19 @@
 package com.ssafy.withssafy.src.main.board
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
-import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentPostDetailBinding
 import com.ssafy.withssafy.src.main.MainActivity
 import kotlinx.coroutines.runBlocking
-import org.w3c.dom.Comment
-import retrofit2.Response
-import kotlin.properties.Delegates
+
 
 class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostDetailBinding::bind, R.layout.fragment_post_detail) {
     private val TAG = "PostDetailFragment_ws"
@@ -27,7 +21,6 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
 
     private var postId = -1
     private var typeId = -1
-
 
     private lateinit var commentAdapter: CommentAdapter
 
@@ -54,13 +47,15 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         mainActivity.hideBottomNavi(true)
 
         runBlocking {
-//            boardViewModel.getPostDetail(postId)
-            boardViewModel.getPostDetail(54)
+            postId = 54
+            boardViewModel.getPostDetail(postId)
+            boardViewModel.getCommentList(postId)
+
         }
 
         initDataBinding()
         initListener()
-//        initCommentRv()
+        initCommentRecyclerView()
 
     }
 
@@ -87,31 +82,39 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
      * 댓글 전체 화면 클릭 이벤트
      */
     private fun commentLayoutClickEvent() {
+
+//        binding.postDetailFragmentClCommentAll.setOnTouchListener { v, event ->
+//            binding.postDetailFragmentScrollview.requestDisallowInterceptTouchEvent(true)
+//            return@setOnTouchListener false
+//        }
+
+
         binding.postDetailFragmentClCommentAll.setOnClickListener {
-            this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_commentFragment)
+            this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_commentFragment,
+                bundleOf("postId" to postId))
         }
     }
 
     /**
      * 댓글 recyclerView 초기화
      */
-    private fun initCommentRv() {
+    private fun initCommentRecyclerView() {
 
-        binding.postDetailFragmentRvComment.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//        commentAdapter = CommentAdapter(requireContext(), mainViewModel)
+        commentAdapter = CommentAdapter(requireContext())
 
-//        mainViewModel.commentListWoParents.observe(viewLifecycleOwner, {
-//
-//            commentAdapter.commentList = it
-//
-//            mainViewModel.commentAllList.observe(viewLifecycleOwner, { all ->
-//                commentAdapter.commentAllList = all
-//            })
-//
-//            localCommentAdapter.userList = mainViewModel.allUserList.value!!
+        binding.postDetailFragmentRvComment.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = commentAdapter
+            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
 
-        commentAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        binding.postDetailFragmentRvComment.adapter = commentAdapter
+        boardViewModel.commentList.observe(viewLifecycleOwner) {
+            commentAdapter.commentList = it
+        }
+
+        boardViewModel.commentListOnPost.observe(viewLifecycleOwner) {
+            commentAdapter.commentAllList = it
+        }
 
     }
 

@@ -2,23 +2,29 @@ package com.ssafy.withssafy.src.main.board
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemCommentListBinding
 import com.ssafy.withssafy.src.dto.User
-import org.w3c.dom.Comment
+import com.ssafy.withssafy.src.dto.board.Comment
 
 class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*/) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
     private val TAG = "CommentAdapter_ws"
 
     lateinit var commentList: MutableList<Comment>
     lateinit var commentAllList : MutableList<Comment>
-    lateinit var userList: MutableList<User>
     lateinit var commentReplyAdapter : ReplyAdapter
     lateinit var dialog: Dialog
 
@@ -32,36 +38,26 @@ class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*
 
         fun bindInfo(comment: Comment) {
 
-//            for (user in userList) {    // 작성자 nickname, profileImg 세팅
-//                if(comment.userId == user.id) {
-//                    binding.writer = user
-//                }
-//            }
-//
-//            moreBtn.isVisible = comment.userId == ApplicationClass.sharedPreferencesUtil.getUser().id
-//
-//            binding.comment = comment
-//            binding.executePendingBindings()
-//
-//            // 대댓글 rv adapter 추가하기
-//            val replyList = mutableListOf<Comment>()
-//            for (reply in commentAllList) {
-//                if(reply.parent == comment.id) {
-//                    replyList.add(reply)
-//                }
-//            }
-//            Log.d(TAG, "bindInfo: $replyList")
-//
-//            commentReplyAdapter = ReplyAdapter(context)
-////                commentNestedAdapter.submitList(list)
-//            commentReplyAdapter.commentList = replyList
-//            commentReplyAdapter.userList = userList
-//            binding.commentItemRvReply.apply{
-//                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-//                adapter = commentReplyAdapter
-//                adapter!!.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-//            }
-//
+            binding.comment = comment
+            binding.executePendingBindings()
+
+            // 대댓글 rv adapter 추가하기
+            val replyList = mutableListOf<Comment>()
+            for (reply in commentAllList) {
+                if(reply.parent == comment.id) {
+                    replyList.add(reply)
+                }
+            }
+
+            commentReplyAdapter = ReplyAdapter(context)
+//                commentNestedAdapter.submitList(list)
+            commentReplyAdapter.commentList = replyList
+            binding.commentItemRvReply.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+                adapter = commentReplyAdapter
+                adapter!!.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            }
+
 //            commentReplyAdapter.setModifyItemClickListener(object : ReplyAdapter.MenuClickListener {
 //
 //                override fun onClick(commentId: Int, postId: Int, position: Int) {
@@ -88,13 +84,13 @@ class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*
 //
 //                }
 //            })
-//
-//            commentReplyAdapter.setDeleteItemClickListener(object : ReplyAdapter.MenuClickListener {
-//
-//                override fun onClick(commentId: Int, postId: Int, position: Int) {
+
+            commentReplyAdapter.setDeleteItemClickListener(object : ReplyAdapter.MenuClickListener {
+
+                override fun onClick(commentId: Int, postId: Int, position: Int) {
 //                    deleteReply(commentId, postId, position)
-//                }
-//            })
+                }
+            })
 
         }
     }
@@ -116,33 +112,56 @@ class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*
             bindInfo(comment)
 //            setIsRecyclable(false)
 
-//            addReply.setOnClickListener {
-//                addReplyClickListener.onClick(it as TextView, position, comment.id)
-//            }
-//
-//            moreBtn.setOnClickListener {
-//                val popup = PopupMenu(context, moreBtn)
-//                MenuInflater(context).inflate(R.menu.popup_menu, popup.menu)
-//
-//                popup.show()
-//                popup.setOnMenuItemClickListener {
-//                    when (it.itemId) {
-//                        R.id.modify -> {
-//                            modifyItemClickListener.onClick(comment.id, position)
-//                            return@setOnMenuItemClickListener true
-//                        }
-//                        R.id.delete -> {
-//                            deleteItemClickListener.onClick(comment.id, position)
-//                            return@setOnMenuItemClickListener true
-//                        }
-//                        else -> {
-//                            return@setOnMenuItemClickListener false
-//                        }
-//                    }
-//                }
-//            }
+            addReply.setOnClickListener {
+                addReplyClickListener.onClick(it as TextView, position, comment.id)
+            }
+
+            moreBtn.setOnClickListener {
+                val popup = PopupMenu(context, moreBtn)
+                // 작성자인 경우 popup_menu_write 팝업 메뉴
+                if(comment.userId == userId) {
+                    MenuInflater(context).inflate(R.menu.popup_menu_writer, popup.menu)
+
+                    popup.show()
+                    popup.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.modify -> {
+                                menuItemClickListener.onClick(position, comment.id, comment.userId)
+                                return@setOnMenuItemClickListener true
+                            }
+                            R.id.delete -> {
+                                menuItemClickListener.onClick(position, comment.id, comment.userId)
+                                return@setOnMenuItemClickListener true
+                            }
+                            else -> {
+                                return@setOnMenuItemClickListener false
+                            }
+                        }
+                    }
+                } else {    // 작성자가 아닌 경우 popup_menu(쪽지 보내기, 신고)
+                    MenuInflater(context).inflate(R.menu.popup_menu, popup.menu)
+
+                    popup.show()
+                    popup.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.sendNote -> {  // 쪽지 보내기 -> 댓글 작성자 id 필요
+                                menuItemClickListener.onClick(position, comment.id, comment.userId)
+                                return@setOnMenuItemClickListener true
+                            }
+                            R.id.report -> {    // 신고 -> 댓글 작성자 id, 댓글 id
+                                menuItemClickListener.onClick(position, comment.id, comment.userId)
+                                return@setOnMenuItemClickListener true
+                            }
+                            else -> {
+                                return@setOnMenuItemClickListener false
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
+
 
     override fun getItemCount(): Int {
         return commentList.size
@@ -153,26 +172,18 @@ class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*
     }
 
     private lateinit var addReplyClickListener : ItemClickListener
-
     fun setAddReplyItemClickListener(itemClickListener: ItemClickListener) {
         this.addReplyClickListener = itemClickListener
     }
 
 
     interface MenuClickListener {
-        fun onClick(commentId: Int, position: Int)
+        fun onClick(position: Int, commentId: Int, userId: Int)
     }
 
-    private lateinit var modifyItemClickListener : MenuClickListener
-
-    fun setModifyItemClickListener(menuClickListener: MenuClickListener) {
-        this.modifyItemClickListener = menuClickListener
-    }
-
-    private lateinit var deleteItemClickListener : MenuClickListener
-
-    fun setDeleteItemClickListener(menuClickListener: MenuClickListener) {
-        this.deleteItemClickListener = menuClickListener
+    private lateinit var menuItemClickListener : MenuClickListener
+    fun setMenuItemClickListener(menuClickListener: MenuClickListener) {
+        this.menuItemClickListener = menuClickListener
     }
 
 

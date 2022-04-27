@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="comment"
+            type="com.ssafy.withssafy.src.dto.board.Comment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +29,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#EFEFEF"
+            android:background="@drawable/bg_comment"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,37 +40,38 @@
                 android:id="@+id/replyItem_ivUserImg"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
                 android:scaleType="centerInside"
+                android:src="@drawable/ic_user"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_launcher_background" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/replyItem_tvUserNick"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
                 android:text="익명3"
                 android:textColor="@color/black"
+                android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/replyItem_ivUserImg"
                 app:layout_constraintEnd_toStartOf="@+id/replyItem_clOption"
                 app:layout_constraintStart_toEndOf="@+id/replyItem_ivUserImg"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/replyItem_ivUserImg" />
 
             <TextView
                 android:id="@+id/replyItem_tvComment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
-                android:text="운빨 망겜입니다."
+                android:text="@{comment.content}"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/replyItem_tvDate"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,8 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/bg_comment_option"
-                android:backgroundTint="#EFEFEF"
-                android:elevation="2dp"
+                android:elevation="1dp"
                 app:layout_constraintBottom_toBottomOf="@+id/replyItem_tvUserNick"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/replyItem_tvUserNick"
@@ -90,8 +92,8 @@
 
                 <ImageView
                     android:id="@+id/replyItem_ivMoreBtn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:src="@drawable/ic_more_black"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -105,10 +107,10 @@
                 android:id="@+id/replyItem_tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:text="04/12 10:45"
-                android:textSize="12sp"
+                app:unixToDate="@{comment.write_dt}"
+                android:textSize="14sp"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

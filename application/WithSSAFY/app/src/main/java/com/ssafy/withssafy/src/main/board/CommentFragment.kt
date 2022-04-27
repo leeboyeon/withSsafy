@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
@@ -55,6 +57,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
         }
 
         initListener()
+        initRecyclerView()
     }
 
     private fun initListener() {
@@ -78,6 +81,29 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
         binding.commentFragment.viewTreeObserver.addOnGlobalLayoutListener(
             mOnGlobalLayoutListener
         )
+    }
+
+    /**
+     * 댓글, 대댓글 recyclerView 초기화
+     */
+    private fun initRecyclerView() {
+        commentAdapter = CommentAdapter(requireContext())
+
+        binding.commentFragmentRvComment.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = commentAdapter
+            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
+
+        boardViewModel.commentList.observe(viewLifecycleOwner) {
+            commentAdapter.commentList = it
+        }
+
+        boardViewModel.commentListOnPost.observe(viewLifecycleOwner) {
+            commentAdapter.commentAllList = it
+        }
+
+
     }
 
     /**

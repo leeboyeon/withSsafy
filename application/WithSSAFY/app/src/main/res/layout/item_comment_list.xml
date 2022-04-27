@@ -5,12 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<!--        <variable-->
-<!--            name="writer"-->
-<!--            type="com.ssafy.ccd.src.dto.User" />-->
-<!--        <variable-->
-<!--            name="comment"-->
-<!--            type="com.ssafy.ccd.src.dto.Comment" />-->
+        <variable
+            name="comment"
+            type="com.ssafy.withssafy.src.dto.board.Comment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +21,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:scaleType="centerInside"
-        tools:src="@drawable/ic_launcher_background"
+        android:src="@drawable/ic_user"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,14 +30,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
             android:text="익명8"
             android:textColor="@color/black"
+            android:textSize="18sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/commentItem_ivUserImg"
             app:layout_constraintEnd_toStartOf="@+id/commentItem_clOption"
             app:layout_constraintStart_toEndOf="@+id/commentItem_ivUserImg"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/commentItem_ivUserImg" />
 
         <TextView
             android:id="@+id/commentItem_tvComment"
@@ -49,9 +47,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:text="당구치는 게임이에요 ㅋㅋㅋㅋㅋ"
+            android:text="@{comment.content}"
             android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/commentItem_tvDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +62,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:background="@drawable/bg_comment_option"
-            android:elevation="2dp"
+            android:elevation="1dp"
+            android:paddingStart="1dp"
+            android:paddingEnd="1dp"
             app:layout_constraintBottom_toBottomOf="@+id/commentItem_tvUserNick"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/commentItem_tvUserNick"
@@ -72,22 +72,37 @@
 
             <ImageView
                 android:id="@+id/commentItem_ibAddReply"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:src="@drawable/ic_comment_btn_512px"
                 android:padding="1dp"
                 android:layout_marginEnd="15dp"
+                android:layout_marginStart="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/commentItem_ivMoreBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <View
+                android:id="@+id/commentItem_view1"
+                android:layout_width="1px"
+                android:layout_height="10dp"
+                android:background="@color/dark_grey"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/commentItem_ibAddReply"
+                app:layout_constraintStart_toEndOf="@+id/commentItem_ibAddReply"
+                app:layout_constraintTop_toTopOf="@+id/commentItem_ibAddReply" />
+
+
             <ImageView
                 android:id="@+id/commentItem_ivMoreBtn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:src="@drawable/ic_more_black"
                 android:visibility="visible"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@+id/commentItem_view1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -101,8 +116,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
-            android:text="04/12 10:45"
-            android:textSize="12sp"
+            app:unixToDate="@{comment.write_dt}"
+            android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/commentItem_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/commentItem_tvComment" />

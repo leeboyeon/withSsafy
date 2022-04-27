@@ -17,6 +17,7 @@
         <entry key="..\:/GitHub/withssafy/S06P31D201/application/WithSSAFY/app/src/main/res/menu/bottom_nav_menu.xml" value="0.31851851851851853" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable-v24/bg_item_package.xml" value="0.248" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/bg_comment.xml" value="0.238" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/bg_comment_input.xml" value="0.151" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/bg_comment_option.xml" value="0.238" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/comment.xml" value="0.238" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/edit_background.xml" value="0.238" />
@@ -31,18 +32,20 @@
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_comment.xml" value="0.25925925925925924" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_job_detail.xml" value="0.25364583333333335" />
-        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_post_detail.xml" value="0.33980582524271846" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_post_detail.xml" value="0.24613987284287012" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_post_write.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_team_detail.xml" value="0.12604166666666666" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_board.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_board_noti_mustread.xml" value="0.25" />
-        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_comment_list.xml" value="0.4" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_comment_list.xml" value="0.536" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_job.xml" value="0.14114583333333333" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_photo_list.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_post_list.xml" value="0.25364583333333335" />
-        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_reply_list.xml" value="0.25364583333333335" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_reply_list.xml" value="0.43204868154158216" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/recyclerview_popular_item.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/menu/popup_menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/menu/popup_menu_writer.xml" value="0.12760416666666666" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/drawable_toggle_background.xml" value="0.2555" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/drawable_toggle_item_background.xml" value="0.2555" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/edit_background.xml" value="0.247" />

@@ -92,21 +92,21 @@ class BoardViewModel : ViewModel() {
     /**
      * 게시글에 해당하는 댓글, 대댓글 리스트
      */
+    private val _commentListOnPost = MutableLiveData<MutableList<Comment>>()
     private val _commentList = MutableLiveData<MutableList<Comment>>()
-    private val _replyList = MutableLiveData<MutableList<Comment>>()
 
-    val commentAllList : LiveData<MutableList<Comment>>
+    val commentListOnPost : LiveData<MutableList<Comment>>  // 게시글에 대한 댓글 전체
+        get() = _commentListOnPost
+
+    val commentList : LiveData<MutableList<Comment>>    // 댓글 리스트(대댓글 제외)
         get() = _commentList
 
-    val commentListWoParents : LiveData<MutableList<Comment>>
-        get() = _replyList
-
-    private fun setCommentList(commentList : MutableList<Comment>) = viewModelScope.launch {
-        _commentList.value = commentList
+    private fun setCommentListOnPost(commentList : MutableList<Comment>) = viewModelScope.launch {
+        _commentListOnPost.value = commentList
     }
 
-    private fun setReplyList(commentList: MutableList<Comment>) = viewModelScope.launch {
-        _replyList.value = commentList
+    private fun setCommentList(commentList: MutableList<Comment>) = viewModelScope.launch {
+        _commentList.value = commentList
     }
 
     suspend fun getCommentList(postId : Int) {
@@ -117,7 +117,7 @@ class BoardViewModel : ViewModel() {
                 val res = response.body()
                 if(res != null) {
                     val commentList = res as MutableList<Comment>
-                    setCommentList(commentList)
+                    setCommentListOnPost(commentList)
 
                     val replyList = mutableListOf<Comment>()
                     for(cmt in commentList) {
@@ -125,7 +125,7 @@ class BoardViewModel : ViewModel() {
                             replyList.add(cmt)
                         }
                     }
-                    setReplyList(replyList)
+                    setCommentList(replyList)
 
                 }
             }
