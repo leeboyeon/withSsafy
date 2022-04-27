@@ -131,10 +131,10 @@ public class UserServiceImpl implements UserService{
     public LoginDto insertManager(UserDto userDto, int status) {
         User user = userRepository.save(modelMapper.map(userDto, User.class));
         Manager manager = managerRepository.save(new Manager(0L,status, user));
-        if(status != 0) classManagerRepository.save(new ClassManager(0L, user.getClassRoom(), user));
+        if(status != 0 && userDto.getClassRoomId() != null) classManagerRepository.save(new ClassManager(0L, user.getClassRoom(), user));
 
         LoginDto result = modelMapper.map(user, LoginDto.class);
-        result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
+        if(user.getClassRoom() != null) result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
         result.setManagerDto(modelMapper.map(manager, ManagerDto.class));
         return result;
     }
