@@ -75,6 +75,7 @@
                android:id="@+id/pw_change_et"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
+               android:inputType="textPassword"
                android:background="@drawable/edit_background"
                android:hint="" />
        </com.google.android.material.textfield.TextInputLayout>
@@ -83,7 +84,7 @@
            android:id="@+id/pw_change_again_tv"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="신규 비밀번호 재입력"
+           android:text="비밀번호 재입력"
            android:layout_marginTop="10dp"
            android:layout_marginStart="20dp"
            android:textSize="16sp"
@@ -106,6 +107,7 @@
                android:id="@+id/pw_change_again_et"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
+               android:inputType="textPassword"
                android:background="@drawable/edit_background"
                android:hint="" />
        </com.google.android.material.textfield.TextInputLayout>

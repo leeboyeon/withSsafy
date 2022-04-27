@@ -61,7 +61,7 @@ class SingInFragment : BaseFragment<FragmentSingInBinding>(FragmentSingInBinding
      */
     private fun loginBtnClickEvent() {
         binding.signInFragmentLoginBtn.setOnClickListener {
-            login(binding.signInFragmentEtId.text.toString(), binding.signInFragmentEtPw.text.toString())
+            login(binding.signInFragmentEtId.text.toString(), signInActivity.sha256(binding.signInFragmentEtPw.text.toString()))
         }
     }
 
