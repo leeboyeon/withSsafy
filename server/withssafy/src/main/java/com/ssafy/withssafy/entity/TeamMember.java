@@ -13,8 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 public class TeamMember {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

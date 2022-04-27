@@ -11,9 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Recruit {
-
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
