@@ -40,6 +40,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <RadioGroup
+                    android:id="@+id/signUpFragment_rad_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/signUpFragment_rad_btn_0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:checked="true"
+                        android:text="교육생"/>
+                    <RadioButton
+                        android:id="@+id/signUpFragment_rad_btn_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="관리자"/>
+                </RadioGroup>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/signUpFragment_tilId"
                     android:layout_width="match_parent"
@@ -84,12 +103,17 @@
                         android:hint="이름" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/signUpFragment_tilStuId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    android:visibility="visible">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/signUpFragment_etStuId"
@@ -98,6 +122,15 @@
                         android:background="@drawable/edit_background"
                         android:hint="학번" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                    <Spinner
+                        android:id="@+id/signUpFragment_spin_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:visibility="gone"/>
+
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

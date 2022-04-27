@@ -39,6 +39,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        selectRadioBtn()
         getClassRoomListInit()
         initSpinner()
         initListeners()
@@ -75,6 +76,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
      * 기수, 반 spinner 초기화
      */
     private fun initSpinner() {
+        var typeList = arrayListOf("직무", "매니저", "컨설턴트", "프로")
         var genList = arrayListOf("기수")
         var areaList = arrayListOf("지역")
         var classList = arrayListOf("반")
@@ -90,9 +92,14 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         val newAreaList = areaList.toSet()
         val newClassList = classList.toSet()
 
+        val typeSpin = binding.signUpFragmentSpinType
         val genSpin = binding.signUpFragmentSpinnerStuGen
         val areaSpin = binding.signUpFragmentSpinnerArea
         val classSpin = binding.signUpFragmentSpinnerClass
+
+        typeSpin.apply {
+            adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, typeList)
+        }
 
         genSpin.apply {
             adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newGetList.toList())
@@ -102,6 +109,21 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         }
         classSpin.apply {
             adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newClassList.toList())
+        }
+    }
+
+    private fun selectRadioBtn() {
+        binding.signUpFragmentRadGroup.setOnCheckedChangeListener{ group, checkedId ->
+            when(checkedId) {
+                R.id.signUpFragment_rad_btn_0 -> {
+                    binding.signUpFragmentTilStuId.visibility = View.VISIBLE
+                    binding.signUpFragmentSpinType.visibility = View.GONE
+                }
+                R.id.signUpFragment_rad_btn_1 -> {
+                    binding.signUpFragmentTilStuId.visibility = View.GONE
+                    binding.signUpFragmentSpinType.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
