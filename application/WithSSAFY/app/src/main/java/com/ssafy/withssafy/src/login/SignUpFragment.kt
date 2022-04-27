@@ -256,6 +256,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     else -> {
                         area = areaSpin.selectedItem.toString()
 
+                        // 기수와 지역을 선택하면 반은 해당하는 정보에 맞는 리스트로 다시 초기화해준다.
+                        if(gen != "" && area != "") {
+                            initClassSpinner()
+                        }
+
                         if(gen != "" && area != "" && classNum != "") {
                             for(i in userViewModel.classRommList.value!!) {
                                 if(i.generation == gen && i.area == area && i.classDescription == classNum) {
@@ -295,6 +300,26 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
             }
 
+        }
+    }
+
+    private fun initClassSpinner() {
+        var classList = arrayListOf("반")
+
+        val classRoomList = userViewModel.classRommList.value
+
+        for(i in classRoomList!!) {
+            if(i.generation == gen && i.area == area) {
+                classList.add(i.classDescription)
+            }
+        }
+        // 중복 제거
+        val newClassList = classList.toSet()
+
+        val classSpin = binding.signUpFragmentSpinnerClass
+
+        classSpin.apply {
+            adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newClassList.toList())
         }
     }
 
