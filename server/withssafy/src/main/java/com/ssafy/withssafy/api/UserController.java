@@ -2,6 +2,7 @@ package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
+import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -98,4 +99,11 @@ public class UserController {
         return new ResponseEntity<>(userService.updateClassById(id, classId), HttpStatus.OK);
     }
 
+
+    /*--------------------- 매니저 API --------------------*/
+    @PostMapping("/manager")
+    @ApiOperation(value = "해당 유저 정보를 관리자로 가입한다. (status = 0:그냥 매니저, 1:컨설턴트, 2:프로")
+    public ResponseEntity<LoginDto> insertManager(@RequestBody UserDto userDto, @RequestParam int status){
+        return new ResponseEntity<>(userService.insertManager(userDto, status), HttpStatus.OK);
+    }
 }

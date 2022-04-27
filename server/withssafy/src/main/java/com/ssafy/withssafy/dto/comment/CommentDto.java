@@ -17,4 +17,5 @@ public class CommentDto {
     private int parent;
     @ApiModelProperty(example = "댓글 내용")
     private String content;
+    private String write_dt;
 }
