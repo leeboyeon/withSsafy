@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.ssafy.withssafy.R
@@ -28,6 +29,8 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
     private var changeType: Int = -1
     private var gen = ""
     private var area = ""
+    private var newClass = ""
+    private var newClassRoomId = -1
 
 
     override fun onAttach(context: Context) {
@@ -69,7 +72,12 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
         }
 
         binding.classChangeBtn.setOnClickListener {
-
+            if(newClassRoomId != -1) {
+                val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
+                UserService().updateClass(newClassRoomId, userId, UpdateCallback())
+            } else {
+                showCustomToast("반정보 변경에 실패했습니다.")
+            }
         }
     }
 
@@ -84,8 +92,11 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
         var classList = arrayListOf("반")
 
         val classRoomList = userViewModel.classRommList.value
+
         for(i in classRoomList!!) {
-            classList.add(i.classDescription)
+            if(i.generation == gen && i.area == area) {
+                classList.add(i.classDescription)
+            }
         }
         // 중복 제거
         val newClassList = classList.toSet()
@@ -106,13 +117,14 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
             binding.layoutClassChange.visibility = View.VISIBLE
             getClassRoomInit()
             initData()
-            initSpinner()
+
         }
     }
 
     private fun initListeners() {
         binding.pwChangeEt.addTextChangedListener(TextFieldValidation(binding.pwChangeEt))
         binding.pwChangeAgainEt.addTextChangedListener(TextFieldValidation(binding.pwChangeAgainEt))
+        selectSpinner()
     }
 
     private fun initData() {
@@ -122,6 +134,7 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
             binding.changeClassGenTxtContent.text = gen
             binding.changeClassAreaTxtContent.text = area
             binding.changeClassClassTxtContent.text = it.classDescription
+            initSpinner()
         }
     }
 
@@ -161,6 +174,35 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
         }
     }
 
+    private fun selectSpinner() {
+        val newClassSpin = binding.classChangeSpinner
+
+        newClassSpin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when (position) {
+                    0 -> {
+                        newClass = ""
+                    }
+                    else -> {
+                        newClass = newClassSpin.selectedItem.toString()
+
+                        if(gen != "" && area != "" && newClass != "") {
+                            for(i in userViewModel.classRommList.value!!) {
+                                if(i.generation == gen && i.area == area && i.classDescription == newClass) {
+                                    newClassRoomId = i.id
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        }
+    }
+
     fun sha256(pw: String) : String {
         val hash: ByteArray
         try {
@@ -181,10 +223,10 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
 
         override fun onSuccess(code: Int, responseData: User) {
             if(responseData != null) {
-                showCustomToast("비밀번호가 변경되었습니다.")
+                showCustomToast("변경 완료되었습니다.")
                 this@UserInfoChangeFragment.findNavController().popBackStack()
             } else {
-                showCustomToast("비밀번호 변경을 실패했습니다.")
+                showCustomToast("변경을 실패했습니다.")
             }
         }
 
