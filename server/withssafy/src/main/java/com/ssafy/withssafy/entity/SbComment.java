@@ -33,8 +33,9 @@ public class SbComment {
     private String content;
 
     @Builder
-    public SbComment(User user, Long parent, String content){
-
+    public SbComment(Long id, StudyBoard studyBoard, User user, Long parent, String content){
+        this.id = id;
+        this.studyBoard = studyBoard;
         this.user = user;
         this.parent = parent;
         this.content = content;

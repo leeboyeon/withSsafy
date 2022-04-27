@@ -33,11 +33,16 @@ public class Comment {
     @Column
     private String content;
 
+    @Column
+    private String write_dt;
+
     @Builder
-    public Comment(Board board, User user, int parent, String content){
+    public Comment(Long id, Board board, User user, int parent, String content, String write_dt){
+        this.id = id;
         this.board = board;
         this.user = user;
         this.parent = parent;
         this.content = content;
+        this.write_dt = write_dt;
     }
 }
