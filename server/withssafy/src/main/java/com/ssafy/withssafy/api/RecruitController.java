@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.recruit.RecruitDto;
+import com.ssafy.withssafy.dto.recruit.RecruitLikeDto;
 import com.ssafy.withssafy.dto.recruit.RecruitListResDto;
 import com.ssafy.withssafy.service.recruit.RecruitService;
 import io.swagger.annotations.Api;
@@ -65,5 +66,19 @@ public class RecruitController {
         RecruitDto recruitDto = recruitService.findById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(recruitDto);
+    }
+
+    @PostMapping("/like")
+    @ApiOperation(value = "채용공고 찜하기or취소")
+    public ResponseEntity<?> likeRecruit(@RequestBody RecruitLikeDto recruitLikeDto){
+        recruitService.doLike(recruitLikeDto);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @GetMapping("/like")
+    @ApiOperation(value = "채용공고 찜했는지 여부")
+    public ResponseEntity<?> isLikeRecruit(@RequestParam Long recruitId, @RequestParam Long userId){
+        boolean isLike = recruitService.isLike(recruitId,userId);
+        return ResponseEntity.status(HttpStatus.OK).body(isLike);
     }
 }

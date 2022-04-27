@@ -1,12 +1,14 @@
 package com.ssafy.withssafy.service.user;
 
 import com.ssafy.withssafy.dto.classroom.ClassRoomDto;
+import com.ssafy.withssafy.dto.manager.ManagerDto;
 import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
+import com.ssafy.withssafy.entity.ClassManager;
 import com.ssafy.withssafy.entity.ClassRoom;
+import com.ssafy.withssafy.entity.Manager;
 import com.ssafy.withssafy.entity.User;
-import com.ssafy.withssafy.repository.ClassRoomRepository;
-import com.ssafy.withssafy.repository.UserRepository;
+import com.ssafy.withssafy.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,10 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     @Autowired
     private ClassRoomRepository classRoomRepository;
+    @Autowired
+    private ManagerRepository managerRepository;
+    @Autowired
+    private ClassManagerRepository classManagerRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -106,6 +112,8 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.login(userId, password);
         LoginDto result = modelMapper.map(user, LoginDto.class);
         result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
+        Manager manager = managerRepository.findByUId(user.getId());
+        if (manager != null) result.setManagerDto(modelMapper.map(manager, ManagerDto.class));
         return result;
     }
 
@@ -116,5 +124,18 @@ public class UserServiceImpl implements UserService{
         userRepository.updateClassById(id, classId);
         User user = userRepository.findById(id).get();
         return modelMapper.map(user, UserDto.class);
+    }
+
+    @Override
+    @Transactional
+    public LoginDto insertManager(UserDto userDto, int status) {
+        User user = userRepository.save(modelMapper.map(userDto, User.class));
+        Manager manager = managerRepository.save(new Manager(0L,status, user));
+        if(status != 0 && userDto.getClassRoomId() != null) classManagerRepository.save(new ClassManager(0L, user.getClassRoom(), user));
+
+        LoginDto result = modelMapper.map(user, LoginDto.class);
+        if(user.getClassRoom() != null) result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
+        result.setManagerDto(modelMapper.map(manager, ManagerDto.class));
+        return result;
     }
 }

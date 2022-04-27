@@ -9,5 +9,6 @@ data class Study(
     val sbLimit: Int,
     val title: String,
     val user: UserX,
-    val writeDateTime: String
+    val writeDateTime: String,
+    val photoFile: String
 )

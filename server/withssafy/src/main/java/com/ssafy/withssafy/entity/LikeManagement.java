@@ -26,14 +26,9 @@ public class LikeManagement {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "like_id")
-    private Like like;
-
     @Builder
-    public LikeManagement(Board board, User user, Like like){
+    public LikeManagement(Board board, User user){
         this.board = board;
         this.user = user;
-        this.like = like;
     }
 }

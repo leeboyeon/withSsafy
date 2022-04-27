@@ -138,7 +138,8 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
             limit.toInt(),
             title,
             user,
-            today.toString()
+            today.toString(),
+            ""
         )
         runBlocking {
             val response = StudyService().insertStudy(study)

@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.dto.user;
 
 import com.ssafy.withssafy.dto.classroom.ClassRoomDto;
+import com.ssafy.withssafy.dto.manager.ManagerDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
@@ -24,4 +25,5 @@ public class LoginDto {
     private String studentId;
     @ApiModelProperty(example = "이름")
     private String name;
+    private ManagerDto managerDto;
 }
