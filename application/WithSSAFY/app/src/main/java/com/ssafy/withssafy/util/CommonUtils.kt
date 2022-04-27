@@ -1,11 +1,16 @@
 package com.ssafy.withssafy.util
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
+import android.util.Base64
+import android.util.Base64.DEFAULT
+import android.util.Base64.decode
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 object CommonUtils {
     fun convertEnglishMonth(month:Int):String{
@@ -79,5 +84,10 @@ object CommonUtils {
         date.time = unixTime * 1000L
 
         return simpleDateFormat.format(date)
+    }
+
+    fun base64ToImg(img: String) : Bitmap {
+        val imageBytes = Base64.decode(img, Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 }

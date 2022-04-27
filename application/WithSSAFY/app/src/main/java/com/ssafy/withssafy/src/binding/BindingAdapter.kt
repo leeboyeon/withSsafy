@@ -81,3 +81,11 @@ fun onThrottleFirstClick(view: View, onClickListener: View.OnClickListener, isWi
 fun bindBoardTime(textView: TextView, time: String) {
     textView.text = CommonUtils.unixTimeToDateFormatInBoard(time.toLong())
 }
+
+@BindingAdapter("decodingImg")
+fun bindBitmapImg(imageView: ImageView, imgString: String) {
+    Glide.with(imageView.context)
+        .asBitmap()
+        .load(CommonUtils.base64ToImg(imgString))
+        .into(imageView)
+}
