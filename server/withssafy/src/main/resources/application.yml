@@ -11,11 +11,17 @@ spring:
     livereload:
       enabled: true
 
+#  datasource:
+#    url: jdbc:mysql://k6d201.p.ssafy.io:3306/withssafy?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: ws
+#    password: 1q2w3e4r!!
   datasource:
-    url: jdbc:mysql://k6d201.p.ssafy.io:3306/withssafy?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/withssafyLocal?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ws
-    password: 1q2w3e4r!!
+    username: root
+    password: ssafy
+
 
   # JPA 세팅
   jpa:
