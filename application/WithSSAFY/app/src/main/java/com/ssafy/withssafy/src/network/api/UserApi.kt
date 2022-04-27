@@ -40,4 +40,8 @@ interface UserApi {
     @GET("/classroom/all")
     suspend fun selectClassRoomList(): Response<MutableList<ClassRoom>>
 
+    // ClassRoom 조회
+    @GET("/classroom")
+    suspend fun getClassRoom(@Query("id") id: Int): Response<ClassRoom>
+
 }
