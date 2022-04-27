@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.ssafy.withssafy.R
@@ -20,6 +21,7 @@ import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.UserService
 import com.ssafy.withssafy.util.RetrofitCallback
+import kotlinx.coroutines.runBlocking
 import java.security.DigestException
 import java.security.MessageDigest
 import java.util.regex.Pattern
@@ -73,6 +75,29 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
         }
     }
 
+    private fun getClassRoomListInit() {
+        runBlocking {
+            userViewModel.getClassRoomList()
+        }
+    }
+
+    private fun initSpinner() {
+        var classList = arrayListOf("반")
+
+        val classRoomList = userViewModel.classRommList.value
+        for(i in classRoomList!!) {
+            classList.add(i.classDescription)
+        }
+        // 중복 제거
+        val newClassList = classList.toSet()
+
+        val classSpin = binding.classChangeSpinner
+
+        classSpin.apply {
+            adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newClassList.toList())
+        }
+    }
+
     private fun initLayout() {
         if(changeType == 0) {
             binding.layoutPwChange.visibility = View.VISIBLE
@@ -80,6 +105,8 @@ class UserInfoChangeFragment : BaseFragment<FragmentUserInfoChangeBinding>(Fragm
         } else if(changeType == 1) {
             binding.layoutPwChange.visibility = View.GONE
             binding.layoutClassChange.visibility = View.VISIBLE
+            getClassRoomListInit()
+            initSpinner()
         }
     }
 

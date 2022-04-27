@@ -109,9 +109,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         if((validatedId() && validatedPw() && validatedName() && validatedStuId()) || (gen != "" || area != "" || classNum != "")) {
             val id = binding.signUpFragmentEtId.text.toString()
             val pw = binding.signUpFragmentEtPw.text.toString()
+            val shaPw = signInActivity.sha256(pw)
             val name = binding.signUpFragmentEtName.text.toString()
             val stuId = binding.signUpFragmentEtStuId.text.toString()
-            return User(name, id, pw, stuId, classRoomId)
+            return User(name, id, shaPw, stuId, classRoomId)
         } else {
             return null
         }
