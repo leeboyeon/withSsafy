@@ -2,10 +2,13 @@ package com.ssafy.withssafy.service.studyboard;
 
 import com.ssafy.withssafy.dto.studyboard.StudyBoardRequest;
 import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
+import com.ssafy.withssafy.dto.studyboard.StudyMemberRequest;
 import com.ssafy.withssafy.entity.StudyBoard;
+import com.ssafy.withssafy.entity.StudyMember;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.StudyBoardRepository;
+import com.ssafy.withssafy.repository.StudyMemberRepository;
 import com.ssafy.withssafy.util.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,6 +25,8 @@ import java.util.stream.Collectors;
 public class StudyService {
 
     private final StudyBoardRepository studyBoardRepository;
+
+    private final StudyMemberRepository studyMemberRepository;
 
     private final ModelMapper modelMapper;
 
@@ -79,5 +84,27 @@ public class StudyService {
     @Transactional
     public void removeStudyBoardById(Long id) {
         studyBoardRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void joinStudy(Long studyId, StudyMemberRequest studyMemberRequest) {
+        studyMemberRequest.setStudyBoardId(studyId);
+
+        if (!studyBoardRepository.findById(studyId).isPresent()) {
+            throw new InvalidRequestException(ErrorCode.INVALID_REQUEST);
+        }
+
+        if (studyMemberRepository.findBySbIdAndUserId(studyMemberRequest).isPresent()) {
+            throw new InvalidRequestException(ErrorCode.JOINED_STUDY_USER);
+        }
+
+        StudyMember studyMember = modelMapper.map(studyMemberRequest, StudyMember.class);
+        studyMemberRepository.save(studyMember);
+    }
+
+    @Transactional
+    public void leaveStudy(Long studyId, StudyMemberRequest studyMemberRequest) {
+        studyMemberRequest.setStudyBoardId(studyId);
+        studyMemberRepository.deleteBySbIdAndUserId(studyMemberRequest);
     }
 }

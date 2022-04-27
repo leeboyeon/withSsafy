@@ -2,6 +2,7 @@ package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.studyboard.StudyBoardRequest;
 import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
+import com.ssafy.withssafy.dto.studyboard.StudyMemberRequest;
 import com.ssafy.withssafy.service.studyboard.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,18 @@ public class StudyController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeStudyBoardById(@PathVariable("id") Long id) {
         studyService.removeStudyBoardById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/{id}/join")
+    public ResponseEntity<?> joinStudy(@PathVariable("id") Long id, @RequestBody StudyMemberRequest studyMemberRequest) {
+        studyService.joinStudy(id, studyMemberRequest);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id}/leave")
+    public ResponseEntity<?> leaveStudy(@PathVariable("id") Long id, @RequestBody StudyMemberRequest studyMemberRequest) {
+        studyService.leaveStudy(id, studyMemberRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
