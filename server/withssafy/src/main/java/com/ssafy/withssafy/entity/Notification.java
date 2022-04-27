@@ -14,8 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Notification {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

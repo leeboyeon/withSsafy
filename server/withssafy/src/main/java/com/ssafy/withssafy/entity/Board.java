@@ -10,8 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Board {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

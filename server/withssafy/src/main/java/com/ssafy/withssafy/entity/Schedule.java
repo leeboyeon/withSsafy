@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class Schedule {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

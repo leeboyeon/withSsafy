@@ -15,8 +15,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class TeamBuilding {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
