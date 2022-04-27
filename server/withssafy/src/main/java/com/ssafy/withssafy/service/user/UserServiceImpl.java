@@ -5,8 +5,7 @@ import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
 import com.ssafy.withssafy.entity.ClassRoom;
 import com.ssafy.withssafy.entity.User;
-import com.ssafy.withssafy.repository.ClassRoomRepository;
-import com.ssafy.withssafy.repository.UserRepository;
+import com.ssafy.withssafy.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,12 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     @Autowired
     private ClassRoomRepository classRoomRepository;
+    @Autowired
+    private ManagerRepository managerRepository;
+    @Autowired
+    private ConsultantRepository consultantRepository;
+    @Autowired
+    private ProRepository proRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -116,5 +121,17 @@ public class UserServiceImpl implements UserService{
         userRepository.updateClassById(id, classId);
         User user = userRepository.findById(id).get();
         return modelMapper.map(user, UserDto.class);
+    }
+
+    @Override
+    @Transactional
+    public LoginDto insertManager(UserDto userDto, int status) {
+        User user = userRepository.save(modelMapper.map(userDto, User.class));
+
+
+
+        LoginDto result = modelMapper.map(user, LoginDto.class);
+        result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
+        return null;
     }
 }
