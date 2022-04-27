@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.network.service
 
 import android.util.Log
+import com.ssafy.withssafy.src.dto.ClassRoom
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.network.response.UserInfoResponse
 import com.ssafy.withssafy.util.RetrofitCallback
@@ -116,5 +117,10 @@ class UserService {
             }
 
         })
+    }
+
+    // ClassRoom 조회
+    suspend fun getClassRoom(id: Int) : Response<ClassRoom> {
+        return RetrofitUtil.userService.getClassRoom(id)
     }
 }
