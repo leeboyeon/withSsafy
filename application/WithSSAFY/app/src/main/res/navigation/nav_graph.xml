@@ -65,8 +65,18 @@
         android:id="@+id/userFragment"
         android:name="com.ssafy.withssafy.src.main.home.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
 
+        <action
+            android:id="@+id/action_userFragment_to_userInfoChangeFragment"
+            app:destination="@+id/userInfoChangeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userInfoChangeFragment"
+        android:name="com.ssafy.withssafy.src.main.home.UserInfoChangeFragment"
+        android:label="fragment_user_info_change"
+        tools:layout="@layout/fragment_user_info_change" />
     <fragment
         android:id="@+id/boardJobFragment"
         android:name="com.ssafy.withssafy.src.main.board.BoardJobFragment"

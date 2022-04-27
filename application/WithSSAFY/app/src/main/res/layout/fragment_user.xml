@@ -170,6 +170,17 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
                     <TextView
+                        android:id="@+id/fragment_user_accountInfoClassChange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="반정보 변경"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="@+id/fragment_user_accountInfoPwChange"
+                        app:layout_constraintTop_toBottomOf="@+id/fragment_user_accountInfoPwChange" />
+
+                    <TextView
                         android:id="@+id/fragment_user_accountLogout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -177,8 +188,8 @@
                         android:layout_marginBottom="8dp"
                         android:text="로그아웃"
                         android:textColor="@color/black"
-                        app:layout_constraintStart_toStartOf="@+id/fragment_user_accountInfoPwChange"
-                        app:layout_constraintTop_toBottomOf="@+id/fragment_user_accountInfoPwChange" />
+                        app:layout_constraintStart_toStartOf="@+id/fragment_user_accountInfoClassChange"
+                        app:layout_constraintTop_toBottomOf="@+id/fragment_user_accountInfoClassChange" />
 
                     <TextView
                         android:id="@+id/fragment_user_accountDelete"

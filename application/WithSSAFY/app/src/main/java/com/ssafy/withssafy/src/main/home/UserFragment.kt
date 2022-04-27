@@ -52,6 +52,14 @@ class UserFragment :
             this@UserFragment.findNavController().popBackStack()
         }
 
+        binding.fragmentUserAccountInfoPwChange.setOnClickListener {
+            
+        }
+
+        binding.fragmentUserAccountInfoClassChange.setOnClickListener {
+
+        }
+
         binding.fragmentUserAccountLogout.setOnClickListener {
             mainActivity.logout()
         }
