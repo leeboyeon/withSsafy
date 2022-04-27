@@ -1,9 +1,12 @@
 package com.ssafy.withssafy.service.user;
 
 import com.ssafy.withssafy.dto.classroom.ClassRoomDto;
+import com.ssafy.withssafy.dto.manager.ManagerDto;
 import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
+import com.ssafy.withssafy.entity.ClassManager;
 import com.ssafy.withssafy.entity.ClassRoom;
+import com.ssafy.withssafy.entity.Manager;
 import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.repository.*;
 import org.modelmapper.ModelMapper;
@@ -23,9 +26,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private ManagerRepository managerRepository;
     @Autowired
-    private ConsultantRepository consultantRepository;
-    @Autowired
-    private ProRepository proRepository;
+    private ClassManagerRepository classManagerRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -111,6 +112,8 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.login(userId, password);
         LoginDto result = modelMapper.map(user, LoginDto.class);
         result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
+        Manager manager = managerRepository.findByUId(user.getId());
+        if (manager != null) result.setManagerDto(modelMapper.map(manager, ManagerDto.class));
         return result;
     }
 
@@ -127,11 +130,12 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public LoginDto insertManager(UserDto userDto, int status) {
         User user = userRepository.save(modelMapper.map(userDto, User.class));
-
-
+        Manager manager = managerRepository.save(new Manager(0L,status, user));
+        if(status != 0) classManagerRepository.save(new ClassManager(0L, user.getClassRoom(), user));
 
         LoginDto result = modelMapper.map(user, LoginDto.class);
         result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
-        return null;
+        result.setManagerDto(modelMapper.map(manager, ManagerDto.class));
+        return result;
     }
 }
