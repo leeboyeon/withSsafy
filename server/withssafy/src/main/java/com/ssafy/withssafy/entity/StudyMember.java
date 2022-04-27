@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Table(name = "tbl_study_member")
 @Getter
-@Setter
 @NoArgsConstructor
 public class StudyMember {
     @Id
@@ -27,7 +26,7 @@ public class StudyMember {
     private User user;
 
     @Builder
-    public StudyMember(StudyBoard studyBoard, User useruser){
+    public StudyMember(StudyBoard studyBoard, User user){
         this.studyBoard = studyBoard;
         this.user = user;
     }
