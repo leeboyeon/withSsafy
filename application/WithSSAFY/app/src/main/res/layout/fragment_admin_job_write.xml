@@ -352,8 +352,10 @@
 
                         <Spinner
                             android:id="@+id/fragment_jobWrite_EduSpinner"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="73dp"
+                            app:layout_constraintStart_toEndOf="@id/fragment_jobWrite_EduTitle"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -380,8 +382,10 @@
 
                         <Spinner
                             android:id="@+id/fragment_jobWrite_PreferenceSpinner"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="50dp"
+                            app:layout_constraintStart_toEndOf="@id/fragment_jobWrite_PreferenceTitle"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -409,10 +413,12 @@
 
                         <Spinner
                             android:id="@+id/fragment_jobWrite_CareerTypeSpinner"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="50dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/fragment_jobWrite_CareerTypeTitle"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
