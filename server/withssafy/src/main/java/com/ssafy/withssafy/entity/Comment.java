@@ -14,7 +14,7 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 public class Comment {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

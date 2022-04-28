@@ -8,11 +8,14 @@ import com.ssafy.withssafy.entity.ClassManager;
 import com.ssafy.withssafy.entity.ClassRoom;
 import com.ssafy.withssafy.entity.Manager;
 import com.ssafy.withssafy.entity.User;
+import com.ssafy.withssafy.errorcode.ErrorCode;
+import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +41,10 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     public UserDto insertUser(UserDto userDto){
+        if(userRepository.findByUid(userDto.getUserId()).isPresent()){
+            throw new InvalidRequestException(ErrorCode.JOINED_USER_ID);
+        }
+        
         User user = modelMapper.map(userDto, User.class);
         User result = userRepository.save(user);
         return modelMapper.map(result, UserDto.class);
@@ -86,7 +93,8 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     public UserDto findByUid(String userId) {
-        User user = userRepository.findByUid(userId);
+
+        User user = userRepository.findByUid(userId).get();
         return modelMapper.map(user, UserDto.class);
     }
 
@@ -129,8 +137,12 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public LoginDto insertManager(UserDto userDto, int status) {
+        if(userRepository.findByUid(userDto.getUserId()).isPresent()){
+            throw new InvalidRequestException(ErrorCode.JOINED_USER_ID);
+        }
+
         User user = userRepository.save(modelMapper.map(userDto, User.class));
-        Manager manager = managerRepository.save(new Manager(0L,status, user));
+        Manager manager = managerRepository.save(new Manager(0L, status, user));
         if(status != 0 && userDto.getClassRoomId() != null) classManagerRepository.save(new ClassManager(0L, user.getClassRoom(), user));
 
         LoginDto result = modelMapper.map(user, LoginDto.class);

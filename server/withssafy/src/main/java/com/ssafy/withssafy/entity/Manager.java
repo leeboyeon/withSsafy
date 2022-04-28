@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Manager {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     private Long id;
 
     @Column
@@ -22,7 +22,7 @@ public class Manager {
     User user;
 
     @Builder
-    public Manager(long id, int auth, User user){
+    public Manager(Long id, int auth, User user){
         this.id = id;
         this.auth = auth;
         this.user = user;
