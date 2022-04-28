@@ -2,10 +2,7 @@ package com.ssafy.withssafy.src.network.api
 
 import com.ssafy.withssafy.src.dto.Message
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface MessageApi {
     /**
@@ -39,4 +36,21 @@ interface MessageApi {
      * */
     @GET("/message/send")
     suspend fun getMessageByUserIdToSend(@Query("id")id:Int) : Response<MutableList<Message>>
+
+    /**
+     * Message Get Group By userId
+     * 내 메시지 목록 불러오기
+     * @author : LeeBoYeon
+     * */
+    @GET("/message/list/{id}")
+    suspend fun getMessageByUserIdToGroup(@Path("id") id:Int) : Response<MutableList<Message>>
+
+    /**
+     * Message Get Talk us
+     * 상대방과 메시지한 목록 불러오기
+     * @author : LeeBoYeon
+     * */
+    @GET("/message/list")
+    suspend fun getMessageTalk(@Query("fromId")fromId:Int, @Query("toId")toId:Int) : Response<MutableList<Message>>
 }
+

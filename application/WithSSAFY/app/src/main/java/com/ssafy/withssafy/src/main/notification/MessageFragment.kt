@@ -9,8 +9,10 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentMessageBinding
+import kotlinx.coroutines.runBlocking
 
 
 class MessageFragment : BaseFragment<FragmentMessageBinding>(FragmentMessageBinding::bind, R.layout.fragment_message) {
@@ -24,6 +26,10 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(FragmentMessageBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = messageViewModel
+        runBlocking {
+            messageViewModel.getMessageGroup(ApplicationClass.sharedPreferencesUtil.getUser().id)
+        }
         setListener()
     }
     private fun setListener(){
@@ -31,14 +37,17 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(FragmentMessageBind
     }
     private fun initAdapter(){
         groupAdapter = MessageGroupAdapter()
+        messageViewModel.messageGroup.observe(viewLifecycleOwner){
+            groupAdapter.list = it
+        }
         binding.fragmentMessageGroupRv.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = groupAdapter
         }
         groupAdapter.setItemClickListener(object : MessageGroupAdapter.ItemClickListener {
-            override fun onClick(view: View, position: Int, groupId: Int) {
-                var groupId = bundleOf("groupId" to groupId)
-                this@MessageFragment.findNavController().navigate(R.id.messageDetailFragment, groupId)
+            override fun onClick(view: View, position: Int, fromId: Int) {
+                var fromId = bundleOf("groupId" to fromId)
+                this@MessageFragment.findNavController().navigate(R.id.messageDetailFragment, fromId)
             }
 
         })

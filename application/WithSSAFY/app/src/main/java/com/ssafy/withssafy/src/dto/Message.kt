@@ -4,6 +4,6 @@ data class Message(
     val content: String,
     val id: Int,
     val send_dt: String,
-    val u_fromId: String,
-    val u_toId: String
+    val u_fromId: Int,
+    val u_toId: Int
 )
