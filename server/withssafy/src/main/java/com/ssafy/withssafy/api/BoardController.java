@@ -2,7 +2,10 @@ package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.board.BoardRequest;
 import com.ssafy.withssafy.dto.board.BoardResponse;
+import com.ssafy.withssafy.dto.board.LikeDto;
+import com.ssafy.withssafy.dto.recruit.RecruitLikeDto;
 import com.ssafy.withssafy.service.board.BoardService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +47,19 @@ public class BoardController {
     public ResponseEntity<?> removeBoardById(@PathVariable("id") Long id) {
         boardService.removeBoardById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/like")
+    @ApiOperation(value = "게시물 좋아요or취소")
+    public ResponseEntity<?> likeRecruit(@RequestBody LikeDto likeDto){
+        boardService.doLike(likeDto);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @GetMapping("/like")
+    @ApiOperation(value = "게시물 좋아요했는지 여부")
+    public ResponseEntity<?> isLikeRecruit(@RequestParam Long boardId, @RequestParam Long userId){
+        boolean isLike = boardService.isLike(boardId,userId);
+        return ResponseEntity.status(HttpStatus.OK).body(isLike);
     }
 }
