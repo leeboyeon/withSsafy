@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Message {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

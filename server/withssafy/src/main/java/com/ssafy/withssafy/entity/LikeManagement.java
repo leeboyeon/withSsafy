@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 
 public class LikeManagement {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
