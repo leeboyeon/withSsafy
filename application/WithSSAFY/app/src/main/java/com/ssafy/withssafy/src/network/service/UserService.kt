@@ -20,12 +20,9 @@ class UserService {
         RetrofitUtil.userService.signUp(user).enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 val res = response.body()
-                Log.d("UserService", "onResponse: $res")
                 if(response.code() == 200) {
                     if (res != null) {
                         callback.onSuccess(response.code(), res)
-                    } else {
-                        callback.onFailure(response.code())
                     }
                 } else {
                     callback.onFailure(response.code())
@@ -42,14 +39,10 @@ class UserService {
     fun signUpManager(status: Int, user: User, callback: RetrofitCallback<Any>) {
         RetrofitUtil.userService.signUpManager(status, user).enqueue(object : Callback<Any> {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
-                Log.d("UserService", "onResponse: $status  $user")
                 val res = response.body()
-                Log.d("UserService", "onResponse: $res")
                 if(response.code() == 200) {
                     if (res != null) {
                         callback.onSuccess(response.code(), res)
-                    } else{
-                        callback.onFailure(response.code())
                     }
                 } else {
                     callback.onFailure(response.code())

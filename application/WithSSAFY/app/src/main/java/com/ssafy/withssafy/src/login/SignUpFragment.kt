@@ -375,7 +375,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
                 override fun onFailure(code: Int) {
                     Log.d(TAG, "onFailure: resCode $code")
-                    showCustomToast("회원가입에 실패했습니다.")
+                    showCustomToast("존재하는 아이디입니다.")
                 }
 
             })
@@ -393,7 +393,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
                 override fun onFailure(code: Int) {
                     Log.d(TAG, "onFailure: resCode $code")
-                    showCustomToast("회원가입에 실패했습니다.")
+                    showCustomToast("존재하는 아이디입니다.")
                 }
 
             })
