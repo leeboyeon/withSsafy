@@ -5,7 +5,7 @@
     <data>
         <variable
             name="study"
-            type="com.ssafy.withssafy.src.dto.Study" />
+            type="com.ssafy.withssafy.src.dto.study.Study" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

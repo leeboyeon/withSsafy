@@ -9,13 +9,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemTeamBinding
-import com.ssafy.withssafy.src.dto.Study
+import com.ssafy.withssafy.src.dto.study.Study
 
 class TeamAdapter : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() , Filterable{
     var list = mutableListOf<Study>()
     var filteredList = list
     inner class TeamViewHolder(private val binding : ItemTeamBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(study:Study){
+        fun bind(study: Study){
             binding.study = study
             binding.executePendingBindings()
         }

@@ -5,20 +5,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentTeamWriteBinding
-import com.ssafy.withssafy.src.dto.Study
+import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.dto.UserX
 import com.ssafy.withssafy.src.main.MainActivity
-import com.ssafy.withssafy.src.network.service.StudyService
-import com.ssafy.withssafy.src.viewmodel.TeamViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWriteBinding::bind,R.layout.fragment_team_write) {
@@ -141,13 +136,13 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
             today.toString(),
             ""
         )
-        runBlocking {
-            val response = StudyService().insertStudy(study)
-            if(response.code() == 204){
-                showCustomToast("추가되었습니다.")
-                this@TeamWriteFragment.findNavController().navigate(R.id.teamFragment)
-            }
-        }
+//        runBlocking {
+//            val response = StudyService().insertStudy(study)
+//            if(response.code() == 204){
+//                showCustomToast("추가되었습니다.")
+//                this@TeamWriteFragment.findNavController().navigate(R.id.teamFragment)
+//            }
+//        }
     }
 
     companion object {
