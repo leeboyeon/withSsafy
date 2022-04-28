@@ -24,6 +24,8 @@ class UserService {
                 if(response.code() == 200) {
                     if (res != null) {
                         callback.onSuccess(response.code(), res)
+                    } else {
+                        callback.onFailure(response.code())
                     }
                 } else {
                     callback.onFailure(response.code())
@@ -46,6 +48,8 @@ class UserService {
                 if(response.code() == 200) {
                     if (res != null) {
                         callback.onSuccess(response.code(), res)
+                    } else{
+                        callback.onFailure(response.code())
                     }
                 } else {
                     callback.onFailure(response.code())
