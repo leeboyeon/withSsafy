@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    public UserDto insertUser(UserDto UserDto);
-    public Boolean deleteByUid(Long id);
-    public UserDto updatePasswordByUid(Long id, String password);
-    public UserDto findById(Long id);
-    public UserDto findByUid(String u_id);
-    public List<UserDto> findAll();
-    public LoginDto login(String id, String password);
+    UserDto insertUser(UserDto UserDto);
+    Boolean deleteByUid(Long id);
+    UserDto updatePasswordByUid(Long id, String password);
+    UserDto findById(Long id);
+    UserDto findByUid(String u_id);
+    List<UserDto> findAll();
+    LoginDto login(String id, String password);
     UserDto updateClassById(Long id, Long classId);
     LoginDto insertManager(UserDto userDto, int status);
 }
