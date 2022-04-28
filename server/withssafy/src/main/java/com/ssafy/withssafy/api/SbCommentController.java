@@ -35,7 +35,7 @@ public class SbCommentController {
 
     @DeleteMapping
     @ApiOperation(value = "해당 아이디를 가진 댓글을 삭제합니다.")
-    public ResponseEntity<Boolean> delete(@RequestParam("댓글 ID")Long id){
+    public ResponseEntity<Boolean> delete(@RequestParam Long id){
         return new ResponseEntity<>(sbCommentService.delete(id), HttpStatus.OK);
     }
 
