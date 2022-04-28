@@ -74,7 +74,7 @@ class SingInFragment : BaseFragment<FragmentSingInBinding>(FragmentSingInBinding
         override fun onSuccess(code: Int, user: UserInfoResponse) {
             if (code == 200) {
                 Log.d(TAG, "onSuccess: ${user.id}")
-                if(user.state == 0) {
+                if(user.studentId != null && user.state == 0) {
                     showCustomToast("관리자 승인이 진행중입니다.")
                 } else {
                     showCustomToast("로그인 되었습니다.")
