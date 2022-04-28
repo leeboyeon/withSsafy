@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
@@ -19,8 +20,9 @@ import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemCommentListBinding
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.board.Comment
+import com.ssafy.withssafy.src.viewmodel.BoardViewModel
 
-class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*/) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
+class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
     private val TAG = "CommentAdapter_ws"
 
     lateinit var commentList: MutableList<Comment>
@@ -28,17 +30,26 @@ class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*
     lateinit var commentReplyAdapter : ReplyAdapter
     lateinit var dialog: Dialog
 
+    // 게시글 작성자
+    var postUserId: Int = -1
+
     // 현재 로그인한 유저의 아이디
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
     inner class ViewHolder(private val binding: ItemCommentListBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        val nick = binding.commentItemTvUserNick
         val moreBtn = binding.commentItemIvMoreBtn
         val addReply = binding.commentItemIbAddReply
 
         fun bindInfo(comment: Comment) {
-
             binding.comment = comment
+
+            if(comment.userId == postUserId) {
+                nick.setTextColor(Color.parseColor("#2C64BF"))
+                nick.text = "익명(글쓴이)"
+            }
+
             binding.executePendingBindings()
 
             // 대댓글 rv adapter 추가하기
@@ -52,6 +63,8 @@ class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*
             commentReplyAdapter = ReplyAdapter(context)
 //                commentNestedAdapter.submitList(list)
             commentReplyAdapter.commentList = replyList
+            commentReplyAdapter.postUserId = postUserId
+
             binding.commentItemRvReply.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
                 adapter = commentReplyAdapter
@@ -113,7 +126,7 @@ class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*
 //            setIsRecyclable(false)
 
             addReply.setOnClickListener {
-                addReplyClickListener.onClick(it as TextView, position, comment.id)
+                addReplyClickListener.onClick(it, nick.text.toString(), position, comment.id)
             }
 
             moreBtn.setOnClickListener {
@@ -168,7 +181,7 @@ class CommentAdapter (val context: Context/*, val mainViewModel: MainViewModels*
     }
 
     interface ItemClickListener {
-        fun onClick(view: TextView, position: Int, commentId: Int)
+        fun onClick(view: View, writerNick: String, position: Int, commentId: Int)
     }
 
     private lateinit var addReplyClickListener : ItemClickListener

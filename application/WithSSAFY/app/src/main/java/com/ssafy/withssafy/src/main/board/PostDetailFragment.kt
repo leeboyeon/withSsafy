@@ -100,7 +100,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
      */
     private fun initCommentRecyclerView() {
 
-        commentAdapter = CommentAdapter(requireContext())
+        commentAdapter = CommentAdapter(requireContext(), boardViewModel)
 
         binding.postDetailFragmentRvComment.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -115,6 +115,8 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         boardViewModel.commentListOnPost.observe(viewLifecycleOwner) {
             commentAdapter.commentAllList = it
         }
+
+        commentAdapter.postUserId = boardViewModel.postDetail.value!!.user.id
 
     }
 

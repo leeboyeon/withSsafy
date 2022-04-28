@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.main.board
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,24 +15,28 @@ import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.board.Comment
 
 class ReplyAdapter (val context: Context) : RecyclerView.Adapter<ReplyAdapter.ViewHolder>(){
-    private val TAG = "LocalCommentAdapter_ws"
 
     lateinit var commentList: MutableList<Comment>
-//    lateinit var commentAllList : MutableList<Comment>
-    lateinit var userList: MutableList<User>
+
+    // 게시글 작성자
+    var postUserId: Int = -1
 
     // 현재 로그인한 유저의 아이디
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
     inner class ViewHolder(private val binding: ItemReplyListBinding) : RecyclerView.ViewHolder(binding.root) {
-
+        val nick = binding.replyItemTvUserNick
         val moreBtn = binding.replyItemIvMoreBtn
 
         fun bindInfo(comment: Comment) {
 
-//            moreBtn.isVisible = comment.userId == ApplicationClass.sharedPreferencesUtil.getUser().id
-
             binding.comment = comment
+
+            if(comment.userId == postUserId) {
+                nick.setTextColor(Color.parseColor("#2C64BF"))
+                nick.text = "익명(글쓴이)"
+            }
+
             binding.executePendingBindings()
 
         }

@@ -89,3 +89,12 @@ fun bindBitmapImg(imageView: ImageView, imgString: String) {
         .load(CommonUtils.base64ToImg(imgString))
         .into(imageView)
 }
+
+@BindingAdapter("ellipsisContent")
+fun bindEllipsisContent(textView: TextView, content: String) {
+    if(content.length > 45) {
+        textView.text = "${content.substring(0, 40)} •••"
+    } else {
+        textView.text = content
+    }
+}
