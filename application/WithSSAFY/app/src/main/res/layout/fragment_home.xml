@@ -111,21 +111,19 @@
                     android:text="더보기"
                     android:textColor="@color/purple_700"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/home_iv_request_board_more2"
-                    app:layout_constraintEnd_toStartOf="@+id/home_iv_request_board_more2"
-                    app:layout_constraintRight_toLeftOf="@id/home_iv_favorite_board_more"
-                    app:layout_constraintTop_toTopOf="@+id/home_iv_request_board_more2" />
+                    app:layout_constraintBottom_toBottomOf="@+id/home_tv_request"
+                    app:layout_constraintRight_toLeftOf="@id/home_iv_request_board_more2"
+                    app:layout_constraintTop_toTopOf="@+id/home_tv_request" />
 
                 <ImageView
                     android:id="@+id/home_iv_request_board_more2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="14dp"
                     android:src="@drawable/arrow_right"
-                    app:layout_constraintBottom_toBottomOf="@id/home_tv_favorite_board_more"
+                    app:layout_constraintBottom_toBottomOf="@id/home_tv_reqeust_board_more2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/home_tv_reqeust_board_more2"
                     app:tint="@color/purple_700" />
 
                 <TextView

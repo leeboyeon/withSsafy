@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.FragmentHomeBinding
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+private const val TAG = "HomeFragment"
 // : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home)
 class HomeFragment : Fragment(){
 
@@ -32,6 +35,8 @@ class HomeFragment : Fragment(){
     lateinit var favoriteBoardAdapter: FavoriteBoardAdapter
     lateinit var popularPostAdapter: PopularPostAdapter
     lateinit var employInfoAdapter: EmployInfoAdapter
+
+    val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
 
     // 롤링 배너
     private lateinit var bannerViewPagerAdapter: BannerViewPagerAdapter
@@ -73,7 +78,12 @@ class HomeFragment : Fragment(){
         initAdapter()
     }
     private fun initAdmin(){
-        binding.homeLayoutAdminRequestLayout.visibility = View.VISIBLE
+        Log.d(TAG, "onViewCreated: $studentId")
+        if(studentId != null) { // 교육생
+            binding.homeLayoutAdminRequestLayout.visibility = View.GONE
+        } else { // 관리자
+            binding.homeLayoutAdminRequestLayout.visibility = View.VISIBLE
+        }
     }
     private fun initButtons(){
         binding.fragmentHomeLinkEduSsafy.setOnClickListener {

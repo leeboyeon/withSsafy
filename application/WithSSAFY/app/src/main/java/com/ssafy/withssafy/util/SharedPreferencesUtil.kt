@@ -14,13 +14,15 @@ class SharedPreferencesUtil (context: Context) {
         val editor = preferences.edit()
         editor.putInt("id", user.id)
         editor.putString("token", user.deviceToken)
+        editor.putString("studentId", user.studentId)
         editor.apply()
     }
 
     fun getUser(): User {
         val id = preferences.getInt("id", 0)
+        val studentId = preferences.getString("studentId", null)
         if (id != 0) {
-            return User(id)
+            return User(id, studentId)
         } else {
             return User()
         }

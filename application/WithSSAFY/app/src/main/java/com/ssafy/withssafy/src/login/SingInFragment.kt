@@ -78,7 +78,7 @@ class SingInFragment : BaseFragment<FragmentSingInBinding>(FragmentSingInBinding
                     showCustomToast("관리자 승인이 진행중입니다.")
                 } else {
                     showCustomToast("로그인 되었습니다.")
-                    ApplicationClass.sharedPreferencesUtil.addUser(User(user.id, user.password, user.deviceToken))
+                    ApplicationClass.sharedPreferencesUtil.addUser(User(user.id, user.password, user.deviceToken, user.studentId))
                     if(binding.signInFragmentCbAutoLogin.isChecked) {
                         ApplicationClass.sharedPreferencesUtil.setAutoLogin(user.id)
                     }
