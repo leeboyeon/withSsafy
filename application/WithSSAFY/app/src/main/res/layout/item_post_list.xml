@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:text="게시글 제목"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/postListItem_btnMore"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,10 +35,10 @@
 
             <ImageButton
                 android:id="@+id/postListItem_btnMore"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:background="@android:color/transparent"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/postListItem_tvTitle"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -51,12 +51,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="게시글 내용ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/postListItem_tvTitle" />
+<!--                app:ellipsisContent="@{post.}"-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView

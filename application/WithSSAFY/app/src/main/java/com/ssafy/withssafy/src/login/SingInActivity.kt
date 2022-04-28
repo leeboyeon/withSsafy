@@ -49,6 +49,8 @@ class SingInActivity : BaseActivity<ActivitySingInBinding>(ActivitySingInBinding
                 .replace(R.id.login_frame_layout, SingInFragment())
                 .commit()
         }
+
+        Log.d(TAG, "onCreate: ${sha256("test")}\n${sha256("admin")}")
     }
     fun openFragment(int : Int){
         val transaction = supportFragmentManager.beginTransaction()

@@ -3,10 +3,12 @@ package com.ssafy.withssafy.src.main.board
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,11 +16,16 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentCommentBinding
+import com.ssafy.withssafy.src.dto.board.Comment
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.network.service.BoardService
+import com.ssafy.withssafy.src.network.service.CommentService
 import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 import kotlin.properties.Delegates
 
 class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBinding::bind, R.layout.fragment_comment) {
+    private val TAG = "CommentFragment_ws"
     private lateinit var mainActivity: MainActivity
 
     private lateinit var commentAdapter: CommentAdapter
@@ -87,7 +94,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
      * 댓글, 대댓글 recyclerView 초기화
      */
     private fun initRecyclerView() {
-        commentAdapter = CommentAdapter(requireContext())
+        commentAdapter = CommentAdapter(requireContext(), boardViewModel)
 
         binding.commentFragmentRvComment.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -103,8 +110,117 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
             commentAdapter.commentAllList = it
         }
 
+        commentAdapter.postUserId = boardViewModel.postDetail.value!!.user.id
 
+        // 댓글, 대댓글 작성 클릭 이벤트
+        commentAdapter.setAddReplyItemClickListener(object : CommentAdapter.ItemClickListener {
+            override fun onClick(view: View, writerNick: String, position: Int, commentId: Int) {
+                showKeyboard(binding.commentFragmentEtComment)
+
+                binding.commentFragmentTvWriterNick.visibility = View.VISIBLE
+                binding.commentFragmentTvWriterNick.text = writerNick
+
+                parentId = commentId
+
+                insertCommentAndReply()
+            }
+        })
     }
+
+    /**
+     * 댓글 및 대댓글 등록
+     * parentId == -1 -> 댓글 등록
+     * parentId > 0 -> 대댓글 등록
+     */
+    private fun insertCommentAndReply() {
+
+        binding.commentFragmentTvConfirm.setOnClickListener {
+            val commentContent = binding.commentFragmentEtComment.text.toString()
+
+            if (parentId == -1 && commentContent.isNotEmpty()) {  // 댓글 등록
+
+                val comment = Comment(
+                    boardId = postId,
+                    userId = userId,
+                    content = commentContent
+                )
+
+                var response: Response<Any?>
+
+                runBlocking {
+                    response = CommentService().addComment(comment)
+                }
+
+                if (response.isSuccessful) {
+
+                    showCustomToast("댓글이 등록되었습니다.")
+                    runBlocking {
+                        boardViewModel.getCommentList(postId)
+                    }
+                    commentAdapter.notifyDataSetChanged()
+                    clearEditTest()
+                    clearFocus(mainActivity)
+                } else {
+                    showCustomToast("댓글 등록 실패")
+                    Log.e(TAG, "insertCommentAndReply: ${response.message()}", )
+                }
+            } else if (parentId != -1 && contentLenChk(commentContent)) {   // 대댓글 작성
+                val reply = Comment(
+                    parent = parentId,
+                    boardId = postId,
+                    userId = userId,
+                    content = commentContent,
+                )
+
+                var response: Response<Any?>
+
+                runBlocking {
+                    response = CommentService().addComment(reply)
+                }
+
+                if (response.isSuccessful) {
+
+                    showCustomToast("대댓글이 등록되었습니다.")
+                    runBlocking {
+                        boardViewModel.getCommentList(postId)
+                    }
+                    commentAdapter.notifyDataSetChanged()
+
+                    clearEditTest()
+                    clearFocus(mainActivity)
+                } else {
+                    showCustomToast("대댓글 등록 실패")
+                    Log.e(TAG, "insertCommentAndReply: ${response.message()}",)
+                }
+            }
+        }
+    }
+
+
+    /**
+     * content 길이 체크
+     */
+    private fun contentLenChk(input: String) : Boolean {
+        return !(input.trim().isEmpty() || input.length > 255)
+    }
+
+    /**
+     * 댓글 주인 nick 초기화 및 comment text 초기화
+     */
+    private fun clearEditTest() {
+        binding.commentFragmentTvWriterNick.visibility = View.GONE
+        binding.commentFragmentTvWriterNick.text = ""
+        binding.commentFragmentEtComment.setText("")
+    }
+
+
+
+
+
+
+
+
+
 
     /**
      * 키보드 UP/DOWN 감지 리스너
@@ -130,7 +246,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
     }
 
     private fun clearFocus(activity: Activity) {
-        val v: View = activity.getCurrentFocus() ?: return
+        val v: View = activity.currentFocus ?: return
         val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(v.windowToken, 0)
         v.clearFocus()
