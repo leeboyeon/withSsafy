@@ -18,6 +18,7 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
     private var edu = ""
     private var prefer = ""
     private var employType = ""
+    private var career = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -29,6 +30,7 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
         setListener()
         initSpinner()
         selectSpinner()
+        selectCheckBox()
     }
     private fun setListener(){
         initButtons()
@@ -112,6 +114,20 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
+        }
+    }
+
+    private fun selectCheckBox() {
+        binding.fragmentJobWriteAddInfoCareerSenior.setOnCheckedChangeListener{ buttonView, isChecked ->
+            if(isChecked) career = "경력"
+            else  career = ""
+            Log.d(TAG, "selectCheckBox: $career")
+        }
+
+        binding.fragmentJobWriteAddInfoCareerNew.setOnCheckedChangeListener{ buttonView, isChecked ->
+            if(isChecked) career = "신입"
+            else  career = ""
+            Log.d(TAG, "selectCheckBox: $career")
         }
     }
     companion object {
