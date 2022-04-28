@@ -94,3 +94,8 @@ fun bindEllipsisContent(textView: TextView, content: String) {
         textView.text = content
     }
 }
+
+@BindingAdapter("messageTextView")
+fun bindMsgTextView(textView: TextView, userNick:String){
+    textView.text = "${userNick}과의 대화"
+}
