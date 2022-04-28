@@ -39,7 +39,7 @@ interface CommentApi {
      * @param commentId
      */
     @DELETE("comment")
-    suspend fun deleteComment(@Query("댓글 ID") commentId: Int) : Response<Any?>
+    suspend fun deleteComment(@Query("id") commentId: Int) : Response<Any?>
 
     /**
      * 게시글에 해당하는 댓글 조회

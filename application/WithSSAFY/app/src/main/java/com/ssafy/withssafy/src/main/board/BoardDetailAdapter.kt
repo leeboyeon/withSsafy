@@ -24,7 +24,6 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
 
         fun bindInfo() {
 
-
 //            for (i in userLikePost) {   // 로그인 유저가 좋아요 누른 게시글 표시
 //                if(post.id == i) {
 //                    heartBtn.progress = 0.5F

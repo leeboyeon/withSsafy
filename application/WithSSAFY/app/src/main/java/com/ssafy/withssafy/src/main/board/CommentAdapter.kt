@@ -31,7 +31,7 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
 
     lateinit var commentList: MutableList<Comment>
     lateinit var commentAllList : MutableList<Comment>
-    lateinit var commentReplyAdapter : ReplyAdapter
+    var commentReplyAdapter = ReplyAdapter(context)
     lateinit var dialog: Dialog
 
     // 게시글 작성자
@@ -64,7 +64,7 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
                 }
             }
 
-            commentReplyAdapter = ReplyAdapter(context)
+//            commentReplyAdapter = ReplyAdapter(context)
 //                commentNestedAdapter.submitList(list)
             commentReplyAdapter.commentList = replyList
             commentReplyAdapter.postUserId = postUserId
@@ -75,6 +75,11 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
                 adapter!!.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
 
+            commentReplyAdapter.setDeleteItemClickListener(object : ReplyAdapter.MenuClickListener {
+                override fun onClick(position: Int, commentId: Int, userId: Int) {
+                    modifyItemClickListener.onClick(position, commentId, userId)
+                }
+            })
 //            commentReplyAdapter.setModifyItemClickListener(object : ReplyAdapter.MenuClickListener {
 //
 //                override fun onClick(commentId: Int, postId: Int, position: Int) {
@@ -103,11 +108,11 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
 //            })
 
             commentReplyAdapter.setDeleteItemClickListener(object : ReplyAdapter.MenuClickListener {
-
-                override fun onClick(commentId: Int, postId: Int, position: Int) {
-//                    deleteReply(commentId, postId, position)
+                override fun onClick(position: Int, commentId: Int, userId: Int) {
+                    replyDeleteItemClickListener.onClick(position, commentId, userId)
                 }
             })
+            
 
         }
     }
@@ -218,70 +223,24 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
         this.reportItemClickListener = reportClickListener
     }
 
+    private lateinit var replyModifyItemClickListener : MenuClickListener
+    fun setReplyModifyItemClickListener(replyModifyClickListener: MenuClickListener) {
+        this.replyModifyItemClickListener = replyModifyClickListener
+    }
 
-//    /**
-//     * 대댓글 삭제 response
-//     */
-//    private fun deleteReply(commentId: Int, postId: Int, position: Int) {
-//        var response: Response<Message>
-//        runBlocking {
-//            response = BoardService().deleteComment(commentId)
-//        }
-//        if (response.code() == 200 || response.code() == 500) {
-//            val res = response.body()
-//            if (res != null) {
-//                if (res.success == true && res.data["isSuccess"] == true) {
-//                    Toast.makeText(context, "대댓글이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-//
-//                    runBlocking {
-//                        mainViewModel.getCommentList(postId)
-//                    }
-////                    localCommentAdapter.notifyItemRemoved(position)
-////                    commentReplyAdapter.notifyDataSetChanged()
-//                    commentReplyAdapter.notifyItemRemoved(position)
-//                    notifyDataSetChanged()
-//                } else {
-//                    Toast.makeText(context, "대댓글이 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show()
-//                    Log.e(TAG, "deleteReply: ${res.message}", )
-//                }
-//            }
-//        }
-//    }
-//
-//    /**
-//     * 대댓글 수정 response
-//     */
-//    private fun updateReply(commentId: Int, content: String, postId: Int) {
-//
-//        if(content.isNotEmpty() && commentId > 0) {
-//
-//            val updateComment = Comment(commentId, content)
-//
-//            var response: Response<Message>
-//
-//            runBlocking {
-//                response = BoardService().updateComment(updateComment)
-//            }
-//
-//            if (response.code() == 200 || response.code() == 500) {
-//                val res = response.body()
-//                if (res != null) {
-//                    if (res.success == true && res.data["isSuccess"] == true) {
-//                        Toast.makeText(context, "대댓글이 수정되었습니다.", Toast.LENGTH_SHORT).show()
-//
-//                        runBlocking {
-//                            mainViewModel.getCommentList(postId)
-//                        }
-//                        dialog.dismiss()
-//                        commentReplyAdapter.notifyDataSetChanged()
-//                        notifyDataSetChanged()
-//                    } else {
-//                        Toast.makeText(context, "대댓글이 수정 실패", Toast.LENGTH_SHORT).show()
-//
-//                        Log.e(TAG, "updateComment: ${res.message}",)
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private lateinit var replyDeleteItemClickListener : MenuClickListener
+    fun setReplyDeleteItemClickListener(replyDeleteClickListener: MenuClickListener) {
+        this.replyDeleteItemClickListener = replyDeleteClickListener
+    }
+
+    private lateinit var replySendNoteItemClickListener : MenuClickListener
+    fun setReplySendNoteItemClickListener(replySendNoteClickListener: MenuClickListener) {
+        this.replySendNoteItemClickListener =replySendNoteClickListener
+    }
+
+    private lateinit var replyReportItemClickListener : MenuClickListener
+    fun setReplyReportItemClickListener(replyReportClickListener: MenuClickListener) {
+        this.replyReportItemClickListener = replyReportClickListener
+    }
+
 }

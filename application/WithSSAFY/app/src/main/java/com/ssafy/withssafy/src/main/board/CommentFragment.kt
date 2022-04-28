@@ -153,7 +153,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
         // 댓글 삭제 클릭 이벤트
         commentAdapter.setDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
             override fun onClick(position: Int, commentId: Int, userId: Int) {
-                deleteComment(commentId, position)
+                deleteComment(commentId, position, true)
             }
         })
 
@@ -170,6 +170,22 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
 
             }
         })
+
+        // 대댓글 수정 클릭 이벤트
+
+
+        // 대댓글 삭제 클릭 이벤트
+        commentAdapter.setReplyDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+                deleteComment(commentId, position, false)
+            }
+        })
+
+        // 대댓글 작성자에게 쪽지 보내기 클릭 이벤트
+
+        // 대댓글 신고 클릭 이벤트
+
+
     }
 
     /**
@@ -300,8 +316,9 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
      * 댓글 삭제
      * @param commentId
      * @param position
+     * @param adapterChk true - commentAdapter / false - replyAdapter
      */
-    private fun deleteComment(commentId: Int, position: Int) {
+    private fun deleteComment(commentId: Int, position: Int, adapterChk: Boolean) {
         var response: Response<Any?>
         try {
             runBlocking {
@@ -312,8 +329,13 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                 runBlocking {
                     boardViewModel.getCommentList(postId)
                 }
-                commentAdapter.notifyItemRemoved(position)
-//                commentAdapter.notifyDataSetChanged()
+                if(adapterChk) {
+                    commentAdapter.notifyItemRemoved(position)
+                } else {
+                    commentAdapter.commentReplyAdapter.notifyItemRemoved(position)
+                    commentAdapter.notifyDataSetChanged()
+                }
+
             } else {
                 showCustomToast("댓글 삭제 실패")
                 Log.d(TAG, "deleteComment: ${response.message()}", )
@@ -373,6 +395,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
         imm.hideSoftInputFromWindow(v.windowToken, 0)
         v.clearFocus()
         activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        clearEditText()
     }
 
     private fun showKeyboard(editText: EditText?) {
@@ -380,6 +403,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
             return
         }
         editText.requestFocus()
+        editText.setSelection(editText.length())
         mInputMethodManager.showSoftInput(
             editText,
             InputMethodManager.SHOW_FORCED or InputMethodManager.HIDE_IMPLICIT_ONLY

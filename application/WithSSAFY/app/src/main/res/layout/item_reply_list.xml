@@ -82,7 +82,7 @@
                 android:id="@+id/replyItem_clOption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/bg_comment_option"
                 android:elevation="1dp"
                 app:layout_constraintBottom_toBottomOf="@+id/replyItem_tvUserNick"

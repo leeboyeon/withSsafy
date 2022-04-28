@@ -3,8 +3,10 @@ package com.ssafy.withssafy.src.main.board
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -63,27 +65,48 @@ class ReplyAdapter (val context: Context) : RecyclerView.Adapter<ReplyAdapter.Vi
             bindInfo(comment)
 //            setIsRecyclable(false)
 
-            // 작성자랑 작성자가 아닌 경우 팝업 메뉴 다르게 보여줘야 함.
             moreBtn.setOnClickListener {
-//                val popup = PopupMenu(context, moreBtn)
-//                MenuInflater(context).inflate(R.menu.popup_menu, popup.menu)
-//
-//                popup.show()
-//                popup.setOnMenuItemClickListener {
-//                    when (it.itemId) {
-//                        R.id.modify -> {
-//                            modifyItemClickListener.onClick(comment.id, comment.boardId, position)
-//                            return@setOnMenuItemClickListener true
-//                        }
-//                        R.id.delete -> {
-//                            deleteItemClickListener.onClick(comment.id, comment.boardId, position)
-//                            return@setOnMenuItemClickListener true
-//                        }
-//                        else -> {
-//                            return@setOnMenuItemClickListener false
-//                        }
-//                    }
-//                }
+                val popup = PopupMenu(context, moreBtn)
+                // 작성자인 경우 popup_menu_write 팝업 메뉴
+                if(comment.userId == userId) {
+                    MenuInflater(context).inflate(R.menu.popup_menu_writer, popup.menu)
+
+                    popup.show()
+                    popup.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.modify -> {
+                                modifyItemClickListener.onClick(position, comment.id, comment.userId)
+                                return@setOnMenuItemClickListener true
+                            }
+                            R.id.delete -> {
+                                deleteItemClickListener.onClick(position, comment.id, comment.userId)
+                                return@setOnMenuItemClickListener true
+                            }
+                            else -> {
+                                return@setOnMenuItemClickListener false
+                            }
+                        }
+                    }
+                } else {    // 작성자가 아닌 경우 popup_menu(쪽지 보내기, 신고)
+                    MenuInflater(context).inflate(R.menu.popup_menu, popup.menu)
+
+                    popup.show()
+                    popup.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.sendNote -> {  // 쪽지 보내기 -> 댓글 작성자 id 필요
+                                sendNoteItemClickListener.onClick(position, comment.id, comment.userId)
+                                return@setOnMenuItemClickListener true
+                            }
+                            R.id.report -> {    // 신고 -> 댓글 작성자 id, 댓글 id
+                                reportItemClickListener.onClick(position, comment.id, comment.userId)
+                                return@setOnMenuItemClickListener true
+                            }
+                            else -> {
+                                return@setOnMenuItemClickListener false
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -92,31 +115,29 @@ class ReplyAdapter (val context: Context) : RecyclerView.Adapter<ReplyAdapter.Vi
         return commentList.size
     }
 
-    interface ItemClickListener {
-        fun onClick(view: View, position: Int, commentId: Int)
-    }
-
-    private lateinit var addReplyClickListener : ItemClickListener
-
-    fun setAddReplyItemClickListener(itemClickListener: ItemClickListener) {
-        this.addReplyClickListener = itemClickListener
-    }
-
 
     interface MenuClickListener {
-        fun onClick(commentId: Int, postId: Int, position: Int)
+        fun onClick(position: Int, commentId: Int, userId: Int)
     }
 
     private lateinit var modifyItemClickListener : MenuClickListener
-
-    fun setModifyItemClickListener(menuClickListener: MenuClickListener) {
-        this.modifyItemClickListener = menuClickListener
+    fun setModifyItemClickListener(modifyClickListener: MenuClickListener) {
+        this.modifyItemClickListener = modifyClickListener
     }
 
     private lateinit var deleteItemClickListener : MenuClickListener
+    fun setDeleteItemClickListener(deleteClickListener: MenuClickListener) {
+        this.deleteItemClickListener = deleteClickListener
+    }
 
-    fun setDeleteItemClickListener(menuClickListener: MenuClickListener) {
-        this.deleteItemClickListener = menuClickListener
+    private lateinit var sendNoteItemClickListener : MenuClickListener
+    fun setSendNoteItemClickListener(sendNoteClickListener: MenuClickListener) {
+        this.sendNoteItemClickListener = sendNoteClickListener
+    }
+
+    private lateinit var reportItemClickListener : MenuClickListener
+    fun setReportItemClickListener(reportClickListener: MenuClickListener) {
+        this.reportItemClickListener = reportClickListener
     }
 
 

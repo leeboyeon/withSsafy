@@ -8,6 +8,7 @@ import com.ssafy.withssafy.config.intercepter.ReceivedCookiesInterceptor
 import com.ssafy.withssafy.config.intercepter.XAccessTokenInterceptor
 import com.ssafy.withssafy.util.SharedPreferencesUtil
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -31,9 +32,14 @@ class ApplicationClass : Application() {
         //shared preference 초기화
         sharedPreferencesUtil = SharedPreferencesUtil(applicationContext)
 
+        val interceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(AddCookiesInterceptor())
             .addInterceptor(ReceivedCookiesInterceptor())
+            .addInterceptor(interceptor)
             .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
             .connectTimeout(30, TimeUnit.SECONDS)
             .build()
