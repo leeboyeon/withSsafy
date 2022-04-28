@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.FragmentBoardJobBinding
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.team.TeamFragment
@@ -18,6 +19,8 @@ import com.ssafy.withssafy.src.main.team.TeamFragment
 class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobBinding::bind,R.layout.fragment_board_job) {
     private lateinit var mainActivity: MainActivity
     private lateinit var jobAdapter:JobAdapter
+
+    val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,11 +42,18 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
         initAdapter()
     }
     private fun initAdmin(){
-        binding.fragmentJobAdminWrite.visibility = View.VISIBLE
+        if(studentId != null) { // 교육생
+            binding.fragmentJobAdminWrite.visibility = View.GONE
+        } else { // 관리자
+            binding.fragmentJobAdminWrite.visibility = View.VISIBLE
+        }
     }
     private fun initButtons(){
         binding.fragmentJobAppBarPrev.setOnClickListener {
             this@BoardJobFragment.findNavController().popBackStack()
+        }
+        binding.fragmentJobAdminWrite.setOnClickListener {
+            this@BoardJobFragment.findNavController().navigate(R.id.action_boardJobFragment_to_adminJobWriteFragment)
         }
     }
     private fun initAdapter(){
