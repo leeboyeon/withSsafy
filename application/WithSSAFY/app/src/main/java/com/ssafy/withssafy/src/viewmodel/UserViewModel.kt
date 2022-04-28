@@ -120,6 +120,7 @@ class UserViewModel : ViewModel() {
             val res = response.body()
             if(response.code() == 200) {
                 if(res != null) {
+                    setLoginUserInfo(res)
                     val responseClassRoom = UserService().getClassRoom(res.classRoomId)
                     val resClassRoom = responseClassRoom.body()
                     if(responseClassRoom.code() == 200) {

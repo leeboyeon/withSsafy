@@ -21,11 +21,14 @@ import com.ssafy.withssafy.util.RetrofitCallback
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.runBlocking
 
 private const val TAG = "UserFragment"
 class UserFragment :
     BaseFragment<FragmentUserBinding>(FragmentUserBinding::bind, R.layout.fragment_user) {
     private lateinit var mainActivity: MainActivity
+
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,8 +49,30 @@ class UserFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        runBlocking {
+            userViewModel.getClassRoom(userId)
+        }
+
         setListener()
+        initUserData()
     }
+
+    private fun initUserData() {
+         userViewModel.loginUserInfo.observe(viewLifecycleOwner) {
+             binding.fragmentUserInfoName.text = it.name
+             binding.fragmentUserInfoSId.text = it.studentId
+             binding.fragmentUserInfoId.text = "id ${it.userId}"
+         }
+        userViewModel.classRoomInfo.observe(viewLifecycleOwner) {
+            binding.fragmentUserInfoVer.text = "SSAFY ${it.generation}"
+            binding.fragmentUserInfoLoc.text = it.area
+            binding.fragmentUserInfoBan.text = it.classDescription
+
+        }
+    }
+
+
 
     private fun setListener() {
         initButtons()
