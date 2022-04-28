@@ -13,4 +13,5 @@ public class SbCommentDto {
     private UserDto user;
     private Long parent;
     private String content;
+    private String write_dt;
 }

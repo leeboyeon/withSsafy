@@ -31,12 +31,16 @@ public class SbComment {
     @Column(length = 500)
     private String content;
 
+    @Column
+    private String write_dt;
+
     @Builder
-    public SbComment(Long id, StudyBoard studyBoard, User user, Long parent, String content){
+    public SbComment(Long id, StudyBoard studyBoard, User user, Long parent, String content, String write_dt){
         this.id = id;
         this.studyBoard = studyBoard;
         this.user = user;
         this.parent = parent;
         this.content = content;
+        this.write_dt = write_dt;
     }
 }
