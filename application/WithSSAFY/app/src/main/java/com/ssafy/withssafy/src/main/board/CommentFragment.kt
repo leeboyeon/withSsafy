@@ -7,11 +7,14 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.jakewharton.rxbinding3.view.clicks
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
@@ -20,10 +23,12 @@ import com.ssafy.withssafy.src.dto.board.Comment
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.BoardService
 import com.ssafy.withssafy.src.network.service.CommentService
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import retrofit2.Response
 import retrofit2.http.HTTP
+import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
 /**
@@ -76,6 +81,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
     private fun initListener() {
         backBtnClickEvent()
         layoutListener()
+        insertCommentAndReply() // default : 댓글 등록
     }
 
     /**
@@ -135,7 +141,12 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
         // 댓글 수정 클릭 이벤트
         commentAdapter.setModifyItemClickListener(object : CommentAdapter.MenuClickListener {
             override fun onClick(position: Int, commentId: Int, userId: Int) {
+                showKeyboard(binding.commentFragmentEtComment)
+                
+                val cmtList = boardViewModel.commentList.value!!
+                binding.commentFragmentEtComment.setText(cmtList[position].content)
 
+                updateComment(commentId, position)
             }
         })
 
@@ -168,7 +179,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
      */
     private fun insertCommentAndReply() {
 
-        binding.commentFragmentTvConfirm.setOnClickListener {
+        binding.commentFragmentTvConfirm.onThrottleClick {
             val commentContent = binding.commentFragmentEtComment.text.toString()
 
             if (parentId == -1 && commentContent.isNotEmpty()) {  // 댓글 등록
@@ -194,7 +205,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                             boardViewModel.getCommentList(postId)
                         }
                         commentAdapter.notifyDataSetChanged()
-                        clearEditTest()
+                        clearEditText()
                         clearFocus(mainActivity)
                     } else {
                         showCustomToast("댓글 등록 실패")
@@ -228,7 +239,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                         }
                         commentAdapter.notifyDataSetChanged()
 
-                        clearEditTest()
+                        clearEditText()
                         clearFocus(mainActivity)
                     } else {
                         showCustomToast("대댓글 등록 실패")
@@ -238,19 +249,57 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                     Log.e(TAG, "insertCommentAndReply: ${e.response()}", )
                 }
             }
-        }
+        }.addDisposable()
     }
 
     /**
      * content 길이 체크
+     * @param input
      */
     private fun contentLenChk(input: String) : Boolean {
         return !(input.trim().isEmpty() || input.length > 255)
     }
 
+    /**
+     * 댓글 수정
+     */
+    private fun updateComment(commentId: Int, position: Int) {
+        binding.commentFragmentTvConfirm.onThrottleClick {
+            val commentContent = binding.commentFragmentEtComment.text.toString()
+
+            if (commentId > 0 && contentLenChk(commentContent)) {
+                val updateComment = Comment(commentId, commentContent)
+                
+                var response: Response<Any?>
+                try {
+                    runBlocking { 
+                        response = CommentService().modifyComment(updateComment)
+                    }
+                    if(response.isSuccessful) {
+                        showCustomToast("댓글이 수정되었습니다.")
+                        runBlocking {
+                            boardViewModel.getCommentList(postId)
+                        }
+                        commentAdapter.notifyItemChanged(position)
+//                        commentAdapter.notifyDataSetChanged()
+                        clearEditText()
+                        clearFocus(mainActivity)
+                    } else {
+                        showCustomToast("댓글 수정 실패")
+                        Log.d(TAG, "updateComment: ${response.code()}")
+                    }
+                } catch (e: HttpException) {
+                    Log.e(TAG, "updateComment: ${e.response()}", )
+                }
+            }
+        }.addDisposable()
+    }
+
 
     /**
      * 댓글 삭제
+     * @param commentId
+     * @param position
      */
     private fun deleteComment(commentId: Int, position: Int) {
         var response: Response<Any?>
@@ -280,7 +329,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
     /**
      * 댓글 주인 nick 초기화 및 comment text 초기화
      */
-    private fun clearEditTest() {
+    private fun clearEditText() {
         binding.commentFragmentTvWriterNick.visibility = View.GONE
         binding.commentFragmentTvWriterNick.text = ""
         binding.commentFragmentEtComment.setText("")
@@ -336,6 +385,20 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
             InputMethodManager.SHOW_FORCED or InputMethodManager.HIDE_IMPLICIT_ONLY
         )
     }
+
+    /**
+     * RxBinding의 Throttle 기능 사용하는 Button 함수
+     * @param throttleSecond 해당 시간동안 중복 클릭 방지 (기본으로 1초)
+     * @param subscribe 클릭 리스너 정의
+     * @since 04/26/22
+     * @author Jiwoo Choi
+     */
+    fun ImageView.onThrottleClick(throttleSecond: Long = 1, subscribe: (() -> Unit)? = null) = clicks()
+        .throttleFirst(throttleSecond, TimeUnit.SECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe {
+            subscribe?.invoke()
+        }
 
     override fun onStop() {
         super.onStop()
