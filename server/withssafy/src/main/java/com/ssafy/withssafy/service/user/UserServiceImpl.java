@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto insertUser(UserDto userDto){
         if(userRepository.findByUid(userDto.getUserId()).isPresent()){
-            throw new InvalidRequestException(ErrorCode.INVALID_REQUEST);
+            throw new InvalidRequestException(ErrorCode.JOINED_USER_ID);
         }
         
         User user = modelMapper.map(userDto, User.class);
@@ -137,6 +137,10 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public LoginDto insertManager(UserDto userDto, int status) {
+        if(userRepository.findByUid(userDto.getUserId()).isPresent()){
+            throw new InvalidRequestException(ErrorCode.JOINED_USER_ID);
+        }
+
         User user = userRepository.save(modelMapper.map(userDto, User.class));
         Manager manager = managerRepository.save(new Manager(0L, status, user));
         if(status != 0 && userDto.getClassRoomId() != null) classManagerRepository.save(new ClassManager(0L, user.getClassRoom(), user));
