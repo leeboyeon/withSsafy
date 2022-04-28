@@ -92,6 +92,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="기업명"
+                        android:textSize="14sp"
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="@+id/fragment_jobWrite_companyInfoTitle"
                         app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_companyInfoTitle" />
@@ -104,8 +105,9 @@
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/edit_nonpadding_background"
                         android:ems="10"
+                        android:textSize="14sp"
                         android:inputType="textPersonName"
-                        android:padding="3dp"
+                        android:padding="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/fragment_jobWrite_companyInfo_Name"
                         app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_companyInfo_Name" />
@@ -124,6 +126,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="근무시간"
+                            android:textSize="14sp"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_companyInfo_WorkTimeEdit"
                             app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +140,8 @@
                             android:background="@drawable/edit_nonpadding_background"
                             android:ems="10"
                             android:inputType="textPersonName"
-                            android:padding="3dp"
+                            android:padding="5dp"
+                            android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/fragment_jobWrite_companyInfo_WorkTimeTitle"
@@ -158,6 +162,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="급여"
+                            android:textSize="14sp"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -170,8 +175,9 @@
                             android:layout_marginStart="30dp"
                             android:background="@drawable/edit_nonpadding_background"
                             android:ems="10"
+                            android:textSize="14sp"
                             android:inputType="textPersonName"
-                            android:padding="3dp"
+                            android:padding="5dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/fragment_jobWrite_companyInfo_SalaryTitle"
@@ -192,6 +198,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="근무지"
+                            android:textSize="14sp"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -204,8 +211,9 @@
                             android:layout_marginStart="16dp"
                             android:background="@drawable/edit_nonpadding_background"
                             android:ems="10"
+                            android:textSize="14sp"
                             android:inputType="textPersonName"
-                            android:padding="3dp"
+                            android:padding="5dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/fragment_jobWrite_companyInfo_AddrTitle"
@@ -241,6 +249,7 @@
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/edit_background"
                         android:ems="10"
+                        android:textSize="14sp"
                         android:inputType="textPersonName"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -271,6 +280,7 @@
                         android:layout_height="150dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
+                        android:textSize="14sp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/edit_background"
@@ -305,6 +315,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="경력"
+                        android:textSize="14sp"
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="@+id/fragment_jobWrite_AddInfoTitle"
                         app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_AddInfoTitle" />
@@ -345,6 +356,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="학력"
+                            android:textSize="14sp"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_EduSpinner"
                             app:layout_constraintStart_toStartOf="parent"
@@ -375,6 +387,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="우대사항"
+                            android:textSize="14sp"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -406,6 +419,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="고용형태"
+                            android:textSize="14sp"
                             android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_CareerTypeSpinner"
@@ -423,7 +437,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/fragment_jobWrite_preferLayout"
+                        android:id="@+id/fragment_jobWrite_welfareLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -433,26 +447,28 @@
                         >
 
                         <TextView
-                            android:id="@+id/fragment_jobWrite_preferTitle"
+                            android:id="@+id/fragment_jobWrite_welfareTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="복리후생"
+                            android:textSize="14sp"
                             android:textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_preferEdit"
+                            app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_welfareEdit"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_preferEdit" />
+                            app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_welfareEdit" />
 
                         <EditText
-                            android:id="@+id/fragment_jobWrite_preferEdit"
+                            android:id="@+id/fragment_jobWrite_welfareEdit"
                             android:layout_width="0dp"
                             android:layout_height="100dp"
                             android:layout_marginStart="50dp"
                             android:background="@drawable/edit_nonpadding_background"
                             android:ems="10"
+                            android:textSize="14sp"
                             android:inputType="textPersonName"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/fragment_jobWrite_preferTitle"
-                            app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_preferTitle" />
+                            app:layout_constraintStart_toEndOf="@+id/fragment_jobWrite_welfareTitle"
+                            app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_welfareTitle" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

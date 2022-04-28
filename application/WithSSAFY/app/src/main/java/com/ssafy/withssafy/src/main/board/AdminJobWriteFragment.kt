@@ -11,8 +11,12 @@ import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentAdminJobWriteBinding
+import com.ssafy.withssafy.src.dto.Recruit
+import com.ssafy.withssafy.src.network.service.RecruitService
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -25,6 +29,8 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
     private var career = ""
     private var startDate = ""
     private var endDate = ""
+
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,6 +54,12 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
 
         binding.fragmentJobWriteDatePickerBtn.setOnClickListener {
             showDataRangePicker()
+        }
+
+        binding.fragmentJobWriteWrite.setOnClickListener {
+            runBlocking {
+                insertRecruit()
+            }
         }
     }
 
@@ -160,6 +172,35 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
             Log.d("end", endDate)
 
             binding.fragmentJobWriteDatePickerBtn.text = "${startDate} ~ ${endDate}"
+        }
+    }
+
+    private suspend fun insertRecruit() {
+        var career = career
+        var company = binding.fragmentJobWriteCompanyInfoNameEdit.text.toString()
+        var education = edu
+        var employType = employType
+        var endDate = endDate
+        var job = binding.fragmentJobWriteJobEdit.text.toString()
+        var location = binding.fragmentJobWriteCompanyInfoAddrEdit.text.toString()
+        var preferenceDescription = prefer
+        var salary = binding.fragmentJobWriteCompanyInfoSalaryEdit.text.toString()
+        var startDate = startDate
+        var taskDescription = binding.fragmentJobWriteTaskEdit.text.toString()
+        var welfare = binding.fragmentJobWriteWelfareEdit.text.toString()
+        var workingHours = binding.fragmentJobWriteCompanyInfoWorkTimeEdit.text.toString()
+
+        var recruit = Recruit(career, company, education, employType, endDate, job, location, preferenceDescription, salary, startDate, taskDescription, userId, welfare, workingHours)
+        runBlocking {
+            val response = RecruitService().insertRecruit(recruit)
+            Log.d(TAG, "insertRecruit: ${response.body()}")
+            Log.d(TAG, "insertRecruit: ${response.code()}")
+            if(response.code() == 204) {
+                showCustomToast("채용 공고 작성이 완료되었습니다.")
+                this@AdminJobWriteFragment.findNavController().popBackStack()
+            } else {
+                showCustomToast("채용 공고 작성이 실패했습니다.")
+            }
         }
     }
     companion object {
