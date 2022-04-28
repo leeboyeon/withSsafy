@@ -2,10 +2,15 @@ package com.ssafy.withssafy.service.board;
 
 import com.ssafy.withssafy.dto.board.BoardRequest;
 import com.ssafy.withssafy.dto.board.BoardResponse;
+import com.ssafy.withssafy.dto.board.LikeDto;
+import com.ssafy.withssafy.dto.recruit.RecruitLikeDto;
 import com.ssafy.withssafy.entity.Board;
+import com.ssafy.withssafy.entity.LikeManagement;
+import com.ssafy.withssafy.entity.RecruitLikeManagement;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.BoardRepository;
+import com.ssafy.withssafy.repository.LikeManagementRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,6 +28,7 @@ public class BoardService {
 
     private final ModelMapper modelMapper;
 
+    private final LikeManagementRepository likeManagementRepository;
     @Transactional
     public void addBoard(BoardRequest boardRequest) {
         Board board = modelMapper.map(boardRequest, Board.class);
@@ -54,5 +60,25 @@ public class BoardService {
     @Transactional
     public void removeBoardById(Long id) {
         boardRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void doLike(LikeDto likeDto){
+        LikeManagement likeManagement = likeManagementRepository.findByBoardIdAndUserId(likeDto.getBoardId(), likeDto.getUserId());
+        if(likeManagement == null){
+            likeManagement = modelMapper.map(likeDto,LikeManagement.class);
+            likeManagementRepository.save(likeManagement);
+        }else{
+            likeManagementRepository.delete(likeManagement);
+        }
+    }
+
+    public boolean isLike(Long boardId, Long userId){
+        LikeManagement likeManagement = likeManagementRepository.findByBoardIdAndUserId(boardId, userId);
+        if(likeManagement == null){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
