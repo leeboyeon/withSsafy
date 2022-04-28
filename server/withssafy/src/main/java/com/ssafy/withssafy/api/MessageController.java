@@ -32,13 +32,13 @@ public class MessageController {
 
     @GetMapping("/receive")
     @ApiOperation(value = "특정 유저가 받은 모든 메세지를 가져온다.")
-    public ResponseEntity<List<MessageDto>> findReceiveMessageByUid(@RequestParam("유저 id")Long id){
+    public ResponseEntity<List<MessageDto>> findReceiveMessageByUid(@RequestParam Long id){
         return new ResponseEntity<>(messageService.findReceiveMessageByUid(id), HttpStatus.OK);
     }
 
     @GetMapping("/send")
     @ApiOperation(value = "특정 유저가 보낸 모든 메세지를 가져온다.")
-    public ResponseEntity<List<MessageDto>> findSendMessageByUid(@RequestParam("유저 id")Long id){
+    public ResponseEntity<List<MessageDto>> findSendMessageByUid(@RequestParam Long id){
         return new ResponseEntity<>(messageService.findSendMessageByUid(id), HttpStatus.OK);
     }
 
