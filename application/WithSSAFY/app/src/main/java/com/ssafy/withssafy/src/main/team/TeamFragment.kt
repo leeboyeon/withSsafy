@@ -91,7 +91,6 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
                 var studyId = bundleOf("studyId" to id)
                 this@TeamFragment.findNavController().navigate(R.id.teamDetailFragment, studyId)
             }
-
         })
     }
     companion object {

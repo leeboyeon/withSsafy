@@ -26,8 +26,8 @@
 
                 <ImageButton
                     android:id="@+id/fragment_team_appBarPrev"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
