@@ -8,14 +8,10 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ssafy.withssafy.src.dto.Study
+import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.main.team.TeamAdapter
 import com.ssafy.withssafy.util.CommonUtils
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.logging.SimpleFormatter
 
 @BindingAdapter("studyListData")
 fun bindingStudyList(recyclerView: RecyclerView, data:List<Study>?){
