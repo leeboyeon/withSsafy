@@ -64,4 +64,10 @@ public class RecruitService {
             return true;
         }
     }
+
+    public List<RecruitListResDto> GetMyRecruit(Long userId){
+        List<Recruit> recruits = recruitRepository.findAllMyRecruit(userId);
+        return recruits.stream().map(recruit -> modelMapper.map(recruit, RecruitListResDto.class))
+                .collect(Collectors.toList());
+    }
 }
