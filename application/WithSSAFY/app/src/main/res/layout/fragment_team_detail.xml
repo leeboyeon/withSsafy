@@ -102,13 +102,35 @@
                 app:layout_constraintStart_toStartOf="@+id/fragment_teamDetail_Img"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_teamDetail_Img" />
 
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="모집인원 |"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="@+id/fragment_teamDetail_content"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_teamDetail_content" />
+
+            <TextView
+                android:id="@+id/fragment_teamDetail_memberSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:textViewPeople="@{viewModel.study.sbLimit}"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/textView13"
+                app:layout_constraintStart_toEndOf="@+id/textView13"
+                app:layout_constraintTop_toTopOf="@+id/textView13" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/fragment_teamDetail_type"
@@ -145,26 +167,80 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="모집인원 |"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="@+id/fragment_teamDetail_content"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_teamDetail_content" />
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/fragment_teamDetail_CommentInputLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
 
-            <TextView
-                android:id="@+id/fragment_teamDetail_memberSize"
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/fragment_teamDetail_commentRv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_comment_list" />
+                </LinearLayout>
+            </ScrollView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fragment_teamDetail_CommentInputLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:textViewPeople="@{viewModel.study.sbLimit}"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/textView13"
-                app:layout_constraintStart_toEndOf="@+id/textView13"
-                app:layout_constraintTop_toTopOf="@+id/textView13" />
+                android:background="@drawable/bg_comment_input"
+                android:clickable="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/postDetailFragment_tvWriterNick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:paddingStart="10dp"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@+id/postDetailFragment_etComment"
+                    app:layout_constraintStart_toStartOf="@+id/postDetailFragment_etComment"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/postDetailFragment_etComment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:hint="댓글을 입력하세요."
+                    android:inputType="textMultiLine"
+                    android:lines="2"
+                    android:maxLines="3"
+                    android:minLines="1"
+                    android:paddingStart="10dp"
+                    android:scrollbars="vertical"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/postDetailFragment_tvConfirm"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/postDetailFragment_tvWriterNick" />
+
+                <ImageView
+                    android:id="@+id/postDetailFragment_tvConfirm"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:clickable="false"
+                    android:src="@drawable/ic_send_512px"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/purple_200" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </layout>

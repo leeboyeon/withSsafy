@@ -1,4 +1,6 @@
-package com.ssafy.withssafy.src.dto
+package com.ssafy.withssafy.src.dto.study
+
+import com.ssafy.withssafy.src.dto.UserX
 
 data class Study(
     val area: String,
