@@ -9,9 +9,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentAdminJobWriteBinding
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 private const val TAG = "AdminJobWriteFragment"
 class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(FragmentAdminJobWriteBinding::bind,R.layout.fragment_admin_job_write) {
@@ -19,6 +23,8 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
     private var prefer = ""
     private var employType = ""
     private var career = ""
+    private var startDate = ""
+    private var endDate = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -38,6 +44,10 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
     private fun initButtons(){
         binding.fragmentJobWriteAppBarPrev.setOnClickListener {
             this@AdminJobWriteFragment.findNavController().popBackStack()
+        }
+
+        binding.fragmentJobWriteDatePickerBtn.setOnClickListener {
+            showDataRangePicker()
         }
     }
 
@@ -128,6 +138,28 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
             if(isChecked) career = "신입"
             else  career = ""
             Log.d(TAG, "selectCheckBox: $career")
+        }
+    }
+
+    fun showDataRangePicker(){
+        val dateRangePicker =
+            MaterialDatePicker.Builder.dateRangePicker()
+                .setTitleText("Select dates")
+                .build()
+        dateRangePicker.show(childFragmentManager, "date_picker")
+        dateRangePicker.addOnPositiveButtonClickListener { selection ->
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = selection?.first ?: 0
+            val sDate = selection.first
+            startDate = SimpleDateFormat("yyyy-MM-dd").format(calendar.time).toString()
+            Log.d("start", startDate)
+
+            calendar.timeInMillis = selection?.second ?: 0
+            val eDate = selection.second
+            endDate = SimpleDateFormat("yyyy-MM-dd").format(calendar.time).toString()
+            Log.d("end", endDate)
+
+            binding.fragmentJobWriteDatePickerBtn.text = "${startDate} ~ ${endDate}"
         }
     }
     companion object {
