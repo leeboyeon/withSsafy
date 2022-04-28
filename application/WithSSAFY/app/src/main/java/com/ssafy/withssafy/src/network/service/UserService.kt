@@ -35,6 +35,28 @@ class UserService {
         })
     }
 
+    // 관리자 회원가입
+    fun signUpManager(status: Int, user: User, callback: RetrofitCallback<Any>) {
+        RetrofitUtil.userService.signUpManager(status, user).enqueue(object : Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                Log.d("UserService", "onResponse: $status  $user")
+                val res = response.body()
+                Log.d("UserService", "onResponse: $res")
+                if(response.code() == 200) {
+                    if (res != null) {
+                        callback.onSuccess(response.code(), res)
+                    }
+                } else {
+                    callback.onFailure(response.code())
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                callback.onError(t)
+            }
+        })
+    }
+
     // 로그인
     fun login(user: User, callback: RetrofitCallback<UserInfoResponse>) {
         RetrofitUtil.userService.login(user.password, user.userId).enqueue(object : Callback<UserInfoResponse> {

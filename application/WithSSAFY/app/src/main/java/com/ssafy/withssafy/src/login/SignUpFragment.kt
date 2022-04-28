@@ -29,6 +29,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     private var area = ""
     private var classNum = ""
     private var classRoomId = -1
+    private var status = -1
+    private var signType = 1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,7 +50,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
             var user = isAvailable()
             if(user != null) {
                 Log.d(TAG, "onViewCreated: $user")
-                signUp(user)
+                signUp(user, status)
             } else {
                 Toast.makeText(requireContext(), "입력 값을 다시 확인해 주세요", Toast.LENGTH_LONG).show()
             }
@@ -118,27 +120,44 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                 R.id.signUpFragment_rad_btn_0 -> {
                     binding.signUpFragmentTilStuId.visibility = View.VISIBLE
                     binding.signUpFragmentSpinType.visibility = View.GONE
+                    signType = 1
                 }
                 R.id.signUpFragment_rad_btn_1 -> {
                     binding.signUpFragmentTilStuId.visibility = View.GONE
                     binding.signUpFragmentSpinType.visibility = View.VISIBLE
+                    signType = 2
                 }
             }
         }
     }
 
     private fun isAvailable() : User? {
-        if((validatedId() && validatedPw() && validatedName() && validatedStuId()) || (gen != "" || area != "" || classNum != "")) {
+        if((validatedId() && validatedPw() && validatedName()) || (gen != "" || area != "" || classNum != "")) {
             val id = binding.signUpFragmentEtId.text.toString()
             val pw = binding.signUpFragmentEtPw.text.toString()
             val shaPw = signInActivity.sha256(pw)
             val name = binding.signUpFragmentEtName.text.toString()
-            val stuId = binding.signUpFragmentEtStuId.text.toString()
-            return User(name, id, shaPw, stuId, classRoomId)
+            if(signType == 1) {
+                if(validatedStuId()) {
+                    val stuId = binding.signUpFragmentEtStuId.text.toString()
+                    return User(name, id, shaPw, stuId, classRoomId)
+                } else {
+                    return null
+                }
+            } else if(signType == 2) {
+                if(status != -1) {
+                    return User(name, id, shaPw, classRoomId)
+                } else{
+                    return null
+                }
+            } else {
+                return null
+            }
         } else {
             return null
         }
     }
+
 
     /**
      * 입력된 id 유효성 검사
@@ -218,9 +237,28 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     }
 
     private fun selectSpinner() {
+        val typeSpin = binding.signUpFragmentSpinType
         val genSpin= binding.signUpFragmentSpinnerStuGen
         val areaSpin = binding.signUpFragmentSpinnerArea
         val classSpin = binding.signUpFragmentSpinnerClass
+
+        typeSpin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when (position) {
+                    0 -> {
+                        status = -1
+                    }
+                    else -> {
+                        status = position - 1
+
+                    }
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        }
 
         genSpin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -323,23 +361,44 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         }
     }
 
-    private fun signUp(user: User){
-        UserService().signUp(user, object : RetrofitCallback<User> {
-            override fun onError(t: Throwable) {
-                Log.d(TAG, t.message?:"회원가입 통신오류")
-            }
+    private fun signUp(user: User, status : Int){
+        if(signType == 1) {
+            UserService().signUp(user, object : RetrofitCallback<User> {
+                override fun onError(t: Throwable) {
+                    Log.d(TAG, t.message?:"회원가입 통신오류")
+                }
 
-            override fun onSuccess(code: Int, responseData: User) {
-                Toast.makeText(requireContext(), "회원가입이 완료되었습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show()
-                (requireActivity() as SingInActivity).onBackPressed()
-            }
+                override fun onSuccess(code: Int, responseData: User) {
+                    showCustomToast("회원가입이 완료되었습니다. 다시 로그인 해주세요.")
+                    (requireActivity() as SingInActivity).onBackPressed()
+                }
 
-            override fun onFailure(code: Int) {
-                Log.d(TAG, "onFailure: resCode $code")
-            }
+                override fun onFailure(code: Int) {
+                    Log.d(TAG, "onFailure: resCode $code")
+                }
 
-        })
+            })
+        } else if(signType == 2) {
+            Log.d(TAG, "signUp: ")
+            UserService().signUpManager(status, user, object : RetrofitCallback<Any> {
+                override fun onError(t: Throwable) {
+                    Log.d(TAG, t.message?:"회원가입 통신오류")
+                }
+
+                override fun onSuccess(code: Int, responseData: Any) {
+                    showCustomToast("회원가입이 완료되었습니다. 다시 로그인 해주세요.")
+                    (requireActivity() as SingInActivity).onBackPressed()
+                }
+
+                override fun onFailure(code: Int) {
+                    Log.d(TAG, "onFailure: resCode $code")
+                }
+
+            })
+        }
+
     }
+
 
 
     inner class TextFieldValidation(private val view: View): TextWatcher {

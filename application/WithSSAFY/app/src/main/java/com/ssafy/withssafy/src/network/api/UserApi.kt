@@ -16,6 +16,10 @@ interface UserApi {
     @POST("/user")
     fun signUp(@Body user:User) : Call<User>
 
+    // 관리자 회원가입
+    @POST("/user/manager")
+    fun signUpManager(@Query("status") status: Int, @Body user:User) : Call<Any>
+
     // 로그인
     @GET("/user/login")
     fun login(@Query("비밀번호") password: String, @Query("아이디") userId: String): Call<UserInfoResponse>
