@@ -13,8 +13,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 public class StudyMember {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

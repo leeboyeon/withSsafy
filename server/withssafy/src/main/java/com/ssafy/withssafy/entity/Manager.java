@@ -11,8 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Manager {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column

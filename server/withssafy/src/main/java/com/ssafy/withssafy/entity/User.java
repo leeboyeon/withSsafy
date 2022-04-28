@@ -13,8 +13,7 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 public class User {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
