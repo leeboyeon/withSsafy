@@ -14,6 +14,10 @@ import com.ssafy.withssafy.databinding.ItemReplyListBinding
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.board.Comment
 
+/**
+ * @since 04/27/22
+ * @author Jiwoo Choi
+ */
 class ReplyAdapter (val context: Context) : RecyclerView.Adapter<ReplyAdapter.ViewHolder>(){
 
     lateinit var commentList: MutableList<Comment>

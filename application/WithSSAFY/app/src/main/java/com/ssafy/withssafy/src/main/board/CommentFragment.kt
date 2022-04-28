@@ -21,9 +21,15 @@ import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.BoardService
 import com.ssafy.withssafy.src.network.service.CommentService
 import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
 import retrofit2.Response
+import retrofit2.http.HTTP
 import kotlin.properties.Delegates
 
+/**
+ * @since 04/27/22
+ * @author Jiwoo Choi
+ */
 class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBinding::bind, R.layout.fragment_comment) {
     private val TAG = "CommentFragment_ws"
     private lateinit var mainActivity: MainActivity
@@ -91,7 +97,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
     }
 
     /**
-     * 댓글, 대댓글 recyclerView 초기화
+     * 댓글, 대댓글 recyclerView init + 아이템 클릭 이벤트
      */
     private fun initRecyclerView() {
         commentAdapter = CommentAdapter(requireContext(), boardViewModel)
@@ -125,6 +131,34 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                 insertCommentAndReply()
             }
         })
+
+        // 댓글 수정 클릭 이벤트
+        commentAdapter.setModifyItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 댓글 삭제 클릭 이벤트
+        commentAdapter.setDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+                deleteComment(commentId, position)
+            }
+        })
+
+        // 댓글 작성자에게 쪽지 보내기 클릭 이벤트
+        commentAdapter.setSendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 댓글 신고 클릭 이벤트
+        commentAdapter.setReportItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
     }
 
     /**
@@ -147,23 +181,29 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
 
                 var response: Response<Any?>
 
-                runBlocking {
-                    response = CommentService().addComment(comment)
-                }
+                try {
 
-                if (response.isSuccessful) {
-
-                    showCustomToast("댓글이 등록되었습니다.")
                     runBlocking {
-                        boardViewModel.getCommentList(postId)
+                        response = CommentService().addComment(comment)
                     }
-                    commentAdapter.notifyDataSetChanged()
-                    clearEditTest()
-                    clearFocus(mainActivity)
-                } else {
-                    showCustomToast("댓글 등록 실패")
-                    Log.e(TAG, "insertCommentAndReply: ${response.message()}", )
+
+                    if (response.isSuccessful) {
+
+                        showCustomToast("댓글이 등록되었습니다.")
+                        runBlocking {
+                            boardViewModel.getCommentList(postId)
+                        }
+                        commentAdapter.notifyDataSetChanged()
+                        clearEditTest()
+                        clearFocus(mainActivity)
+                    } else {
+                        showCustomToast("댓글 등록 실패")
+                        Log.d(TAG, "insertCommentAndReply: ${response.message()}", )
+                    }
+                } catch (e: HttpException) {
+                    Log.e(TAG, "insertCommentAndReply: ${e.response()}", )
                 }
+
             } else if (parentId != -1 && contentLenChk(commentContent)) {   // 대댓글 작성
                 val reply = Comment(
                     parent = parentId,
@@ -174,28 +214,32 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
 
                 var response: Response<Any?>
 
-                runBlocking {
-                    response = CommentService().addComment(reply)
-                }
+                try {
 
-                if (response.isSuccessful) {
-
-                    showCustomToast("대댓글이 등록되었습니다.")
                     runBlocking {
-                        boardViewModel.getCommentList(postId)
+                        response = CommentService().addComment(reply)
                     }
-                    commentAdapter.notifyDataSetChanged()
 
-                    clearEditTest()
-                    clearFocus(mainActivity)
-                } else {
-                    showCustomToast("대댓글 등록 실패")
-                    Log.e(TAG, "insertCommentAndReply: ${response.message()}",)
+                    if (response.isSuccessful) {
+
+                        showCustomToast("대댓글이 등록되었습니다.")
+                        runBlocking {
+                            boardViewModel.getCommentList(postId)
+                        }
+                        commentAdapter.notifyDataSetChanged()
+
+                        clearEditTest()
+                        clearFocus(mainActivity)
+                    } else {
+                        showCustomToast("대댓글 등록 실패")
+                        Log.d(TAG, "insertCommentAndReply: ${response.message()}",)
+                    }
+                } catch (e: HttpException) {
+                    Log.e(TAG, "insertCommentAndReply: ${e.response()}", )
                 }
             }
         }
     }
-
 
     /**
      * content 길이 체크
@@ -203,6 +247,35 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
     private fun contentLenChk(input: String) : Boolean {
         return !(input.trim().isEmpty() || input.length > 255)
     }
+
+
+    /**
+     * 댓글 삭제
+     */
+    private fun deleteComment(commentId: Int, position: Int) {
+        var response: Response<Any?>
+        try {
+            runBlocking {
+                response = CommentService().deleteComment(commentId)
+            }
+            if(response.isSuccessful) {
+                showCustomToast("댓글이 삭제되었습니다.")
+                runBlocking {
+                    boardViewModel.getCommentList(postId)
+                }
+                commentAdapter.notifyItemRemoved(position)
+//                commentAdapter.notifyDataSetChanged()
+            } else {
+                showCustomToast("댓글 삭제 실패")
+                Log.d(TAG, "deleteComment: ${response.message()}", )
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "deleteComment: ${e.response()}", )
+        }
+    }
+
+
+
 
     /**
      * 댓글 주인 nick 초기화 및 comment text 초기화

@@ -22,6 +22,10 @@ import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.board.Comment
 import com.ssafy.withssafy.src.viewmodel.BoardViewModel
 
+/**
+ * @since 04/27/22
+ * @author Jiwoo Choi
+ */
 class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
     private val TAG = "CommentAdapter_ws"
 
@@ -139,11 +143,11 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
                     popup.setOnMenuItemClickListener {
                         when (it.itemId) {
                             R.id.modify -> {
-                                menuItemClickListener.onClick(position, comment.id, comment.userId)
+                                modifyItemClickListener.onClick(position, comment.id, comment.userId)
                                 return@setOnMenuItemClickListener true
                             }
                             R.id.delete -> {
-                                menuItemClickListener.onClick(position, comment.id, comment.userId)
+                                deleteItemClickListener.onClick(position, comment.id, comment.userId)
                                 return@setOnMenuItemClickListener true
                             }
                             else -> {
@@ -158,11 +162,11 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
                     popup.setOnMenuItemClickListener {
                         when (it.itemId) {
                             R.id.sendNote -> {  // 쪽지 보내기 -> 댓글 작성자 id 필요
-                                menuItemClickListener.onClick(position, comment.id, comment.userId)
+                                sendNoteItemClickListener.onClick(position, comment.id, comment.userId)
                                 return@setOnMenuItemClickListener true
                             }
                             R.id.report -> {    // 신고 -> 댓글 작성자 id, 댓글 id
-                                menuItemClickListener.onClick(position, comment.id, comment.userId)
+                                reportItemClickListener.onClick(position, comment.id, comment.userId)
                                 return@setOnMenuItemClickListener true
                             }
                             else -> {
@@ -194,9 +198,24 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
         fun onClick(position: Int, commentId: Int, userId: Int)
     }
 
-    private lateinit var menuItemClickListener : MenuClickListener
-    fun setMenuItemClickListener(menuClickListener: MenuClickListener) {
-        this.menuItemClickListener = menuClickListener
+    private lateinit var modifyItemClickListener : MenuClickListener
+    fun setModifyItemClickListener(modifyClickListener: MenuClickListener) {
+        this.modifyItemClickListener = modifyClickListener
+    }
+
+    private lateinit var deleteItemClickListener : MenuClickListener
+    fun setDeleteItemClickListener(deleteClickListener: MenuClickListener) {
+        this.deleteItemClickListener = deleteClickListener
+    }
+
+    private lateinit var sendNoteItemClickListener : MenuClickListener
+    fun setSendNoteItemClickListener(sendNoteClickListener: MenuClickListener) {
+        this.sendNoteItemClickListener = sendNoteClickListener
+    }
+
+    private lateinit var reportItemClickListener : MenuClickListener
+    fun setReportItemClickListener(reportClickListener: MenuClickListener) {
+        this.reportItemClickListener = reportClickListener
     }
 
 

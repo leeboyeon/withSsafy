@@ -14,7 +14,10 @@ import com.ssafy.withssafy.databinding.FragmentPostDetailBinding
 import com.ssafy.withssafy.src.main.MainActivity
 import kotlinx.coroutines.runBlocking
 
-
+/**
+ * @since 04/26/22
+ * @author Jiwoo Choi
+ */
 class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostDetailBinding::bind, R.layout.fragment_post_detail) {
     private val TAG = "PostDetailFragment_ws"
     private lateinit var mainActivity: MainActivity
@@ -83,10 +86,10 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
      */
     private fun commentLayoutClickEvent() {
 
-//        binding.postDetailFragmentClCommentAll.setOnTouchListener { v, event ->
+        binding.postDetailFragmentClCommentAll.setOnTouchListener { v, event ->
 //            binding.postDetailFragmentScrollview.requestDisallowInterceptTouchEvent(true)
-//            return@setOnTouchListener false
-//        }
+            return@setOnTouchListener false
+        }
 
 
         binding.postDetailFragmentClCommentAll.setOnClickListener {
