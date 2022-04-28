@@ -4,6 +4,8 @@ import com.ssafy.withssafy.dto.notification.NotificationResponseDto;
 import com.ssafy.withssafy.dto.notification.NotificationRequestDto;
 import com.ssafy.withssafy.dto.user.UserDto;
 import com.ssafy.withssafy.entity.Notification;
+import com.ssafy.withssafy.errorcode.ErrorCode;
+import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.NotificationRepository;
 import com.ssafy.withssafy.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -64,5 +66,24 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public NotificationResponseDto findById(Long id) {
         return modelMapper.map(notificationRepository.findById(id).get(), NotificationResponseDto.class);
+    }
+
+    @Override
+    public List<NotificationResponseDto> findByUId(Long userId) {
+        if(!userRepository.findById(userId).isPresent()) {
+            throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
+        }
+
+
+        return null;
+    }
+
+    @Override
+    public List<NotificationResponseDto> findByUIdAndType(Long userId, Integer type) {
+        if(!userRepository.findById(userId).isPresent()) {
+            throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
+        }
+
+        return null;
     }
 }

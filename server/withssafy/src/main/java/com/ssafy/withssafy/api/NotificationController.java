@@ -20,37 +20,49 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/notification")
-@Api(tags = "공지사항 API")
+@Api(tags = "알림 API")
 public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
     @GetMapping
-    @ApiOperation(value = "모든 공지사항을 조회합니다.")
+    @ApiOperation(value = "모든 알림을 조회합니다.")
     public ResponseEntity<List<NotificationResponseDto>> findAll(){
         return new ResponseEntity<>(notificationService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "아이디에 맞는 공지사항을 조회합니다.")
+    @ApiOperation(value = "아이디에 맞는 알림을 조회합니다.")
     public ResponseEntity<NotificationResponseDto> findById(@RequestParam Long id){
         return new ResponseEntity<>(notificationService.findById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/user/{id}")
+    @ApiOperation(value = "회원 계정 아이디에 일치하는 모든 알림을 조회합니다.")
+    public ResponseEntity<List<NotificationResponseDto>> findByUId(@RequestParam Long userId){
+        return new ResponseEntity<>(notificationService.findByUId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/type")
+    @ApiOperation(value = "아이디에 맞는 알림을 조회합니다.")
+    public ResponseEntity<List<NotificationResponseDto>> findByUIdAndType(@RequestParam Long userId, @RequestParam Integer type){
+        return new ResponseEntity<>(notificationService.findByUIdAndType(userId, type), HttpStatus.OK);
+    }
+
     @PostMapping
-    @ApiOperation(value = "공지사항을 추가합니다.")
+    @ApiOperation(value = "알림을 추가합니다.")
     public ResponseEntity<NotificationResponseDto> insert(@RequestBody NotificationRequestDto notificationRequestDto){
         return new ResponseEntity<>(notificationService.insert(notificationRequestDto), HttpStatus.OK);
     }
 
     @PutMapping
-    @ApiOperation(value = "보낸 아이디에 해당하는 공지사항을 수정합니다.")
+    @ApiOperation(value = "보낸 아이디에 해당하는 알림을 수정합니다.")
     public ResponseEntity<NotificationResponseDto> update(@RequestBody NotificationRequestDto notificationRequestDto){
         return new ResponseEntity<>(notificationService.update(notificationRequestDto), HttpStatus.OK);
     }
 
     @DeleteMapping
-    @ApiOperation(value = "보낸 아이디에 해당하는 공지사항을 삭제합니다.")
+    @ApiOperation(value = "보낸 아이디에 해당하는 알림을 삭제합니다.")
     public ResponseEntity<NotificationResponseDto> delete(@RequestParam Long id){
         return new ResponseEntity<>(notificationService.delete(id), HttpStatus.OK);
     }
