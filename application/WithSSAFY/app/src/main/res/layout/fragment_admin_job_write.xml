@@ -462,7 +462,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/fragment_jobWrite_applyLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
 
                     <TextView
                         android:id="@+id/fragment_jobWrite_applyTitle"
@@ -486,50 +487,71 @@
                         app:layout_constraintEnd_toEndOf="@+id/fragment_jobWrite_applyTitle"
                         app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_applyTitle" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
                         app:layout_constraintStart_toStartOf="@+id/fragment_jobWrite_applyTitle"
                         app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_applyTitle">
 
                         <TextView
-                            android:id="@+id/fragment_jobWrite_applyTimeStart"
+                            android:id="@+id/fragment_jobWrite_datePicker_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/textview_background"
-                            android:padding="5dp"
-                            android:text="TextView"
-                            android:textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_applyTimeEnd"
-                            app:layout_constraintEnd_toStartOf="@+id/textView53"
-                            app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_applyTimeEnd" />
+                            android:text="기간 선택하기"
+                            android:includeFontPadding="false"
+                            android:layout_gravity="end|center_vertical"
+                            android:visibility="visible"
+                            />
 
-                        <TextView
-                            android:id="@+id/textView53"
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/fragment_jobWrite_applyTime_Layout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:text="~"
-                            android:textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/fragment_jobWrite_applyTimeEnd"
-                            app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_applyTimeEnd" />
+                            android:visibility="gone"
+                            >
 
-                        <TextView
-                            android:id="@+id/fragment_jobWrite_applyTimeEnd"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/textview_background"
-                            android:padding="5dp"
-                            android:text="TextView"
-                            android:textColor="@color/black"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/fragment_jobWrite_applyTimeStart"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/textview_background"
+                                android:padding="5dp"
+                                android:text="TextView"
+                                android:textColor="@color/black"
+                                app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_applyTimeEnd"
+                                app:layout_constraintEnd_toStartOf="@+id/textView53"
+                                app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_applyTimeEnd" />
+
+                            <TextView
+                                android:id="@+id/textView53"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:text="~"
+                                android:textColor="@color/black"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/fragment_jobWrite_applyTimeEnd"
+                                app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_applyTimeEnd" />
+
+                            <TextView
+                                android:id="@+id/fragment_jobWrite_applyTimeEnd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/textview_background"
+                                android:padding="5dp"
+                                android:text="TextView"
+                                android:textColor="@color/black"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </FrameLayout>
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
