@@ -7,21 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentMessageDetailBinding
+import kotlinx.coroutines.runBlocking
 
 class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(FragmentMessageDetailBinding::bind,R.layout.fragment_message_detail) {
-    private var groupId = 0
+    private var fromId = 0
     private lateinit var detailAdapter: MessageDetailAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            groupId = it.getInt("groupId")
+            fromId = it.getInt("groupId")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = messageViewModel
+        runBlocking {
+            messageViewModel.getMessageTalk(ApplicationClass.sharedPreferencesUtil.getUser().id, fromId)
+        }
         setListener()
     }
     private fun setListener(){
@@ -29,6 +35,9 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
     }
     private fun initAdapter(){
         detailAdapter = MessageDetailAdapter()
+        messageViewModel.messageTalk.observe(viewLifecycleOwner){
+            detailAdapter.list = it
+        }
         binding.fragmentMessgaeDetailRv.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
             adapter = detailAdapter

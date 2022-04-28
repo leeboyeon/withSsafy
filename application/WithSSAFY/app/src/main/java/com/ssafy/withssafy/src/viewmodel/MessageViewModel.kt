@@ -11,17 +11,29 @@ import kotlinx.coroutines.launch
 class MessageViewModel : ViewModel(){
     private val _messageReceive = MutableLiveData<MutableList<Message>>()
     private val _messageSend = MutableLiveData<MutableList<Message>>()
+    private val _messageGroup = MutableLiveData<MutableList<Message>>()
+    private val _messageTalk = MutableLiveData<MutableList<Message>>()
 
     val messageReceive : LiveData<MutableList<Message>>
         get() = _messageReceive
     val messageSend : LiveData<MutableList<Message>>
         get() = _messageSend
+    val messageGroup : LiveData<MutableList<Message>>
+        get() = _messageGroup
+    val messageTalk : LiveData<MutableList<Message>>
+        get() = _messageTalk
 
     fun setMessageReceive(list : MutableList<Message>){
         _messageReceive.value = list
     }
     fun setMessageSend(list:MutableList<Message>){
         _messageSend.value = list
+    }
+    fun setMessageGroup(list:MutableList<Message>){
+        _messageGroup.value = list
+    }
+    fun setMessageTalk(list:MutableList<Message>){
+        _messageTalk.value = list
     }
 
     suspend fun getReceiveMessage(userId:Int){
@@ -43,6 +55,29 @@ class MessageViewModel : ViewModel(){
             if(response.code() == 200){
                 if(res!=null){
                     setMessageSend(res)
+                }
+            }
+        }
+    }
+    suspend fun getMessageGroup(userId:Int){
+        val response = MessageService().getMessageByUserIdToGroup(userId)
+        viewModelScope.launch {
+            val res = response.body()
+            if(response.code() == 200){
+                if(res!=null){
+                    setMessageGroup(res)
+                }
+            }
+        }
+    }
+
+    suspend fun getMessageTalk(toId:Int, fromId:Int){
+        val response = MessageService().getMessageTalk(fromId, toId)
+        viewModelScope.launch {
+            val res = response.body()
+            if(response.code() == 200){
+                if(res!=null){
+                    setMessageTalk(res)
                 }
             }
         }

@@ -8,7 +8,10 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.study.Study
+import com.ssafy.withssafy.src.main.notification.MessageDetailAdapter
+import com.ssafy.withssafy.src.main.notification.MessageGroupAdapter
 import com.ssafy.withssafy.src.main.team.TeamAdapter
 import com.ssafy.withssafy.util.CommonUtils
 import java.text.SimpleDateFormat
@@ -96,6 +99,32 @@ fun bindEllipsisContent(textView: TextView, content: String) {
 }
 
 @BindingAdapter("messageTextView")
-fun bindMsgTextView(textView: TextView, userNick:String){
-    textView.text = "${userNick}과의 대화"
+fun bindMsgTextView(textView: TextView, userNickindex:Int){
+    textView.text = "익명${userNickindex}과의 대화"
+}
+
+@BindingAdapter("messageGroupDataList")
+fun bindRecyclerViewMessageGroup(recyclerView: RecyclerView, data:List<Message>?){
+    var adapter = recyclerView.adapter as MessageGroupAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as MessageGroupAdapter
+    }
+    adapter.list = data as MutableList<Message>
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("messageTalkDataList")
+fun bindRecyclerViewMessageTalk(recyclerView: RecyclerView, data:List<Message>?){
+    var adapter = recyclerView.adapter as MessageDetailAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as MessageDetailAdapter
+    }
+    adapter.list = data as MutableList<Message>
+    adapter.notifyDataSetChanged()
 }

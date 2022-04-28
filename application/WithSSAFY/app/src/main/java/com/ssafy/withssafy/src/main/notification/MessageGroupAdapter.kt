@@ -26,7 +26,7 @@ class MessageGroupAdapter  : RecyclerView.Adapter<MessageGroupAdapter.GroupViewH
         holder.apply {
             bind(list[position])
             itemView.setOnClickListener {
-                itemClickListener.onClick(it,position,list[position].id)
+                itemClickListener.onClick(it,position,list[position].u_fromId)
             }
         }
     }
@@ -35,7 +35,7 @@ class MessageGroupAdapter  : RecyclerView.Adapter<MessageGroupAdapter.GroupViewH
         return list.size
     }
     interface ItemClickListener{
-        fun onClick(view: View, position:Int, groupId:Int)
+        fun onClick(view: View, position:Int, fromId:Int)
     }
     private lateinit var itemClickListener : ItemClickListener
     fun setItemClickListener(itemClickListener: ItemClickListener){
