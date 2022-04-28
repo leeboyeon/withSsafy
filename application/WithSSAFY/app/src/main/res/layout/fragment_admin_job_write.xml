@@ -329,32 +329,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/fragment_jobWrite_AddInfo_CareerSenior"
                         app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_AddInfo_CareerSenior" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/fragment_jobWrite_CareerTypeLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintEnd_toEndOf="@+id/fragment_jobWrite_preferLayout"
-                        app:layout_constraintStart_toStartOf="@+id/fragment_jobWrite_preferLayout"
-                        app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_preferLayout">
 
-                        <TextView
-                            android:id="@+id/fragment_jobWrite_CareerTypeTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="고용형태"
-                            android:textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_CareerTypeSpinner"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Spinner
-                            android:id="@+id/fragment_jobWrite_CareerTypeSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/fragment_jobWrite_EduLayout"
@@ -413,19 +388,49 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/fragment_jobWrite_preferLayout"
+                        android:id="@+id/fragment_jobWrite_CareerTypeLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         app:layout_constraintEnd_toEndOf="@+id/fragment_jobWrite_PreferenceLayout"
                         app:layout_constraintStart_toStartOf="@+id/fragment_jobWrite_PreferenceLayout"
-                        app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_PreferenceLayout">
+                        app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_PreferenceLayout"
+                        >
+
+                        <TextView
+                            android:id="@+id/fragment_jobWrite_CareerTypeTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="고용형태"
+                            android:textColor="@color/black"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_CareerTypeSpinner"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Spinner
+                            android:id="@+id/fragment_jobWrite_CareerTypeSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/fragment_jobWrite_preferLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="@+id/fragment_jobWrite_CareerTypeLayout"
+                        app:layout_constraintStart_toStartOf="@+id/fragment_jobWrite_CareerTypeLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_CareerTypeLayout"
+                        >
 
                         <TextView
                             android:id="@+id/fragment_jobWrite_preferTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="근무조건"
+                            android:text="복리후생"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_preferEdit"
                             app:layout_constraintStart_toStartOf="parent"
@@ -434,24 +439,15 @@
                         <EditText
                             android:id="@+id/fragment_jobWrite_preferEdit"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="100dp"
                             android:layout_marginStart="50dp"
                             android:background="@drawable/edit_nonpadding_background"
                             android:ems="10"
                             android:inputType="textPersonName"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/fragment_jobWrite_preferTitle"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_preferTitle" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/fragment_jobWrite_preferRv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/fragment_jobWrite_preferEdit"
-                            app:layout_constraintStart_toStartOf="@+id/fragment_jobWrite_preferEdit"
-                            app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_preferEdit" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -525,6 +521,7 @@
                             android:padding="5dp"
                             android:text="TextView"
                             android:textColor="@color/black"
+                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
