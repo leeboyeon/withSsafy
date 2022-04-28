@@ -1,7 +1,6 @@
 package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.message.MessageDto;
-import com.ssafy.withssafy.entity.Message;
 import com.ssafy.withssafy.service.message.MessageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,8 +25,9 @@ public class MessageController {
 
     @PostMapping
     @ApiOperation(value = "특정 상대에게 메세지를 전송한다.")
-    public ResponseEntity<MessageDto> sendMessage(@RequestBody MessageDto messageDto){
-        return new ResponseEntity<>(messageService.sendMessage(messageDto), HttpStatus.OK);
+    public ResponseEntity<?> sendMessage(@RequestBody MessageDto messageDto){
+        messageService.sendMessage(messageDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/receive")
@@ -46,5 +46,17 @@ public class MessageController {
     @ApiOperation(value = "모든 메세지를 가져온다.")
     public ResponseEntity<List<MessageDto>> findAll(){
         return new ResponseEntity<>(messageService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/list/{id}")
+    @ApiOperation(value = "내 메세지 목록 조회(상대유저별 최근 메세지 목록)")
+    public ResponseEntity<List<MessageDto>> findMyMessageList(@PathVariable("id") Long id){
+        return new ResponseEntity<>(messageService.findList(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/list")
+    @ApiOperation(value = "상대와 쪽지 주고 받은 목록")
+    public ResponseEntity<List<MessageDto>> findChat(@RequestParam Long toId, @RequestParam Long fromId){
+        return new ResponseEntity<>(messageService.findChatList(toId,fromId), HttpStatus.OK);
     }
 }

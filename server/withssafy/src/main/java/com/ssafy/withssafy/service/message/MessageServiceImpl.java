@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,10 +20,10 @@ public class MessageServiceImpl implements MessageService{
     ModelMapper modelMapper;
 
     @Override
-    public MessageDto sendMessage(MessageDto messageDto) {
+    public void sendMessage(MessageDto messageDto) {
+        messageDto.setSend_dt(LocalDateTime.now());
         Message message = modelMapper.map(messageDto, Message.class);
         messageRepository.save(message);
-        return messageDto;
     }
 
     @Override
@@ -42,4 +43,18 @@ public class MessageServiceImpl implements MessageService{
         List<Message> messages = messageRepository.findSendMessageByUid(id);
         return messages.stream().map(message -> modelMapper.map(message, MessageDto.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<MessageDto> findList(Long id) {
+        List<Message> messages = messageRepository.findMyMessageList(id);
+        return messages.stream().map(message -> modelMapper.map(message, MessageDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MessageDto> findChatList(Long toId, Long fromId) {
+        List<Message> messages = messageRepository.findChatList(toId, fromId);
+        return messages.stream().map(message -> modelMapper.map(message, MessageDto.class)).collect(Collectors.toList());
+    }
+
+
 }
