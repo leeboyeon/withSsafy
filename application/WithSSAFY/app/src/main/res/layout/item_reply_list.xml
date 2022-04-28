@@ -55,7 +55,7 @@
                 android:layout_marginEnd="30dp"
                 android:text="익명3"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/replyItem_ivUserImg"
                 app:layout_constraintEnd_toStartOf="@+id/replyItem_clOption"
@@ -71,7 +71,7 @@
                 android:layout_marginEnd="30dp"
                 android:text="@{comment.content}"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/replyItem_tvDate"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -109,12 +109,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                app:unixToDate="@{comment.write_dt}"
-                android:textSize="14sp"
                 android:layout_marginBottom="10dp"
+                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/replyItem_tvComment" />
+                app:layout_constraintTop_toBottomOf="@id/replyItem_tvComment"
+                app:unixToDate="@{comment.write_dt}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

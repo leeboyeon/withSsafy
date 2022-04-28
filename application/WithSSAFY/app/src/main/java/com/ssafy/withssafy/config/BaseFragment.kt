@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.config
 
 import android.os.Bundle
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,7 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
-import com.ssafy.withssafy.src.viewmodel.BoardViewModel
-import com.ssafy.withssafy.src.viewmodel.HomeViewModel
-import com.ssafy.withssafy.src.viewmodel.TeamViewModel
-import com.ssafy.withssafy.src.viewmodel.UserViewModel
+import com.ssafy.withssafy.src.viewmodel.*
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -30,6 +28,7 @@ abstract class BaseFragment <B: ViewBinding> (
     protected val userViewModel: UserViewModel by activityViewModels()
     protected val teamViewModel: TeamViewModel by activityViewModels()
     protected val boardViewModel: BoardViewModel by activityViewModels()
+    protected val messageViewModel : MessageViewModel by activityViewModels()
 
     protected val compositeDisposable = CompositeDisposable()
 

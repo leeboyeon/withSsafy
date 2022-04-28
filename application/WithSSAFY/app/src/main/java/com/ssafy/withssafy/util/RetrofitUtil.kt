@@ -10,6 +10,7 @@ class RetrofitUtil {
         val userService = ApplicationClass.retrofit.create(UserApi::class.java)
         val boardApi = ApplicationClass.retrofit.create(BoardApi::class.java)
         val commentApi = ApplicationClass.retrofit.create(CommentApi::class.java)
+        val messageApi = ApplicationClass.retrofit.create(MessageApi::class.java)
         val recruitApi = ApplicationClass.retrofit.create(RecruitApi::class.java)
     }
 }

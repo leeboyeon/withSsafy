@@ -11,11 +11,14 @@ import androidx.fragment.app.activityViewModels
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentTeamDetailBinding
+import com.ssafy.withssafy.src.main.board.CommentAdapter
 import com.ssafy.withssafy.src.viewmodel.TeamViewModel
 import kotlinx.coroutines.runBlocking
 
 class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamDetailBinding::bind, R.layout.fragment_team_detail) {
     private var studyId = 0
+    private lateinit var studyCommentAdapter: TeamCommentAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -28,16 +31,34 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
         binding.viewModel = teamViewModel
         runBlocking {
             teamViewModel.getStudy(studyId)
+            teamViewModel.getStudyCommentByBoardId(studyId)
         }
         setListener()
     }
     private fun setListener(){
         initButtons()
+        initAdapter()
     }
     private fun initButtons(){
         binding.fragmentTeamDetailRequest.setOnClickListener {
             showRequestDialog()
         }
+    }
+    private fun initAdapter(){
+        studyCommentAdapter = TeamCommentAdapter(requireContext())
+        teamViewModel.studyComments.observe(viewLifecycleOwner){
+            studyCommentAdapter.commentAllList = it
+        }
+        teamViewModel.studyParentComments.observe(viewLifecycleOwner){
+            studyCommentAdapter.commentList = it
+        }
+        studyCommentAdapter.postUserId = teamViewModel.study.value!!.user.id
+        studyCommentAdapter.setAddReplyItemClickListener(object: TeamCommentAdapter.ItemClickListener {
+            override fun onClick(view: View, writerNick: String, position: Int, commentId: Int) {
+                
+            }
+
+        })
     }
     private fun showRequestDialog(){
         var dialog = Dialog(requireContext())

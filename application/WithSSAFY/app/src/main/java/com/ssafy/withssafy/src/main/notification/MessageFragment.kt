@@ -5,18 +5,52 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentMessageBinding
+import kotlinx.coroutines.runBlocking
 
 
 class MessageFragment : BaseFragment<FragmentMessageBinding>(FragmentMessageBinding::bind, R.layout.fragment_message) {
-
+    private lateinit var groupAdapter: MessageGroupAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
 
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = messageViewModel
+        runBlocking {
+            messageViewModel.getMessageGroup(ApplicationClass.sharedPreferencesUtil.getUser().id)
+        }
+        setListener()
+    }
+    private fun setListener(){
+        initAdapter()
+    }
+    private fun initAdapter(){
+        groupAdapter = MessageGroupAdapter()
+        messageViewModel.messageGroup.observe(viewLifecycleOwner){
+            groupAdapter.list = it
+        }
+        binding.fragmentMessageGroupRv.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = groupAdapter
+        }
+        groupAdapter.setItemClickListener(object : MessageGroupAdapter.ItemClickListener {
+            override fun onClick(view: View, position: Int, fromId: Int) {
+                var fromId = bundleOf("groupId" to fromId)
+                this@MessageFragment.findNavController().navigate(R.id.messageDetailFragment, fromId)
+            }
+
+        })
     }
     companion object {
         @JvmStatic
