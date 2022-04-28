@@ -3,7 +3,8 @@ package com.ssafy.withssafy.errorcode;
 public enum ErrorCode {
     INVALID_REQUEST("E0001"),
     FAILED_TO_SAVE_FILE("E0002"),
-    JOINED_STUDY_USER("E0003")
+    JOINED_STUDY_USER("E0003"),
+    JOINED_USER_ID("E0004")
     ;
 
     private final String errorCode;
