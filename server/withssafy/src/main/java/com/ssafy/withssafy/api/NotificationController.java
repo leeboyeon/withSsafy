@@ -40,13 +40,13 @@ public class NotificationController {
     @GetMapping("/user/{id}")
     @ApiOperation(value = "회원 계정 아이디에 일치하는 모든 알림을 조회합니다.")
     public ResponseEntity<List<NotificationResponseDto>> findByUId(@RequestParam Long userId){
-        return new ResponseEntity<>(notificationService.findByUId(userId), HttpStatus.OK);
+        return new ResponseEntity<>(notificationService.findByUserId(userId), HttpStatus.OK);
     }
 
     @GetMapping("/user/type")
     @ApiOperation(value = "아이디에 맞는 알림을 조회합니다.")
     public ResponseEntity<List<NotificationResponseDto>> findByUIdAndType(@RequestParam Long userId, @RequestParam Integer type){
-        return new ResponseEntity<>(notificationService.findByUIdAndType(userId, type), HttpStatus.OK);
+        return new ResponseEntity<>(notificationService.findByUserIdAndType(userId, type), HttpStatus.OK);
     }
 
     @PostMapping
