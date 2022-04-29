@@ -59,10 +59,20 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/fragment_job_career"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="신입"
+                    android:textSize="12sp"
+                    app:chipEndPadding="10dp"
+                    app:chipStartPadding="10dp" />
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/fragment_job_Education"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="무관"
+                    android:layout_marginStart="8dp"
                     android:textSize="12sp"
                     app:chipEndPadding="10dp"
                     app:chipStartPadding="10dp" />
@@ -73,15 +83,6 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
                     android:text="정규직"
-                    android:textSize="12sp"
-                    app:chipEndPadding="10dp"
-                    app:chipStartPadding="10dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/fragment_job_career"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="신입"
                     android:textSize="12sp"
                     app:chipEndPadding="10dp"
                     app:chipStartPadding="10dp" />
