@@ -31,19 +31,14 @@ public class StudyService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public void addStudyBoard(StudyBoardRequest studyBoardRequest, MultipartFile file) {
-        if (!file.isEmpty()) {
-            String filename = FileManager.save(file, studyBoardRequest.getUserId());
-            studyBoardRequest.setPhotoPath(filename);
-        }
-
+    public void addStudyBoard(StudyBoardRequest studyBoardRequest) {
         StudyBoard studyBoard = modelMapper.map(studyBoardRequest, StudyBoard.class);
         studyBoardRepository.save(studyBoard);
 
     }
 
     @Transactional
-    public void modifyStudyBoard(StudyBoardRequest studyBoardRequest, Long id) {
+    public void modifyStudyBoard(Long id, StudyBoardRequest studyBoardRequest) {
         Optional<StudyBoard> studyBoard = studyBoardRepository.findById(id);
         if (studyBoard.isPresent()) {
             studyBoard.get().updateStudyBoard(studyBoardRequest);
@@ -55,29 +50,15 @@ public class StudyService {
     public List<StudyBoardResponse> getStudyBoards() {
         List<StudyBoard> studyBoards = studyBoardRepository.findAll();
 
-        List<StudyBoardResponse> studyBoardResponses = studyBoards.stream().map(studyBoard -> modelMapper.map(studyBoard, StudyBoardResponse.class))
+
+        return studyBoards.stream().map(studyBoard -> modelMapper.map(studyBoard, StudyBoardResponse.class))
                 .collect(Collectors.toList());
-
-        for (StudyBoardResponse studyBoardResponse : studyBoardResponses) {
-            String file = FileManager.getFile(studyBoardResponse.getPhotoPath());
-            studyBoardResponse.setPhotoFile(file);
-        }
-
-        return studyBoardResponses;
     }
 
     public StudyBoardResponse getStudyBoardById(Long id) {
         Optional<StudyBoard> studyBoard = studyBoardRepository.findById(id);
 
-        if (studyBoard.isPresent()) {
-            StudyBoardResponse studyBoardResponse = modelMapper.map(studyBoard.get(), StudyBoardResponse.class);
-            String file = FileManager.getFile(studyBoardResponse.getPhotoPath());
-            studyBoardResponse.setPhotoFile(file);
-
-            return studyBoardResponse;
-        } else {
-            return null;
-        }
+        return studyBoard.map(board -> modelMapper.map(board, StudyBoardResponse.class)).orElse(null);
 
     }
 

@@ -32,14 +32,14 @@ public class StudyController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> addStudyBoard(@RequestPart(value = "data") StudyBoardRequest studyBoardRequest, @RequestPart(value = "file") MultipartFile file) {
-        studyService.addStudyBoard(studyBoardRequest, file);
+    public ResponseEntity<?> addStudyBoard(@RequestBody StudyBoardRequest studyBoardRequest) {
+        studyService.addStudyBoard(studyBoardRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modifyStudyBoard(@RequestBody StudyBoardRequest studyBoardRequest, @PathVariable("id") Long id) {
-        studyService.modifyStudyBoard(studyBoardRequest, id);
+    public ResponseEntity<?> modifyStudyBoard(@PathVariable("id") Long id, @RequestBody StudyBoardRequest studyBoardRequest) {
+        studyService.modifyStudyBoard(id, studyBoardRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
