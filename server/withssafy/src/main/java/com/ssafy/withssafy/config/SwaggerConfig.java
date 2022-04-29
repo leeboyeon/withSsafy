@@ -3,7 +3,6 @@ package com.ssafy.withssafy.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig{
+public class SwaggerConfig {
     private String version;
     private String title;
 
@@ -27,7 +26,7 @@ public class SwaggerConfig{
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
-//                .host("k6d201.p.ssafy.io")
+                .host("k6d201.p.ssafy.io")
 //                .host("127.0.0.1")
                 .groupName(version)
                 .select()
