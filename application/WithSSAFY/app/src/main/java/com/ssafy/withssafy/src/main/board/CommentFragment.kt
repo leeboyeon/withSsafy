@@ -146,7 +146,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                 val cmtList = boardViewModel.commentList.value!!
                 binding.commentFragmentEtComment.setText(cmtList[position].content)
 
-                updateComment(commentId, position)
+                updateComment(commentId, position, true)
             }
         })
 
@@ -172,7 +172,22 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
         })
 
         // 대댓글 수정 클릭 이벤트
+        commentAdapter.setReplyModifyItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+                showKeyboard(binding.commentFragmentEtComment)
 
+                val cmtList = boardViewModel.commentListOnPost.value!!
+
+                for (item in cmtList) {
+                    if(item.id == commentId) {
+                        binding.commentFragmentEtComment.setText(item.content)
+                        break
+                    }
+                }
+
+                updateComment(commentId, position, false)
+            }
+        })
 
         // 대댓글 삭제 클릭 이벤트
         commentAdapter.setReplyDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
@@ -182,9 +197,18 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
         })
 
         // 대댓글 작성자에게 쪽지 보내기 클릭 이벤트
+        commentAdapter.setReplySendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
 
         // 대댓글 신고 클릭 이벤트
+        commentAdapter.setReplyReportItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
 
+            }
+        })
 
     }
 
@@ -278,8 +302,11 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
 
     /**
      * 댓글 수정
+     * @param commentId
+     * @param position
+     * @param adapterChk true - commentAdapter / false - replyAdapter
      */
-    private fun updateComment(commentId: Int, position: Int) {
+    private fun updateComment(commentId: Int, position: Int, adapterChk: Boolean) {
         binding.commentFragmentTvConfirm.onThrottleClick {
             val commentContent = binding.commentFragmentEtComment.text.toString()
 
@@ -296,7 +323,12 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                         runBlocking {
                             boardViewModel.getCommentList(postId)
                         }
-                        commentAdapter.notifyItemChanged(position)
+                        if(adapterChk) {
+                            commentAdapter.notifyItemChanged(position)
+                        } else {
+                            commentAdapter.commentReplyAdapter.notifyItemChanged(position)
+                            commentAdapter.notifyDataSetChanged()
+                        }
 //                        commentAdapter.notifyDataSetChanged()
                         clearEditText()
                         clearFocus(mainActivity)

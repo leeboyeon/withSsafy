@@ -75,41 +75,31 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
                 adapter!!.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
 
+            // 대댓글 수정
+            commentReplyAdapter.setModifyItemClickListener(object : ReplyAdapter.MenuClickListener {
+                override fun onClick(position: Int, commentId: Int, userId: Int) {
+                    replyModifyItemClickListener.onClick(position, commentId, userId)
+                }
+            })
+
+            // 대댓글 삭제
             commentReplyAdapter.setDeleteItemClickListener(object : ReplyAdapter.MenuClickListener {
                 override fun onClick(position: Int, commentId: Int, userId: Int) {
                     modifyItemClickListener.onClick(position, commentId, userId)
                 }
             })
-//            commentReplyAdapter.setModifyItemClickListener(object : ReplyAdapter.MenuClickListener {
-//
-//                override fun onClick(commentId: Int, postId: Int, position: Int) {
-//                    // 대댓글 수정
-//                    val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_update_reply,null)
-//                    if(dialogView.parent!=null){
-//                        (dialogView.parent as ViewGroup).removeAllViews()
-//                    }
-//                    dialog = Dialog(context)
-//                    dialog.setContentView(dialogView)
-//                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//
-//                    dialogView.findViewById<TextView>(R.id.updateReplyDialog_tvContent).text = replyList[position].comment
-//
-//                    dialog.show()
-//
-//                    dialogView.findViewById<Button>(R.id.updateReplyDialog_btnCancel).setOnClickListener {
-//                        dialog.dismiss()
-//                    }
-//
-//                    dialogView.findViewById<AppCompatButton>(R.id.updateReplyDialog_btnOk).setOnClickListener {
-//                        updateReply(commentId, dialogView.findViewById<TextView>(R.id.updateReplyDialog_tvContent).text.toString(), postId)
-//                    }
-//
-//                }
-//            })
 
-            commentReplyAdapter.setDeleteItemClickListener(object : ReplyAdapter.MenuClickListener {
+            // 대댓글 작성자에게 쪽지 전송
+            commentReplyAdapter.setSendNoteItemClickListener(object : ReplyAdapter.MenuClickListener {
                 override fun onClick(position: Int, commentId: Int, userId: Int) {
-                    replyDeleteItemClickListener.onClick(position, commentId, userId)
+                    replySendNoteItemClickListener.onClick(position, commentId, userId)
+                }
+            })
+
+            // 대댓글 신고
+            commentReplyAdapter.setReportItemClickListener(object : ReplyAdapter.MenuClickListener{
+                override fun onClick(position: Int, commentId: Int, userId: Int) {
+                    replyReportItemClickListener.onClick(position, commentId, userId)
                 }
             })
             
@@ -203,6 +193,7 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
         fun onClick(position: Int, commentId: Int, userId: Int)
     }
 
+    // 댓글 클릭 이벤트
     private lateinit var modifyItemClickListener : MenuClickListener
     fun setModifyItemClickListener(modifyClickListener: MenuClickListener) {
         this.modifyItemClickListener = modifyClickListener
@@ -235,7 +226,7 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
 
     private lateinit var replySendNoteItemClickListener : MenuClickListener
     fun setReplySendNoteItemClickListener(replySendNoteClickListener: MenuClickListener) {
-        this.replySendNoteItemClickListener =replySendNoteClickListener
+        this.replySendNoteItemClickListener = replySendNoteClickListener
     }
 
     private lateinit var replyReportItemClickListener : MenuClickListener
