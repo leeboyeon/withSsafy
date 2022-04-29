@@ -9,7 +9,9 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ssafy.withssafy.src.dto.Message
+import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.study.Study
+import com.ssafy.withssafy.src.main.board.JobAdapter
 import com.ssafy.withssafy.src.main.notification.MessageDetailAdapter
 import com.ssafy.withssafy.src.main.notification.MessageGroupAdapter
 import com.ssafy.withssafy.src.main.team.TeamAdapter
@@ -126,5 +128,18 @@ fun bindRecyclerViewMessageTalk(recyclerView: RecyclerView, data:List<Message>?)
         adapter = recyclerView.adapter as MessageDetailAdapter
     }
     adapter.list = data as MutableList<Message>
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("recruitListData")
+fun bindingRecruitList(recyclerView: RecyclerView, data:List<Recruit>?){
+    var adapter = recyclerView.adapter as JobAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as JobAdapter
+    }
+    adapter.list = data as MutableList<Recruit>
     adapter.notifyDataSetChanged()
 }

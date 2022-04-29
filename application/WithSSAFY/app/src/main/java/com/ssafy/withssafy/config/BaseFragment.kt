@@ -29,6 +29,7 @@ abstract class BaseFragment <B: ViewBinding> (
     protected val teamViewModel: TeamViewModel by activityViewModels()
     protected val boardViewModel: BoardViewModel by activityViewModels()
     protected val messageViewModel : MessageViewModel by activityViewModels()
+    protected val recruitViewModel : RecruitViewModel by activityViewModels()
 
     protected val compositeDisposable = CompositeDisposable()
 

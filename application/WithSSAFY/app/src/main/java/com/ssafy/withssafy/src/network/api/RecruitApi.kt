@@ -16,7 +16,7 @@ interface RecruitApi {
      *
      */
     @GET("/recruit")
-    suspend fun selectRecruitAll() : Response<List<Recruit>>
+    suspend fun selectRecruitAll() : Response<MutableList<Recruit>>
 
     /**
      * 채용 공고 등록

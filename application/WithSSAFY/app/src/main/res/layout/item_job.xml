@@ -13,11 +13,13 @@
 
         <TextView
             android:id="@+id/fragment_job_CompanyName"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
-            android:text="(주) 버드뷰"
+            android:text="@{recruit.company}"
+            android:gravity="center"
+            android:textAlignment="center"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/fragment_job_title"
@@ -29,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="2022년 디지털/ICT SSAFY 특별전형"
+            android:text="@{recruit.job}"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fragment_job_CompanyName"
@@ -48,10 +50,11 @@
 
         <HorizontalScrollView
             android:id="@+id/fragment_job_chip_view"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@+id/fragment_job_title"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_job_title">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_job_title"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -62,7 +65,7 @@
                     android:id="@+id/fragment_job_career"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:text="신입"
+                    android:text="@{recruit.career}"
                     android:textSize="12sp"
                     app:chipEndPadding="10dp"
                     app:chipStartPadding="10dp" />
@@ -71,7 +74,7 @@
                     android:id="@+id/fragment_job_Education"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:text="무관"
+                    android:text="@{recruit.education}"
                     android:layout_marginStart="8dp"
                     android:textSize="12sp"
                     app:chipEndPadding="10dp"
@@ -82,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
-                    android:text="정규직"
+                    android:text="@{recruit.employType}"
                     android:textSize="12sp"
                     app:chipEndPadding="10dp"
                     app:chipStartPadding="10dp" />
@@ -92,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
-                    android:text="대구시 서재로 24길 29, 6층"
+                    android:text="@{recruit.location}"
                     android:textSize="12sp"
                     app:chipEndPadding="10dp"
                     app:chipStartPadding="10dp" />

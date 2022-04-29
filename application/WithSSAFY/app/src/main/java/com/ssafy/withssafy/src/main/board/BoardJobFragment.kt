@@ -14,11 +14,12 @@ import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.FragmentBoardJobBinding
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.team.TeamFragment
+import kotlinx.coroutines.runBlocking
 
 
 class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobBinding::bind,R.layout.fragment_board_job) {
     private lateinit var mainActivity: MainActivity
-    private lateinit var jobAdapter:JobAdapter
+    private lateinit var jobAdapter: JobAdapter
 
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +35,10 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = recruitViewModel
+        runBlocking {
+            recruitViewModel.getRecruitList()
+        }
         setListener()
     }
     private fun setListener(){
@@ -58,10 +63,18 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
     }
     private fun initAdapter(){
         jobAdapter = JobAdapter()
+        jobAdapter.list = recruitViewModel.recruitList.value!!
+
         binding.fragmentJobRv.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
             adapter = jobAdapter
         }
+        jobAdapter.setItemClickListener(object : JobAdapter.ItemClickListener{
+            override fun onClick(view: View, position: Int, id: Int) {
+
+            }
+
+        })
     }
     companion object {
         @JvmStatic
