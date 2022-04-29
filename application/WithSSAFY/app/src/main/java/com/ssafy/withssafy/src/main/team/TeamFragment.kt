@@ -23,6 +23,7 @@ import retrofit2.Response
 private const val TAG = "TeamFragment"
 class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind,R.layout.fragment_team) {
     private lateinit var teamAdapter: TeamAdapter
+    private var lastFilterText = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -56,6 +57,7 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
                     teamAdapter.filter.filter("")
                 }else{
                     teamAdapter.filter.filter(tab?.text.toString())
+                    lastFilterText = tab?.text.toString()
                 }
 
                 teamAdapter.notifyDataSetChanged()
@@ -83,6 +85,7 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
 
         teamViewModel.studyList.observe(viewLifecycleOwner){
             teamAdapter.list = it
+            teamAdapter.filteredList = teamAdapter.list
         }
 
         binding.fragmentTeamRv.apply {
@@ -97,7 +100,7 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
         })
         teamAdapter.setDeleteClickListener(object : TeamAdapter.DeleteClickListener {
             override fun onClick(position: Int, id: Int) {
-                deleteStudy(id,position)
+                deleteStudy(id, position)
             }
         })
         teamAdapter.setModifyClickListener(object : TeamAdapter.ModifyClickListener {
@@ -107,20 +110,19 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
         })
     }
     private fun deleteStudy(id:Int, position:Int){
+        Log.d(TAG, "deleteStudy: $id    /   $position")
         var response : Response<Any?>
         runBlocking {
             response = StudyService().deleteStudy(id)
         }
         Log.d(TAG, "deleteStudy: ${response.code()}")
         if(response.isSuccessful){
-            Log.d(TAG, "deleteStudy: 1")
             showCustomToast("삭제되었습니다.")
-            Log.d(TAG, "deleteStudy: 2")
             runBlocking {
                 teamViewModel.getStudys()
             }
-            teamAdapter.notifyDataSetChanged()
-//            teamAdapter.notifyItemRemoved(position)
+            teamAdapter.notifyItemRemoved(position)
+            teamAdapter.filter.filter(lastFilterText)
         }
     }
     companion object {
