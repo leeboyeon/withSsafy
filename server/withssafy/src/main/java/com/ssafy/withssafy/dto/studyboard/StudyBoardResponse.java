@@ -23,10 +23,7 @@ public class StudyBoardResponse {
 
     private String writeDateTime;
 
-    @JsonIgnore
     private String photoPath;
-
-    private String photoFile;
 
     private int isOuting;
 }

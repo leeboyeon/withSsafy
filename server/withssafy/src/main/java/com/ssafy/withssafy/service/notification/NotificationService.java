@@ -11,6 +11,6 @@ public interface NotificationService {
     NotificationResponseDto update(NotificationRequestDto notificationRequestDto);
     NotificationResponseDto delete(Long id);
     NotificationResponseDto findById(Long id);
-    List<NotificationResponseDto> findByUId(Long userId);
-    List<NotificationResponseDto> findByUIdAndType(Long userId, Integer type);
+    List<NotificationResponseDto> findByUserId(Long userId);
+    List<NotificationResponseDto> findByUserIdAndType(Long userId, Integer type);
 }
