@@ -13,7 +13,9 @@ import retrofit2.Retrofit
 class StudyService {
     suspend fun getStudys():Response<MutableList<Study>> = RetrofitUtil.studyService.getStudys()
 
-    suspend fun insertStudy(data:RequestBody, file:MultipartBody.Part?): Response<Any?> = RetrofitUtil.studyService.insertStudy(data,file)
+    suspend fun insertStudy(study:Study): Response<Any?> = RetrofitUtil.studyService.insertStudy(study)
+
+    suspend fun insertPhoto(file:MultipartBody.Part) : Response<String> = RetrofitUtil.studyService.insertPhoto(file)
 
     suspend fun getStudyById(id:Int) : Response<Study> = RetrofitUtil.studyService.getStudyById(id)
 

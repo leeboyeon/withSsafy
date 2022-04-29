@@ -52,7 +52,7 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
         teamViewModel.studyParentComments.observe(viewLifecycleOwner){
             studyCommentAdapter.commentList = it
         }
-        studyCommentAdapter.postUserId = teamViewModel.study.value!!.user.id
+        studyCommentAdapter.postUserId = teamViewModel.study.value!!.user!!.id
         studyCommentAdapter.setAddReplyItemClickListener(object: TeamCommentAdapter.ItemClickListener {
             override fun onClick(view: View, writerNick: String, position: Int, commentId: Int) {
                 

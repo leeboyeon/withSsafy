@@ -123,4 +123,6 @@ dependencies {
     // Google Material Component Binding
     implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.1.0'
 
+    //jackson
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
 }
