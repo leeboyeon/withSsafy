@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +50,18 @@ public class MessageServiceImpl implements MessageService{
     @Override
     public List<MessageDto> findList(Long id) {
         List<Message> messages = messageRepository.findMyMessageList(id);
-        return messages.stream().map(message -> modelMapper.map(message, MessageDto.class)).collect(Collectors.toList());
+        List<MessageDto> res = new ArrayList<>();
+        Set<Long> set = new HashSet<>();
+        for(Message m: messages){
+            Long to = m.getU_to().getId();
+            Long from = m.getU_from().getId();
+            Long a = to==id?from:to;
+            if(!set.contains(a)){
+                set.add(a);
+                res.add(modelMapper.map(m, MessageDto.class));
+            }
+        }
+        return res;
     }
 
     @Override
