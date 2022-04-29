@@ -6,10 +6,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification,Long> {
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE tbl_notification SET content=:content WHERE id=:id", nativeQuery = true)
     void update(Long id, String content);
+
+    List<Notification> findByUserId(Long userId);
+
+    List<Notification> findByUserIdAndType(Long userId, Integer type);
 }
