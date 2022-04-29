@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -69,21 +70,34 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<NotificationResponseDto> findByUId(Long userId) {
+    public List<NotificationResponseDto> findByUserId(Long userId) {
         if(!userRepository.findById(userId).isPresent()) {
             throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
         }
 
+        List<Notification> notifications = notificationRepository.findByUserId(userId);
+        List<NotificationResponseDto> result = new ArrayList<NotificationResponseDto>();
+        for (Notification notification : notifications) {
+            NotificationResponseDto r = modelMapper.map(notification, NotificationResponseDto.class);
+            r.setUser(modelMapper.map(notification.getUser(), UserDto.class));
+        }
 
-        return null;
+        return result;
     }
 
     @Override
-    public List<NotificationResponseDto> findByUIdAndType(Long userId, Integer type) {
+    public List<NotificationResponseDto> findByUserIdAndType(Long userId, Integer type) {
         if(!userRepository.findById(userId).isPresent()) {
             throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
         }
 
-        return null;
+        List<Notification> notifications = notificationRepository.findByUserIdAndType(userId, type);
+        List<NotificationResponseDto> result = new ArrayList<NotificationResponseDto>();
+        for (Notification notification : notifications) {
+            NotificationResponseDto r = modelMapper.map(notification, NotificationResponseDto.class);
+            r.setUser(modelMapper.map(notification.getUser(), UserDto.class));
+        }
+
+        return result;
     }
 }
