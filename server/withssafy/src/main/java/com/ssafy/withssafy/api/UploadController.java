@@ -30,16 +30,13 @@ public class UploadController {
 //        }
 
         String responseFilename = null;
-        if(fileInfo.containsKey("fileasdasd_path")){
-            String filePath = fileInfo.get("fileasdasd_path")[0];
+        if(fileInfo.containsKey("file_path")){
+            String filePath = fileInfo.get("file_path")[0];
             String[] splitFilePath = filePath.split("/");
 
             responseFilename = splitFilePath[splitFilePath.length - 1];
         }
 
-        Map<String, String> responseData = new HashMap<>();
-        responseData.put("filename", responseFilename);
-
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(responseFilename, HttpStatus.OK);
     }
 }
