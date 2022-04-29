@@ -88,8 +88,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_teamDetail_title"
+                app:studyImageUrl="@{viewModel.study.photoPath}"
                 tools:src="@tools:sample/avatars" />
-<!--                app:decodingImg="@{viewModel.study.photoFile}"-->
 
             <TextView
                 android:id="@+id/fragment_teamDetail_content"

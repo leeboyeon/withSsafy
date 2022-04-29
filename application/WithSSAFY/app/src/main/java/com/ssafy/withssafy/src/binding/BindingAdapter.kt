@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.binding
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.databinding.BindingAdapter
 import android.os.Build
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.study.Study
@@ -30,15 +32,20 @@ fun bindingStudyList(recyclerView: RecyclerView, data:List<Study>?){
     adapter.list = data as MutableList<Study>
     adapter.notifyDataSetChanged()
 }
+@SuppressLint("SetTextI18n")
 @BindingAdapter("studyLimitText")
-fun bindStudyLimitText(textView: TextView, limit:Int, curUser:Int){
-    textView.text = "${curUser}/$limit"
+fun bindStudyLimitText(textView: TextView, study:Study){
+    if(study.studyMembers?.size == null){
+        textView.text = "0/${study.sbLimit}"
+    }
+    textView.text = "${study.studyMembers?.size}/${study.sbLimit}"
+
 }
 
 @BindingAdapter("studyImageUrl")
 fun bindImageUrl(imageView: ImageView, url:String?){
     Glide.with(imageView.context)
-        .load(url)
+        .load("${ApplicationClass.IMGS_URL}${url}")
         .into(imageView)
 }
 
@@ -50,9 +57,9 @@ fun textViewConvertPeople(textView: TextView, size:Int){
 @RequiresApi(Build.VERSION_CODES.O)
 @BindingAdapter("converMilliSecondToString")
 fun textViewConvertDate(textView: TextView, time:String){
-    var formatter = SimpleDateFormat("yyyy-MM-dd HH:ss")
-    var date = formatter.format(time.toLong())
-    textView.text = date.toString()
+//    var formatter = SimpleDateFormat("yyyy-MM-dd HH:ss")
+//    var date = formatter.format(time.toLong())
+    textView.text = time.toString()
 }
 
 
@@ -86,8 +93,7 @@ fun bindBoardTime(textView: TextView, time: String) {
 @BindingAdapter("decodingImg")
 fun bindBitmapImg(imageView: ImageView, imgString: String) {
     Glide.with(imageView.context)
-        .asBitmap()
-        .load(CommonUtils.base64ToImg(imgString))
+        .load(imgString)
         .into(imageView)
 }
 

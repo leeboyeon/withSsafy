@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -30,6 +31,7 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 
+private const val TAG = "TeamWriteFragment"
 class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWriteBinding::bind,R.layout.fragment_team_write) {
     private var category = ""
     private var area = ""
@@ -37,7 +39,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
     private var fileExtension : String? = ""
     private lateinit var mainActivity:MainActivity
     private val STORAGE_CODE = 99
-
+    var people = 0
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -50,6 +52,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = teamViewModel
         setListener()
     }
     private fun setListener(){
@@ -154,7 +157,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
             ApplicationClass.sharedPreferencesUtil.getUser().id
         )
 
-        if(teamViewModel.uploadImageUri == Uri.EMPTY){
+        if(teamViewModel.uploadImageUri == Uri.EMPTY || teamViewModel.uploadImageUri == null){
             runBlocking {
                 val response = StudyService().insertStudy(study)
                 if(response.code() == 204){
@@ -180,6 +183,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
                 val responseFile = StudyService().insertPhoto(uploadFile)
                 if(responseFile.code() == 200){
                     if(responseFile.body() != null){
+                        Log.d(TAG, "insertStudy: ${responseFile.body()}")
                         var study = Study(
                             local,
                             category,
@@ -192,6 +196,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
                             responseFile.body().toString(),
                             ApplicationClass.sharedPreferencesUtil.getUser().id
                         )
+                        Log.d(TAG, "insertStudy: $study")
                         val response = StudyService().insertStudy(study)
                         if(response.code() == 204){
                             showCustomToast("추가되었습니다.")

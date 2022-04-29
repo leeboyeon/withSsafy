@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.main.team
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +15,12 @@ import com.google.android.material.tabs.TabLayout
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentTeamBinding
+import com.ssafy.withssafy.src.network.service.StudyService
 import com.ssafy.withssafy.src.viewmodel.TeamViewModel
 import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 
-
+private const val TAG = "TeamFragment"
 class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind,R.layout.fragment_team) {
     private lateinit var teamAdapter: TeamAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +48,7 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
         for(item in types){
             binding.frargmentTeamTabLayout.addTab(binding.frargmentTeamTabLayout.newTab().setText(item))
         }
-        teamAdapter = TeamAdapter()
+        teamAdapter = TeamAdapter(requireContext())
 
         binding.frargmentTeamTabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -73,7 +76,7 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
         }
     }
     private fun initAdapter(){
-        teamAdapter = TeamAdapter()
+        teamAdapter = TeamAdapter(requireContext())
 
         teamAdapter.list = teamViewModel.studyList.value!!
         teamAdapter.filter.filter("")
@@ -92,6 +95,33 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
                 this@TeamFragment.findNavController().navigate(R.id.teamDetailFragment, studyId)
             }
         })
+        teamAdapter.setDeleteClickListener(object : TeamAdapter.DeleteClickListener {
+            override fun onClick(position: Int, id: Int) {
+                deleteStudy(id,position)
+            }
+        })
+        teamAdapter.setModifyClickListener(object : TeamAdapter.ModifyClickListener {
+            override fun onClick(position: Int, id: Int) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+    private fun deleteStudy(id:Int, position:Int){
+        var response : Response<Any?>
+        runBlocking {
+            response = StudyService().deleteStudy(id)
+        }
+        Log.d(TAG, "deleteStudy: ${response.code()}")
+        if(response.isSuccessful){
+            Log.d(TAG, "deleteStudy: 1")
+            showCustomToast("삭제되었습니다.")
+            Log.d(TAG, "deleteStudy: 2")
+            runBlocking {
+                teamViewModel.getStudys()
+            }
+            teamAdapter.notifyDataSetChanged()
+//            teamAdapter.notifyItemRemoved(position)
+        }
     }
     companion object {
         @JvmStatic

@@ -3,6 +3,7 @@ package com.ssafy.withssafy.src.viewmodel
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,9 @@ class TeamViewModel : ViewModel(){
     private val _study = MutableLiveData<Study>()
     private val _studyCommentList = MutableLiveData<MutableList<Comment>>()
     private val _studyCommentParentList = MutableLiveData<MutableList<Comment>>()
+    private var count = 0;
+    private val peopleText : ObservableField<String> = ObservableField("0")
+
 
     val studyList:LiveData<MutableList<Study>>
         get() = _studyList
@@ -44,7 +48,26 @@ class TeamViewModel : ViewModel(){
     fun setStudyCommentParentList(list:MutableList<Comment>){
         _studyCommentParentList.value = list
     }
+    fun getButtonText() : ObservableField<String>{
+        return peopleText
+    }
+    fun updateButtonText() {
+        peopleText.set(count.toString());
+    }
+    fun onButtonAddClick(){
+        ++count;
+        updateButtonText()
+    }
+    fun onButtonMinusClick(){
+        if(count > 0){
+            --count;
+            updateButtonText()
+        }else{
+            count = 0
+            updateButtonText()
+        }
 
+    }
     suspend fun getStudys(){
         val response = StudyService().getStudys()
         viewModelScope.launch {
