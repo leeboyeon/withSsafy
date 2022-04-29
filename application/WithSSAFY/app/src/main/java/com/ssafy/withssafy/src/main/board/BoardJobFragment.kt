@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.config.BaseFragment
@@ -71,7 +72,8 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
         }
         jobAdapter.setItemClickListener(object : JobAdapter.ItemClickListener{
             override fun onClick(view: View, position: Int, id: Int) {
-
+                var recruitId = bundleOf("recruitId" to id)
+                this@BoardJobFragment.findNavController().navigate(R.id.jobDetailFragment, recruitId)
             }
 
         })

@@ -51,6 +51,7 @@
         <action
             android:id="@+id/action_boardJobFragment_to_adminJobWriteFragment"
             app:destination="@id/adminJobWriteFragment" />
+
     </fragment>
 
 
@@ -195,6 +196,17 @@
         tools:layout="@layout/fragment_message_detail">
         <argument
             android:name="groupId"
+            android:defaultValue="0"
+            app:argType="integer"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/jobDetailFragment"
+        android:name="com.ssafy.withssafy.src.main.board.JobDetailFragment"
+        android:label="fragment_job_detail"
+        tools:layout="@layout/fragment_job_detail" >
+        <argument
+            android:name="recruitId"
             android:defaultValue="0"
             app:argType="integer"/>
     </fragment>
