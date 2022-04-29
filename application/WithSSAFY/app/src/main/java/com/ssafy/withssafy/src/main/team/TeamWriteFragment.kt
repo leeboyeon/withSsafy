@@ -1,26 +1,40 @@
 package com.ssafy.withssafy.src.main.team
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.google.gson.Gson
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentTeamWriteBinding
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.dto.UserX
+import com.ssafy.withssafy.src.dto.study.StudyMember
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.network.service.StudyService
 import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 
 class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWriteBinding::bind,R.layout.fragment_team_write) {
     private var category = ""
     private var area = ""
     private var outing = -1
-
+    private var fileExtension : String? = ""
     private lateinit var mainActivity:MainActivity
     private val STORAGE_CODE = 99
 
@@ -115,27 +129,96 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
         }
     }
     private suspend fun insertStudy(){
-        var title = binding.fragmentTeamWriteTitleEdit.text.toString()
-        var content = binding.fragmentTeamWriteContentEdit.text.toString()
-        var limit = binding.fragmentTeamWritePeople.text.toString()
-        var category = category
         var local = area
-        var today = System.currentTimeMillis()
+        var category = category
+        var content = binding.fragmentTeamWriteContentEdit.text.toString()
+        var isOuting = outing
+        var limit = binding.fragmentTeamWritePeople.text.toString()
+        val studyMember:List<StudyMember> = arrayListOf(StudyMember(ApplicationClass.sharedPreferencesUtil.getUser().id,ApplicationClass.sharedPreferencesUtil.getUser().name))
+        var title = binding.fragmentTeamWriteTitleEdit.text.toString()
         var user = UserX (
             ApplicationClass.sharedPreferencesUtil.getUser().id,
-                )
+        )
+        var today = System.currentTimeMillis()
+        val photoFile:String = teamViewModel.uploadImageUri.toString()
+
         var study = Study(
             local,
             category,
             content,
             0,
-            outing,
+            isOuting,
             limit.toInt(),
             title,
-            user,
             today.toString(),
-            ""
+            ApplicationClass.sharedPreferencesUtil.getUser().id
         )
+
+        if(teamViewModel.uploadImageUri == Uri.EMPTY){
+            runBlocking {
+                val response = StudyService().insertStudy(study)
+                if(response.code() == 204){
+                    showCustomToast("추가되었습니다.")
+                    this@TeamWriteFragment.findNavController().navigate(R.id.teamFragment)
+                }
+            }
+        }else{
+            val file = File(teamViewModel.uploadImageUri!!.path!!)
+            var inputStream:InputStream? = null
+            try{
+                inputStream = mainActivity.contentResolver.openInputStream(teamViewModel.uploadImageUri!!)
+            }catch (e : IOException){
+                e.printStackTrace()
+            }
+            fileExtension = mainActivity.contentResolver.getType(teamViewModel.uploadImageUri!!)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream)
+            val requestBody = RequestBody.create(MediaType.parse("image/*"),byteArrayOutputStream.toByteArray())
+            val uploadFile = MultipartBody.Part.createFormData("file","${file.name}.${fileExtension?.substring(6)}",requestBody)
+            runBlocking {
+                val responseFile = StudyService().insertPhoto(uploadFile)
+                if(responseFile.code() == 200){
+                    if(responseFile.body() != null){
+                        var study = Study(
+                            local,
+                            category,
+                            content,
+                            0,
+                            isOuting,
+                            limit.toInt(),
+                            title,
+                            today.toString(),
+                            responseFile.body().toString(),
+                            ApplicationClass.sharedPreferencesUtil.getUser().id
+                        )
+                        val response = StudyService().insertStudy(study)
+                        if(response.code() == 204){
+                            showCustomToast("추가되었습니다.")
+                            this@TeamWriteFragment.findNavController().navigate(R.id.teamFragment)
+                        }
+                    }
+                }
+//                val response = StudyService().insertStudy(requestBody,uploadFile)
+//                if(response.code() == 204){
+//                    showCustomToast("추가되었습니다.")
+//                    this@TeamWriteFragment.findNavController().navigate(R.id.teamFragment)
+//                }
+            }
+        }
+
+//        var study = Study(
+//            local,
+//            category,
+//            content,
+//            0,
+//            outing,
+//            limit.toInt(),
+//            title,
+//            user,
+//            today.toString(),
+//            ""
+//        )
 //        runBlocking {
 //            val response = StudyService().insertStudy(study)
 //            if(response.code() == 204){

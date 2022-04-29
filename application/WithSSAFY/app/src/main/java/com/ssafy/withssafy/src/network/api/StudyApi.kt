@@ -23,10 +23,16 @@ interface StudyApi {
      * @author : LeeBoYeon
      * 스터디 추가하기
      * */
-    @Multipart
     @POST("/study-boards")
-    suspend fun insertStudy(@Part data:RequestBody, @Part file:MultipartBody.Part?) : Response<Any?>
-
+    suspend fun insertStudy(@Body studyBoardRequest: Study) : Response<Any?>
+    /**
+     * Study Photo insert
+     * @author : LeeBoYeon
+     * 스터디 사진 추가하기
+     * */
+    @Multipart
+    @POST("/upload")
+    suspend fun insertPhoto(@Part file:MultipartBody.Part) : Response<String>
     /**
      * Study Get Detail
      * @author : LeeBoYeon
