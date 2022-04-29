@@ -23,7 +23,6 @@ public class StudyBoardRequest {
 
     private String writeDateTime;
 
-    @JsonIgnore
     private String photoPath;
 
     private byte isOuting;
