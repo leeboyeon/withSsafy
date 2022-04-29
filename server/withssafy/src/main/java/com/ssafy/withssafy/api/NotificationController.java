@@ -33,11 +33,11 @@ public class NotificationController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "아이디에 맞는 알림을 조회합니다.")
-    public ResponseEntity<NotificationResponseDto> findById(@RequestParam Long id){
+    public ResponseEntity<NotificationResponseDto> findById(@PathVariable Long id){
         return new ResponseEntity<>(notificationService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user")
     @ApiOperation(value = "회원 계정 아이디에 일치하는 모든 알림을 조회합니다.")
     public ResponseEntity<List<NotificationResponseDto>> findByUId(@RequestParam Long userId){
         return new ResponseEntity<>(notificationService.findByUserId(userId), HttpStatus.OK);

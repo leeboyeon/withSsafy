@@ -80,9 +80,11 @@ public class NotificationServiceImpl implements NotificationService {
         for (Notification notification : notifications) {
             NotificationResponseDto r = modelMapper.map(notification, NotificationResponseDto.class);
             r.setUser(modelMapper.map(notification.getUser(), UserDto.class));
+            result.add(r);
         }
 
         return result;
+//        return null;
     }
 
     @Override
@@ -96,8 +98,10 @@ public class NotificationServiceImpl implements NotificationService {
         for (Notification notification : notifications) {
             NotificationResponseDto r = modelMapper.map(notification, NotificationResponseDto.class);
             r.setUser(modelMapper.map(notification.getUser(), UserDto.class));
+            result.add(r);
         }
 
         return result;
+//        return null;
     }
 }
