@@ -173,7 +173,12 @@
         android:id="@+id/teamWriteFragment"
         android:name="com.ssafy.withssafy.src.main.team.TeamWriteFragment"
         android:label="fragment_team_write"
-        tools:layout="@layout/fragment_team_write" />
+        tools:layout="@layout/fragment_team_write" >
+        <argument
+            android:name="studyId"
+            android:defaultValue="-1"
+            app:argType="integer"/>
+    </fragment>
     <fragment
         android:id="@+id/teamDetailFragment"
         android:name="com.ssafy.withssafy.src.main.team.TeamDetailFragment"

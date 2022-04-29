@@ -102,7 +102,8 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(FragmentTeamBinding::bind
         })
         teamAdapter.setModifyClickListener(object : TeamAdapter.ModifyClickListener {
             override fun onClick(position: Int, id: Int) {
-                TODO("Not yet implemented")
+                var studyId = bundleOf("studyId" to id)
+                this@TeamFragment.findNavController().navigate(R.id.teamWriteFragment, studyId)
             }
         })
     }
