@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.main.team
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemTeamBinding
 import com.ssafy.withssafy.src.dto.study.Study
 
+private const val TAG = "TeamAdapter"
 class TeamAdapter : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() , Filterable{
     var list = mutableListOf<Study>()
     var filteredList = list
@@ -55,6 +57,7 @@ class TeamAdapter : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() , Filtera
                     list
                 }else{
                     val filteringList = ArrayList<Study>()
+                    Log.d(TAG, "performFiltering: $list")
                     for(item in list){
                         if(item.category.contains(charString))
                             filteringList.add(item)

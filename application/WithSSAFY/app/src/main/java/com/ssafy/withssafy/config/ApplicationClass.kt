@@ -18,7 +18,7 @@ class ApplicationClass : Application() {
     companion object{
         const val SERVER_URL = "https://k6d201.p.ssafy.io/"
 
-        const val IMGS_URL = "${SERVER_URL}imgs/"
+        const val IMGS_URL = "${SERVER_URL}images/"
         lateinit var sharedPreferencesUtil: SharedPreferencesUtil
         lateinit var retrofit: Retrofit
 
