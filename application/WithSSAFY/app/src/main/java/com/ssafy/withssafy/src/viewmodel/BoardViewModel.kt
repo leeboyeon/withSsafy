@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.reflect.TypeToken
 import com.ssafy.withssafy.src.dto.board.Board
+import com.ssafy.withssafy.src.dto.board.BoardType
 import com.ssafy.withssafy.src.dto.board.Comment
 import com.ssafy.withssafy.src.network.service.BoardService
 import com.ssafy.withssafy.src.network.service.CommentService
@@ -21,6 +22,37 @@ import retrofit2.HttpException
 class BoardViewModel : ViewModel() {
     private val TAG = "BoardViewModel_싸피"
 
+    /**
+     * board type 전체 조회
+     */
+    private val _allBoardType = MutableLiveData<MutableList<BoardType>>()
+
+    val allBoardType : LiveData<MutableList<BoardType>>
+        get() = _allBoardType
+
+    private fun setAllBoardType(list: MutableList<BoardType>) = viewModelScope.launch {
+        _allBoardType.value = list
+    }
+
+    suspend fun getAllBoardType() {
+        try {
+            val response = BoardService().getAllBoardTType()
+            viewModelScope.launch {
+                if (response.isSuccessful) {
+                    val res = response.body()
+                    if (res != null) {
+                        setAllBoardType(res as MutableList<BoardType>)
+                    } else {
+                        Log.e(TAG, "getAllBoardType: $response", )
+                    }
+                } else {
+                    Log.e(TAG, "getAllBoardType: 통신 실패", )
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "getAllBoardType: ${e.message()}", )
+        }
+    }
 
     /**
      * board Table 전체 조회

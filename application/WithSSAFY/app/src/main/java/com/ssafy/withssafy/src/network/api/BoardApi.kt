@@ -2,6 +2,7 @@ package com.ssafy.withssafy.src.network.api
 
 import com.ssafy.withssafy.src.dto.board.Board
 import com.ssafy.withssafy.src.dto.board.BoardRequest
+import com.ssafy.withssafy.src.dto.board.BoardType
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -10,6 +11,12 @@ import retrofit2.http.*
  * @author Jiwoo Choi
  */
 interface BoardApi {
+
+    /**
+     * 모든 게시판 조회
+     */
+    @GET("board-types")
+    suspend fun selectAllBoardType() : Response<List<BoardType>>
 
     /**
      * 모든 게시글 조회

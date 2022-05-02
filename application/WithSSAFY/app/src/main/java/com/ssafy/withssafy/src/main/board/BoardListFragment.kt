@@ -12,6 +12,7 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardListBinding
 import com.ssafy.withssafy.src.main.MainActivity
+import kotlinx.coroutines.runBlocking
 
 
 class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardListBinding::bind, R.layout.fragment_board_list) {
@@ -26,17 +27,21 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initFaqAdapter()
+
+        runBlocking {
+            boardViewModel.getAllBoardType()
+        }
+
+        initAdapter()
     }
 
-    private fun initFaqAdapter() {
+    private fun initAdapter() {
 
         boardListAdapter = BoardListAdapter()
-        val list = mutableListOf<Int>()
-        list.add(1)
-        list.add(2)
-        list.add(3)
-        boardListAdapter.list = list
+
+        boardViewModel.allBoardType.observe(viewLifecycleOwner) {
+            boardListAdapter.list = it
+        }
 
         binding.boardListFragmentRvBoardList.apply {
             layoutManager = LinearLayoutManager(requireContext())

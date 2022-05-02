@@ -10,6 +10,8 @@ import com.ssafy.withssafy.util.RetrofitUtil
  */
 class BoardService {
 
+    suspend fun getAllBoardTType() = RetrofitUtil.boardApi.selectAllBoardType()
+
     suspend fun getAllList() = RetrofitUtil.boardApi.selectAllList()
 
     suspend fun addPost(boardRequest: BoardRequest) = RetrofitUtil.boardApi.insertPost(boardRequest)

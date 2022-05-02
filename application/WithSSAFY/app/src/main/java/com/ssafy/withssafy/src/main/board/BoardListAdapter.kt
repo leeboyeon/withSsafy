@@ -9,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.animation.content.Content
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemBoardBinding
+import com.ssafy.withssafy.src.dto.board.BoardType
 
 class BoardListAdapter : RecyclerView.Adapter<BoardListAdapter.ViewHolder>() {
-    var list = mutableListOf<Int>()
+    var list = mutableListOf<BoardType>()
 
     inner class ViewHolder(private val binding: ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
         val boardItem = binding.boardListItemClBoard
 
-        fun bind() {
-
+        fun bind(boardType: BoardType) {
+            binding.boardType = boardType
             binding.executePendingBindings()
         }
     }
@@ -29,10 +30,9 @@ class BoardListAdapter : RecyclerView.Adapter<BoardListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         val item = list[position]
         holder.apply {
-            bind()
+            bind(item)
             boardItem.setOnClickListener {
-//                itemClickListener.onClick(it, position, item.id)
-                itemClickListener.onClick(it, position, -1)
+                itemClickListener.onClick(it, position, item.id)
             }
         }
     }

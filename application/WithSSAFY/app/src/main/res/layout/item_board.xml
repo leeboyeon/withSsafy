@@ -2,8 +2,10 @@
 <layout>
     <data>
 
+        <variable
+            name="boardType"
+            type="com.ssafy.withssafy.src.dto.board.BoardType" />
     </data>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:tools="http://schemas.android.com/tools"
@@ -32,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="게시판이름쓰"
+            android:text="@{boardType.type}"
             android:textSize="16sp"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/boardListItem_ivBoardPin"
