@@ -35,18 +35,36 @@
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fragment_job_CompanyName"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_job_like" />
+            app:layout_constraintTop_toBottomOf="@+id/fragment_job_frame" />
+
+        <FrameLayout
+            android:id="@+id/fragment_job_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/fragment_job_like"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="false"
             app:lottie_fileName="heart.json"
-            app:lottie_loop="false" />
+            app:lottie_loop="false"
+            android:visibility="visible"/>
+
+            <ImageButton
+                android:id="@+id/fragment_job_more"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/ic_more_black" />
+        </FrameLayout>
 
         <HorizontalScrollView
             android:id="@+id/fragment_job_chip_view"

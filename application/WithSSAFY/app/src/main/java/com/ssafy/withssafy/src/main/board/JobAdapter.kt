@@ -14,20 +14,28 @@ import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.network.service.RecruitService
 import kotlinx.coroutines.runBlocking
 
-class JobAdapter : RecyclerView.Adapter<JobAdapter.JobViewHolder>(){
+class JobAdapter(var isStudent : Boolean) : RecyclerView.Adapter<JobAdapter.JobViewHolder>(){
     var list = mutableListOf<Recruit>()
     var likeRecruitIdList = mutableListOf<Int>()
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     inner class JobViewHolder(private val binding:ItemJobBinding):RecyclerView.ViewHolder(binding.root){
         val heartBtn = binding.fragmentJobLike
+        val moreBtn = binding.fragmentJobMore
         fun bind(recruit : Recruit){
             binding.recruit = recruit
             binding.executePendingBindings()
 
-            if(likeRecruitIdList.contains(recruit.id)) {
-                heartBtn.progress = 0.5F
+            if(isStudent) {
+                heartBtn.visibility = View.VISIBLE
+                moreBtn.visibility = View.GONE
+                if(likeRecruitIdList.contains(recruit.id)) {
+                    heartBtn.progress = 0.5F
+                } else {
+                    heartBtn.progress = 0F
+                }
             } else {
-                heartBtn.progress = 0F
+                heartBtn.visibility = View.GONE
+                moreBtn.visibility = View.VISIBLE
             }
         }
     }

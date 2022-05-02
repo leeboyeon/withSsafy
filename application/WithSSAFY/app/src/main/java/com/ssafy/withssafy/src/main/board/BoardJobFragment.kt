@@ -27,6 +27,7 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
 
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
+    private var isStudent = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -55,8 +56,10 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
     private fun initAdmin(){
         if(studentId != null) { // 교육생
             binding.fragmentJobAdminWrite.visibility = View.GONE
+            isStudent = true
         } else { // 관리자
             binding.fragmentJobAdminWrite.visibility = View.VISIBLE
+            isStudent = false
         }
     }
     private fun initButtons(){
@@ -68,7 +71,7 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
         }
     }
     private fun initAdapter(){
-        jobAdapter = JobAdapter()
+        jobAdapter = JobAdapter(isStudent)
         jobAdapter.list = recruitViewModel.recruitList.value!!
 
         binding.fragmentJobRv.apply {
