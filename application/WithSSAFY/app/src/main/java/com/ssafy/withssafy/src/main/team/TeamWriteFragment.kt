@@ -57,6 +57,8 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = teamViewModel
+        teamViewModel.count = 0;
+        teamViewModel.updateButtonText()
         setListener()
     }
     private fun setListener(){
@@ -78,7 +80,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
         binding.fragmentTeamWriteContentEdit.setText(study.content)
         var categorys = arrayListOf<String>("선택안함","어학","프로그래밍","면접","취업","CS","자율","기타")
         for(item in 0..categorys.size){
-            if(categorys[item].contains(study.category)){
+            if(study.category?.let { categorys[item].contains(it) } == true){
                 binding.fragmentTeamWriteStudyType.setSelection(item)
                 break
             }
