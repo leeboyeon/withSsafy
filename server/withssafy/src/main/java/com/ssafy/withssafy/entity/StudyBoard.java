@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_study_board")
@@ -19,6 +20,10 @@ public class StudyBoard {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany
+    @JoinColumn(name = "sb_id")
+    Set<StudyMember> studyMembers;
 
     @Column(length = 50)
     private String title;

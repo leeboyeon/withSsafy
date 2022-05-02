@@ -32,6 +32,7 @@ public class StudyService {
 
     @Transactional
     public void addStudyBoard(StudyBoardRequest studyBoardRequest) {
+        studyBoardRequest.setWriteDateTime();
         StudyBoard studyBoard = modelMapper.map(studyBoardRequest, StudyBoard.class);
         studyBoardRepository.save(studyBoard);
 
@@ -49,7 +50,6 @@ public class StudyService {
 
     public List<StudyBoardResponse> getStudyBoards() {
         List<StudyBoard> studyBoards = studyBoardRepository.findAll();
-
 
         return studyBoards.stream().map(studyBoard -> modelMapper.map(studyBoard, StudyBoardResponse.class))
                 .collect(Collectors.toList());

@@ -16,13 +16,13 @@ public class StudyMember {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sb_id")
-    private StudyBoard studyBoard;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sb_id")
+    private StudyBoard studyBoard;
 
     @Builder
     public StudyMember(StudyBoard studyBoard, User user){
