@@ -154,6 +154,12 @@ class HomeFragment : Fragment(){
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = requestAdapter
         }
+        requestAdapter.setItemClickListener(object : RequestAdapter.ItemClickListener {
+            override fun onClick(view: View, position: Int, id: Int) {
+
+            }
+
+        })
     }
 
     /**
