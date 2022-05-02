@@ -163,4 +163,38 @@ class BoardViewModel : ViewModel() {
             }
         }
     }
+
+    /**
+     * 게시판 타입별 게시글 리스트 조회
+     */
+    private val _boardListByType = MutableLiveData<MutableList<Board>>()
+
+    val boardListByType : LiveData<MutableList<Board>>
+        get() = _boardListByType
+
+    private fun setBoardListByType(list: MutableList<Board>) = viewModelScope.launch {
+        _boardListByType.value = list
+    }
+
+    suspend fun getBoardListByType(typeId: Int) {
+        try {
+            val response = BoardService().getBoardListByTypeId(typeId)
+
+            viewModelScope.launch {
+                if(response.isSuccessful) {
+                    val res = response.body()
+                    if(res != null) {
+                        setBoardListByType(res as MutableList<Board>)
+                    } else {
+                        Log.e(TAG, "getBoardListByType: $response", )
+                    }
+                } else {
+                    Log.e(TAG, "getBoardListByType: 통신 실패", )
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "getBoardListByType: ${e.message()}", )
+        }
+    }
+
 }

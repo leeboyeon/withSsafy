@@ -7,5 +7,8 @@ data class Board(
     val title: String,
     val content: String,
     val photoPath: String,
-    val writeDateTime: String
+    val writeDateTime: String,
+    val comments: List<Comment>,
+    val commentCount: Int,
+    val likeCount: Int
 )

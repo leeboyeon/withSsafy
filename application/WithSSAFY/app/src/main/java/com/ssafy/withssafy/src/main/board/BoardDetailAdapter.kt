@@ -8,11 +8,12 @@ import com.airbnb.lottie.LottieAnimationView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemPostListBinding
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.dto.board.Board
 import java.util.*
 
 class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDetailAdapter.ViewHolder>(){
 //class LocalBoardAdapter(val context: Context) : ListAdapter<Board, LocalBoardAdapter.LocalBoardViewHolder>(DiffCallback) {
-    lateinit var postList : MutableList<Int>    // !dto 수정
+    lateinit var postList : MutableList<Board>    // !dto 수정
     lateinit var userList: MutableList<User>
     lateinit var userLikePost: MutableList<Int>
 
@@ -22,7 +23,7 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
         val moreBtn = binding.postListItemBtnMore
         val item = binding.postListItemCl
 
-        fun bindInfo() {
+        fun bindInfo(board: Board) {
 
 //            for (i in userLikePost) {   // 로그인 유저가 좋아요 누른 게시글 표시
 //                if(post.id == i) {
@@ -33,6 +34,7 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
 //            }
 //
 //            moreBtn.isVisible = post.userId == ApplicationClass.sharedPreferencesUtil.getUser().id
+            binding.board = board
             binding.executePendingBindings()
         }
     }
@@ -47,10 +49,9 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
 //        val post = getItem(position)
         val post = postList[position]
         holder.apply {
-//            bindInfo()
+            bindInfo(post)
             item.setOnClickListener {
-//                itemClickListener.onClick(it, position, post.id, post.typeId)
-                itemClickListener.onClick(it, position, 54, 1)
+                itemClickListener.onClick(it, position, post.id, post.boardType.id)
             }
 //            setIsRecyclable(false)
 //            heartBtn.setOnClickListener {

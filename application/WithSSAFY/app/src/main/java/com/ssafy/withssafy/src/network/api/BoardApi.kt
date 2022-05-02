@@ -50,5 +50,11 @@ interface BoardApi {
     @DELETE("boards/{id}")
     suspend fun deletePostById(@Path("id") id: Int) : Response<Any?>
 
+    /**
+     * 게시판 타입별 게시글 조회
+     */
+    @GET("boards/q")
+    suspend fun selectBoardListByTypeId(@Query("type") type: Int) : Response<List<Board>>
+
 
 }

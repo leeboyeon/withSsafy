@@ -14,6 +14,7 @@ import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardDetailBinding
 import com.ssafy.withssafy.src.main.MainActivity
+import kotlinx.coroutines.runBlocking
 
 /**
  * @since 04/21/22
@@ -38,10 +39,15 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
         arguments?.apply {
             typeId = getInt("typeId")
         }
+        Log.d(TAG, "onCreate: $typeId")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        runBlocking {
+            boardViewModel.getBoardListByType(typeId)
+        }
 
         initListener()
         initRecyclerView()
@@ -69,11 +75,10 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
      */
     private fun initRecyclerView() { // 아이템 클릭하면 게시글 상세 화면(PostDetail)으로 이동
         boardDetailAdapter = BoardDetailAdapter(requireContext())
-        val list = mutableListOf<Int>()
-        list.add(1)
-        list.add(2)
-        list.add(3)
-        boardDetailAdapter.postList = list
+
+        boardViewModel.boardListByType.observe(viewLifecycleOwner) {
+            boardDetailAdapter.postList = it
+        }
 
         binding.boardDetailFragmentRvPostList.apply {
             layoutManager = LinearLayoutManager(requireContext())

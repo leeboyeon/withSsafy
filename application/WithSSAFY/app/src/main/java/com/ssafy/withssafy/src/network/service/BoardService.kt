@@ -22,5 +22,6 @@ class BoardService {
 
     suspend fun deletePost(postId: Int) = RetrofitUtil.boardApi.deletePostById(postId)
 
+    suspend fun getBoardListByTypeId(type: Int) = RetrofitUtil.boardApi.selectBoardListByTypeId(type)
 
 }

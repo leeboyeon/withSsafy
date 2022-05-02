@@ -51,10 +51,8 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         mainActivity.hideBottomNavi(true)
 
         runBlocking {
-            postId = 54
             boardViewModel.getPostDetail(postId)
             boardViewModel.getCommentList(postId)
-
         }
 
         initDataBinding()
