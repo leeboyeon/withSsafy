@@ -6,6 +6,7 @@ public enum ErrorCode {
     JOINED_STUDY_USER("E0003"),
     JOINED_USER_ID("E0004"),
     NOT_JOINED_USER_ID("E0005"),
+    DOESNT_EXIST("E0006"),
     ;
 
     private final String errorCode;
