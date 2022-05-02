@@ -11,7 +11,7 @@ import com.ssafy.withssafy.databinding.RecyclerviewEmployItemBinding
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.User
 
-class RequestAdapter() : RecyclerView.Adapter<RequestAdapter.RequestHolder>() {
+class RequestAdapter(var isHome: Boolean) : RecyclerView.Adapter<RequestAdapter.RequestHolder>() {
     var list = mutableListOf<User>()
     inner class RequestHolder(private val binding: ItemRequestHomeItemBinding) : RecyclerView.ViewHolder(binding.root) {
         var localTv = binding.fragmentHomeRequestLocal
@@ -45,7 +45,7 @@ class RequestAdapter() : RecyclerView.Adapter<RequestAdapter.RequestHolder>() {
     }
 
     override fun getItemCount(): Int {
-        if(list.size > 5) {
+        if(list.size > 5 && isHome) {
             return 5
         } else {
             return list.size

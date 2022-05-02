@@ -120,6 +120,9 @@ class HomeFragment : Fragment(){
         binding.fragmentHomeMoreJob.setOnClickListener {
             this@HomeFragment.findNavController().navigate(R.id.boardJobFragment)
         }
+        binding.fragmentHomeMoreRequest.setOnClickListener {
+            this@HomeFragment.findNavController().navigate(R.id.requestFragment)
+        }
     }
     private fun initAdapter() {
         favoriteBoardAdapter = FavoriteBoardAdapter()
@@ -143,7 +146,7 @@ class HomeFragment : Fragment(){
             adapter = employInfoAdapter
         }
 
-        requestAdapter = RequestAdapter()
+        requestAdapter = RequestAdapter(true)
         userViewModel.stateZeroUserList.observe(viewLifecycleOwner) {
             requestAdapter.list = it
         }

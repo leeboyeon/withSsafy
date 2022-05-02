@@ -225,4 +225,12 @@
             app:argType="integer"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/requestFragment"
+        android:name="com.ssafy.withssafy.src.main.home.RequestFragment"
+        android:label="fragment_request"
+        tools:layout="@layout/fragment_request">
+
+    </fragment>
+
 </navigation>
