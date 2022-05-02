@@ -43,7 +43,7 @@
                     android:id="@+id/fragment_messageDetail_appBarTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:messageTextView="@{viewModel.messageGroup.get(0)}"
+                    app:messageTextView="@{viewModel.messageTalk.get(0)}"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -48,8 +48,14 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
         setListener()
     }
     private fun setListener(){
+        initData()
         initButtons()
         initAdapter()
+    }
+    private fun initData(){
+        if(teamViewModel.study.value!!.photoPath == null || teamViewModel.study.value!!.photoPath == ""){
+            binding.fragmentTeamDetailImg.visibility = View.GONE
+        }
     }
     private fun initButtons(){
         binding.fragmentTeamDetailAppBarPrev.setOnClickListener {

@@ -95,11 +95,12 @@
                 android:id="@+id/fragment_teamDetail_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@{viewModel.study.content}"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="@+id/fragment_teamDetail_Img"
-                app:layout_constraintStart_toStartOf="@+id/fragment_teamDetail_Img"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_teamDetail_Img" />
 
             <TextView
