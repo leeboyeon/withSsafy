@@ -5,6 +5,7 @@ import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
 import com.ssafy.withssafy.dto.studyboard.StudyMemberRequest;
 import com.ssafy.withssafy.entity.StudyBoard;
 import com.ssafy.withssafy.entity.StudyMember;
+import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.StudyBoardRepository;
@@ -36,6 +37,16 @@ public class StudyService {
         StudyBoard studyBoard = modelMapper.map(studyBoardRequest, StudyBoard.class);
         studyBoardRepository.save(studyBoard);
 
+        StudyMember studyMember = StudyMember.builder()
+                .user(
+                        User.builder().id(studyBoardRequest.getUserId()).build()
+                )
+                .studyBoard(
+                        StudyBoard.builder().id(studyBoard.getId()).build()
+                )
+                .build();
+
+        studyMemberRepository.save(studyMember);
     }
 
     @Transactional
