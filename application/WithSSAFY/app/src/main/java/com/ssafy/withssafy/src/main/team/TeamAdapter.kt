@@ -1,6 +1,9 @@
 package com.ssafy.withssafy.src.main.team
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuInflater
@@ -28,6 +31,9 @@ class TeamAdapter(val context: Context) : RecyclerView.Adapter<TeamAdapter.TeamV
                 binding.fragmentTeamMoreBtn.visibility = View.VISIBLE
             }else{
                 binding.fragmentTeamMoreBtn.visibility = View.GONE
+            }
+            if(study.sbLimit == study.studyMembers?.size){
+                binding.fragmentTeamIngOred.setChipBackgroundColorResource(R.color.grey)
             }
             binding.executePendingBindings()
         }

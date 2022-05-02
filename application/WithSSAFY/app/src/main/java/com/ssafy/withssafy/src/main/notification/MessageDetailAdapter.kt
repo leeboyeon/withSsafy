@@ -1,5 +1,7 @@
 package com.ssafy.withssafy.src.main.notification
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +24,7 @@ class MessageDetailAdapter() : RecyclerView.Adapter<MessageDetailAdapter.DetailV
             binding.message = message
             if(message.u_fromId == ApplicationClass.sharedPreferencesUtil.getUser().id){
                 itemView.findViewById<TextView>(R.id.fragment_messageDetail_type).text = "보낸쪽지"
+                itemView.findViewById<TextView>(R.id.fragment_messageDetail_type).setTextColor(Color.parseColor("#FEC93A"))
             }else{
                 if(message.content.contains("지원하였습니다.")){
                     itemView.findViewById<ImageButton>(R.id.fragment_messageDetail_applyCheck).visibility = View.VISIBLE
