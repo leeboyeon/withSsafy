@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemMessageGroupBinding
 import com.ssafy.withssafy.src.dto.Message
 
@@ -14,6 +15,7 @@ class MessageGroupAdapter  : RecyclerView.Adapter<MessageGroupAdapter.GroupViewH
     inner class GroupViewHolder(private val binding:ItemMessageGroupBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(message: Message){
             binding.message = message
+
             binding.executePendingBindings()
         }
     }
@@ -26,7 +28,7 @@ class MessageGroupAdapter  : RecyclerView.Adapter<MessageGroupAdapter.GroupViewH
         holder.apply {
             bind(list[position])
             itemView.setOnClickListener {
-                itemClickListener.onClick(it,position,list[position].u_fromId)
+                itemClickListener.onClick(it,position,list[position].u_fromId,list[position].u_toId)
             }
         }
     }
@@ -35,7 +37,7 @@ class MessageGroupAdapter  : RecyclerView.Adapter<MessageGroupAdapter.GroupViewH
         return list.size
     }
     interface ItemClickListener{
-        fun onClick(view: View, position:Int, fromId:Int)
+        fun onClick(view: View, position:Int, fromId:Int,toId:Int)
     }
     private lateinit var itemClickListener : ItemClickListener
     fun setItemClickListener(itemClickListener: ItemClickListener){

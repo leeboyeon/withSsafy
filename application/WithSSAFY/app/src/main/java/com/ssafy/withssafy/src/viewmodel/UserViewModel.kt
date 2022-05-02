@@ -21,6 +21,7 @@ class UserViewModel : ViewModel() {
     private val _classRoomList = MutableLiveData<MutableList<ClassRoom>>()
     private val _isAutoLoginPossible = MutableLiveData<Int>()
     private val _classRoomInfo = MutableLiveData<ClassRoom>()
+    private val _userInfo = MutableLiveData<User>()
 
     val allUserList : LiveData<MutableList<User>>
         get() = _allUserList
@@ -37,10 +38,15 @@ class UserViewModel : ViewModel() {
     val classRoomInfo : LiveData<ClassRoom>
         get() = _classRoomInfo
 
+    val userInfo : LiveData<User>
+        get() = _userInfo
+
     private fun setAllUserList(userList : MutableList<User>) = viewModelScope.launch {
         _allUserList.value = userList
     }
-
+    private fun setUserInfo(user:User) = viewModelScope.launch {
+        _userInfo.value = user
+    }
     private fun setLoginUserInfo(user: User) = viewModelScope.launch {
         _loginUserInfo.value = user
     }
@@ -97,7 +103,7 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    suspend fun getUser(userId: Int){
+    suspend fun getUser(userId: Int,flag:Int){
         val response = UserService().getUser(userId)
         viewModelScope.launch {
             val res = response.body()
@@ -105,8 +111,13 @@ class UserViewModel : ViewModel() {
             if(response.code() == 200) {
                 if(res != null) {
                     Log.d(TAG, "getUser: $res")
-                    setIsAutoLoginPossible(1)
-                    setLoginUserInfo(res)
+                    if(flag==1){
+                        setIsAutoLoginPossible(1)
+                        setLoginUserInfo(res)
+                    }else if(flag==2){
+                        setUserInfo(res)
+                    }
+
                 } else {
                     setIsAutoLoginPossible(0)
                 }

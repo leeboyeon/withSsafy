@@ -107,8 +107,13 @@ fun bindEllipsisContent(textView: TextView, content: String) {
 }
 
 @BindingAdapter("messageTextView")
-fun bindMsgTextView(textView: TextView, userNickindex:Int){
-    textView.text = "익명${userNickindex}과의 대화"
+fun bindMsgTextView(textView: TextView, msg:Message){
+    if(msg.u_fromId == ApplicationClass.sharedPreferencesUtil.getUser().id){
+        textView.text = "익명${msg.u_toId}과의 대화"
+    }else{
+        textView.text = "익명${msg.u_fromId}과의 대화"
+    }
+
 }
 
 @BindingAdapter("messageGroupDataList")

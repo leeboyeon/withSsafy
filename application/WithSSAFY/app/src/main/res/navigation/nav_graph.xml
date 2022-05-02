@@ -178,7 +178,12 @@
         android:id="@+id/teamWriteFragment"
         android:name="com.ssafy.withssafy.src.main.team.TeamWriteFragment"
         android:label="fragment_team_write"
-        tools:layout="@layout/fragment_team_write" />
+        tools:layout="@layout/fragment_team_write" >
+        <argument
+            android:name="studyId"
+            android:defaultValue="-1"
+            app:argType="integer"/>
+    </fragment>
     <fragment
         android:id="@+id/teamDetailFragment"
         android:name="com.ssafy.withssafy.src.main.team.TeamDetailFragment"
@@ -200,7 +205,11 @@
         android:label="fragment_message_detail"
         tools:layout="@layout/fragment_message_detail">
         <argument
-            android:name="groupId"
+            android:name="fromId"
+            android:defaultValue="0"
+            app:argType="integer"/>
+        <argument
+            android:name="toId"
             android:defaultValue="0"
             app:argType="integer"/>
     </fragment>
