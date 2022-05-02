@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import javax.transaction.Transactional;
 import java.beans.Transient;
 import java.lang.reflect.Member;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,Long> {
@@ -29,4 +30,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE tbl_user SET classroom_id=:classId WHERE id=:id", nativeQuery = true)
     void updateClassById(Long id, Long classId);
+
+    List<User> findByState(@Param("state") int state);
 }
