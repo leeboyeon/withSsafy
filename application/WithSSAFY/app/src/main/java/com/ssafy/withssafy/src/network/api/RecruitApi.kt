@@ -47,17 +47,9 @@ interface RecruitApi {
     suspend fun deleteRecruitById(@Path("id") id: Int) : Response<Any?>
 
     /**
-     * 채용 공고 찜하기
-     * @param recruitId
-     * @param userId
-     */
-    @GET("/recruit/like")
-    suspend fun likeRecruit(@Query("recruitId ") recruitId : Int, @Query("userId ") userId : Int) : Response<Any?>
-
-    /**
-     * 채용 공고 찜하기 취소
+     * 채용 공고 찜하기 & 취소
      * @param recruitLike
      */
     @POST("/recruit/like")
-    suspend fun likeCancelRecruit(@Body recruitLikeDto : RecruitLike) : Response<Any?>
+    suspend fun likeAndCancelRecruit(@Body recruitLikeDto : RecruitLike) : Response<Any?>
 }
