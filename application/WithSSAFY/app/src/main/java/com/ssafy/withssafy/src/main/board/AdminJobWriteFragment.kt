@@ -50,7 +50,9 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
         initSpinner()
         selectSpinner()
         selectCheckBox()
-        initData()
+        if(recruitId != 0) {
+            initData()
+        }
     }
 
     private fun setListener(){
@@ -100,42 +102,43 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
      * 수정하려고 넘어왔을 때 기존 데이터 초기화
      */
     private fun initData() {
-        val recruitData = recruitViewModel.recruit.value
-        binding.fragmentJobWriteCompanyInfoNameEdit.setText(recruitData!!.company)
-        binding.fragmentJobWriteCompanyInfoAddrEdit.setText(recruitData!!.location)
-        binding.fragmentJobWriteCompanyInfoSalaryEdit.setText(recruitData!!.salary)
-        binding.fragmentJobWriteCompanyInfoWorkTimeEdit.setText(recruitData!!.workingHours)
-        binding.fragmentJobWriteJobEdit.setText(recruitData!!.job)
-        binding.fragmentJobWriteTaskEdit.setText(recruitData!!.taskDescription)
-        binding.fragmentJobWriteWelfareEdit.setText(recruitData!!.welfare)
-        binding.fragmentJobWriteDatePickerBtn.setText("${recruitData.startDate}부터 ${recruitData.endDate}까지")
-        val c = recruitData.career // 경력
-        val e = recruitData.education // 학력
-        val p = recruitData.preferenceDescription // 우대사항
-        val t = recruitData.employType // 고용형태
-        if(c == "신입") {
-            binding.fragmentJobWriteAddInfoCareerNew.isChecked = true
-        } else if(c == "경력") {
-            binding.fragmentJobWriteAddInfoCareerSenior.isChecked = true
+        recruitViewModel.recruit.observe(viewLifecycleOwner) {
+            val recruitData = it
+            binding.fragmentJobWriteCompanyInfoNameEdit.setText(recruitData!!.company)
+            binding.fragmentJobWriteCompanyInfoAddrEdit.setText(recruitData!!.location)
+            binding.fragmentJobWriteCompanyInfoSalaryEdit.setText(recruitData!!.salary)
+            binding.fragmentJobWriteCompanyInfoWorkTimeEdit.setText(recruitData!!.workingHours)
+            binding.fragmentJobWriteJobEdit.setText(recruitData!!.job)
+            binding.fragmentJobWriteTaskEdit.setText(recruitData!!.taskDescription)
+            binding.fragmentJobWriteWelfareEdit.setText(recruitData!!.welfare)
+            binding.fragmentJobWriteDatePickerBtn.setText("${recruitData.startDate}부터 ${recruitData.endDate}까지")
+            val c = recruitData.career // 경력
+            val e = recruitData.education // 학력
+            val p = recruitData.preferenceDescription // 우대사항
+            val t = recruitData.employType // 고용형태
+            if(c == "신입") {
+                binding.fragmentJobWriteAddInfoCareerNew.isChecked = true
+            } else if(c == "경력") {
+                binding.fragmentJobWriteAddInfoCareerSenior.isChecked = true
+            }
+            if(e == "학사이상") {
+                binding.fragmentJobWriteEduSpinner.setSelection(1)
+            } else if(e == "관련학과 기졸업자") {
+                binding.fragmentJobWriteEduSpinner.setSelection(2)
+            } else if(e == "학사이상(예정자 포함)") {
+                binding.fragmentJobWriteEduSpinner.setSelection(3)
+            }
+            if(p == "SSAFY 전형") {
+                binding.fragmentJobWritePreferenceSpinner.setSelection(1)
+            } else if(p == "정보처리기사 자격증 소지자") {
+                binding.fragmentJobWritePreferenceSpinner.setSelection(2)
+            }
+            if(t == "정규직") {
+                binding.fragmentJobWriteCareerTypeSpinner.setSelection(1)
+            } else if(t == "계약직") {
+                binding.fragmentJobWriteCareerTypeSpinner.setSelection(2)
+            }
         }
-        if(e == "학사이상") {
-            binding.fragmentJobWriteEduSpinner.setSelection(1)
-        } else if(e == "관련학과 기졸업자") {
-            binding.fragmentJobWriteEduSpinner.setSelection(2)
-        } else if(e == "학사이상(예정자 포함)") {
-            binding.fragmentJobWriteEduSpinner.setSelection(3)
-        }
-        if(p == "SSAFY 전형") {
-            binding.fragmentJobWritePreferenceSpinner.setSelection(1)
-        } else if(p == "정보처리기사 자격증 소지자") {
-            binding.fragmentJobWritePreferenceSpinner.setSelection(2)
-        }
-        if(t == "정규직") {
-            binding.fragmentJobWriteCareerTypeSpinner.setSelection(1)
-        } else if(t == "계약직") {
-            binding.fragmentJobWriteCareerTypeSpinner.setSelection(2)
-        }
-
     }
 
     private fun selectSpinner() {
@@ -240,17 +243,28 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
         var taskDescription = binding.fragmentJobWriteTaskEdit.text.toString()
         var welfare = binding.fragmentJobWriteWelfareEdit.text.toString()
         var workingHours = binding.fragmentJobWriteCompanyInfoWorkTimeEdit.text.toString()
-
-        var recruit = Recruit(career, company, education, employType, endDate, job, location, preferenceDescription, salary, startDate, taskDescription, userId, welfare, workingHours)
+        var recruit = Recruit(career, company, education, employType, endDate, recruitId, job, location, preferenceDescription, salary, startDate, taskDescription, userId, welfare, workingHours)
         runBlocking {
-            val response = RecruitService().insertRecruit(recruit)
-            Log.d(TAG, "insertRecruit: ${response.body()}")
-            Log.d(TAG, "insertRecruit: ${response.code()}")
-            if(response.code() == 204) {
-                showCustomToast("채용 공고 작성이 완료되었습니다.")
-                this@AdminJobWriteFragment.findNavController().popBackStack()
+            if(recruitId == 0) {
+                val response = RecruitService().insertRecruit(recruit)
+                Log.d(TAG, "insertRecruit: ${response.body()}")
+                Log.d(TAG, "insertRecruit: ${response.code()}")
+                if (response.code() == 204) {
+                    showCustomToast("채용 공고 작성이 완료되었습니다.")
+                    this@AdminJobWriteFragment.findNavController().popBackStack()
+                } else {
+                    showCustomToast("채용 공고 작성이 실패했습니다.")
+                }
             } else {
-                showCustomToast("채용 공고 작성이 실패했습니다.")
+                val response = RecruitService().updateRecruit(recruit)
+                Log.d(TAG, "updateRecruit: ${response.body()}")
+                Log.d(TAG, "updateRecruit: ${response.code()}")
+                if (response.code() == 204) {
+                    showCustomToast("채용 공고 수정이 완료되었습니다.")
+                    this@AdminJobWriteFragment.findNavController().popBackStack()
+                } else {
+                    showCustomToast("채용 공고 수정이 실패했습니다.")
+                }
             }
         }
     }

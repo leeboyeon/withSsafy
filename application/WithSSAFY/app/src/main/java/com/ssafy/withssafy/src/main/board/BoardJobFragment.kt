@@ -21,6 +21,7 @@ import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.team.TeamFragment
 import com.ssafy.withssafy.src.network.service.RecruitService
 import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 
 private const val TAG = "BoardJobFragment"
 class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobBinding::bind,R.layout.fragment_board_job) {
@@ -69,13 +70,15 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
             this@BoardJobFragment.findNavController().popBackStack()
         }
         binding.fragmentJobAdminWrite.setOnClickListener {
-            this@BoardJobFragment.findNavController().navigate(R.id.action_boardJobFragment_to_adminJobWriteFragment)
+            var recruitId = bundleOf("recruitId" to 0)
+            this@BoardJobFragment.findNavController().navigate(R.id.action_boardJobFragment_to_adminJobWriteFragment, recruitId)
         }
     }
     private fun initAdapter(){
         jobAdapter = JobAdapter(isStudent)
-        jobAdapter.list = recruitViewModel.recruitList.value!!
-
+        recruitViewModel.recruitList.observe(viewLifecycleOwner) {
+                    jobAdapter.list = it
+        }
         binding.fragmentJobRv.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
             adapter = jobAdapter
@@ -117,7 +120,7 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
             when(it.itemId) {
                 R.id.update -> {
                     var recruitId = bundleOf("recruitId" to id)
-                    this@BoardJobFragment.findNavController().navigate(R.id.action_boardJobFragment_to_adminJobWriteFragment)
+                    this@BoardJobFragment.findNavController().navigate(R.id.action_boardJobFragment_to_adminJobWriteFragment, recruitId)
                     return@setOnMenuItemClickListener true
                 }
                 R.id.delete -> {
@@ -131,16 +134,22 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
     }
 
     private fun deleteRecruit(id: Int) {
+        var response: Response<Any?>
         runBlocking {
-            val response = RecruitService().deleteRecruitById(id)
+            response = RecruitService().deleteRecruitById(id)
+        }
             Log.d(TAG, "likeAndCancelRecruit: ${response.body()}")
             if(response.code() == 204) {
                 showCustomToast("삭제되었습니다.")
-                recruitViewModel.getRecruitList()
+                runBlocking {
+                    recruitViewModel.getRecruitList()
+                }
+                jobAdapter.notifyDataSetChanged()
+
             } else {
                 Log.d(TAG, "채용공고 삭제 실패")
             }
-        }
+
     }
 
     private fun jobLikeAndCancel(id: Int) {

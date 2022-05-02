@@ -43,7 +43,7 @@ interface RecruitApi {
      * id에 해당하는 채용 공고 삭제
      * @param id
      */
-    @GET("/recruit/{id}")
+    @DELETE("/recruit/{id}")
     suspend fun deleteRecruitById(@Path("id") id: Int) : Response<Any?>
 
     /**
