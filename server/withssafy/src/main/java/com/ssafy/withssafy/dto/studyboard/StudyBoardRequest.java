@@ -26,4 +26,9 @@ public class StudyBoardRequest {
     private String photoPath;
 
     private byte isOuting;
+
+    public void setWriteDateTime(){
+        this.writeDateTime = String.valueOf(System.currentTimeMillis());
+    }
+
 }

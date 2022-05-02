@@ -26,4 +26,6 @@ public class StudyBoardResponse {
     private String photoPath;
 
     private int isOuting;
+
+    private StudyMember[] studyMembers;
 }
