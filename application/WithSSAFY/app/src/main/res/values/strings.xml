@@ -5,4 +5,5 @@
     <string name="date_format">%s부터 %s까지</string>
     <string name="spec_prefer_format">%s/%s\n%s\n고용형태 : %s</string>
     <string name="home_date_format">~%s</string>
+    <string name="request_format">%s 교육생이 승인을 요청했습니다.</string>
 </resources>

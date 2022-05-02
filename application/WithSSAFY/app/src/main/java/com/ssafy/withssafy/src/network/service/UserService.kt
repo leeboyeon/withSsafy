@@ -143,4 +143,9 @@ class UserService {
     suspend fun getClassRoom(id: Int) : Response<ClassRoom> {
         return RetrofitUtil.userService.getClassRoom(id)
     }
+
+    suspend fun updateState(id: Int, state :Int) = RetrofitUtil.userService.updateState(id, state)
+
+
+    suspend fun selectStateZeroUser() = RetrofitUtil.userService.selectStateZeroUser()
 }
