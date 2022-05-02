@@ -10,6 +10,7 @@ import com.ssafy.withssafy.databinding.ItemRequestHomeItemBinding
 import com.ssafy.withssafy.databinding.RecyclerviewEmployItemBinding
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.main.board.JobAdapter
 
 class RequestAdapter(var isHome: Boolean) : RecyclerView.Adapter<RequestAdapter.RequestHolder>() {
     var list = mutableListOf<User>()
@@ -41,6 +42,10 @@ class RequestAdapter(var isHome: Boolean) : RecyclerView.Adapter<RequestAdapter.
     override fun onBindViewHolder(holder: RequestHolder, position: Int) {
         holder.apply {
             bind(list[position])
+
+            itemView.setOnClickListener {
+                itemClickListener.onClick(it,position,list[position].id)
+            }
         }
     }
 
@@ -51,5 +56,15 @@ class RequestAdapter(var isHome: Boolean) : RecyclerView.Adapter<RequestAdapter.
             return list.size
         }
     }
+
+    interface ItemClickListener{
+        fun onClick(view: View, position: Int, id: Int)
+    }
+
+    private lateinit var itemClickListener : RequestAdapter.ItemClickListener
+    fun setItemClickListener(itemClickListener: RequestAdapter.ItemClickListener){
+        this.itemClickListener = itemClickListener
+    }
+
 
 }
