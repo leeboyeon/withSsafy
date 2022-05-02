@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 공지사항 API
+ * 알림 API
  * @author Jueun
  */
 @RestController
