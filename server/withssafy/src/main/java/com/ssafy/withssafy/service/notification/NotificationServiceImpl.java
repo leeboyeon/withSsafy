@@ -8,6 +8,7 @@ import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.NotificationRepository;
 import com.ssafy.withssafy.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,16 +20,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
-
-    @Autowired
-    NotificationRepository notificationRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ModelMapper modelMapper;
+    private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public List<NotificationResponseDto> findAll() {

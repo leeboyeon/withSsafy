@@ -56,4 +56,12 @@ public class User {
     public void encodePassword(PasswordEncoder passwordEncoder) {
         password = passwordEncoder.encode(password);
     }
+
+    public void updateDeviceToken(String token) {
+        this.deviceToken = token;
+    }
+
+    public void updateState(int state) {
+        this.state = state;
+    }
 }

@@ -17,4 +17,7 @@ public interface UserService {
     LoginDto login(String id, String password);
     UserDto updateClassById(Long id, Long classId);
     LoginDto insertManager(UserDto userDto, int status);
+    UserDto updateState(Long id, int state);
+    UserDto updateDeviceToken(Long id, String token);
+    List<UserDto> findStateZero();
 }
