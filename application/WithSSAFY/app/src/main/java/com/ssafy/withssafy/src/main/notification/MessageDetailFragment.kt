@@ -111,7 +111,7 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
                 if(response.code() == 204){
                     Log.d(TAG, "showRequestDialog: 조인성공")
                     var message = Message(
-                        "[스터디 ${teamViewModel.study.value!!.id}] '${teamViewModel.study.value!!.title}’의 지원을 수락하였습니다.",
+                        "[스터디 ${StudyId}] '${StudyTitle}’의 지원을 수락하였습니다.",
                         0,
                         ApplicationClass.sharedPreferencesUtil.getUser().id,
                         fromId
