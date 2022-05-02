@@ -25,7 +25,7 @@ public interface MessageRepository  extends JpaRepository<Message,Long> {
 //    List<Message> findMyMessageList(Long id);
 
     @Query(value = "select * from tbl_message m\n" +
-            "where m.u_from_id = 4 or m.u_to_id = 4\n" +
+            "where m.u_from_id = :id or m.u_to_id = :id\n" +
             "order by send_dt desc;",nativeQuery = true)
     List<Message> findMyMessageList(Long id);
 
