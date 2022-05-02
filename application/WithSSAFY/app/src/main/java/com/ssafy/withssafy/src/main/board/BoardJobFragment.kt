@@ -2,6 +2,7 @@ package com.ssafy.withssafy.src.main.board
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,16 +14,19 @@ import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.FragmentBoardJobBinding
+import com.ssafy.withssafy.src.dto.RecruitLike
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.team.TeamFragment
+import com.ssafy.withssafy.src.network.service.RecruitService
 import kotlinx.coroutines.runBlocking
 
-
+private const val TAG = "BoardJobFragment"
 class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobBinding::bind,R.layout.fragment_board_job) {
     private lateinit var mainActivity: MainActivity
     private lateinit var jobAdapter: JobAdapter
 
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,6 +43,7 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
         binding.viewModel = recruitViewModel
         runBlocking {
             recruitViewModel.getRecruitList()
+            recruitViewModel.getLikeRecruitList(userId)
         }
         setListener()
     }
@@ -77,6 +82,36 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
             }
 
         })
+        jobAdapter.setHeartClickListener(object : JobAdapter.HeartClickListener {
+            override fun onClick(view: View, position: Int, id: Int) {
+                jobLikeAndCancel(id)
+            }
+
+        })
+
+        recruitViewModel.likeRecruitList.observe(viewLifecycleOwner) {
+            var likeRecruitList = arrayListOf<Int>()
+            it.forEach {
+                likeRecruitList.add(it.id)
+            }
+            jobAdapter.likeRecruitIdList = likeRecruitList
+        }
+
+    }
+
+    private fun jobLikeAndCancel(id: Int) {
+        var recruitLike = RecruitLike(id, userId)
+        runBlocking {
+            val response = RecruitService().likeAndCancelRecruit(recruitLike)
+            Log.d(TAG, "likeAndCancelRecruit: ${response.body()}")
+           
+            if(response.code() == 204) {
+                Log.d(TAG, "jobLikeAndCancel: 채용 공고 찜하기 & 찜하기 취소 성공")
+      
+            } else {
+                Log.d(TAG, "jobLikeAndCancel: 채용 공고 찜하기 & 찜하기 취소 실패")
+            }
+        }
     }
     companion object {
         @JvmStatic
