@@ -29,21 +29,30 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
     private var career = ""
     private var startDate = ""
     private var endDate = ""
+    private var recruitId = 0
 
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            recruitId = it.getInt("recruitId")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(recruitId != 0) {
+            runBlocking {
+                recruitViewModel.getRecruit(recruitId)
+            }
+        }
         setListener()
         initSpinner()
         selectSpinner()
         selectCheckBox()
+        initData()
     }
+
     private fun setListener(){
         initButtons()
     }
@@ -85,6 +94,48 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
         employTypeSpin.apply {
             adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, employTypeList.toList())
         }
+    }
+
+    /**
+     * 수정하려고 넘어왔을 때 기존 데이터 초기화
+     */
+    private fun initData() {
+        val recruitData = recruitViewModel.recruit.value
+        binding.fragmentJobWriteCompanyInfoNameEdit.setText(recruitData!!.company)
+        binding.fragmentJobWriteCompanyInfoAddrEdit.setText(recruitData!!.location)
+        binding.fragmentJobWriteCompanyInfoSalaryEdit.setText(recruitData!!.salary)
+        binding.fragmentJobWriteCompanyInfoWorkTimeEdit.setText(recruitData!!.workingHours)
+        binding.fragmentJobWriteJobEdit.setText(recruitData!!.job)
+        binding.fragmentJobWriteTaskEdit.setText(recruitData!!.taskDescription)
+        binding.fragmentJobWriteWelfareEdit.setText(recruitData!!.welfare)
+        binding.fragmentJobWriteDatePickerBtn.setText("${recruitData.startDate}부터 ${recruitData.endDate}까지")
+        val c = recruitData.career // 경력
+        val e = recruitData.education // 학력
+        val p = recruitData.preferenceDescription // 우대사항
+        val t = recruitData.employType // 고용형태
+        if(c == "신입") {
+            binding.fragmentJobWriteAddInfoCareerNew.isChecked = true
+        } else if(c == "경력") {
+            binding.fragmentJobWriteAddInfoCareerSenior.isChecked = true
+        }
+        if(e == "학사이상") {
+            binding.fragmentJobWriteEduSpinner.setSelection(1)
+        } else if(e == "관련학과 기졸업자") {
+            binding.fragmentJobWriteEduSpinner.setSelection(2)
+        } else if(e == "학사이상(예정자 포함)") {
+            binding.fragmentJobWriteEduSpinner.setSelection(3)
+        }
+        if(p == "SSAFY 전형") {
+            binding.fragmentJobWritePreferenceSpinner.setSelection(1)
+        } else if(p == "정보처리기사 자격증 소지자") {
+            binding.fragmentJobWritePreferenceSpinner.setSelection(2)
+        }
+        if(t == "정규직") {
+            binding.fragmentJobWriteCareerTypeSpinner.setSelection(1)
+        } else if(t == "계약직") {
+            binding.fragmentJobWriteCareerTypeSpinner.setSelection(2)
+        }
+
     }
 
     private fun selectSpinner() {

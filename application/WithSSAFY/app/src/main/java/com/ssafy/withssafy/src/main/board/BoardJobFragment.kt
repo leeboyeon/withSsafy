@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -91,6 +93,11 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
             }
 
         })
+        jobAdapter.setMoreClickListener(object : JobAdapter.MoreClickListener {
+            override fun onClick(view: View, position: Int, id: Int) {
+                showPopMenu(view, id)
+            }
+        })
 
         recruitViewModel.likeRecruitList.observe(viewLifecycleOwner) {
             var likeRecruitList = arrayListOf<Int>()
@@ -100,6 +107,40 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
             jobAdapter.likeRecruitIdList = likeRecruitList
         }
 
+    }
+
+    private fun showPopMenu(view: View, id: Int) {
+        val popup = PopupMenu(context, view)
+        MenuInflater(context).inflate(R.menu.recruit_popup_menu, popup.menu)
+        popup.show()
+        popup.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.update -> {
+                    var recruitId = bundleOf("recruitId" to id)
+                    this@BoardJobFragment.findNavController().navigate(R.id.action_boardJobFragment_to_adminJobWriteFragment)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.delete -> {
+                    deleteRecruit(id)
+                    return@setOnMenuItemClickListener true
+                } else -> {
+                return@setOnMenuItemClickListener false
+                    }
+            }
+        }
+    }
+
+    private fun deleteRecruit(id: Int) {
+        runBlocking {
+            val response = RecruitService().deleteRecruitById(id)
+            Log.d(TAG, "likeAndCancelRecruit: ${response.body()}")
+            if(response.code() == 204) {
+                showCustomToast("삭제되었습니다.")
+                recruitViewModel.getRecruitList()
+            } else {
+                Log.d(TAG, "채용공고 삭제 실패")
+            }
+        }
     }
 
     private fun jobLikeAndCancel(id: Int) {

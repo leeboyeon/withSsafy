@@ -63,7 +63,9 @@ class JobAdapter(var isStudent : Boolean) : RecyclerView.Adapter<JobAdapter.JobV
                     }
                     animator.start()
                 }
-
+            }
+            moreBtn.setOnClickListener{
+                moreCLickListener.onClick(it, position, list[position].id)
             }
         }
     }
@@ -76,6 +78,10 @@ class JobAdapter(var isStudent : Boolean) : RecyclerView.Adapter<JobAdapter.JobV
         fun onClick(view: View, position: Int, id: Int)
     }
 
+    interface MoreClickListener{
+        fun onClick(view: View, position: Int, id: Int)
+    }
+
     private lateinit var itemClickListener : ItemClickListener
     fun setItemClickListener(itemClickListener: ItemClickListener){
         this.itemClickListener = itemClickListener
@@ -84,6 +90,11 @@ class JobAdapter(var isStudent : Boolean) : RecyclerView.Adapter<JobAdapter.JobV
     private lateinit var heartClickListener: HeartClickListener
     fun setHeartClickListener(heartClickListener: HeartClickListener) {
         this.heartClickListener = heartClickListener
+    }
+
+    private lateinit var moreCLickListener : MoreClickListener
+    fun setMoreClickListener(moreClickListener: MoreClickListener) {
+        this.moreCLickListener = moreClickListener
     }
 
     override fun getItemCount(): Int {
