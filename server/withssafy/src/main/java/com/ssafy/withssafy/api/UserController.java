@@ -106,4 +106,22 @@ public class UserController {
     public ResponseEntity<LoginDto> insertManager(@RequestBody UserDto userDto, @RequestParam int status){
         return new ResponseEntity<>(userService.insertManager(userDto, status), HttpStatus.OK);
     }
+
+    @PatchMapping("/manager/state")
+    @ApiOperation(value = "유저의 state를 변경합니다.")
+    public ResponseEntity<UserDto> updateState(@RequestParam Long id, @RequestParam int state){
+        return new ResponseEntity<>(userService.updateState(id, state), HttpStatus.OK);
+    }
+
+    @PatchMapping("manager/update-device-token")
+    @ApiOperation(value = "유저의 Device Token을 변경합니다.")
+    public ResponseEntity<UserDto> updateDeviceToken(@RequestParam Long id, @RequestParam String token){
+        return new ResponseEntity<>(userService.updateDeviceToken(id, token), HttpStatus.OK);
+    }
+
+    @GetMapping("/manager/user-state-zero")
+    @ApiOperation(value = "state가 0인 학생을 조회합니다.")
+    public ResponseEntity<List<UserDto>> getUserStateZero(){
+        return new ResponseEntity<>(userService.findStateZero(), HttpStatus.OK);
+    }
 }
