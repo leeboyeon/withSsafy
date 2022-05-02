@@ -17,7 +17,13 @@ interface StudyApi {
      */
     @GET("/study-boards")
     suspend fun getStudys() : Response<MutableList<Study>>
-
+    /**
+     * Study Update
+     * @author : LeeBoYeon
+     * 스터디 수정하기
+     * */
+    @PUT("/study-boards/{id}")
+    suspend fun updateStudy(@Path("id")id:Int, @Body study:Study) : Response<Any?>
     /**
      * Study insert
      * @author : LeeBoYeon

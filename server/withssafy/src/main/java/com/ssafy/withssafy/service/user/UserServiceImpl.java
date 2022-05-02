@@ -4,35 +4,31 @@ import com.ssafy.withssafy.dto.classroom.ClassRoomDto;
 import com.ssafy.withssafy.dto.manager.ManagerDto;
 import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
-import com.ssafy.withssafy.entity.ClassManager;
-import com.ssafy.withssafy.entity.ClassRoom;
-import com.ssafy.withssafy.entity.Manager;
-import com.ssafy.withssafy.entity.User;
+import com.ssafy.withssafy.entity.*;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService{
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ClassRoomRepository classRoomRepository;
-    @Autowired
-    private ManagerRepository managerRepository;
-    @Autowired
-    private ClassManagerRepository classManagerRepository;
-
-    @Autowired
-    ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final ClassRoomRepository classRoomRepository;
+    private final ManagerRepository managerRepository;
+    private final ClassManagerRepository classManagerRepository;
+    private final ModelMapper modelMapper;
 
     /**
      * 새로운 사용자를 등록한다.
@@ -55,7 +51,6 @@ public class UserServiceImpl implements UserService{
      * @param id
      * @return 해당 이메일을 가진 사용자가 있다면 삭제 후 true, 없다면 false
      */
-    @Transactional
     @Override
     public Boolean deleteByUid(Long id){
         if(!userRepository.findById(id).isPresent()) return false;
@@ -69,7 +64,6 @@ public class UserServiceImpl implements UserService{
      * @param password
      * @return 해당 사용자 User 정보
      */
-    @Transactional
     @Override
     public UserDto updatePasswordByUid(Long id, String password) {
         if(!userRepository.findById(id).isPresent()) return null;
@@ -126,7 +120,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    @Transactional
     public UserDto updateClassById(Long id, Long classId) {
         if(!userRepository.findById(id).isPresent()) return null;
         userRepository.updateClassById(id, classId);
@@ -135,7 +128,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    @Transactional
     public LoginDto insertManager(UserDto userDto, int status) {
         if(userRepository.findByUid(userDto.getUserId()).isPresent()){
             throw new InvalidRequestException(ErrorCode.JOINED_USER_ID);
@@ -149,5 +141,39 @@ public class UserServiceImpl implements UserService{
         if(user.getClassRoom() != null) result.setClassRoomDto(modelMapper.map(user.getClassRoom(), ClassRoomDto.class));
         result.setManagerDto(modelMapper.map(manager, ManagerDto.class));
         return result;
+    }
+
+    @Override
+    @Modifying(clearAutomatically = true)
+    public UserDto updateState(Long id, int state) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()) {
+            user.get().updateState(state);
+        } else {
+            throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
+        }
+
+        return modelMapper.map(user.get(), UserDto.class);
+    }
+
+    @Override
+    @Modifying(clearAutomatically = true)
+    public UserDto updateDeviceToken(Long id, String token) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()) {
+            user.get().updateDeviceToken(token);
+        } else {
+            throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
+        }
+
+        return modelMapper.map(user.get(), UserDto.class);
+    }
+
+    @Override
+    public List<UserDto> findStateZero() {
+        List<User> list = userRepository.findByState(0);
+        return list.stream().map(user -> modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
     }
 }

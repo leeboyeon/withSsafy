@@ -172,7 +172,16 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
             this@TeamWriteFragment.findNavController().popBackStack()
         }
         binding.fragmentTeamWriteSuccess.setOnClickListener {
-            runBlocking { insertStudy() }
+            if(studyId > 0){
+                if(validateData()){
+                    runBlocking { updateStudy() }
+                }
+            }else{
+                if(validateData()){
+                    runBlocking { insertStudy() }
+                }
+            }
+
         }
         binding.fragmentTeamWriteCamera.setOnClickListener {
             mainActivity.openGallery(STORAGE_CODE)
@@ -181,6 +190,129 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
                 Glide.with(requireContext())
                     .load(teamViewModel.uploadImageUri)
                     .into(binding.fragmentTeamWritePhoto)
+            }
+        }
+        binding.fragmentTeamWritePhotoDelete.setOnClickListener {
+            teamViewModel.uploadImageUri = null
+            binding.fragmentTeamWritePhotoGroup.visibility = View.GONE
+        }
+    }
+    private fun validateData() : Boolean{
+        var peopleChecked = false
+        var contentChecked = false
+        var LocChecked = false
+        var typeChecked = false
+        var optionChecked = false
+
+        if(binding.fragmentTeamWritePeople.text.toString().toInt() > 0 ){
+            peopleChecked = true
+        }else{
+            showCustomToast("모집인원이 부족합니다.")
+            peopleChecked = false
+        }
+
+        if(binding.fragmentTeamWriteContentEdit.text.toString().length > 10){
+            contentChecked = true
+        }else{
+            showCustomToast("최소 내용의 길이는 10 이상입니다.")
+            contentChecked = false
+        }
+
+        if(binding.fragmentTeamWriteLoc.selectedItemPosition != 0){
+            LocChecked = true
+        }else{
+            showCustomToast("지역을 선택해주세요")
+            LocChecked = false
+        }
+
+        if(binding.fragmentTeamWriteStudyType.selectedItemPosition != 0){
+            typeChecked = true
+        }else{
+            showCustomToast("분야를 선택해주세요")
+            typeChecked = false
+        }
+
+        if(binding.fragmentTeamWriteOnlineCheck.isChecked == true || binding.fragmentTeamWriteOfflineCheck.isChecked == true){
+            optionChecked = true
+        }else if(binding.fragmentTeamWriteOnlineCheck.isChecked == true && binding.fragmentTeamWriteOfflineCheck.isChecked == true){
+            showCustomToast("옵션을 하나만 선택해주세요")
+            optionChecked = false
+        }else{
+            showCustomToast("옵션을 선택해주세요")
+            optionChecked = false
+        }
+
+        if(optionChecked && typeChecked && LocChecked && peopleChecked && contentChecked){
+            return true
+        }else{
+            return false
+        }
+    }
+    private suspend fun updateStudy(){
+        var local = area
+        var category = category
+        var content = binding.fragmentTeamWriteContentEdit.text.toString()
+        var isOuting = outing
+        var limit = binding.fragmentTeamWritePeople.text.toString()
+        var title = binding.fragmentTeamWriteTitleEdit.text.toString()
+        var today = System.currentTimeMillis()
+        var study = Study(
+            local,
+            category,
+            content,
+            isOuting,
+            limit.toInt(),
+            title,
+            today.toString(),
+            ApplicationClass.sharedPreferencesUtil.getUser().id
+        )
+        if(teamViewModel.uploadImageUri == Uri.EMPTY || teamViewModel.uploadImageUri == null){
+            runBlocking {
+                val response = StudyService().updateStudy(studyId,study)
+                if(response.code() == 204){
+                    showCustomToast("수정되었습니다.")
+                    this@TeamWriteFragment.findNavController().navigate(R.id.teamFragment)
+                }
+            }
+        }else{
+            val file = File(teamViewModel.uploadImageUri!!.path!!)
+            var inputStream:InputStream? = null
+            try{
+                inputStream = mainActivity.contentResolver.openInputStream(teamViewModel.uploadImageUri!!)
+            }catch (e : IOException){
+                e.printStackTrace()
+            }
+            fileExtension = mainActivity.contentResolver.getType(teamViewModel.uploadImageUri!!)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream)
+            val requestBody = RequestBody.create(MediaType.parse("image/*"),byteArrayOutputStream.toByteArray())
+            val uploadFile = MultipartBody.Part.createFormData("file","${file.name}.${fileExtension?.substring(6)}",requestBody)
+            runBlocking {
+                val responseFile = StudyService().insertPhoto(uploadFile)
+                if(responseFile.code() == 200){
+                    if(responseFile.body() != null){
+                        Log.d(TAG, "insertStudy: ${responseFile.body()}")
+                        var study = Study(
+                            local,
+                            category,
+                            content,
+                            0,
+                            isOuting,
+                            limit.toInt(),
+                            title,
+                            today.toString(),
+                            responseFile.body().toString(),
+                            ApplicationClass.sharedPreferencesUtil.getUser().id
+                        )
+
+                        val response = StudyService().updateStudy(studyId,study)
+                        if(response.code() == 204){
+                            showCustomToast("수정되었습니다.")
+                            this@TeamWriteFragment.findNavController().navigate(R.id.teamFragment)
+                        }
+                    }
+                }
             }
         }
     }
@@ -200,7 +332,6 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
             local,
             category,
             content,
-            0,
             isOuting,
             limit.toInt(),
             title,

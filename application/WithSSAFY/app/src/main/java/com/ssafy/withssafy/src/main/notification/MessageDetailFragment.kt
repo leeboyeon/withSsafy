@@ -103,6 +103,18 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
         dialogView.findViewById<TextView>(R.id.textView12).text = "의 지원을 수락하시겠습니까?"
         dialogView.findViewById<AppCompatButton>(R.id.fragment_team_requestRequst).text = "수락"
         dialogView.findViewById<AppCompatButton>(R.id.fragment_team_requestRequst).setOnClickListener {
+            runBlocking {
+                teamViewModel.getStudy(StudyId)
+            }
+            var member = teamViewModel.study.value!!.studyMembers
+            if (member != null) {
+                for(item in member){
+                    if(item.id == fromId){
+                        showCustomToast("이미 추가된 사용자입니다.")
+                        dialog.dismiss()
+                    }
+                }
+            }
             var studyMember = StudyMemberRequest(
                 fromId
             )
@@ -148,7 +160,7 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
                 dialogView.findViewById<EditText>(R.id.fragment_messageDetail_dialog_sendMsgContent).text.toString(),
                 0,
                 ApplicationClass.sharedPreferencesUtil.getUser().id,
-                fromId
+                toId
             )
             runBlocking {
                 val response = MessageService().insertMessage(message)

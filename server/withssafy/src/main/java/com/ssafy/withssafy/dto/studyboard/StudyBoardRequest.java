@@ -7,6 +7,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class StudyBoardRequest {
+    @JsonIgnore
     private Long id;
 
     private Long userId;
