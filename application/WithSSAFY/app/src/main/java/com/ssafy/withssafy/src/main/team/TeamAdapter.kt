@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.main.team
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -104,18 +105,24 @@ class TeamAdapter(val context: Context) : RecyclerView.Adapter<TeamAdapter.TeamV
                     list
                 }else{
                     val filteringList = ArrayList<Study>()
-                    Log.d(TAG, "performFiltering: $list")
-                    for(item in list){
-                        if(item.category.contains(charString))
-                            filteringList.add(item)
+                    
+                    for(item in list!!){
+                        if(item.category!=null){
+                            if(item!!.category.contains(charString))
+                                filteringList.add(item)
+                        }
+
                     }
+
+                    Log.d(TAG, "performFiltering: $filteringList")
                     filteringList
                 }
-                val filterResults = FilterResults()
-                filterResults.values = filteredList
-                return filterResults
+                val filterResult = FilterResults()
+                filterResult.values = filteredList
+                return filterResult
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 filteredList = results?.values as MutableList<Study>
                 notifyDataSetChanged()
