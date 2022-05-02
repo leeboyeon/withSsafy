@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.gson.Gson
+import com.jakewharton.rxbinding3.widget.itemSelections
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
@@ -40,6 +41,8 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
     private lateinit var mainActivity:MainActivity
     private val STORAGE_CODE = 99
     var people = 0
+
+    private var studyId = 0
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -47,6 +50,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            studyId = it.getInt("studyId")
         }
     }
 
@@ -56,9 +60,58 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
         setListener()
     }
     private fun setListener(){
+
         initButtons()
         initSpinner()
         initCheckBox()
+        if(studyId > 0){
+            initData()
+        }
+    }
+    private fun initData(){
+        runBlocking {
+            teamViewModel.getStudy(studyId)
+        }
+        binding.fragmentTeamWriteSuccess.setText("수정")
+        var study = teamViewModel.study.value!!
+        binding.fragmentTeamWriteTitleEdit.setText(study.title.toString())
+        binding.fragmentTeamWriteContentEdit.setText(study.content)
+        var categorys = arrayListOf<String>("선택안함","어학","프로그래밍","면접","취업","CS","자율","기타")
+        for(item in 0..categorys.size){
+            if(categorys[item].contains(study.category)){
+                binding.fragmentTeamWriteStudyType.setSelection(item)
+                break
+            }
+        }
+        
+        binding.fragmentTeamWritePeople.setText(study.sbLimit.toString())
+        teamViewModel.count = study.sbLimit
+        teamViewModel.updateButtonText()
+        
+        var local = arrayListOf<String>("선택안함","서울","경기","인천","강원","제주","대전","충북","충남/세종","부산","울산","경남","대구","경북","광주","전남","전주/전북")
+        for(item in 0..local.size){
+            if(local[item].contains(study.area)){
+                Log.d(TAG, "initData: ${item}")
+                binding.fragmentTeamWriteLoc.setSelection(item)
+                break
+            }
+        }
+        if(study.isOuting == 0){
+            binding.fragmentTeamWriteOfflineCheck.isChecked = false
+            binding.fragmentTeamWriteOnlineCheck.isChecked = true
+        }else if(study.isOuting == 1){
+            binding.fragmentTeamWriteOfflineCheck.isChecked = true
+            binding.fragmentTeamWriteOnlineCheck.isChecked = false
+        }
+
+        if(study.photoPath == null || study.photoPath.toString() == ""){
+            binding.fragmentTeamWritePhoto.visibility = View.GONE
+        }else{
+            Glide.with(requireContext())
+                .load("${ApplicationClass.IMGS_URL}${study.photoPath}")
+                .into(binding.fragmentTeamWritePhoto)
+        }
+
     }
     private fun initCheckBox(){
         binding.fragmentTeamWriteOnlineCheck.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -143,8 +196,6 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
             ApplicationClass.sharedPreferencesUtil.getUser().id,
         )
         var today = System.currentTimeMillis()
-        val photoFile:String = teamViewModel.uploadImageUri.toString()
-
         var study = Study(
             local,
             category,
@@ -204,33 +255,9 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
                         }
                     }
                 }
-//                val response = StudyService().insertStudy(requestBody,uploadFile)
-//                if(response.code() == 204){
-//                    showCustomToast("추가되었습니다.")
-//                    this@TeamWriteFragment.findNavController().navigate(R.id.teamFragment)
-//                }
             }
         }
 
-//        var study = Study(
-//            local,
-//            category,
-//            content,
-//            0,
-//            outing,
-//            limit.toInt(),
-//            title,
-//            user,
-//            today.toString(),
-//            ""
-//        )
-//        runBlocking {
-//            val response = StudyService().insertStudy(study)
-//            if(response.code() == 204){
-//                showCustomToast("추가되었습니다.")
-//                this@TeamWriteFragment.findNavController().navigate(R.id.teamFragment)
-//            }
-//        }
     }
 
     companion object {

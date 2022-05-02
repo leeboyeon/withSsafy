@@ -23,7 +23,7 @@ class TeamViewModel : ViewModel(){
     private val _study = MutableLiveData<Study>()
     private val _studyCommentList = MutableLiveData<MutableList<Comment>>()
     private val _studyCommentParentList = MutableLiveData<MutableList<Comment>>()
-    private var count = 0;
+    var count = 0;
     private val peopleText : ObservableField<String> = ObservableField("0")
 
 

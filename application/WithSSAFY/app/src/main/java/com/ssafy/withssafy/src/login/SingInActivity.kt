@@ -34,7 +34,7 @@ class SingInActivity : BaseActivity<ActivitySingInBinding>(ActivitySingInBinding
         val userId = ApplicationClass.sharedPreferencesUtil.getAutoLogin()
         if (userId != null && userId != -1){
             runBlocking {
-                userViewModel.getUser(userId)
+                userViewModel.getUser(userId,1)
             }
             if(userViewModel.isAutoLoginPossible.value == 1) {
                 openFragment(1)
