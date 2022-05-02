@@ -14,7 +14,7 @@ public class RecruitLikeManagement {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "recruit_id")
     private Recruit recruit;
 

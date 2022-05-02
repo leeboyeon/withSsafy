@@ -31,6 +31,7 @@ public class RecruitService {
 
     @Transactional
     public void deleteRecruit(Long id){
+        recruitLikeRepository.deleteByRecruitId(id);
         recruitRepository.deleteById(id);
     }
 
