@@ -17,6 +17,8 @@ class StudyService {
 
     suspend fun insertPhoto(file:MultipartBody.Part) : Response<String> = RetrofitUtil.studyService.insertPhoto(file)
 
+    suspend fun updateStudy(id:Int, study:Study) : Response<Any?> = RetrofitUtil.studyService.updateStudy(id,study)
+
     suspend fun getStudyById(id:Int) : Response<Study> = RetrofitUtil.studyService.getStudyById(id)
 
     suspend fun deleteStudy(id:Int) : Response<Any?> = RetrofitUtil.studyService.deleteStudy(id)

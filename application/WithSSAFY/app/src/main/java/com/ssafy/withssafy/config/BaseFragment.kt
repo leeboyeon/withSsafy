@@ -2,6 +2,7 @@ package com.ssafy.withssafy.config
 
 import android.os.Bundle
 import android.os.Message
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ abstract class BaseFragment <B: ViewBinding> (
     }
 
     fun showCustomToast(message: String) {
+        Log.d("basefragment", "showCustomToast: $message")
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 
