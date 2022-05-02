@@ -4,4 +4,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="date_format">%s부터 %s까지</string>
     <string name="spec_prefer_format">%s/%s\n%s\n고용형태 : %s</string>
+    <string name="home_date_format">~%s</string>
 </resources>

@@ -14,6 +14,7 @@ import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.main.board.JobAdapter
+import com.ssafy.withssafy.src.main.home.EmployInfoAdapter
 import com.ssafy.withssafy.src.main.notification.MessageDetailAdapter
 import com.ssafy.withssafy.src.main.notification.MessageGroupAdapter
 import com.ssafy.withssafy.src.main.team.TeamAdapter
@@ -150,6 +151,19 @@ fun bindingRecruitList(recyclerView: RecyclerView, data:List<Recruit>?){
         recyclerView.adapter = adapter
     }else{
         adapter = recyclerView.adapter as JobAdapter
+    }
+    adapter.list = data as MutableList<Recruit>
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("recruitRecentListData")
+fun bindingRecruitRecentList(recyclerView: RecyclerView, data:List<Recruit>?){
+    var adapter = recyclerView.adapter as EmployInfoAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as EmployInfoAdapter
     }
     adapter.list = data as MutableList<Recruit>
     adapter.notifyDataSetChanged()
