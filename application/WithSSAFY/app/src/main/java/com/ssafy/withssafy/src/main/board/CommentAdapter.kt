@@ -85,7 +85,7 @@ class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) 
             // 대댓글 삭제
             commentReplyAdapter.setDeleteItemClickListener(object : ReplyAdapter.MenuClickListener {
                 override fun onClick(position: Int, commentId: Int, userId: Int) {
-                    modifyItemClickListener.onClick(position, commentId, userId)
+                    replyDeleteItemClickListener.onClick(position, commentId, userId)
                 }
             })
 

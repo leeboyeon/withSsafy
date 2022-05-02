@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="자유 게시판"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/postDetailFragment_ibBack"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -51,8 +51,8 @@
 
             <ImageButton
                 android:id="@+id/postDetailFragment_btnMore"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:background="@android:color/transparent"
                 android:scaleType="centerCrop"
                 android:visibility="visible"
@@ -254,34 +254,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <!-- 댓글 목록 -->
-            <ScrollView
-                android:id="@+id/postDetailFragment_scrollview"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/postDetailFragment_rvComment"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:clickable="false"
+                android:focusable="false"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/postDetailFragment_clInsertCmt"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/postDetailFragment_rvComment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        app:layout_constraintTop_toBottomOf="@+id/postDetailFragment_clAppbar"
-                        app:layout_constraintBottom_toTopOf="@+id/postDetailFragment_clInsertCmt"
-                        tools:listitem="@layout/item_comment_list" />
-                    <!--            app:layout_constrainedHeight="true"-->
-                </LinearLayout>
-            </ScrollView>
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_comment_list" />
+            <!--            app:layout_constrainedHeight="true"-->
 
             <!-- 댓글 입력 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -293,10 +277,11 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="10dp"
                 android:clickable="false"
+                android:focusable="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/postDetailFragment_scrollview">
+                app:layout_constraintTop_toBottomOf="@+id/postDetailFragment_rvComment">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -304,6 +289,7 @@
                     android:background="@drawable/bg_comment_input"
                     android:layout_marginTop="5dp"
                     android:clickable="false"
+                    android:focusable="false"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -317,17 +303,17 @@
                         android:textSize="12sp"
                         android:visibility="gone"
                         android:clickable="false"
+                        android:focusable="false"
                         app:layout_constraintBottom_toTopOf="@+id/postDetailFragment_etComment"
                         app:layout_constraintStart_toStartOf="@+id/postDetailFragment_etComment"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/postDetailFragment_etComment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:hint="댓글을 입력하세요."
-                        android:inputType="textMultiLine"
                         android:enabled="false"
                         android:lines="2"
                         android:maxLines="3"
@@ -336,6 +322,7 @@
                         android:scrollbars="vertical"
                         android:textSize="18sp"
                         android:clickable="false"
+                        android:focusable="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/postDetailFragment_tvConfirm"
                         app:layout_constraintStart_toStartOf="parent"
@@ -343,10 +330,11 @@
 
                     <ImageView
                         android:id="@+id/postDetailFragment_tvConfirm"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@drawable/ic_send_512px"
                         android:clickable="false"
+                        android:focusable="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

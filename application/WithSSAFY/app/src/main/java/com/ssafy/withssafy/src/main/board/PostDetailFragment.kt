@@ -3,6 +3,7 @@ package com.ssafy.withssafy.src.main.board
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -82,17 +83,11 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
     }
 
     /**
-     * 댓글 전체 화면 클릭 이벤트
+     * 댓글 입력 창 클릭 이벤트
      */
     private fun commentLayoutClickEvent() {
 
-        binding.postDetailFragmentClCommentAll.setOnTouchListener { v, event ->
-//            binding.postDetailFragmentScrollview.requestDisallowInterceptTouchEvent(true)
-            return@setOnTouchListener false
-        }
-
-
-        binding.postDetailFragmentClCommentAll.setOnClickListener {
+        binding.postDetailFragmentClInsertCmt.setOnClickListener {
             this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_commentFragment,
                 bundleOf("postId" to postId))
         }
@@ -121,6 +116,70 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
 
         commentAdapter.postUserId = boardViewModel.postDetail.value!!.user.id
 
+        rvItemClickEvent()
+    }
+
+    /**
+     * 댓글, 대댓글 recyclerView click event init
+     */
+    private fun rvItemClickEvent() {
+        // 댓글, 대댓글 작성 클릭 이벤트
+        commentAdapter.setAddReplyItemClickListener(object : CommentAdapter.ItemClickListener {
+            override fun onClick(view: View, writerNick: String, position: Int, commentId: Int) {
+            }
+        })
+
+        // 댓글 수정 클릭 이벤트
+        commentAdapter.setModifyItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            }
+        })
+
+        // 댓글 삭제 클릭 이벤트
+        commentAdapter.setDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            }
+        })
+
+        // 댓글 작성자에게 쪽지 보내기 클릭 이벤트
+        commentAdapter.setSendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 댓글 신고 클릭 이벤트
+        commentAdapter.setReportItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 대댓글 수정 클릭 이벤트
+        commentAdapter.setReplyModifyItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            }
+        })
+
+        // 대댓글 삭제 클릭 이벤트
+        commentAdapter.setReplyDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            }
+        })
+
+        // 대댓글 작성자에게 쪽지 보내기 클릭 이벤트
+        commentAdapter.setReplySendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 대댓글 신고 클릭 이벤트
+        commentAdapter.setReplyReportItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
     }
 
 
