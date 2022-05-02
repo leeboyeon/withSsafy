@@ -21,20 +21,26 @@ import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.FragmentHomeBinding
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.viewmodel.HomeViewModel
+import com.ssafy.withssafy.src.viewmodel.RecruitViewModel
+import com.ssafy.withssafy.src.viewmodel.UserViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+
 private const val TAG = "HomeFragment"
 // : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home)
 class HomeFragment : Fragment(){
 
     private lateinit var binding : FragmentHomeBinding
     private val homeViewModel: HomeViewModel by activityViewModels()
-
+    private val recruitViewModel : RecruitViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var mainActivity: MainActivity
 
     lateinit var favoriteBoardAdapter: FavoriteBoardAdapter
     lateinit var popularPostAdapter: PopularPostAdapter
     lateinit var employInfoAdapter: EmployInfoAdapter
+    lateinit var requestAdapter: RequestAdapter
 
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
 
@@ -63,6 +69,12 @@ class HomeFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.recruitViewModel = recruitViewModel
+        binding.userViewModel = userViewModel
+        runBlocking {
+            recruitViewModel.getRecentRecruitList()
+            userViewModel.getStateZeroUserList()
+        }
 
         val bannerList = arrayListOf<Int>(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
         homeViewModel.setBannerItems(bannerList)
@@ -108,6 +120,9 @@ class HomeFragment : Fragment(){
         binding.fragmentHomeMoreJob.setOnClickListener {
             this@HomeFragment.findNavController().navigate(R.id.boardJobFragment)
         }
+        binding.fragmentHomeMoreRequest.setOnClickListener {
+            this@HomeFragment.findNavController().navigate(R.id.requestFragment)
+        }
     }
     private fun initAdapter() {
         favoriteBoardAdapter = FavoriteBoardAdapter()
@@ -123,10 +138,28 @@ class HomeFragment : Fragment(){
         }
 
         employInfoAdapter = EmployInfoAdapter()
+        recruitViewModel.recentRecruitList.observe(viewLifecycleOwner) {
+            employInfoAdapter.list = it
+        }
         binding.homeRvEmploy.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = employInfoAdapter
         }
+
+        requestAdapter = RequestAdapter(true)
+        userViewModel.stateZeroUserList.observe(viewLifecycleOwner) {
+            requestAdapter.list = it
+        }
+        binding.homeRvRequest.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = requestAdapter
+        }
+        requestAdapter.setItemClickListener(object : RequestAdapter.ItemClickListener {
+            override fun onClick(view: View, position: Int, id: Int) {
+
+            }
+
+        })
     }
 
     /**

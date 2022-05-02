@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    >
+    <data>
+        <variable
+            name="user"
+            type="com.ssafy.withssafy.src.dto.User" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
     <TextView
         android:id="@+id/fragment_home_requestLocal"
@@ -21,9 +29,10 @@
         android:id="@+id/fragment_home_requestContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0622575 교육생이 승인을 요청했습니다."
+        android:text="@{@string/request_format(user.studentId)}"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/fragment_home_requestLocal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/fragment_home_requestLocal" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

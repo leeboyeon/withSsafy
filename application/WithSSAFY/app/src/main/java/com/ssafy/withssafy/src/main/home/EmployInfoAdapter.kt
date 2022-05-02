@@ -6,29 +6,31 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.databinding.RecyclerviewEmployItemBinding
+import com.ssafy.withssafy.src.dto.Recruit
 
 class EmployInfoAdapter() : RecyclerView.Adapter<EmployInfoAdapter.EmployInfoHolder>() {
-
-    inner class EmployInfoHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind() {
-
+    var list = mutableListOf<Recruit>()
+    inner class EmployInfoHolder(private val binding: RecyclerviewEmployItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(recruit : Recruit) {
+            binding.recruit = recruit
+            binding.executePendingBindings()
         }
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployInfoHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_employ_item, parent, false)
-        return EmployInfoHolder(view)
+        return EmployInfoHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),R.layout.recyclerview_employ_item,parent,false))
     }
 
     override fun onBindViewHolder(holder: EmployInfoHolder, position: Int) {
         holder.apply {
-            bind()
+            bind(list[position])
         }
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return list.size
     }
 
 }

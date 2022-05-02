@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ class RecruitViewModel : ViewModel(){
     private val _recruitList = MutableLiveData<MutableList<Recruit>>()
     private val _recruit = MutableLiveData<Recruit>()
     private val _likeRecruitList = MutableLiveData<MutableList<Recruit>>()
+    private val _recentRecruitList = MutableLiveData<MutableList<Recruit>>()
 
     val recruitList : LiveData<MutableList<Recruit>>
         get() = _recruitList
@@ -21,6 +23,9 @@ class RecruitViewModel : ViewModel(){
 
     val likeRecruitList : LiveData<MutableList<Recruit>>
         get() = _likeRecruitList
+
+    val recentRecruitList : LiveData<MutableList<Recruit>>
+        get() = _recentRecruitList
 
     fun setRecruitList(list: MutableList<Recruit>) {
         _recruitList.value = list
@@ -32,6 +37,10 @@ class RecruitViewModel : ViewModel(){
 
     fun setLikeRecruitList(list: MutableList<Recruit>) {
         _likeRecruitList.value = list
+    }
+
+    fun setRecentRecrutList(list: MutableList<Recruit>) {
+        _recentRecruitList.value = list
     }
 
     suspend fun getRecruitList() {
@@ -65,6 +74,22 @@ class RecruitViewModel : ViewModel(){
             if(response.code() == 200) {
                 if(res != null) {
                     setLikeRecruitList(res)
+                }
+            }
+        }
+    }
+
+    suspend fun getRecentRecruitList() {
+        val response = RecruitService().selectRecruitAll()
+        viewModelScope.launch {
+            val res =response.body()
+            if(response.code() == 200) {
+                if(res != null) {
+                    var recentList = res
+                    recentList.sortByDescending { Integer.parseInt(it.startDate.replace("-", ""))}
+                    Log.d("RecruitViewModel", "getRecentRecruitList: $recentList")
+                    val list = recentList.subList(0, 5)
+                    setRecentRecrutList(list)
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.network.api
 
 import com.ssafy.withssafy.src.dto.ClassRoom
+import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.network.response.UserInfoResponse
 import retrofit2.Call
@@ -47,5 +48,20 @@ interface UserApi {
     // ClassRoom 조회
     @GET("/classroom")
     suspend fun getClassRoom(@Query("id") id: Int): Response<ClassRoom>
+
+    /**
+     * User State 수정
+     * @param id
+     * @param state
+     */
+    @PATCH("/user/manager/state")
+    suspend fun updateState(@Query("id") id : Int, @Query("state") state : Int) : Response<User>
+
+    /**
+     * state가 0인 User 조회
+     */
+    @GET("/user/manager/user-state-zero")
+    suspend fun selectStateZeroUser() : Response<MutableList<User>>
+
 
 }

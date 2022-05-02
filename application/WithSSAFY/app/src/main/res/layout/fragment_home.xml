@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".src.main.home.HomeFragment"
     >
+    <data>
+        <variable
+            name="recruitViewModel"
+            type="com.ssafy.withssafy.src.viewmodel.RecruitViewModel" />
+        <variable
+            name="userViewModel"
+            type="com.ssafy.withssafy.src.viewmodel.UserViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".src.main.home.HomeFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -103,28 +113,36 @@
                 android:background="@drawable/rectangle_corner_radius"
                 android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/home_tv_reqeust_board_more2"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/fragment_home_moreRequest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:text="더보기"
-                    android:textColor="@color/purple_700"
-                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/home_tv_request"
-                    app:layout_constraintRight_toLeftOf="@id/home_iv_request_board_more2"
-                    app:layout_constraintTop_toTopOf="@+id/home_tv_request" />
-
-                <ImageView
-                    android:id="@+id/home_iv_request_board_more2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="14dp"
-                    android:src="@drawable/arrow_right"
-                    app:layout_constraintBottom_toBottomOf="@id/home_tv_reqeust_board_more2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/home_tv_reqeust_board_more2"
-                    app:tint="@color/purple_700" />
+                    app:layout_constraintTop_toTopOf="@+id/home_tv_request">
+
+                    <TextView
+                        android:id="@+id/home_tv_request_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="19dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="더보기"
+                        android:textColor="@color/purple_700"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/home_iv_request_more"
+                        app:layout_constraintEnd_toStartOf="@+id/home_iv_request_more"
+                        app:layout_constraintTop_toTopOf="@+id/home_iv_request_more" />
+
+                    <ImageView
+                        android:id="@+id/home_iv_request_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/purple_700" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/home_tv_request"
@@ -151,7 +169,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/home_tv_request"
-                    tools:listitem="@layout/item_request_home_item" />
+                    tools:listitem="@layout/item_request_home_item"
+                    requestListData="@{userViewModel.stateZeroUserList}"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -322,6 +341,7 @@
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toBottomOf="@+id/home_tv_employ"
                     app:spanCount="5"
+                    recruitRecentListData="@{recruitViewModel.recentRecruitList}"
                     tools:layout_editor_absoluteX="15dp"
                     tools:listitem="@layout/recyclerview_employ_item" />
 
@@ -331,7 +351,7 @@
         </LinearLayout>
 
     </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -22,6 +22,7 @@ class UserViewModel : ViewModel() {
     private val _isAutoLoginPossible = MutableLiveData<Int>()
     private val _classRoomInfo = MutableLiveData<ClassRoom>()
     private val _userInfo = MutableLiveData<User>()
+    private val _stateZeroUserList = MutableLiveData<MutableList<User>>()
 
     val allUserList : LiveData<MutableList<User>>
         get() = _allUserList
@@ -40,6 +41,9 @@ class UserViewModel : ViewModel() {
 
     val userInfo : LiveData<User>
         get() = _userInfo
+
+    val stateZeroUserList : LiveData<MutableList<User>>
+        get() = _stateZeroUserList
 
     private fun setAllUserList(userList : MutableList<User>) = viewModelScope.launch {
         _allUserList.value = userList
@@ -61,6 +65,10 @@ class UserViewModel : ViewModel() {
 
     private fun setClassRoomInfo(classRoom : ClassRoom) = viewModelScope.launch{
         _classRoomInfo.value = classRoom
+    }
+
+    private fun setStateZeroUserList(userList: MutableList<User>) = viewModelScope.launch {
+        _stateZeroUserList.value = userList
     }
 
     suspend fun getAllUserList() {
@@ -141,6 +149,27 @@ class UserViewModel : ViewModel() {
                     } else {
                         Log.d(TAG, "Error : ${response.message()}")
                     }
+                }
+            } else {
+                Log.d(TAG, "Error : ${response.message()}")
+            }
+        }
+    }
+
+    suspend fun getStateZeroUserList() {
+        val response = UserService().selectStateZeroUser()
+        viewModelScope.launch {
+            var res = response.body()
+            if(response.code() == 200) {
+                if(res != null) {
+                    var studentList = mutableListOf<User>()
+                    res.forEach {
+                        if(it.studentId != null) {
+                            studentList.add(it)
+                        }
+                    }
+                    setStateZeroUserList(studentList)
+                    Log.d(TAG, "getStateZeroUserList: $res")
                 }
             } else {
                 Log.d(TAG, "Error : ${response.message()}")
