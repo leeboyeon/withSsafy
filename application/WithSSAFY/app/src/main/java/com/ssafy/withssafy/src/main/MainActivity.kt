@@ -2,6 +2,9 @@ package com.ssafy.withssafy.src.main
 
 import android.Manifest
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -18,6 +21,7 @@ import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -25,7 +29,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.gun0912.tedpermission.provider.TedPermissionProvider.context
@@ -41,14 +47,17 @@ import com.ssafy.withssafy.src.main.home.HomeFragment
 import com.ssafy.withssafy.src.main.notification.NotificationFragment
 import com.ssafy.withssafy.src.main.schedule.ScheduleFragment
 import com.ssafy.withssafy.src.main.team.TeamFragment
+import com.ssafy.withssafy.src.network.api.FCMApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 import com.ssafy.withssafy.src.viewmodel.TeamViewModel
+import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 import kotlin.math.round
 
+private const val TAG = "MainActivity_ws"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-    private val TAG = "MainActivity_ws"
     private lateinit var bottomNavigation: BottomNavigationView
     private val STORAGE = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private val STORAGE_CODE = 99
@@ -283,5 +292,56 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
+    }
+
+    /**
+     * FCM 토큰 수신 및 채널 생성
+     */
+    private fun initFcm() {
+        // FCM 토큰 수신
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "FCM 토큰 얻기에 실패하였습니다.", task.exception)
+                return@OnCompleteListener
+            }
+            // token log 남기기
+            Log.d(TAG, "token: ${task.result?:"task.result is null"}")
+            uploadToken(task.result!!, ApplicationClass.sharedPreferencesUtil.getUser().id)
+        })
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel(channel_id, "ssafy")
+        }
+    }
+
+    /**
+     * Fcm Notification 수신을 위한 채널 추가
+     * @author Jiwoo CHoi
+     */
+    private fun createNotificationChannel(id: String, name: String) {
+        val importance = NotificationManager.IMPORTANCE_DEFAULT // or IMPORTANCE_HIGH
+        val channel = NotificationChannel(id, name, importance)
+
+        val notificationManager: NotificationManager
+                = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    companion object {
+        const val channel_id = "ssafy_channel"
+        fun uploadToken(token:String, userId: Int) {
+            val storeService = ApplicationClass.retrofit.create(FCMApi::class.java)
+
+            var response : Response<Any?>
+            runBlocking {
+                response = storeService.uploadToken(token, ApplicationClass.sharedPreferencesUtil.getUser().id)
+            }
+
+            if(response.isSuccessful) {
+
+            } else {
+                Log.e(TAG, "uploadToken: 토큰 정보 등록 중 통신 오류")
+            }
+        }
     }
 }
