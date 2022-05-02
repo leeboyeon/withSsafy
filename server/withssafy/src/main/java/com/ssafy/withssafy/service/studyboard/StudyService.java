@@ -5,6 +5,7 @@ import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
 import com.ssafy.withssafy.dto.studyboard.StudyMemberRequest;
 import com.ssafy.withssafy.entity.StudyBoard;
 import com.ssafy.withssafy.entity.StudyMember;
+import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.StudyBoardRepository;
@@ -32,9 +33,20 @@ public class StudyService {
 
     @Transactional
     public void addStudyBoard(StudyBoardRequest studyBoardRequest) {
+        studyBoardRequest.setWriteDateTime();
         StudyBoard studyBoard = modelMapper.map(studyBoardRequest, StudyBoard.class);
         studyBoardRepository.save(studyBoard);
 
+        StudyMember studyMember = StudyMember.builder()
+                .user(
+                        User.builder().id(studyBoardRequest.getUserId()).build()
+                )
+                .studyBoard(
+                        StudyBoard.builder().id(studyBoard.getId()).build()
+                )
+                .build();
+
+        studyMemberRepository.save(studyMember);
     }
 
     @Transactional
@@ -49,7 +61,6 @@ public class StudyService {
 
     public List<StudyBoardResponse> getStudyBoards() {
         List<StudyBoard> studyBoards = studyBoardRepository.findAll();
-
 
         return studyBoards.stream().map(studyBoard -> modelMapper.map(studyBoard, StudyBoardResponse.class))
                 .collect(Collectors.toList());
