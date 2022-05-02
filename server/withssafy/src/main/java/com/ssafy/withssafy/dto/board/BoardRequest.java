@@ -11,4 +11,8 @@ public class BoardRequest {
     private String photoPath;
     private String title;
     private String writeDateTime;
+
+    public void setWriteDateTime(){
+        this.writeDateTime = String.valueOf(System.currentTimeMillis());
+    }
 }

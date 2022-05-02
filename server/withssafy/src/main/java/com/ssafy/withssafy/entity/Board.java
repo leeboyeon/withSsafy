@@ -4,13 +4,15 @@ import com.ssafy.withssafy.dto.board.BoardRequest;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_board")
 @Getter
 @NoArgsConstructor
 public class Board {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -20,6 +22,14 @@ public class Board {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
     private BoardType type;
+
+    @OneToMany
+    @JoinColumn(name = "board_id")
+    private Set<LikeManagement> likes;
+
+    @OneToMany
+    @JoinColumn(name = "board_id")
+    private Set<Comment> comments;
 
     @Column
     private String title;
@@ -33,7 +43,15 @@ public class Board {
     @Column(name = "write_dt")
     private String writeDateTime;
 
-    public void updateBoard(BoardRequest boardRequest){
+    public int getCommentCount() {
+        return comments.size();
+    }
+
+    public int getLikeCount() {
+        return likes.size();
+    }
+
+    public void updateBoard(BoardRequest boardRequest) {
         title = boardRequest.getTitle();
         content = boardRequest.getContent();
         photoPath = boardRequest.getPhotoPath();
@@ -41,7 +59,7 @@ public class Board {
     }
 
     @Builder
-    public Board(Long id, User user, BoardType type, String title, String content, String photoPath, String writeDateTime){
+    public Board(Long id, User user, BoardType type, String title, String content, String photoPath, String writeDateTime) {
         this.id = id;
         this.user = user;
         this.type = type;

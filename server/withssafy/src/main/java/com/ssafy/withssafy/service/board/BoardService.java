@@ -3,10 +3,8 @@ package com.ssafy.withssafy.service.board;
 import com.ssafy.withssafy.dto.board.BoardRequest;
 import com.ssafy.withssafy.dto.board.BoardResponse;
 import com.ssafy.withssafy.dto.board.LikeDto;
-import com.ssafy.withssafy.dto.recruit.RecruitLikeDto;
 import com.ssafy.withssafy.entity.Board;
 import com.ssafy.withssafy.entity.LikeManagement;
-import com.ssafy.withssafy.entity.RecruitLikeManagement;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.BoardRepository;
@@ -29,8 +27,10 @@ public class BoardService {
     private final ModelMapper modelMapper;
 
     private final LikeManagementRepository likeManagementRepository;
+
     @Transactional
     public void addBoard(BoardRequest boardRequest) {
+        boardRequest.setWriteDateTime();
         Board board = modelMapper.map(boardRequest, Board.class);
         boardRepository.save(board);
     }
@@ -48,13 +48,38 @@ public class BoardService {
 
     public List<BoardResponse> getBoards() {
         List<Board> boards = boardRepository.findAll();
+
+        return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<BoardResponse> getHotBoards() {
+        List<Board> boards = boardRepository.findAllHotBoards();
+        return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<BoardResponse> getLikedBoards(Long userId) {
+        List<Board> boards = boardRepository.findAllLikedBoardByUserId(userId);
+        return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<BoardResponse> getBoardsByTypeId(Long typeId) {
+        List<Board> boards = boardRepository.findAllByTypeId(typeId);
+
         return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
                 .collect(Collectors.toList());
     }
 
     public BoardResponse getBoardById(Long id) {
         Optional<Board> board = boardRepository.findById(id);
-        return board.map(value -> modelMapper.map(value, BoardResponse.class)).orElse(null);
+
+        if (board.isPresent()) {
+            return modelMapper.map(board, BoardResponse.class);
+        }
+
+        throw new InvalidRequestException(ErrorCode.INVALID_REQUEST);
     }
 
     @Transactional
@@ -63,22 +88,18 @@ public class BoardService {
     }
 
     @Transactional
-    public void doLike(LikeDto likeDto){
+    public void doLike(LikeDto likeDto) {
         LikeManagement likeManagement = likeManagementRepository.findByBoardIdAndUserId(likeDto.getBoardId(), likeDto.getUserId());
-        if(likeManagement == null){
-            likeManagement = modelMapper.map(likeDto,LikeManagement.class);
+        if (likeManagement == null) {
+            likeManagement = modelMapper.map(likeDto, LikeManagement.class);
             likeManagementRepository.save(likeManagement);
-        }else{
+        } else {
             likeManagementRepository.delete(likeManagement);
         }
     }
 
-    public boolean isLike(Long boardId, Long userId){
+    public boolean isLike(Long boardId, Long userId) {
         LikeManagement likeManagement = likeManagementRepository.findByBoardIdAndUserId(boardId, userId);
-        if(likeManagement == null){
-            return false;
-        }else{
-            return true;
-        }
+        return likeManagement != null;
     }
 }

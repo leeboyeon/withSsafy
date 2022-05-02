@@ -3,7 +3,6 @@ package com.ssafy.withssafy.api;
 import com.ssafy.withssafy.dto.board.BoardRequest;
 import com.ssafy.withssafy.dto.board.BoardResponse;
 import com.ssafy.withssafy.dto.board.LikeDto;
-import com.ssafy.withssafy.dto.recruit.RecruitLikeDto;
 import com.ssafy.withssafy.service.board.BoardService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +23,21 @@ public class BoardController {
     @GetMapping()
     public ResponseEntity<List<BoardResponse>> getBoards() {
         return new ResponseEntity<>(boardService.getBoards(), HttpStatus.OK);
+    }
+
+    @GetMapping("/q")
+    public ResponseEntity<List<BoardResponse>> getBoardsByType(@RequestParam(value = "type") Long typeId) {
+        return new ResponseEntity<>(boardService.getBoardsByTypeId(typeId), HttpStatus.OK);
+    }
+
+    @GetMapping("/hot-board")
+    public ResponseEntity<List<BoardResponse>> getHotBoards() {
+        return new ResponseEntity<>(boardService.getHotBoards(), HttpStatus.OK);
+    }
+
+    @GetMapping("/liked-board")
+    public ResponseEntity<List<BoardResponse>> getLikedBoards(@RequestParam(value = "uid") Long userId) {
+        return new ResponseEntity<>(boardService.getLikedBoards(userId), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -51,15 +65,15 @@ public class BoardController {
 
     @PostMapping("/like")
     @ApiOperation(value = "게시물 좋아요or취소")
-    public ResponseEntity<?> likeRecruit(@RequestBody LikeDto likeDto){
+    public ResponseEntity<?> likeRecruit(@RequestBody LikeDto likeDto) {
         boardService.doLike(likeDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @GetMapping("/like")
     @ApiOperation(value = "게시물 좋아요했는지 여부")
-    public ResponseEntity<?> isLikeRecruit(@RequestParam Long boardId, @RequestParam Long userId){
-        boolean isLike = boardService.isLike(boardId,userId);
+    public ResponseEntity<?> isLikeRecruit(@RequestParam Long boardId, @RequestParam Long userId) {
+        boolean isLike = boardService.isLike(boardId, userId);
         return ResponseEntity.status(HttpStatus.OK).body(isLike);
     }
 }
