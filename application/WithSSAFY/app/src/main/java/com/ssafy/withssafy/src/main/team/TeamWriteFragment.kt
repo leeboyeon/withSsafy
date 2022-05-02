@@ -192,6 +192,10 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
                     .into(binding.fragmentTeamWritePhoto)
             }
         }
+        binding.fragmentTeamWritePhotoDelete.setOnClickListener {
+            teamViewModel.uploadImageUri = null
+            binding.fragmentTeamWritePhotoGroup.visibility = View.GONE
+        }
     }
     private fun validateData() : Boolean{
         var peopleChecked = false
