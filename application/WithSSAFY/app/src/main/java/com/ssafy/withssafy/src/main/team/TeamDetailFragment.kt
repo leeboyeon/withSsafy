@@ -100,14 +100,14 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
                 showCustomToast("본인의 스터디에는 신청하실 수 없습니다.")
             }else{
                 var message = Message(
-                    "스터디 ${teamViewModel.study.value!!.title}에 지원하였습니다.",
+                    "[스터디 ${teamViewModel.study.value!!.id}] '${teamViewModel.study.value!!.title}'에 지원하였습니다.",
                     0,
-                    System.currentTimeMillis().toString(),
                     ApplicationClass.sharedPreferencesUtil.getUser().id,
                     teamViewModel.study.value!!.user!!.id
                 )
                 runBlocking {
                     val response = MessageService().insertMessage(message)
+                    Log.d(TAG, "showRequestDialog: ${response.code()}")
                     if(response.code() == 204){
                         Log.d(TAG, "showRequestDialog: success!")
                         dialog.dismiss()
