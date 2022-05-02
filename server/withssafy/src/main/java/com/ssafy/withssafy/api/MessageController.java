@@ -11,10 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-/**
- * Message(쪽지) 관리 API
- * @author Jueun
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/message")
