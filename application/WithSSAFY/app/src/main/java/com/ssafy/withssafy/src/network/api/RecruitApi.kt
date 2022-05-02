@@ -52,4 +52,19 @@ interface RecruitApi {
      */
     @POST("/recruit/like")
     suspend fun likeAndCancelRecruit(@Body recruitLikeDto : RecruitLike) : Response<Any?>
+
+    /**
+     * 채용 공고 찜하기 여부
+     * @param recruitId
+     * @param userId
+     */
+    @GET("/recruit/like")
+    suspend fun isLikeRecruit(@Query("recruitId") recruitId: Int, @Query("userId") userId: Int) : Response<Boolean>
+
+    /**
+     * 찜한 채용공고 목록
+     * @param id
+     */
+    @GET("/recruit/like/{id}")
+    suspend fun likeRecruitList(@Path("id") id: Int) : Response<MutableList<Recruit>>
 }

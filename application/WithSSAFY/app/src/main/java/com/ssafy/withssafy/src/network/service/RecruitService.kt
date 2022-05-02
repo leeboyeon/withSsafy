@@ -19,4 +19,8 @@ class RecruitService {
     suspend fun deleteRecruitById(id: Int) = RetrofitUtil.recruitApi.deleteRecruitById(id)
 
     suspend fun likeAndCancelRecruit(recruitLikeDto : RecruitLike) = RetrofitUtil.recruitApi.likeAndCancelRecruit(recruitLikeDto)
+
+    suspend fun isLikeRecruit(recruitId: Int, userId: Int) = RetrofitUtil.recruitApi.isLikeRecruit(recruitId, userId)
+
+    suspend fun likeRecruitList(id: Int) = RetrofitUtil.recruitApi.likeRecruitList(id)
 }

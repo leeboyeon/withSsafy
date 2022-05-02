@@ -43,6 +43,7 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
         binding.viewModel = recruitViewModel
         runBlocking {
             recruitViewModel.getRecruitList()
+            recruitViewModel.getLikeRecruitList(userId)
         }
         setListener()
     }
@@ -87,6 +88,15 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
             }
 
         })
+
+        recruitViewModel.likeRecruitList.observe(viewLifecycleOwner) {
+            var likeRecruitList = arrayListOf<Int>()
+            it.forEach {
+                likeRecruitList.add(it.id)
+            }
+            jobAdapter.likeRecruitIdList = likeRecruitList
+        }
+
     }
 
     private fun jobLikeAndCancel(id: Int) {

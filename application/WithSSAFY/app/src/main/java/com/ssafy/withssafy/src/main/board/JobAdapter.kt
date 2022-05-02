@@ -1,22 +1,34 @@
 package com.ssafy.withssafy.src.main.board
 
 import android.animation.ValueAnimator
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemJobBinding
 import com.ssafy.withssafy.src.dto.Recruit
+import com.ssafy.withssafy.src.network.service.RecruitService
+import kotlinx.coroutines.runBlocking
 
 class JobAdapter : RecyclerView.Adapter<JobAdapter.JobViewHolder>(){
     var list = mutableListOf<Recruit>()
+    var likeRecruitIdList = mutableListOf<Int>()
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     inner class JobViewHolder(private val binding:ItemJobBinding):RecyclerView.ViewHolder(binding.root){
         val heartBtn = binding.fragmentJobLike
         fun bind(recruit : Recruit){
             binding.recruit = recruit
             binding.executePendingBindings()
+
+            if(likeRecruitIdList.contains(recruit.id)) {
+                heartBtn.progress = 0.5F
+            } else {
+                heartBtn.progress = 0F
+            }
         }
     }
 
