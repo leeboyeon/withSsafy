@@ -41,24 +41,24 @@ class MessageDetailAdapter() : RecyclerView.Adapter<MessageDetailAdapter.DetailV
             if(list[position].content.contains("지원하였습니다")){
                 var tmp = ""
                 var idxTmp = 0
+                Log.d(TAG, "onBindViewHolder: ${list[position].content}")
                 for(i in 4..list[position].content.length-1){
 
                     if(list[position].content[i] == ']'){
-                        idxTmp = i;
+                        idxTmp = i+2;
                         break
                     }
                     tmp += list[position].content[i]
                 }
                 var tmpTitle = ""
-                for(i in idxTmp..list[position].content.length-1){
-                    tmpTitle += list[position].content[i]
-                    if(list[position].content[i].equals("'")){
+                for(i in idxTmp+1..list[position].content.length-1){
+                    if(list[position].content[i] == '’') {
                         break
                     }
-
+                    tmpTitle += list[position].content[i]
                 }
                 var studyId = tmp.trim().toInt()
-                Log.d(TAG, "onBindViewHolder: $studyId")
+                Log.d(TAG, "onBindViewHolder: $studyId  $tmpTitle")
                 itemView.findViewById<ImageButton>(R.id.fragment_messageDetail_applyCheck).setOnClickListener {
                     itemClickListener.onClick(it,position,list[position].u_toId,list[position].u_fromId,studyId,tmpTitle)
                 }

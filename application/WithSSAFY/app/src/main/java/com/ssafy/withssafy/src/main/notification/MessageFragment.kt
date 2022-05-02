@@ -47,9 +47,9 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(FragmentMessageBind
             adapter = groupAdapter
         }
         groupAdapter.setItemClickListener(object : MessageGroupAdapter.ItemClickListener {
-            override fun onClick(view: View, position: Int, fromId: Int) {
-                var fromId = bundleOf("groupId" to fromId)
-                this@MessageFragment.findNavController().navigate(R.id.messageDetailFragment, fromId)
+            override fun onClick(view: View, position: Int, fromId: Int, toId:Int) {
+                var groupId = bundleOf("fromId" to fromId,"toId" to toId)
+                this@MessageFragment.findNavController().navigate(R.id.messageDetailFragment, groupId)
             }
 
         })

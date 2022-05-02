@@ -200,7 +200,11 @@
         android:label="fragment_message_detail"
         tools:layout="@layout/fragment_message_detail">
         <argument
-            android:name="groupId"
+            android:name="fromId"
+            android:defaultValue="0"
+            app:argType="integer"/>
+        <argument
+            android:name="toId"
             android:defaultValue="0"
             app:argType="integer"/>
     </fragment>

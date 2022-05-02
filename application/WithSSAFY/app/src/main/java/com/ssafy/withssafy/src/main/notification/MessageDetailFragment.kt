@@ -29,11 +29,13 @@ import kotlinx.coroutines.runBlocking
 private const val TAG = "MessageDetailFragment"
 class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(FragmentMessageDetailBinding::bind,R.layout.fragment_message_detail) {
     private var fromId = 0
+    private var toId = 0
     private lateinit var detailAdapter: MessageDetailAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            fromId = it.getInt("groupId")
+            fromId = it.getInt("fromId")
+            toId = it.getInt("toId")
         }
     }
 
@@ -41,7 +43,12 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = messageViewModel
         runBlocking {
-            messageViewModel.getMessageTalk(ApplicationClass.sharedPreferencesUtil.getUser().id, fromId)
+            if(fromId == ApplicationClass.sharedPreferencesUtil.getUser().id){
+                messageViewModel.getMessageTalk(toId, ApplicationClass.sharedPreferencesUtil.getUser().id)
+            }else{
+                messageViewModel.getMessageTalk(ApplicationClass.sharedPreferencesUtil.getUser().id, fromId)
+            }
+
         }
         setListener()
     }
@@ -103,6 +110,13 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
                 val response = StudyService().joinStudy(StudyId,studyMember)
                 if(response.code() == 204){
                     Log.d(TAG, "showRequestDialog: 조인성공")
+                    var message = Message(
+                        "[스터디 ${teamViewModel.study.value!!.id}] '${teamViewModel.study.value!!.title}’의 지원을 수락하였습니다.",
+                        0,
+                        ApplicationClass.sharedPreferencesUtil.getUser().id,
+                        fromId
+                    )
+                    MessageService().insertMessage(message)
                     dialog.dismiss()
                 }else{
                     Log.d(TAG, "showRequestDialog: ${response.code()}")
