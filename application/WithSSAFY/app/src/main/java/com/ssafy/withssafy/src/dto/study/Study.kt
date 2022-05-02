@@ -6,7 +6,7 @@ data class Study(
     val area: String,
     val category: String,
     val content: String,
-    val id: Int,
+    val id: Int?,
     val isOuting: Int,
     val sbLimit: Int,
     val studyMembers: List<StudyMember>?,
@@ -18,4 +18,5 @@ data class Study(
 ){
     constructor(area: String,category: String, content:String, id: Int,isOuting: Int,sbLimit: Int,title: String,writeDateTime: String,userId: Int): this(area, category, content, id, isOuting, sbLimit, null, title, null, writeDateTime, "", userId)
     constructor(area: String,category: String, content:String, id: Int,isOuting: Int,sbLimit: Int,title: String,writeDateTime: String, photoPath: String,userId: Int): this(area, category, content, id, isOuting, sbLimit, null, title, null, writeDateTime, photoPath, userId)
+    constructor(area: String,category: String,content: String,isOuting: Int,sbLimit: Int,title: String,writeDateTime: String,userId: Int) : this(area, category, content, null, isOuting, sbLimit, null, title, null, writeDateTime, "", userId)
 }
