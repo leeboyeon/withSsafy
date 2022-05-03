@@ -1,19 +1,29 @@
 package com.ssafy.withssafy.src.main.board
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
+import com.jakewharton.rxbinding3.view.clicks
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentPostDetailBinding
+import com.ssafy.withssafy.src.dto.board.LikeDto
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.network.service.BoardService
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.runBlocking
+import retrofit2.Response
+import java.util.concurrent.TimeUnit
 
 /**
  * @since 04/26/22
@@ -23,6 +33,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
     private val TAG = "PostDetailFragment_ws"
     private lateinit var mainActivity: MainActivity
 
+    private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     private var postId = -1
     private var typeId = -1
 
@@ -52,6 +63,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
 
         runBlocking {
             boardViewModel.getPostDetail(postId)
+            boardViewModel.getLikePostOrNot(postId, userId)
             boardViewModel.getCommentList(postId)
         }
 
@@ -65,11 +77,22 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         boardViewModel.postDetail.observe(viewLifecycleOwner) {
             binding.post = it
         }
+
+        boardViewModel.likePost.observe(viewLifecycleOwner) {
+            val heart = binding.postDetailFragmentLottieHeart
+
+            if(it) {
+                heart.progress = 0.5F
+            } else {
+                heart.progress = 0.0F
+            }
+        }
     }
 
     private fun initListener() {
         backBtnClickEvent()
         commentLayoutClickEvent()
+        heartClickEvent()
     }
     /**
      * 뒤로가기 버튼 클릭 이벤트
@@ -88,6 +111,41 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         binding.postDetailFragmentClInsertCmt.setOnClickListener {
             this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_commentFragment,
                 bundleOf("postId" to postId))
+        }
+    }
+
+    /**
+     * 게시글 좋아요 클릭 이벤트
+     */
+    private fun heartClickEvent() {
+        val heart = binding.postDetailFragmentLottieHeart
+        heart.onThrottleClick {
+            val like = LikeDto(id = 0, boardId = postId, userId = userId)
+            var response: Response<Any?>
+            runBlocking {
+                response = BoardService().likePost(like)
+            }
+            if(response.isSuccessful) {
+                runBlocking {
+                    boardViewModel.getPostDetail(postId)
+//                    boardViewModel.getLikePostOrNot(postId, userId)
+                }
+                if(heart.progress > 0.3f) {
+                    val animator = ValueAnimator.ofFloat(1f,0f).setDuration(500)
+                    animator.addUpdateListener { animation ->
+                        heart.progress = animation.animatedValue as Float
+                    }
+                    animator.start()
+                } else {
+                    val animator = ValueAnimator.ofFloat(0f,0.4f).setDuration(500)
+                    animator.addUpdateListener { animation ->
+                        heart.progress = animation.animatedValue as Float
+                    }
+                    animator.start()
+                }
+            } else {
+                Log.e(TAG, "heartClickEvent: 통신 오류 $response")
+            }
         }
     }
 
@@ -186,4 +244,15 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         mainActivity.hideBottomNavi(false)
     }
 
+    /**
+     * RxBinding의 Throttle 기능 사용하는 Button 함수
+     * @param throttleSecond 해당 시간동안 중복 클릭 방지 (기본으로 1초)
+     * @param subscribe 클릭 리스너 정의
+     */
+    fun LottieAnimationView.onThrottleClick(throttleSecond: Long = 1, subscribe: (() -> Unit)? = null) = clicks()
+        .throttleFirst(throttleSecond, TimeUnit.SECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe {
+            subscribe?.invoke()
+        }
 }

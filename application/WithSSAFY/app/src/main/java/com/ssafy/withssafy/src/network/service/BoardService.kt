@@ -2,6 +2,7 @@ package com.ssafy.withssafy.src.network.service
 
 import com.ssafy.withssafy.src.dto.board.Board
 import com.ssafy.withssafy.src.dto.board.BoardRequest
+import com.ssafy.withssafy.src.dto.board.LikeDto
 import com.ssafy.withssafy.util.RetrofitUtil
 
 /**
@@ -21,6 +22,12 @@ class BoardService {
     suspend fun modifyPost(postId: Int, boardRequest: Board) = RetrofitUtil.boardApi.updatePostById(postId, boardRequest)
 
     suspend fun deletePost(postId: Int) = RetrofitUtil.boardApi.deletePostById(postId)
+
+    suspend fun postLikeOrNot(boardId: Int, userId: Int) = RetrofitUtil.boardApi.postLikeOrNot(boardId, userId)
+
+    suspend fun likePost(likeDto: LikeDto) = RetrofitUtil.boardApi.postLike(likeDto)
+
+    suspend fun likePostByUser(userId: Int) = RetrofitUtil.boardApi.likePostByUser(userId)
 
     suspend fun getBoardListByTypeId(type: Int) = RetrofitUtil.boardApi.selectBoardListByTypeId(type)
 

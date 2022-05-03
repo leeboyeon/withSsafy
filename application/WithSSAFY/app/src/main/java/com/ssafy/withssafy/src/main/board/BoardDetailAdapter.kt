@@ -15,7 +15,7 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
 //class LocalBoardAdapter(val context: Context) : ListAdapter<Board, LocalBoardAdapter.LocalBoardViewHolder>(DiffCallback) {
     lateinit var postList : MutableList<Board>    // !dto 수정
     lateinit var userList: MutableList<User>
-    lateinit var userLikePost: MutableList<Int>
+    lateinit var userLikePost: MutableList<Board>
 
     inner class ViewHolder(private val binding: ItemPostListBinding) : RecyclerView.ViewHolder(binding.root) {
         val heartBtn = binding.postListItemLottieHeart
@@ -25,15 +25,14 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
 
         fun bindInfo(board: Board) {
 
-//            for (i in userLikePost) {   // 로그인 유저가 좋아요 누른 게시글 표시
-//                if(post.id == i) {
-//                    heartBtn.progress = 0.5F
-//                    break
-//                }
-//                heartBtn.progress = 0.0F
-//            }
-//
-//            moreBtn.isVisible = post.userId == ApplicationClass.sharedPreferencesUtil.getUser().id
+            for (item in userLikePost) {   // 로그인 유저가 좋아요 누른 게시글 표시
+                if(board.id == item.id) {
+                    heartBtn.progress = 0.5F
+                    break
+                }
+                heartBtn.progress = 0.0F
+            }
+
             binding.board = board
             binding.executePendingBindings()
         }
