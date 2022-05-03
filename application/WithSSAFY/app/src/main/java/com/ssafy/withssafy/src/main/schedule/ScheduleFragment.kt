@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentScheduleBinding
 import com.ssafy.withssafy.src.main.notification.NotificationPageAdapter
@@ -13,6 +14,9 @@ import com.ssafy.withssafy.src.main.notification.NotificationPageAdapter
 
 class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::bind,R.layout.fragment_schedule) {
     private lateinit var pagerAdapter:NotificationPageAdapter
+    val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
+    private var isStudent = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -25,7 +29,17 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         setListener()
     }
     private fun setListener(){
+        initAdmin()
         initToggle()
+    }
+    private fun initAdmin(){
+        if(studentId != null) { // 교육생
+            binding.fragmentScheduleAdminWrite.visibility = View.GONE
+            isStudent = true
+        } else { // 관리자
+            binding.fragmentScheduleAdminWrite.visibility = View.VISIBLE
+            isStudent = false
+        }
     }
     private fun initToggle(){
         pagerAdapter = NotificationPageAdapter(this)
