@@ -12,5 +12,6 @@ class RetrofitUtil {
         val commentApi = ApplicationClass.retrofit.create(CommentApi::class.java)
         val messageApi = ApplicationClass.retrofit.create(MessageApi::class.java)
         val recruitApi = ApplicationClass.retrofit.create(RecruitApi::class.java)
+        val noticeApi = ApplicationClass.retrofit.create(NoticeApi::class.java)
     }
 }
