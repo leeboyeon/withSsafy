@@ -31,7 +31,7 @@ abstract class BaseFragment <B: ViewBinding> (
     protected val boardViewModel: BoardViewModel by activityViewModels()
     protected val messageViewModel : MessageViewModel by activityViewModels()
     protected val recruitViewModel : RecruitViewModel by activityViewModels()
-
+    protected val scheduleViewModel : ScheduleViewModel by activityViewModels()
     protected val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
