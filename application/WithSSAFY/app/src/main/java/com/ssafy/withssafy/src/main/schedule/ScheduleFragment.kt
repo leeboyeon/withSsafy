@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
@@ -31,6 +32,12 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
     private fun setListener(){
         initAdmin()
         initToggle()
+        initButtons()
+    }
+    private fun initButtons(){
+        binding.fragmentScheduleAdminWrite.setOnClickListener {
+            this@ScheduleFragment.findNavController().navigate(R.id.curriculumWriteFragment)
+        }
     }
     private fun initAdmin(){
         if(studentId != null) { // 교육생

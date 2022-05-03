@@ -7,5 +7,6 @@ data class Schedule(
     val memo: String?,
     val startDate: String,
     val title: String,
-    val userId: Int
+    val userId: Int,
+    val weeks:Int
 )

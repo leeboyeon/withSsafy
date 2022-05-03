@@ -59,7 +59,9 @@
                 app:layout_constraintStart_toEndOf="@+id/fragment_schedule_appBarPrev"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TableLayout
+            android:id="@+id/timeTable"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
@@ -122,11 +124,12 @@
                     android:text="금"
                     android:textColor="@color/white" />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -192,11 +195,12 @@
                     android:textStyle="bold" />
 
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -262,11 +266,12 @@
                     android:textStyle="bold" />
 
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -332,11 +337,12 @@
                     android:textStyle="bold" />
 
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -402,11 +408,12 @@
                     android:textStyle="bold" />
 
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -472,11 +479,12 @@
                     android:textStyle="bold" />
 
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -542,11 +550,12 @@
                     android:textStyle="bold" />
 
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -612,11 +621,12 @@
                     android:textStyle="bold" />
 
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -682,11 +692,12 @@
                     android:textStyle="bold" />
 
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -752,11 +763,12 @@
                     android:textStyle="bold" />
 
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
