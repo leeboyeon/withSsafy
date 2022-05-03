@@ -31,7 +31,7 @@ import java.util.List;
 public class FCMService {
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/withssafy/messages:send";
 
-    @Value("${spring.firebase-sdk-path}")
+    @Value("${firebase-sdk-path}")
     private String firebaseSdkPath;
 
     private final ObjectMapper objectMapper;

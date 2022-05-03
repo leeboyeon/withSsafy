@@ -118,4 +118,4 @@ logging.level:
 # org.hibernate.type: trace # 쿼리 파라미터 로그 남기기
 
 # firebase sdk path 설정
-  firebase-sdk-path: firebase/withssafy-firebase-adminsdk-a601m-157bca1f6d.json
+firebase-sdk-path: firebase/withssafy-firebase-adminsdk-a601m-157bca1f6d.json
