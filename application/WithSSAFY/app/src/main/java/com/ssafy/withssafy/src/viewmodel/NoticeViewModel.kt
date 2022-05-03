@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.viewmodel
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +14,8 @@ private const val TAG = "NoticeViewModel"
 class NoticeViewModel : ViewModel() {
     private val _noticeAllList = MutableLiveData<MutableList<Notice>>()
     private val _classRoomId = MutableLiveData<Int>()
+    var _uploadImageUri = MutableLiveData<Uri?>()
+    //var uploadImageUri: Uri? = null
 
     val noticeAllList : LiveData<MutableList<Notice>>
         get() = _noticeAllList
@@ -20,12 +23,19 @@ class NoticeViewModel : ViewModel() {
     val classRoomId : LiveData<Int>
         get() = _classRoomId
 
+    val uploadImageUri : LiveData<Uri?>
+        get() = _uploadImageUri
+
     fun setNoticeList(noticeList : MutableList<Notice>) {
         _noticeAllList.value = noticeList
     }
 
     fun setClassRoomId(id : Int) {
         _classRoomId.value = id
+    }
+
+    fun setUploadImageUri(uri: Uri?) {
+        _uploadImageUri.value = uri
     }
 
     suspend fun getNoticeList(classRoomId : Int) {

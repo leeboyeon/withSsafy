@@ -48,6 +48,7 @@ import com.ssafy.withssafy.src.main.notification.NotificationFragment
 import com.ssafy.withssafy.src.main.schedule.ScheduleFragment
 import com.ssafy.withssafy.src.main.team.TeamFragment
 import com.ssafy.withssafy.src.network.api.FCMApi
+import com.ssafy.withssafy.src.viewmodel.NoticeViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.TimeUnit
@@ -61,7 +62,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private lateinit var bottomNavigation: BottomNavigationView
     private val STORAGE = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private val STORAGE_CODE = 99
+    private val NOTICE_CODE = 100
     private val teamViewModel : TeamViewModel by viewModels()
+    private val noticeViewModel : NoticeViewModel by viewModels()
     // 권한 허가
     var permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() { // 권한 허가시 실행 할 내용
@@ -204,6 +207,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             when (requestCode) {
                 STORAGE_CODE -> {
                     teamViewModel.uploadImageUri = data?.data
+                    Log.d(TAG, "onActivityResult:  ${data?.data}")
 //                    mainViewModels.uploadedImageUri = data?.data
 //
 //                    Log.d(TAG, "onActivityResult: ${data?.data}")
@@ -214,6 +218,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //                        checkTheType()
 //                        photoDialog.dismiss()
 //                    }
+                }
+                NOTICE_CODE -> {
+                    noticeViewModel.setUploadImageUri(data?.data!!)
+                    //noticeViewModel.uploadImageUri = data?.data
+                    Log.d(TAG, "onActivityResult: NOTICE ${data?.data}")
                 }
             }
         }

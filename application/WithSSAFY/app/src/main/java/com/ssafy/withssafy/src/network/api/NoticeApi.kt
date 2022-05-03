@@ -3,6 +3,7 @@ package com.ssafy.withssafy.src.network.api
 import com.ssafy.withssafy.src.dto.notice.Notice
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.notice.NoticeRequest
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -46,4 +47,12 @@ interface NoticeApi {
      */
     @DELETE("/notice/{id}")
     suspend fun deleteNoticeById(@Path("id") id: Int) : Response<Any?>
+
+    /**
+     * 공지사항 사진 추가
+     * @param id
+     * */
+    @Multipart
+    @POST("/upload")
+    suspend fun insertNoticePhoto(@Part file: MultipartBody.Part) : Response<String>
 }
