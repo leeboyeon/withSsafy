@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
@@ -68,7 +69,7 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
         } else { // 관리자
             binding.boardNotiFragmentNoticeCFb.visibility = View.VISIBLE
             binding.boardNotiFragmentNoticeCFb.setOnClickListener {
-
+                this@BoardNoticeFragment.findNavController().navigate(R.id.noticeWriteFragment)
             }
         }
     }

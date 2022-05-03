@@ -35,6 +35,9 @@ class BoardNoticeAllAdapter : RecyclerView.Adapter<BoardNoticeAllAdapter.BoardNo
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        if(list.size > 5)
+            return 5
+        else
+            return list.size
     }
 }
