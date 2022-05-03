@@ -14,6 +14,6 @@ class ScheduleService {
 
     suspend fun getScheduleById(id:Int) : Response<Schedule> = RetrofitUtil.schduleApi.getSchedulesById(id)
 
-    suspend fun getSchedulesByMyClass(id:Int, startDate:String) : Response<MutableList<Schedule>> = RetrofitUtil.schduleApi.getSchedulesByMyClass(id,startDate)
+    suspend fun getSchedulesByMyClass(id:Int, weeks:Int) : Response<MutableList<Schedule>> = RetrofitUtil.schduleApi.getSchedulesByMyClass(id,weeks)
 
 }

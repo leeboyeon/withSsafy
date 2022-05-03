@@ -32,7 +32,7 @@ interface ScheduleApi {
      * @author : LeeBoYeon
      * */
     @GET("/schedule/myclass/{id}")
-    suspend fun getSchedulesByMyClass(@Path("id")id:Int,@Query("startDate")startDate:String) : Response<MutableList<Schedule>>
+    suspend fun getSchedulesByMyClass(@Path("id")id:Int,@Query("weeks")weeks:Int) : Response<MutableList<Schedule>>
     /**
      * 스케줄 삭제하기
      * Delete Schedule By Id

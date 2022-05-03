@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.databinding.BindingAdapter
 import android.os.Build
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -22,6 +23,8 @@ import com.ssafy.withssafy.src.main.notification.MessageGroupAdapter
 import com.ssafy.withssafy.src.main.team.TeamAdapter
 import com.ssafy.withssafy.util.CommonUtils
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @BindingAdapter("studyListData")
 fun bindingStudyList(recyclerView: RecyclerView, data:List<Study>?){
@@ -182,4 +185,35 @@ fun bindingRequestList(recyclerView: RecyclerView, data:List<User>?){
     }
     adapter.list = data as MutableList<User>
     adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("dateConvert")
+fun bindingTvDataConvert(textView: TextView,date:String){
+    var formatter = SimpleDateFormat("yyyy-MM-dd")
+    var dates = date.substring(0,11)
+//    var dates = formatter.parse(date)
+    textView.text = dates.toString()
+}
+@RequiresApi(Build.VERSION_CODES.O)
+@BindingAdapter("weekConvert")
+fun bindingTvWeekConvert(textView: TextView, date:String){
+    var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:ss")
+    var dates = LocalDate.parse(date, formatter)
+    var week = dates.dayOfWeek
+    var numWeek = week.value
+    textView.text = CommonUtils.convertWeek(numWeek)
+}
+@BindingAdapter("findStartDate")
+fun bindingTvStartTime(textView: TextView, date:String){
+    var times = date.substring(date.length-5,date.length)
+    Log.d("BindingAdapter", "bindingTvStartTime: $times")
+    var hour = times.substring(0,2)
+    Log.d("BindingAdapter", "bindingTvStartTime: $hour")
+    var minutes = times.substring(3,5)
+    Log.d("BindingAdapter", "bindingTvStartTime: $minutes")
+    if(hour.toInt() > 12){
+        textView.text = "PM ${Math.abs(hour.toInt()-12)}:${minutes}"
+    }else{
+        textView.text = "AM ${hour}:${minutes}"
+    }
 }
