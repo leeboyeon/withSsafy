@@ -17,7 +17,7 @@ import java.io.InputStream;
 @Configuration
 public class FirebaseConfig {
 
-    @Value("${spring.firebase-sdk-path}")
+    @Value("${firebase-sdk-path}")
     private String firebaseSdkPath;
 
     @PostConstruct
