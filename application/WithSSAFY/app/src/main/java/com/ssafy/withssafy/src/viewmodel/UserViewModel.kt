@@ -145,6 +145,7 @@ class UserViewModel : ViewModel() {
                     if(responseClassRoom.code() == 200) {
                         if(resClassRoom != null) {
                             setClassRoomInfo(resClassRoom)
+                            Log.d(TAG, "getClassRoomInfo: $resClassRoom")
                         }
                     } else {
                         Log.d(TAG, "Error : ${response.message()}")

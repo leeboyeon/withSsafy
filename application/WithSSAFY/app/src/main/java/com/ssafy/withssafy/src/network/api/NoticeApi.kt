@@ -16,7 +16,7 @@ interface NoticeApi {
      * @param classRoomId
      */
     @GET("/notice")
-    suspend fun selectNoticeList(@Query("classRoomId ") classRoomId : Int) : Response<MutableList<Notice>>
+    suspend fun selectNoticeList(@Query("classRoomId") classRoomId : Int) : Response<MutableList<Notice>>
 
     /**
      * 공지사항 추가

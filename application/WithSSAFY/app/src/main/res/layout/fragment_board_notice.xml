@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <!--        <variable-->
-        <!--            name="user"-->
-        <!--            type="com.whitebear.travel.src." />-->
+        <variable
+            name="viewModel"
+            type="com.ssafy.withssafy.src.viewmodel.NoticeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,10 +22,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:id="@+id/boardNotiFragment_llNoti"
@@ -262,7 +269,8 @@
                     android:id="@+id/boardNotiFragment_rvMustReadList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_board_noti_mustread"/>
+                    tools:listitem="@layout/item_board_noti_mustread"
+                    boardNoticeAllListData="@{viewModel.noticeAllList}"/>
             </LinearLayout>
 
             <LinearLayout
@@ -464,6 +472,23 @@
             </LinearLayout>
 
             </LinearLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/boardNotiFragment_Notice_C_Fb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:clickable="true"
+                    android:src="@drawable/add"
+                    app:backgroundTint="@color/white"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

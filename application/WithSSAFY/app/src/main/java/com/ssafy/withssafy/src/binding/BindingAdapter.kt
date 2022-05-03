@@ -13,7 +13,9 @@ import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.dto.notice.Notice
 import com.ssafy.withssafy.src.dto.study.Study
+import com.ssafy.withssafy.src.main.board.BoardNoticeAllAdapter
 import com.ssafy.withssafy.src.main.board.JobAdapter
 import com.ssafy.withssafy.src.main.home.EmployInfoAdapter
 import com.ssafy.withssafy.src.main.home.RequestAdapter
@@ -181,5 +183,18 @@ fun bindingRequestList(recyclerView: RecyclerView, data:List<User>?){
         adapter = recyclerView.adapter as RequestAdapter
     }
     adapter.list = data as MutableList<User>
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("boardNoticeAllListData")
+fun bindingBoardNoticeAllList(recyclerView: RecyclerView, data:List<Notice>?){
+    var adapter = recyclerView.adapter as BoardNoticeAllAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as BoardNoticeAllAdapter
+    }
+    adapter.list = data as MutableList<Notice>
     adapter.notifyDataSetChanged()
 }
