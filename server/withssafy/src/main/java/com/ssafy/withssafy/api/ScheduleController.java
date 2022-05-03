@@ -1,6 +1,8 @@
 package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.schedule.ScheduleDto;
+import com.ssafy.withssafy.dto.schedule.ScheduleModifyDto;
+import com.ssafy.withssafy.dto.schedule.ScheduleReqDto;
 import com.ssafy.withssafy.entity.Schedule;
 import com.ssafy.withssafy.service.schedule.ScheduleService;
 import io.swagger.annotations.Api;
@@ -29,15 +31,15 @@ public class ScheduleController {
 
     @PostMapping
     @ApiOperation(value = "일정 추가")
-    public ResponseEntity<?> insertSchedule(@RequestBody ScheduleDto scheduleDto){
-        scheduleService.saveSchedule(scheduleDto);
+    public ResponseEntity<?> insertSchedule(@RequestBody List<ScheduleReqDto> scheduleReqDtoList){
+        scheduleService.saveSchedule(scheduleReqDtoList);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @PutMapping
     @ApiOperation(value = "일정 수정")
-    public ResponseEntity<?> updateSchedule(@RequestBody ScheduleDto scheduleDto){
-        scheduleService.saveSchedule(scheduleDto);
+    public ResponseEntity<?> updateSchedule(@RequestBody ScheduleModifyDto scheduleModifyDto){
+        scheduleService.modifySchedule(scheduleModifyDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
@@ -58,10 +60,8 @@ public class ScheduleController {
     @GetMapping("/myclass/{id}")
     @ApiOperation(value = "우리반 일정 조회")
     public ResponseEntity<List<ScheduleDto>> getMyClassSchedule(@ApiParam("반 id") @PathVariable Long id,
-                                                                @ApiParam("해당 주차의 월요일 날짜(yyyy-mm-dd)") @RequestParam String startDate){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate dateTime = LocalDate.parse(startDate, formatter);
-        List<ScheduleDto> scheduleDtoList = scheduleService.findMySchedule(id, dateTime.atTime(0,0));
+                                                                @ApiParam("해당 주차") @RequestParam int weeks){
+        List<ScheduleDto> scheduleDtoList = scheduleService.findMySchedule(id, weeks);
         return ResponseEntity.status(HttpStatus.OK).body(scheduleDtoList);
     }
 }
