@@ -232,6 +232,11 @@
         tools:layout="@layout/fragment_request">
 
     </fragment>
+    <fragment
+        android:id="@+id/curriculumWriteFragment"
+        android:name="com.ssafy.withssafy.src.main.schedule.CurriculumWriteFragment"
+        android:label="fragment_curriculum_write"
+        tools:layout="@layout/fragment_curriculum_write" />
 
     <fragment
         android:id="@+id/noticeWriteFragment"

@@ -3,8 +3,10 @@ package com.ssafy.withssafy.api;
 import com.ssafy.withssafy.dto.Notice.NoticeModifyReqDto;
 import com.ssafy.withssafy.dto.Notice.NoticeReqDto;
 import com.ssafy.withssafy.dto.Notice.NoticeResDto;
+import com.ssafy.withssafy.dto.Notice.NoticeTypeDto;
 import com.ssafy.withssafy.dto.board.BoardRequest;
 import com.ssafy.withssafy.dto.board.BoardResponse;
+import com.ssafy.withssafy.entity.NoticeType;
 import com.ssafy.withssafy.service.Notice.NoticeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,5 +56,12 @@ public class NoticeController {
     public ResponseEntity<?> removeBoardById(@PathVariable("id") Long id) {
         noticeService.removeNoticeById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/type")
+    @ApiOperation(value = "공지사항 타입 리스트")
+    public ResponseEntity<List<NoticeTypeDto>> getBoardTypes(){
+        List<NoticeTypeDto> noticeTypes = noticeService.getNoticeTypes();
+        return new ResponseEntity<List<NoticeTypeDto>>(noticeTypes, HttpStatus.OK);
     }
 }

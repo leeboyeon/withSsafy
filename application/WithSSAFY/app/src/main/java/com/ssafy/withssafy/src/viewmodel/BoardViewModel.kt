@@ -197,4 +197,72 @@ class BoardViewModel : ViewModel() {
         }
     }
 
+
+    /**
+     * 게시글 좋아요 좋아요 체크
+     */
+    private val _likePost = MutableLiveData<Boolean>()
+
+    val likePost : LiveData<Boolean>
+        get() = _likePost
+
+    private fun setLikePost(value: Boolean) = viewModelScope.launch {
+        _likePost.value = value
+    }
+
+    suspend fun getLikePostOrNot(boardId: Int, userId: Int) {
+        try {
+            val response = BoardService().postLikeOrNot(boardId, userId)
+
+            viewModelScope.launch {
+                if(response.isSuccessful) {
+                    val res = response.body()
+                    if(res != null) {
+                        setLikePost(res)
+                    } else {
+                        Log.d(TAG, "getLikePostOrNot: $response", )
+                    }
+                } else {
+                    Log.e(TAG, "getLikePostOrNot: 통신 실패", )
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "getLikePostOrNot: ${e.message()}", )
+        }
+    }
+
+
+    /**
+     * 사용자가 좋아요 누른 게시글 리스트 조회
+     */
+    private val _userLikePostList = MutableLiveData<MutableList<Board>>()
+
+    val userLikePostList : LiveData<MutableList<Board>>
+     get() = _userLikePostList
+
+    private fun setUserLikePost(list: MutableList<Board>) = viewModelScope.launch {
+        _userLikePostList.value = list
+    }
+
+    suspend fun getUserLikePostList(userId: Int) {
+        try {
+            val response = BoardService().likePostByUser(userId)
+
+            viewModelScope.launch {
+                if(response.isSuccessful) {
+                    val res = response.body()
+                    if(res != null) {
+                        setUserLikePost(res as MutableList<Board>)
+                    } else {
+                        Log.d(TAG, "getUserLikePostList: $response", )
+                    }
+                } else {
+                    Log.e(TAG, "getUserLikePostList: 통신 실패", )
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "getUserLikePostList ${e.message()}", )
+        }
+    }
+
 }

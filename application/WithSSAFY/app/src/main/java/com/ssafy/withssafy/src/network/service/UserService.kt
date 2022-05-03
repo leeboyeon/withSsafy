@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.network.service
 
+import android.util.JsonToken
 import android.util.Log
 import com.ssafy.withssafy.src.dto.ClassRoom
 import com.ssafy.withssafy.src.dto.User
@@ -148,4 +149,6 @@ class UserService {
 
 
     suspend fun selectStateZeroUser() = RetrofitUtil.userService.selectStateZeroUser()
+
+    suspend fun updateUserToken(userId: Int, token: String) = RetrofitUtil.userService.updateUserDeviceToken(userId, token)
 }

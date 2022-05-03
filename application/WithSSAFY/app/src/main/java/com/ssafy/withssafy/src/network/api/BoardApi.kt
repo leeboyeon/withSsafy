@@ -3,6 +3,7 @@ package com.ssafy.withssafy.src.network.api
 import com.ssafy.withssafy.src.dto.board.Board
 import com.ssafy.withssafy.src.dto.board.BoardRequest
 import com.ssafy.withssafy.src.dto.board.BoardType
+import com.ssafy.withssafy.src.dto.board.LikeDto
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -49,6 +50,24 @@ interface BoardApi {
      */
     @DELETE("boards/{id}")
     suspend fun deletePostById(@Path("id") id: Int) : Response<Any?>
+
+    /**
+     * 게시물 좋아요 확인
+     */
+    @GET("boards/like")
+    suspend fun postLikeOrNot(@Query("boardId") boardId: Int, @Query("userId") userId: Int) : Response<Boolean>
+
+    /**
+     * 게시물 좋아요 or 취소
+     */
+    @POST("boards/like")
+    suspend fun postLike(@Body likeDto: LikeDto) : Response<Any?>
+
+    /**
+     * 사용자가 좋아요 누른 게시물 조회
+     */
+    @GET("boards/liked-board")
+    suspend fun likePostByUser(@Query("uid") userId: Int) : Response<List<Board>>
 
     /**
      * 게시판 타입별 게시글 조회

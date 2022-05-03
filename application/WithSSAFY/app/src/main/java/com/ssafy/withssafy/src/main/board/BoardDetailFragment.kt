@@ -27,6 +27,7 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
     private lateinit var mainActivity: MainActivity
     private lateinit var boardDetailAdapter: BoardDetailAdapter
 
+    private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     private var typeId: Int = -1
 
     override fun onAttach(context: Context) {
@@ -39,7 +40,6 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
         arguments?.apply {
             typeId = getInt("typeId")
         }
-        Log.d(TAG, "onCreate: $typeId")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,8 +47,17 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
 
         runBlocking {
             boardViewModel.getBoardListByType(typeId)
+            boardViewModel.getUserLikePostList(userId)
         }
 
+        boardViewModel.allBoardType.observe(viewLifecycleOwner) {
+            for (item in it) {
+                if(typeId == item.id) {
+                    binding.boardType = item
+                    break
+                }
+            }
+        }
         initListener()
         initRecyclerView()
 
@@ -78,6 +87,10 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
 
         boardViewModel.boardListByType.observe(viewLifecycleOwner) {
             boardDetailAdapter.postList = it
+        }
+
+        boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+            boardDetailAdapter.userLikePost = it
         }
 
         binding.boardDetailFragmentRvPostList.apply {

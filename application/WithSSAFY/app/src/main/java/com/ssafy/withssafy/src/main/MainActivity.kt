@@ -41,6 +41,7 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseActivity
 import com.ssafy.withssafy.databinding.ActivityMainBinding
+import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.login.SingInActivity
 import com.ssafy.withssafy.src.main.board.BoardFragment
 import com.ssafy.withssafy.src.main.home.HomeFragment
@@ -53,6 +54,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 import com.ssafy.withssafy.src.viewmodel.TeamViewModel
+import com.ssafy.withssafy.util.RetrofitUtil
 import kotlinx.coroutines.runBlocking
 import retrofit2.Response
 import kotlin.math.round
@@ -79,7 +81,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initNavigation()
-
 //        supportFragmentManager.beginTransaction()
 //            .replace(R.id.main_frame_layout, HomeFragment())
 //            .commit()
@@ -302,54 +303,57 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         startActivity(intent)
     }
 
-    /**
-     * FCM 토큰 수신 및 채널 생성
-     */
-    private fun initFcm() {
-        // FCM 토큰 수신
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(TAG, "FCM 토큰 얻기에 실패하였습니다.", task.exception)
-                return@OnCompleteListener
-            }
-            // token log 남기기
-            Log.d(TAG, "token: ${task.result?:"task.result is null"}")
-            uploadToken(task.result!!, ApplicationClass.sharedPreferencesUtil.getUser().id)
-        })
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(channel_id, "ssafy")
-        }
-    }
 
-    /**
-     * Fcm Notification 수신을 위한 채널 추가
-     * @author Jiwoo CHoi
-     */
-    private fun createNotificationChannel(id: String, name: String) {
-        val importance = NotificationManager.IMPORTANCE_DEFAULT // or IMPORTANCE_HIGH
-        val channel = NotificationChannel(id, name, importance)
 
-        val notificationManager: NotificationManager
-                = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
 
-    companion object {
-        const val channel_id = "ssafy_channel"
-        fun uploadToken(token:String, userId: Int) {
-            val storeService = ApplicationClass.retrofit.create(FCMApi::class.java)
-
-            var response : Response<Any?>
-            runBlocking {
-                response = storeService.uploadToken(token, ApplicationClass.sharedPreferencesUtil.getUser().id)
-            }
-
-            if(response.isSuccessful) {
-
-            } else {
-                Log.e(TAG, "uploadToken: 토큰 정보 등록 중 통신 오류")
-            }
-        }
-    }
+//    /**
+//     * FCM 토큰 수신 및 채널 생성
+//     */
+//    private fun initFcm() {
+//        // FCM 토큰 수신
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+//                Log.w(TAG, "FCM 토큰 얻기에 실패하였습니다.", task.exception)
+//                return@OnCompleteListener
+//            }
+//            // token log 남기기
+//            Log.d(TAG, "token: ${task.result?:"task.result is null"}")
+//            uploadToken(task.result!!, ApplicationClass.sharedPreferencesUtil.getUser().id)
+//        })
+//
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            createNotificationChannel(channel_id, "ssafy")
+//        }
+//    }
+//
+//    /**
+//     * Fcm Notification 수신을 위한 채널 추가
+//     * @author Jiwoo CHoi
+//     */
+//    private fun createNotificationChannel(id: String, name: String) {
+//        val importance = NotificationManager.IMPORTANCE_DEFAULT // or IMPORTANCE_HIGH
+//        val channel = NotificationChannel(id, name, importance)
+//
+//        val notificationManager: NotificationManager
+//                = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//        notificationManager.createNotificationChannel(channel)
+//    }
+//
+//    companion object {
+//        const val channel_id = "ssafy_channel"
+//        fun uploadToken(token:String, userId: Int) {
+//
+//            var response : Response<User>
+//            runBlocking {
+//                response = RetrofitUtil.userService.updateUserDeviceToken(ApplicationClass.sharedPreferencesUtil.getUser().id, token)
+//            }
+//
+//            if(response.isSuccessful) {
+//
+//            } else {
+//                Log.e(TAG, "uploadToken: 토큰 정보 등록 중 통신 오류")
+//            }
+//        }
+//    }
 }
