@@ -10,7 +10,7 @@ import retrofit2.http.*
 
 interface UserApi {
 
-    @GET("/user")
+    @GET("user")
     suspend fun selectUserList(): Response<List<User>>
 
     // 회원가입
@@ -63,5 +63,10 @@ interface UserApi {
     @GET("/user/manager/user-state-zero")
     suspend fun selectStateZeroUser() : Response<MutableList<User>>
 
+    /**
+     * user Device Token 변경
+     */
+    @PATCH("user/manager/update-device-token")
+    suspend fun updateUserDeviceToken(@Query("id") userId: Int, @Query("token") token: String) : Response<User>
 
 }

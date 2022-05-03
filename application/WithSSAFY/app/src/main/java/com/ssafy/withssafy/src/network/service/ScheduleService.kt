@@ -10,9 +10,9 @@ class ScheduleService {
 
     suspend fun modifySchedule(schedule:Schedule) : Response<Any?> = RetrofitUtil.schduleApi.modifySchedule(schedule)
 
-    suspend fun deleteSchedule(id:Int) : Response<Any?> = RetrofitUtil.schduleApi.deleteSchedule(id)
+    suspend fun deleteSchedule(id:Int) : Response<Any?> = RetrofitUtil.schduleApi.deleteSchdule(id)
 
-    suspend fun getScheduleById(id:Int) : Response<Schedule> = RetrofitUtil.schduleApi.getScheduleById(id)
+    suspend fun getScheduleById(id:Int) : Response<Schedule> = RetrofitUtil.schduleApi.getSchedulesById(id)
 
     suspend fun getSchedulesByMyClass(id:Int, startDate:String) : Response<MutableList<Schedule>> = RetrofitUtil.schduleApi.getSchedulesByMyClass(id,startDate)
 
