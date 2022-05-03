@@ -32,7 +32,7 @@
         </activity>
 
         <service
-            android:name=".src.network.service.FCMService"
+            android:name=".src.network.service.FirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
