@@ -13,6 +13,7 @@ class RetrofitUtil {
         val commentApi = ApplicationClass.retrofit.create(CommentApi::class.java)
         val messageApi = ApplicationClass.retrofit.create(MessageApi::class.java)
         val recruitApi = ApplicationClass.retrofit.create(RecruitApi::class.java)
-        val schduleApi = ApplicationClass.retrofit.create(ScheduleService::class.java)
+        val schduleApi = ApplicationClass.retrofit.create(ScheduleApi::class.java)
+        val fcmService = ApplicationClass.retrofit.create(FCMApi::class.java)
     }
 }
