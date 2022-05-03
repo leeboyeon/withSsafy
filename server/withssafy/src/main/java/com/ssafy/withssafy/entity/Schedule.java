@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.entity;
 
+import com.ssafy.withssafy.dto.schedule.ScheduleDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "tbl_schedule")
@@ -35,15 +37,20 @@ public class Schedule {
     @Column(length = 250)
     private String memo;
 
-    @Column(length = 25)
+    @Column
     private LocalDateTime startDate;
-    
-    @Builder
-    public Schedule(User user, LocalDateTime endDate, String title, String memo, LocalDateTime startDate){
+
+    @Column
+    private int weeks;
+
+    public Schedule(Long id, User user, ClassRoom classRoom, LocalDateTime endDate, String title, String memo, LocalDateTime startDate, int weeks) {
+        this.id = id;
         this.user = user;
+        this.classRoom = classRoom;
         this.endDate = endDate;
         this.title = title;
         this.memo = memo;
         this.startDate = startDate;
+        this.weeks = weeks;
     }
 }
