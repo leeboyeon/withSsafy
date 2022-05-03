@@ -207,7 +207,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             when (requestCode) {
                 STORAGE_CODE -> {
                     teamViewModel.uploadImageUri = data?.data
-                    Log.d(TAG, "onActivityResult:  ${data?.data}")
 //                    mainViewModels.uploadedImageUri = data?.data
 //
 //                    Log.d(TAG, "onActivityResult: ${data?.data}")
