@@ -3,15 +3,18 @@ package com.ssafy.withssafy.service.Notice;
 import com.ssafy.withssafy.dto.Notice.NoticeModifyReqDto;
 import com.ssafy.withssafy.dto.Notice.NoticeReqDto;
 import com.ssafy.withssafy.dto.Notice.NoticeResDto;
+import com.ssafy.withssafy.dto.Notice.NoticeTypeDto;
 import com.ssafy.withssafy.dto.board.BoardRequest;
 import com.ssafy.withssafy.dto.board.BoardResponse;
 import com.ssafy.withssafy.dto.board.LikeDto;
 import com.ssafy.withssafy.entity.Board;
 import com.ssafy.withssafy.entity.LikeManagement;
 import com.ssafy.withssafy.entity.Notice;
+import com.ssafy.withssafy.entity.NoticeType;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.NoticeRepository;
+import com.ssafy.withssafy.repository.NoticeTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,7 @@ import java.util.stream.Collectors;
 public class NoticeService {
     private final ModelMapper modelMapper;
     private final NoticeRepository noticeRepository;
+    private final NoticeTypeRepository noticeTypeRepository;
 
     @Transactional
     public void addNotice(NoticeReqDto noticeReqDto) {
@@ -60,5 +64,11 @@ public class NoticeService {
     @Transactional
     public void removeNoticeById(Long id) {
         noticeRepository.deleteById(id);
+    }
+
+    public List<NoticeTypeDto> getNoticeTypes() {
+        List<NoticeType> noticeTypeDtos = noticeTypeRepository.findAll();
+        return noticeTypeDtos.stream().map(noticeType -> modelMapper.map(noticeType,NoticeTypeDto.class))
+                .collect(Collectors.toList());
     }
 }
