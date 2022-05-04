@@ -96,6 +96,9 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
     }
 
     private fun initButton() {
+        binding.fragmentNoticeWriteAppBarPrev.setOnClickListener{
+            this@NoticeWriteFragment.findNavController().popBackStack()
+        }
         binding.fragmentNoticeWriteCamera.setOnClickListener {
             mainActivity.openGallery(NOTICE_CODE)
             noticeViewModel.uploadImageUri.observe(viewLifecycleOwner) {

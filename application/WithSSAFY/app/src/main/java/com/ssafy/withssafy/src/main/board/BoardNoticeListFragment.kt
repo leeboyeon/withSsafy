@@ -59,6 +59,9 @@ class BoardNoticeListFragment : BaseFragment<FragmentBoardNoticeListBinding>(Fra
         for(item in types){
             binding.frargmentBoardNoticeListTabLayout.addTab(binding.frargmentBoardNoticeListTabLayout.newTab().setText(item))
         }
+        var tab = binding.frargmentBoardNoticeListTabLayout.getTabAt(typeId)
+        tab?.select()
+        noticeViewModel.getFilterNoticeList(typeId)
         binding.frargmentBoardNoticeListTabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if(tab?.position == 0){
