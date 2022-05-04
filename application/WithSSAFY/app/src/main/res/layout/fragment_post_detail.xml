@@ -46,8 +46,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/postDetailFragment_ibBack"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/postDetailFragment_ibBack"
-                app:layout_constraintVertical_bias="0.625" />
+                app:layout_constraintTop_toTopOf="@+id/postDetailFragment_ibBack" />
 
             <ImageButton
                 android:id="@+id/postDetailFragment_btnMore"
@@ -138,10 +137,23 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/postDetailFragment_tvPostContent"
+                    app:layout_constraintBottom_toTopOf="@+id/postWriteFragment_ivPostImg"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/postWriteFragment_ivPostImg"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:boardImg="@{post.photoPath}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/postDetailFragment_tvPostTitle"
+                    tools:src="@drawable/ic_launcher_background" />
 
                 <TextView
                     android:id="@+id/postDetailFragment_tvPostContent"
@@ -150,7 +162,7 @@
                     android:text="@{post.content}"
                     android:textSize="18sp"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintTop_toBottomOf="@+id/postDetailFragment_tvPostTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/postWriteFragment_ivPostImg"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>

@@ -49,6 +49,7 @@ import com.ssafy.withssafy.src.main.notification.NotificationFragment
 import com.ssafy.withssafy.src.main.schedule.ScheduleFragment
 import com.ssafy.withssafy.src.main.team.TeamFragment
 import com.ssafy.withssafy.src.network.api.FCMApi
+import com.ssafy.withssafy.src.viewmodel.BoardViewModel
 import com.ssafy.withssafy.src.viewmodel.NoticeViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -65,8 +66,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val STORAGE = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private val STORAGE_CODE = 99
     private val NOTICE_CODE = 100
+    private val BOARD_CODE = 101
     private val teamViewModel : TeamViewModel by viewModels()
     private val noticeViewModel : NoticeViewModel by viewModels()
+    private val boardViewModel : BoardViewModel by viewModels()
+
     // 권한 허가
     var permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() { // 권한 허가시 실행 할 내용
@@ -197,7 +201,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         if(checkPermission(STORAGE,STORAGE_CODE)){
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
-            filterActivityLauncher.launch(intent)
+//            filterActivityLauncher.launch(intent)
             startActivityForResult(intent,code)
         }
     }
@@ -224,6 +228,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     //noticeViewModel.uploadImageUri = data?.data
                     Log.d(TAG, "onActivityResult: NOTICE ${data?.data}")
                 }
+                BOARD_CODE -> {
+                    boardViewModel.setBoardImgUri(data?.data!!)
+
+                }
             }
         }
     }
@@ -239,53 +247,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
     }
+
     /**
      * 갤러리 사진 선택 result
      */
     private val filterActivityLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
             if(it.resultCode == AppCompatActivity.RESULT_OK && it.data != null) {
-                val data = it.data
-                Log.d(TAG, "${it.data}: ?/ ${it.data!!.clipData}")
+                val currentImageUri = it.data?.data
+
                 try {
-//                    if (data == null) {   // 어떤 이미지도 선택하지 않은 경우
-//                        showCustomToast("이미지를 선택하지 않았습니다.")
-//                    } else {
-//                        if(data.clipData == null) {  // 이미지를 하나만 선택한 경우
-//                            val imgUri = data
-//
-//                        }
-//                    }
-//
-//                    currentImageUri?.let {
-//                        if(Build.VERSION.SDK_INT < 28) {
-//                            // 사진 set
-//                            Glide.with(this)
-//                                .load(currentImageUri)
-//                                .into(binding.boardWriteIvSelectImg)
-//
-//                            // 파일 이름 set
-//                            binding.boardWriteTvImgName.text = currentImageUri.lastPathSegment.toString()
-//
-//                            imgUri = currentImageUri
-//                            fileExtension = requireActivity().contentResolver.getType(currentImageUri)
-//                        } else {
-//                            // 사진 set
-//                            Glide.with(this)
-//                                .load(currentImageUri)
-//                                .into(binding.boardWriteIvSelectImg)
-//
-//                            // 파일 이름 set
-//                            binding.boardWriteTvImgName.text = currentImageUri.lastPathSegment.toString()
-//
-//                            imgUri = currentImageUri
-//                            fileExtension = requireActivity().contentResolver.getType(currentImageUri)
-//                        }
-//                    }
+                    currentImageUri?.let { uri ->
+                        boardViewModel.setBoardImgUri(uri)
+//                        fileExtension = requireActivity().contentResolver.getType(currentImageUri)
+//                        fileExtension = fileExtension!!.substring(fileExtension!!.lastIndexOf("/") + 1, fileExtension!!.length)
+                    }
                 }catch(e:Exception) {
                     e.printStackTrace()
                 }
             } else if(it.resultCode == AppCompatActivity.RESULT_CANCELED){
+                boardViewModel.setBoardImgUri(Uri.EMPTY)
                 showCustomToast("사진 선택 취소")
             } else{
                 Log.d(TAG,"filterActivityLauncher 실패")
@@ -304,56 +285,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
 
-
-
-
-//    /**
-//     * FCM 토큰 수신 및 채널 생성
-//     */
-//    private fun initFcm() {
-//        // FCM 토큰 수신
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w(TAG, "FCM 토큰 얻기에 실패하였습니다.", task.exception)
-//                return@OnCompleteListener
-//            }
-//            // token log 남기기
-//            Log.d(TAG, "token: ${task.result?:"task.result is null"}")
-//            uploadToken(task.result!!, ApplicationClass.sharedPreferencesUtil.getUser().id)
-//        })
-//
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            createNotificationChannel(channel_id, "ssafy")
-//        }
-//    }
-//
-//    /**
-//     * Fcm Notification 수신을 위한 채널 추가
-//     * @author Jiwoo CHoi
-//     */
-//    private fun createNotificationChannel(id: String, name: String) {
-//        val importance = NotificationManager.IMPORTANCE_DEFAULT // or IMPORTANCE_HIGH
-//        val channel = NotificationChannel(id, name, importance)
-//
-//        val notificationManager: NotificationManager
-//                = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//        notificationManager.createNotificationChannel(channel)
-//    }
-//
-//    companion object {
-//        const val channel_id = "ssafy_channel"
-//        fun uploadToken(token:String, userId: Int) {
-//
-//            var response : Response<User>
-//            runBlocking {
-//                response = RetrofitUtil.userService.updateUserDeviceToken(ApplicationClass.sharedPreferencesUtil.getUser().id, token)
-//            }
-//
-//            if(response.isSuccessful) {
-//
-//            } else {
-//                Log.e(TAG, "uploadToken: 토큰 정보 등록 중 통신 오류")
-//            }
-//        }
-//    }
 }

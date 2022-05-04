@@ -1,6 +1,9 @@
 package com.ssafy.withssafy.src.main.board
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +13,7 @@ import android.widget.EditText
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.ssafy.withssafy.R
@@ -19,10 +23,18 @@ import com.ssafy.withssafy.databinding.FragmentPostWriteBinding
 import com.ssafy.withssafy.src.dto.board.BoardRequest
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.BoardService
+import com.ssafy.withssafy.src.network.service.StudyService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -35,13 +47,14 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
     private val TAG = "PostWriteFragment_ws"
     private lateinit var mainActivity : MainActivity
 
-    private lateinit var postPhotoAdapter: PostPhotoAdapter
+//    private lateinit var postPhotoAdapter: PostPhotoAdapter
 
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
-    private var typeId by Delegates.notNull<Int>()
+    private var typeId = -1
+
     // 수정인 경우 넘어오는 postId
-    private var postId by Delegates.notNull<Int>()
+    private var postId = -1
 
 
     override fun onAttach(context: Context) {
@@ -66,21 +79,78 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initListener()
+
         if(postId > 0) {
             // 데이터 세팅
+
 //            modifyPostBtnClickEvent()
         } else {
             registerPostBtnClickEvent()
         }
 
-        initListener()
-        initPhotoRvAdapter()
+
+//        initPhotoRvAdapter()
     }
 
     private fun initListener() {
-        mainActivity.runOnUiThread(kotlinx.coroutines.Runnable {
-            inputObservable()
-        })
+        selectImgBtnEvent()
+        cancelImgBtnClickEvent()
+
+        inputObservable()
+
+        // 뒤로가기 버튼 클릭 이벤트
+        binding.postWriteFragmentIbBack.setOnClickListener {
+            this@PostWriteFragment.findNavController().popBackStack()
+        }
+    }
+
+    /**
+     * 사진 선택 버튼 클릭 이벤트
+     */
+    private fun selectImgBtnEvent() {
+//        boardViewModel.setBoardImgUri(Uri.EMPTY)
+
+        binding.postWriteFragmentIbCamera.onThrottleClick {
+            mainActivity.openGallery(101)
+            Log.d(TAG, "selectImgBtnEvent: ")
+            boardViewModel.boardImgUri.observe(viewLifecycleOwner) {
+                if(it != Uri.EMPTY) {
+                    val imgUri = it
+                    binding.postWriteFragmentFlPhotoGroup.visibility = View.VISIBLE
+                    binding.postWriteFragmentTvPhotoName.visibility = View.VISIBLE
+
+                    Glide.with(this)
+                        .load(imgUri)
+                        .into(binding.postWriteFragmentIvPhoto)
+
+                    val fileExtension = mainActivity.contentResolver.getType(imgUri)
+
+                    val extension = fileExtension!!.substring(fileExtension.lastIndexOf("/") + 1, fileExtension.length)
+
+                    // 파일 이름 set
+                    binding.postWriteFragmentTvPhotoName.text = "${imgUri.lastPathSegment}.$extension"
+
+                } else {
+                    binding.postWriteFragmentFlPhotoGroup.visibility = View.GONE
+                    binding.postWriteFragmentTvPhotoName.visibility = View.GONE
+
+                }
+            }
+        }.addDisposable()
+
+    }
+
+
+    /**
+     * 사진 취소 버튼 클릭 이벤트
+     */
+    private fun cancelImgBtnClickEvent() {
+        binding.postWriteFragmentIbPhotoDelete.setOnClickListener {
+            boardViewModel.setBoardImgUri(Uri.EMPTY)
+            binding.postWriteFragmentFlPhotoGroup.visibility = View.GONE
+            binding.postWriteFragmentTvPhotoName.visibility = View.GONE
+        }
     }
 
     /**
@@ -89,19 +159,17 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
      */
     private fun registerPostBtnClickEvent() {
         binding.postWriteFragmentBtnConfirm.onThrottleClick {
+
             val title = binding.postWriteFragmentEtPostTitle.text.toString()    // max 255
             val content = binding.postWriteFragmentTietPostContent.text.toString() // max 500
-            // 삭제해야되는 부분
-            typeId = 1
+
             if(contentLenChk(content) && titleLenChk(title) && typeId != -1) {
                 val post = BoardRequest(
                     typeId = typeId,
                     userId = userId,
                     title = title,
                     content = content,
-                    photoPath = "")
-//                photoPath = photoPath)
-
+                    photoPath = getFileName())
 
                 registerPost(post)
             } else {
@@ -110,6 +178,50 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
         }.addDisposable()
     }
 
+    /**
+     * 이미지 업로드
+     */
+    private fun getFileName() : String {
+        var filename = ""
+        var inputStream: InputStream? = null
+
+        boardViewModel.boardImgUri.observe(viewLifecycleOwner) {
+            if(it != null && it != Uri.EMPTY) {
+                try{
+                    inputStream = mainActivity.contentResolver.openInputStream(it)
+                }catch (e : IOException){
+                    e.printStackTrace()
+                }
+            } else {
+                filename = ""
+            }
+        }
+
+        if(inputStream != null) {
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+            val requestBody = RequestBody.create(MediaType.parse("image/*"), byteArrayOutputStream.toByteArray())
+            val uploadFile = MultipartBody.Part.createFormData("file", binding.postWriteFragmentTvPhotoName.text.toString(), requestBody)
+
+            var response : Response<String>
+            runBlocking {
+                response = StudyService().insertPhoto(uploadFile)
+            }
+
+            filename = if(response.isSuccessful) {
+                response.body()!!
+            } else {
+                ""
+            }
+        }
+
+        return filename
+    }
+
+    /**
+     * db에 게시글 등록
+     */
     private fun registerPost(post : BoardRequest) {
         var response : Response<Any?>
 
@@ -127,34 +239,29 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
 
 
 
-    /**
-     * 사진 선택 recycler view init
-     */
-    private fun initPhotoRvAdapter() {
-        postPhotoAdapter = PostPhotoAdapter()
-
-        // uri observer 내에
-//        postPhotoAdapter.photoList = it
-
-        binding.postWriteFragmentRvPhoto.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = postPhotoAdapter
-            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        }
-
-        postPhotoAdapter.setAddClickListener(object : PostPhotoAdapter.AddClickListener {
-            override fun onClick(view: View, position: Int) {
-                // 갤러리 open
-                mainActivity.checkPermissions()
-//                if(mainViewModel.photoUriList.value!!.size < 10){
+//    /**
+//     * 사진 선택 recycler view init
+//     */
+//    private fun initPhotoRvAdapter() {
+//        postPhotoAdapter = PostPhotoAdapter()
 //
-//                }else{
-//                    showCustomToast("사진을 추가하실 수 없습니다.")
-//                }
-            }
-        })
-
-    }
+//        // uri observer 내에
+////        postPhotoAdapter.photoList = it
+//
+//        binding.postWriteFragmentRvPhoto.apply {
+//            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//            adapter = postPhotoAdapter
+//            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+//        }
+//
+//        postPhotoAdapter.setAddClickListener(object : PostPhotoAdapter.AddClickListener {
+//            override fun onClick(view: View, position: Int) {
+//                // 갤러리 open
+//                mainActivity.checkPermissions()
+//            }
+//        })
+//
+//    }
 
     /**
      * content editText query debounce
@@ -200,7 +307,7 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
      * @since 04/26/22
      * @author Jiwoo Choi
      */
-    fun Button.onThrottleClick(throttleSecond: Long = 1, subscribe: (() -> Unit)? = null) = clicks()
+    fun View.onThrottleClick(throttleSecond: Long = 1, subscribe: (() -> Unit)? = null) = clicks()
         .throttleFirst(throttleSecond, TimeUnit.SECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe {
@@ -233,24 +340,24 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
 
 
 
-//    inner class OnThrottleClickListener(private val clickListener: View.OnClickListener, private val interval: Long = 300) : View.OnClickListener {
-//
-//        private var clickable = true
-//        // clickable 플래그를 이 클래스가 아니라 더 상위 클래스에 두면
-//        // 여러 뷰에 대한 중복 클릭 방지할 수 있다.
-//
-//        override fun onClick(v: View?) {
-//            if (clickable) {
-//                clickable = false
-//                v?.run {
-//                    postDelayed({
-//                        clickable = true
-//                    }, interval)
-//                    clickListener.onClick(v)
-//                }
-//            } else {
-//                Log.d(TAG, "waiting for a while")
-//            }
-//        }
-//    }
+    inner class OnThrottleClickListener(private val clickListener: View.OnClickListener, private val interval: Long = 300) : View.OnClickListener {
+
+        private var clickable = true
+        // clickable 플래그를 이 클래스가 아니라 더 상위 클래스에 두면
+        // 여러 뷰에 대한 중복 클릭 방지할 수 있다.
+
+        override fun onClick(v: View?) {
+            if (clickable) {
+                clickable = false
+                v?.run {
+                    postDelayed({
+                        clickable = true
+                    }, interval)
+                    clickListener.onClick(v)
+                }
+            } else {
+                Log.d(TAG, "waiting for a while")
+            }
+        }
+    }
 }

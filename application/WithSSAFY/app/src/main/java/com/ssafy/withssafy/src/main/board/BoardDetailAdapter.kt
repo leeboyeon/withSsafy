@@ -2,10 +2,12 @@ package com.ssafy.withssafy.src.main.board
 
 import android.content.Context
 import android.view.*
+import android.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemPostListBinding
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.board.Board
@@ -16,6 +18,8 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
     lateinit var postList : MutableList<Board>    // !dto 수정
     lateinit var userList: MutableList<User>
     lateinit var userLikePost: MutableList<Board>
+
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
     inner class ViewHolder(private val binding: ItemPostListBinding) : RecyclerView.ViewHolder(binding.root) {
         val heartBtn = binding.postListItemLottieHeart
@@ -61,46 +65,49 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
 //                commentItemClickListener.onClick(it, post.id)
 //            }
 //
-//            moreBtn.setOnClickListener {
-//                val popup = PopupMenu(context, moreBtn)
-//                if(post.userId == ApplicationClass.sharedPreferencesUtil.getUser().id) {    // 작성자는 수정, 삭제 팝업 메뉴
-//                    MenuInflater(context).inflate(R.menu.popup_menu_writer, popup.menu)
-//
-//                    popup.show()
-//                    popup.setOnMenuItemClickListener {
-//                        when(it.itemId) {
-//                            R.id.modify -> {
-//                                modifyItemClickListener.onClick(post.id, position)
-//                                return@setOnMenuItemClickListener true
-//                            }
-//                            R.id.delete -> {
-//                                deleteItemClickListener.onClick(post.id, position)
-//                                return@setOnMenuItemClickListener true
-//                            } else -> {
-//                                return@setOnMenuItemClickListener false
-//                            }
-//                        }
-//                    }
-//                } else {    // 작성자가 아닌 경우 쪽지 보내기, 신고 팝업 메뉴
-//                    MenuInflater(context).inflate(R.menu.popup_menu, popup.menu)
-//
-//                    popup.show()
-//                    popup.setOnMenuItemClickListener {
-//                        when(it.itemId) {
-//                            R.id.sendNote -> {
-//                                modifyItemClickListener.onClick(post.id, position)
-//                                return@setOnMenuItemClickListener true
-//                            }
-//                            R.id.report -> {
-//                                deleteItemClickListener.onClick(post.id, position)
-//                                return@setOnMenuItemClickListener true
-//                            } else -> {
-//                            return@setOnMenuItemClickListener false
-//                        }
-//                        }
-//                    }
-//                }
-//            }
+            moreBtn.setOnClickListener {
+                val popup = PopupMenu(context, moreBtn)
+                // 작성자인 경우 popup_menu_write 팝업 메뉴
+                if(post.user.id == userId) {
+                    MenuInflater(context).inflate(R.menu.popup_menu_writer, popup.menu)
+
+                    popup.show()
+                    popup.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.modify -> {
+                                modifyItemClickListener.onClick(position, post)
+                                return@setOnMenuItemClickListener true
+                            }
+                            R.id.delete -> {
+                                deleteItemClickListener.onClick(position, post)
+                                return@setOnMenuItemClickListener true
+                            }
+                            else -> {
+                                return@setOnMenuItemClickListener false
+                            }
+                        }
+                    }
+                } else {    // 작성자가 아닌 경우 popup_menu(쪽지 보내기, 신고)
+                    MenuInflater(context).inflate(R.menu.popup_menu, popup.menu)
+
+                    popup.show()
+                    popup.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.sendNote -> {  // 쪽지 보내기 -> 댓글 작성자 id 필요
+                                sendNoteItemClickListener.onClick(position, post)
+                                return@setOnMenuItemClickListener true
+                            }
+                            R.id.report -> {    // 신고 -> 댓글 작성자 id, 댓글 id
+                                reportItemClickListener.onClick(position, post)
+                                return@setOnMenuItemClickListener true
+                            }
+                            else -> {
+                                return@setOnMenuItemClickListener false
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -130,19 +137,27 @@ class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDeta
     }
 
     interface MenuClickListener {
-        fun onClick(postId: Int, position: Int)
+        fun onClick(position: Int, board: Board)
     }
 
     private lateinit var modifyItemClickListener : MenuClickListener
-
-    fun setModifyItemClickListener(menuClickListener: MenuClickListener) {
-        this.modifyItemClickListener = menuClickListener
+    fun setModifyItemClickListener(modifyClickListener: MenuClickListener) {
+        this.modifyItemClickListener = modifyClickListener
     }
 
     private lateinit var deleteItemClickListener : MenuClickListener
+    fun setDeleteItemClickListener(deleteClickListener: MenuClickListener) {
+        this.deleteItemClickListener = deleteClickListener
+    }
 
-    fun setDeleteItemClickListener(menuClickListener: MenuClickListener) {
-        this.deleteItemClickListener = menuClickListener
+    private lateinit var sendNoteItemClickListener : MenuClickListener
+    fun setSendNoteItemClickListener(sendNoteClickListener: MenuClickListener) {
+        this.sendNoteItemClickListener = sendNoteClickListener
+    }
+
+    private lateinit var reportItemClickListener : MenuClickListener
+    fun setReportItemClickListener(reportClickListener: MenuClickListener) {
+        this.reportItemClickListener = reportClickListener
     }
 
 //    object DiffCallback : DiffUtil.ItemCallback<Board>() {
