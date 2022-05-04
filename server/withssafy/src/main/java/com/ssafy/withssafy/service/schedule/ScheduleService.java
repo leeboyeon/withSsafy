@@ -59,8 +59,10 @@ public class ScheduleService {
         return modelMapper.map(schedule, ScheduleDto.class);
     }
 
-    public List<ScheduleDto> findMySchedule(Long id, int weeks){
-        List<Schedule> recruits = scheduleRepository.findAllByClassRoomIdAndWeeks(id,weeks);
+    public List<ScheduleDto> findMySchedule(Long id){
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime monday = today.minusDays(today.getDayOfWeek().getValue());
+        List<Schedule> recruits = scheduleRepository.findAllByClassRoomIdAndStartDateBetween(id, monday, monday.plusDays(6));
         return recruits.stream().map(recruit -> modelMapper.map(recruit, ScheduleDto.class))
                 .collect(Collectors.toList());
     }
