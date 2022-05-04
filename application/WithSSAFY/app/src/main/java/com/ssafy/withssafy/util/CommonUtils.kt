@@ -81,7 +81,8 @@ object CommonUtils {
     fun unixTimeToDateFormatInBoard(unixTime: Long): String {
         val simpleDateFormat = SimpleDateFormat("yy/MM/dd HH:mm") //"YYYY-MM-dd HH:mm:ss.SSS"
         val date = Date()
-        date.time = unixTime * 1000L
+//        date.time = unixTime * 1000L
+        date.time = unixTime
 
         return simpleDateFormat.format(date)
     }

@@ -19,7 +19,7 @@ class BoardService {
 
     suspend fun getPostDetail(postId: Int) = RetrofitUtil.boardApi.selectPostById(postId)
 
-    suspend fun modifyPost(postId: Int, boardRequest: Board) = RetrofitUtil.boardApi.updatePostById(postId, boardRequest)
+    suspend fun modifyPost(postId: Int, boardRequest: BoardRequest) = RetrofitUtil.boardApi.updatePostById(postId, boardRequest)
 
     suspend fun deletePost(postId: Int) = RetrofitUtil.boardApi.deletePostById(postId)
 

@@ -51,7 +51,7 @@ public class NoticeService {
     }
 
     public List<NoticeResDto> getNotices(Long classRoomId) {
-        List<Notice> notices = noticeRepository.findAllByClassRoomId(classRoomId);
+        List<Notice> notices = noticeRepository.findAllByClassRoomIdOrderByWriteDtDesc(classRoomId);
         return notices.stream().map(notice -> modelMapper.map(notice, NoticeResDto.class))
                 .collect(Collectors.toList());
     }

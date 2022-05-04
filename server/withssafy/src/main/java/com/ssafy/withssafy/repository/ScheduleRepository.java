@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
 
-//    List<Schedule> findAllByClassRoomIdAndStartDateBetween(Long classRoomId, LocalDateTime fromDate, LocalDateTime toDate);
-    List<Schedule> findAllByClassRoomIdAndWeeks(Long classRoomId, int weeks);
+    List<Schedule> findAllByClassRoomIdAndStartDateBetween(Long classRoomId, LocalDateTime fromDate, LocalDateTime toDate);
+//    List<Schedule> findAllByClassRoomIdAndWeeks(Long classRoomId, int weeks);
 }

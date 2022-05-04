@@ -13,8 +13,12 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardDetailBinding
+import com.ssafy.withssafy.src.dto.board.Board
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.network.service.BoardService
 import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
+import retrofit2.Response
 
 /**
  * @since 04/21/22
@@ -100,12 +104,65 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
         }
 
         boardDetailAdapter.setItemClickListener(object : BoardDetailAdapter.ItemClickListener {
-
             override fun onClick(view: View, position: Int, postId: Int, typeId: Int) {
                 this@BoardDetailFragment.findNavController().navigate(R.id.action_boardDetailFragment_to_postDetailFragment,
                     bundleOf("postId" to postId, "typeId" to typeId))
             }
         })
 
+        // 게시글 수정 버튼 클릭 이벤트
+        boardDetailAdapter.setModifyItemClickListener(object : BoardDetailAdapter.MenuClickListener {
+            override fun onClick(position: Int, board: Board) {
+                this@BoardDetailFragment.findNavController().navigate(R.id.action_boardDetailFragment_to_postWriteFragment,
+                    bundleOf("typeId" to typeId, "postId" to board.id)
+                )
+            }
+        })
+
+        // 게시글 삭제 삭제 클릭 이벤트
+        boardDetailAdapter.setDeleteItemClickListener(object : BoardDetailAdapter.MenuClickListener {
+            override fun onClick(position: Int, board: Board) {
+                deletePost(board.id, position)
+            }
+        })
+
+        // 게시글 작성자에게 쪽지 보내기 클릭 이벤트
+        boardDetailAdapter.setSendNoteItemClickListener(object : BoardDetailAdapter.MenuClickListener {
+            override fun onClick(position: Int, board: Board) {
+
+            }
+        })
+
+        // 게시글 신고 클릭 이벤트
+        boardDetailAdapter.setReportItemClickListener(object : BoardDetailAdapter.MenuClickListener {
+            override fun onClick(position: Int, board: Board) {
+
+            }
+        })
+
+    }
+
+    /**
+     * 게시글 삭제
+     */
+    private fun deletePost(postId: Int, position: Int) {
+        try {
+            var response : Response<Any?>
+            runBlocking {
+                response = BoardService().deletePost(postId)
+            }
+            if(response.isSuccessful) {
+                showCustomToast("게시글이 삭제되었습니다.")
+                runBlocking {
+                    boardViewModel.getBoardListByType(typeId)
+                }
+                boardDetailAdapter.notifyItemRemoved(position)
+            } else {
+                showCustomToast("게시글 삭제 실패")
+                Log.d(TAG, "deletePost: ${response.message()}", )
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "deletePost: ${e.response()}", )
+        }
     }
 }

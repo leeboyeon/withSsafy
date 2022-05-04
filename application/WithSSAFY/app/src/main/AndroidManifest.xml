@@ -26,10 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".src.main.MainActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true" />
 
         <service
             android:name=".src.network.service.FirebaseMessagingService"

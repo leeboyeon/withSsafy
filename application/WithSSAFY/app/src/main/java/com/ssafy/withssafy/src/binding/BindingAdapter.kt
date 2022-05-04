@@ -86,7 +86,7 @@ fun onThrottleFirstClick(view: View, onClickListener: View.OnClickListener, isWi
                 } else {
                     postDelayed({
                         isClicked = false
-                    }, 350L)
+                    }, 1000L)
                     onClickListener.onClick(v)
                 }
             }
@@ -231,6 +231,19 @@ fun bindingBoardNoticeAllList(recyclerView: RecyclerView, data:List<Notice>?){
     }
     adapter.list = data as MutableList<Notice>
     adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("boardImg")
+fun bindBoardImage(imageView: ImageView, photoPath: String?) {
+    if(photoPath.toString().isEmpty() || photoPath == null) {
+        imageView.visibility = View.GONE
+    } else {
+        imageView.visibility = View.VISIBLE
+
+        Glide.with(imageView.context)
+            .load("${ApplicationClass.IMGS_URL}${photoPath}")
+            .into(imageView)
+    }
 }
 
 @BindingAdapter("boardNoticeFilterListData")
