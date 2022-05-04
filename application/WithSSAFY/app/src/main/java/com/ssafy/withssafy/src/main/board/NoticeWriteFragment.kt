@@ -121,7 +121,7 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
     private fun insertNotice() {
         val title = binding.fragmentNoticeWriteTitleEdit.text.toString()
         val content = binding.fragmentNoticeWriteContentEdit.text.toString()
-        if(title != "" && content != "" && type == 0 && gen != "" && area != "" && classNum != "") {
+        if(title != "" && content != "" && type != 0 && gen != "" && area != "" && classNum != "") {
             if (noticeViewModel.uploadImageUri == Uri.EMPTY || noticeViewModel.uploadImageUri == null) {
                 var notice = Notice(classRoomId, content, title, type, userId)
                 runBlocking {

@@ -14,7 +14,7 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/fragment_request_appBar"
+            android:id="@+id/fragment_boardNoticeList_appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageButton
-                android:id="@+id/fragment_request_appBarPrev"
+                android:id="@+id/fragment_boardNoticeList_appBarPrev"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/fragment_request_appBarTitle"
+                android:id="@+id/fragment_boardNoticeList_appBarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="공지사항"
@@ -50,14 +50,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/frargment_team_tabLayout"
+            android:id="@+id/frargment_boardNoticeList_tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_request_appBar"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_boardNoticeList_appBar"
             app:tabMode="scrollable">
 
             <com.google.android.material.tabs.TabItem
@@ -68,16 +68,17 @@
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_request_rv"
+            android:id="@+id/fragment_boardNoticeList_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
             android:layout_marginHorizontal="20dp"
-            app:layout_constraintTop_toBottomOf="@id/frargment_team_tabLayout"
+            app:layout_constraintTop_toBottomOf="@id/frargment_boardNoticeList_tabLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/item_notice_list"
+            boardNoticeFilterListData="@{viewModel.noticeAllList}"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

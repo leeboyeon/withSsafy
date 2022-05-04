@@ -7,10 +7,11 @@ data class Notice(
     val photoPath: String,
     val title: String,
     val typeId: Int,
-    val userId: Int
+    val userId: Int,
+    val writeDt : String
 ) {
     constructor(classRoomId: Int, content: String, title: String, typeId: Int, userId: Int) : this(classRoomId = classRoomId, content = content, filePath = "", photoPath = "",
-    title = title, typeId = typeId, userId = userId)
+    title = title, typeId = typeId, userId = userId, writeDt = "")
     constructor(classRoomId: Int, content: String, photoPath: String, title: String, typeId: Int, userId: Int) : this(classRoomId = classRoomId, content = content, filePath = "", photoPath = photoPath,
-        title = title, typeId = typeId, userId = userId)
+        title = title, typeId = typeId, userId = userId, writeDt = "")
 }

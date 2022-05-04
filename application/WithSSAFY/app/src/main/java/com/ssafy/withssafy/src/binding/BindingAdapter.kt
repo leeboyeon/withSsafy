@@ -17,6 +17,7 @@ import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.notice.Notice
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.main.board.BoardNoticeAllAdapter
+import com.ssafy.withssafy.src.main.board.BoardNoticeListAdapter
 import com.ssafy.withssafy.src.main.board.JobAdapter
 import com.ssafy.withssafy.src.main.home.EmployInfoAdapter
 import com.ssafy.withssafy.src.main.home.RequestAdapter
@@ -230,4 +231,23 @@ fun bindingBoardNoticeAllList(recyclerView: RecyclerView, data:List<Notice>?){
     }
     adapter.list = data as MutableList<Notice>
     adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("boardNoticeFilterListData")
+fun bindingBoardNoticeFilterList(recyclerView: RecyclerView, data:List<Notice>?){
+    var adapter = recyclerView.adapter as BoardNoticeListAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as BoardNoticeListAdapter
+    }
+    adapter.list = data as MutableList<Notice>
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("wirteDateConvert")
+fun bindingWriteDateConvert(textView: TextView, date:String){
+    var date = date.split("T")
+    textView.text = date.get(0)
 }

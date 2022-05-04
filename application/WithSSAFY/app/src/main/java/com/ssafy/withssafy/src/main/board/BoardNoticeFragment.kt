@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
@@ -72,8 +73,29 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
                 this@BoardNoticeFragment.findNavController().navigate(R.id.noticeWriteFragment)
             }
         }
+        binding.boardNotiFragmentClOperation.setOnClickListener { // 운영
+            var typeId = bundleOf("typeId" to 3)
+            this@BoardNoticeFragment.findNavController().navigate(R.id.boardNoticeListFragment, typeId)
+        }
+        binding.boardNotiFragmentClLearning.setOnClickListener { // 학습
+            var typeId = bundleOf("typeId" to 1)
+            this@BoardNoticeFragment.findNavController().navigate(R.id.boardNoticeListFragment, typeId)
+        }
+        binding.boardNotiFragmentClEvaluation.setOnClickListener { // 평가
+            var typeId = bundleOf("typeId" to 2)
+            this@BoardNoticeFragment.findNavController().navigate(R.id.boardNoticeListFragment, typeId)
+        }
+        binding.boardNotiFragmentClSite.setOnClickListener { // 사이트
+            var typeId = bundleOf("typeId" to 4)
+            this@BoardNoticeFragment.findNavController().navigate(R.id.boardNoticeListFragment, typeId)
+        }
+        binding.boardNotiFragmentClOther.setOnClickListener { // 기타
+            var typeId = bundleOf("typeId" to 5)
+            this@BoardNoticeFragment.findNavController().navigate(R.id.boardNoticeListFragment, typeId)
+        }
         binding.boardNotiFragmentLlMustReadMore.setOnClickListener {
-
+            var typeId = bundleOf("typeId" to 0)
+            this@BoardNoticeFragment.findNavController().navigate(R.id.boardNoticeListFragment, typeId)
         }
     }
 

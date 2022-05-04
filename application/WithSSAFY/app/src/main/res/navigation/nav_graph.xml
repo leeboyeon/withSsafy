@@ -246,4 +246,15 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/boardNoticeListFragment"
+        android:name="com.ssafy.withssafy.src.main.board.BoardNoticeListFragment"
+        android:label="fragment_board_notice_list"
+        tools:layout="@layout/fragment_board_notice_list" >
+        <argument
+            android:name="typeId"
+            android:defaultValue="0"
+            app:argType="integer"/>
+    </fragment>
+
 </navigation>
