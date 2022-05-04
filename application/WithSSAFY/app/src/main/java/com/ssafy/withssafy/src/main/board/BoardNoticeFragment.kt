@@ -108,6 +108,14 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = boardNoticeAllAdapter
         }
+        boardNoticeAllAdapter.setItemClickListener(object : BoardNoticeAllAdapter.ItemClickListener {
+            override fun onClick(view: View, position: Int, id: Int) {
+                var noticeId = bundleOf("noticeId" to 0)
+                this@BoardNoticeFragment.findNavController().navigate(R.id.baordNoticeDetailFragment, noticeId)
+            }
+
+        })
+
 
     }
 

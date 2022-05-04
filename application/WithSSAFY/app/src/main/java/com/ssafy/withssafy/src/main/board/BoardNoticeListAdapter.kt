@@ -3,6 +3,7 @@ package com.ssafy.withssafy.src.main.board
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemNoticeListBinding
 import com.ssafy.withssafy.src.dto.notice.Notice
+import com.ssafy.withssafy.src.main.team.TeamAdapter
 
 private const val TAG = "BoardNoticeListAdapter"
 class BoardNoticeListAdapter : RecyclerView.Adapter<BoardNoticeListAdapter.BoardNoticeListViewHolder>(){
@@ -31,10 +33,20 @@ class BoardNoticeListAdapter : RecyclerView.Adapter<BoardNoticeListAdapter.Board
     override fun onBindViewHolder(holder: BoardNoticeListViewHolder, position: Int) {
         holder.apply {
             bind(list[position], position)
+            itemView.setOnClickListener {
+                itemClickListener.onClick(it,position, list[position].id!!)
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return list.size
+    }
+    private lateinit var itemClickListener : ItemClickListener
+    interface ItemClickListener{
+        fun onClick(view: View, position: Int, id: Int)
+    }
+    fun setItemClickListener(itemClickListener: ItemClickListener){
+        this.itemClickListener = itemClickListener
     }
 }

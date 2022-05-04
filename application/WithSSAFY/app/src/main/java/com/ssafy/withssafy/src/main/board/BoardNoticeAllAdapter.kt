@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.main.board
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,9 @@ class BoardNoticeAllAdapter : RecyclerView.Adapter<BoardNoticeAllAdapter.BoardNo
     override fun onBindViewHolder(holder: BoardNoticeAllViewHolder, position: Int) {
         holder.apply {
             bind(list[position])
+            itemView.setOnClickListener {
+                itemClickListener.onClick(it,position, list[position].id!!)
+            }
         }
     }
 
@@ -39,5 +43,13 @@ class BoardNoticeAllAdapter : RecyclerView.Adapter<BoardNoticeAllAdapter.BoardNo
             return 5
         else
             return list.size
+    }
+
+    private lateinit var itemClickListener : ItemClickListener
+    interface ItemClickListener{
+        fun onClick(view: View, position: Int, id: Int)
+    }
+    fun setItemClickListener(itemClickListener: ItemClickListener){
+        this.itemClickListener = itemClickListener
     }
 }

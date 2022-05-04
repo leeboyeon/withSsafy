@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -52,6 +53,13 @@ class BoardNoticeListFragment : BaseFragment<FragmentBoardNoticeListBinding>(Fra
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
             adapter = boardNoticeListAdapter
         }
+        boardNoticeListAdapter.setItemClickListener(object : BoardNoticeListAdapter.ItemClickListener {
+            override fun onClick(view: View, position: Int, id: Int) {
+                var noticeId = bundleOf("noticeId" to 0)
+                this@BoardNoticeListFragment.findNavController().navigate(R.id.baordNoticeDetailFragment, noticeId)
+            }
+
+        })
     }
 
     private fun initTabLayout() {

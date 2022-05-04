@@ -251,3 +251,10 @@ fun bindingWriteDateConvert(textView: TextView, date:String){
     var date = date.split("T")
     textView.text = date.get(0)
 }
+
+@BindingAdapter("noticeImageUrl")
+fun bindNoticeImageUrl(imageView: ImageView, url:String?){
+    Glide.with(imageView.context)
+        .load("${ApplicationClass.IMGS_URL}${url}")
+        .into(imageView)
+}

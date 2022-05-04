@@ -257,4 +257,15 @@
             app:argType="integer"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/baordNoticeDetailFragment"
+        android:name="com.ssafy.withssafy.src.main.board.BoardNoticeDetailFragment"
+        android:label="fragment_board_notice_detail"
+        tools:layout="@layout/fragment_board_notice_detail" >
+        <argument
+            android:name="noticeId"
+            android:defaultValue="0"
+            app:argType="integer"/>
+    </fragment>
+
 </navigation>
