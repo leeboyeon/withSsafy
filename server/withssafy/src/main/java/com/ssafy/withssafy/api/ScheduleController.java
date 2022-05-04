@@ -59,9 +59,8 @@ public class ScheduleController {
 
     @GetMapping("/myclass/{id}")
     @ApiOperation(value = "우리반 일정 조회")
-    public ResponseEntity<List<ScheduleDto>> getMyClassSchedule(@ApiParam("반 id") @PathVariable Long id,
-                                                                @ApiParam("해당 주차") @RequestParam int weeks){
-        List<ScheduleDto> scheduleDtoList = scheduleService.findMySchedule(id, weeks);
+    public ResponseEntity<List<ScheduleDto>> getMyClassSchedule(@ApiParam("반 id") @PathVariable Long id){
+        List<ScheduleDto> scheduleDtoList = scheduleService.findMySchedule(id);
         return ResponseEntity.status(HttpStatus.OK).body(scheduleDtoList);
     }
 }
