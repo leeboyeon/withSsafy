@@ -50,6 +50,7 @@
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/drawable_toggle_item_background.xml" value="0.2555" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/edit_background.xml" value="0.247" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/edit_nonpadding_background.xml" value="0.247" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/ic_kitty.xml" value="0.1" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/rectangle_corner_radius.xml" value="0.165" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/textview_background.xml" value="0.247" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/dialog_send_message.xml" value="0.33" />
@@ -94,7 +95,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

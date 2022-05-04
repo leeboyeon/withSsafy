@@ -36,8 +36,8 @@ class ScheduleViewModel : ViewModel() {
         scheduleBucketList.clear()
         liveScheduleBucket.value = scheduleBucketList
     }
-    suspend fun getClassSchedule(id:Int, weeks:Int){
-        val response = ScheduleService().getSchedulesByMyClass(id,weeks)
+    suspend fun getClassSchedule(id:Int){
+        val response = ScheduleService().getSchedulesByMyClass(id)
         viewModelScope.launch {
             val res = response.body()
             if(response.code()== 200){
