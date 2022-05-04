@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.viewmodel
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,7 @@ import com.ssafy.withssafy.src.network.service.CommentService
 import com.ssafy.withssafy.util.CommonUtils
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.net.URI
 
 /**
  * @since 04/26/22
@@ -21,6 +23,20 @@ import retrofit2.HttpException
  */
 class BoardViewModel : ViewModel() {
     private val TAG = "BoardViewModel_싸피"
+
+    /**
+     * 사진 추가
+     */
+    private var _boardImgUri = MutableLiveData<Uri>()  // 파일 uri
+
+    val boardImgUri : LiveData<Uri>
+        get() = _boardImgUri
+
+    fun setBoardImgUri(uri: Uri) {
+        _boardImgUri.value = uri
+    }
+
+
 
     /**
      * board type 전체 조회
@@ -264,5 +280,6 @@ class BoardViewModel : ViewModel() {
             Log.e(TAG, "getUserLikePostList ${e.message()}", )
         }
     }
+
 
 }
