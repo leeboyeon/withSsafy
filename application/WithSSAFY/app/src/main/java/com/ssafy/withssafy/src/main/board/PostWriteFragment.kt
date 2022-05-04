@@ -83,8 +83,21 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
 
         if(postId > 0) {
             // 데이터 세팅
+            runBlocking {
+                boardViewModel.getPostDetail(postId)
+            }
+            boardViewModel.postDetail.observe(viewLifecycleOwner) {
+                binding.post = it
+                if(it.photoPath.isNotEmpty()) {
+                    binding.postWriteFragmentFlPhotoGroup.visibility = View.VISIBLE
+                    binding.postWriteFragmentTvPhotoName.visibility = View.VISIBLE
+                } else {
+                    binding.postWriteFragmentFlPhotoGroup.visibility = View.GONE
+                    binding.postWriteFragmentTvPhotoName.visibility = View.GONE
+                }
+            }
 
-//            modifyPostBtnClickEvent()
+            modifyPostBtnClickEvent()
         } else {
             registerPostBtnClickEvent()
         }
@@ -179,6 +192,66 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
     }
 
     /**
+     * db 게시글 등록
+     */
+    private fun registerPost(post : BoardRequest) {
+        var response : Response<Any?>
+
+        runBlocking {
+            response = BoardService().addPost(post)
+        }
+
+        if(response.isSuccessful) {
+            showCustomToast("게시글 등록이 완료되었습니다.")
+            this@PostWriteFragment.findNavController().popBackStack()
+        } else {
+            showCustomToast("게시글 등록에 실패했습니다.")
+        }
+    }
+
+    /**
+     * 게시글 수정 버튼 클릭 이벤트
+     */
+    private fun modifyPostBtnClickEvent() {
+        binding.postWriteFragmentBtnConfirm.onThrottleClick {
+
+            val title = binding.postWriteFragmentEtPostTitle.text.toString()    // max 255
+            val content = binding.postWriteFragmentTietPostContent.text.toString() // max 500
+
+            if (contentLenChk(content) && titleLenChk(title) && typeId != -1 && postId != -1) {
+                val post = BoardRequest(
+                    id = postId,
+                    title = title,
+                    content = content,
+                    photoPath = getFileName())
+
+                modifyPost(post)
+            } else {
+                showCustomToast("입력 값을 확인해 주세요.")
+            }
+        }.addDisposable()
+    }
+
+    /**
+     * db 게시글 update
+     */
+    private fun modifyPost(post: BoardRequest) {
+        var response : Response<Any?>
+
+        runBlocking {
+            response = BoardService().modifyPost(post.id, post)
+        }
+
+        if(response.isSuccessful) {
+            showCustomToast("게시글 수정이 완료되었습니다.")
+            this@PostWriteFragment.findNavController().popBackStack()
+        } else {
+            showCustomToast("게시글 수정에 실패했습니다.")
+        }
+    }
+
+
+    /**
      * 이미지 업로드
      */
     private fun getFileName() : String {
@@ -218,25 +291,6 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
 
         return filename
     }
-
-    /**
-     * db에 게시글 등록
-     */
-    private fun registerPost(post : BoardRequest) {
-        var response : Response<Any?>
-
-        runBlocking {
-            response = BoardService().addPost(post)
-        }
-
-        if(response.isSuccessful) {
-            showCustomToast("게시글 등록이 완료되었습니다.")
-            this@PostWriteFragment.findNavController().popBackStack()
-        } else {
-            showCustomToast("게시글 등록에 실패했습니다.")
-        }
-    }
-
 
 
 //    /**
