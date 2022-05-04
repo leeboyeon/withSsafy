@@ -233,8 +233,8 @@ fun bindingBoardNoticeAllList(recyclerView: RecyclerView, data:List<Notice>?){
 }
 
 @BindingAdapter("boardImg")
-fun bindBoardImage(imageView: ImageView, photoPath: String) {
-    if(photoPath.isEmpty() || photoPath == null) {
+fun bindBoardImage(imageView: ImageView, photoPath: String?) {
+    if(photoPath.toString().isEmpty() || photoPath == null) {
         imageView.visibility = View.GONE
     } else {
         imageView.visibility = View.VISIBLE

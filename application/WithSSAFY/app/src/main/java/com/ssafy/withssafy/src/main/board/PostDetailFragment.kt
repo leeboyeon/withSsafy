@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import android.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,8 +35,11 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
     private lateinit var mainActivity: MainActivity
 
     private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
+    private var postWriteId : Int = -1
+
     private var postId = -1
     private var typeId = -1
+
 
     private lateinit var commentAdapter: CommentAdapter
 
@@ -76,6 +80,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
     private fun initDataBinding() {
         boardViewModel.postDetail.observe(viewLifecycleOwner) {
             binding.post = it
+            postWriteId = it.user.id
         }
 
         boardViewModel.likePost.observe(viewLifecycleOwner) {
@@ -93,6 +98,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         backBtnClickEvent()
         commentLayoutClickEvent()
         heartClickEvent()
+        moreBtnClickEvent()
     }
     /**
      * 뒤로가기 버튼 클릭 이벤트
@@ -145,6 +151,57 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
                 }
             } else {
                 Log.e(TAG, "heartClickEvent: 통신 오류 $response")
+            }
+        }
+    }
+
+    /**
+     * 게시글 more 버튼 클릭 이벤트
+     */
+    private fun moreBtnClickEvent() {
+        binding.postDetailFragmentBtnMore.setOnClickListener {
+            val popup = PopupMenu(context, binding.postDetailFragmentBtnMore)
+            // 로그인한 유저가 작성자인 경우 popup_menu_write 팝업 메뉴
+            if(postWriteId == userId) {
+                MenuInflater(context).inflate(R.menu.popup_menu_writer, popup.menu)
+
+                popup.show()
+                popup.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.modify -> {
+                            this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_postWriteFragment,
+                                bundleOf("typeId" to typeId, "postId" to postId)
+                            )
+                            return@setOnMenuItemClickListener true
+                        }
+                        R.id.delete -> {
+                            // 게시글 삭제
+                            return@setOnMenuItemClickListener true
+                        }
+                        else -> {
+                            return@setOnMenuItemClickListener false
+                        }
+                    }
+                }
+            } else {    // 작성자가 아닌 경우 popup_menu(쪽지 보내기, 신고)
+                MenuInflater(context).inflate(R.menu.popup_menu, popup.menu)
+
+                popup.show()
+                popup.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.sendNote -> {  // 쪽지 보내기 -> 댓글 작성자 id 필요
+
+                            return@setOnMenuItemClickListener true
+                        }
+                        R.id.report -> {    // 신고 -> 댓글 작성자 id, 댓글 id
+
+                            return@setOnMenuItemClickListener true
+                        }
+                        else -> {
+                            return@setOnMenuItemClickListener false
+                        }
+                    }
+                }
             }
         }
     }

@@ -13,5 +13,5 @@ data class BoardRequest(
     constructor(typeId: Int, userId: Int, title: String, content: String, photoPath: String) : this(id = 0, typeId = typeId, userId = userId, title = title, content = content, photoPath = photoPath, null)
 
     // update
-    constructor(id: Int, typeId: Int, userId: Int, title: String, content: String, photoPath: String) : this(id = id, typeId = typeId, userId = userId, title = title, content = content, photoPath = photoPath, null)
+    constructor(id: Int, title: String, content: String, photoPath: String) : this(id = id, typeId = 0, userId = 0, title = title, content = content, photoPath = photoPath, null)
 }

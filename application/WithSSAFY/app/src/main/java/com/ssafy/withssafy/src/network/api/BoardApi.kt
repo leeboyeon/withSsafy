@@ -43,7 +43,7 @@ interface BoardApi {
      * 게시글 수정
      */
     @PUT("boards/{id}")
-    suspend fun updatePostById(@Path("id") id: Int, @Body boardRequest: Board) : Response<Any?>
+    suspend fun updatePostById(@Path("id") id: Int, @Body boardRequest: BoardRequest) : Response<Any?>
 
     /**
      * 게시글 삭제

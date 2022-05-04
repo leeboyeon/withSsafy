@@ -6,7 +6,6 @@
         <variable
             name="post"
             type="com.ssafy.withssafy.src.dto.board.Board" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -124,6 +123,7 @@
                             android:layout_marginStart="20dp"
                             android:background="@android:drawable/editbox_background"
                             android:ems="10"
+                            android:text="@{post.title}"
                             android:hint="제목을 입력해주세요."
                             android:padding="15dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -233,7 +233,8 @@
                                 android:hint="내용을 입력해주세요"
                                 android:inputType="textMultiLine"
                                 android:lines="15"
-                                android:maxEms="500" />
+                                android:maxEms="500"
+                                android:text="@{post.content}"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -325,6 +326,7 @@
                                 android:layout_margin="10dp"
                                 android:scaleType="fitXY"
                                 tools:src="@tools:sample/avatars" />
+<!--                                app:boardImg="@{post.photoPath}"/>-->
 
                             <ImageButton
                                 android:id="@+id/postWriteFragment_ibPhotoDelete"
@@ -342,7 +344,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginEnd="20dp"
-                            android:text="사진 이름"
+                            android:text="@{post.photoPath}"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
