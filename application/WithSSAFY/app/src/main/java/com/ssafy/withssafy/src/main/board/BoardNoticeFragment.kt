@@ -72,6 +72,9 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
                 this@BoardNoticeFragment.findNavController().navigate(R.id.noticeWriteFragment)
             }
         }
+        binding.boardNotiFragmentLlMustReadMore.setOnClickListener {
+
+        }
     }
 
     private fun initAdapter() {
