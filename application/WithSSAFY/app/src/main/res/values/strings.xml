@@ -6,4 +6,21 @@
     <string name="spec_prefer_format">%s/%s\n%s\n고용형태 : %s</string>
     <string name="home_date_format">~%s</string>
     <string name="request_format">%s 교육생이 승인을 요청했습니다.</string>
+
+    <string-array name="header_title">
+        <item></item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+    </string-array>
+
+    <string-array name="days">
+        <item >Mon</item>
+        <item >Tue</item>
+        <item >Wed</item>
+        <item >Thu</item>
+        <item >Fri</item>
+    </string-array>
 </resources>
