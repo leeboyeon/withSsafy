@@ -23,6 +23,7 @@ import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.BoardService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
 import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
@@ -176,6 +177,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
                         }
                         R.id.delete -> {
                             // 게시글 삭제
+                            deletePost(postId)
                             return@setOnMenuItemClickListener true
                         }
                         else -> {
@@ -203,6 +205,27 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * 게시글 삭제
+     */
+    private fun deletePost(postId: Int) {
+        try {
+            var response : Response<Any?>
+            runBlocking {
+                response = BoardService().deletePost(postId)
+            }
+            if(response.isSuccessful) {
+                showCustomToast("게시글이 삭제되었습니다.")
+                this@PostDetailFragment.findNavController().popBackStack()
+            } else {
+                showCustomToast("게시글 삭제 실패")
+                Log.d(TAG, "deletePost: ${response.message()}", )
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "deletePost: ${e.response()}", )
         }
     }
 
