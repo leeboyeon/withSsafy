@@ -325,8 +325,8 @@
                                 android:layout_height="70dp"
                                 android:layout_margin="10dp"
                                 android:scaleType="fitXY"
-                                tools:src="@tools:sample/avatars"
-                                app:boardImg="@{post.photoPath}"/>
+                                tools:src="@tools:sample/avatars" />
+<!--                                app:boardImg="@{post.photoPath}"/>-->
 
                             <ImageButton
                                 android:id="@+id/postWriteFragment_ibPhotoDelete"

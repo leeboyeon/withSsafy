@@ -91,6 +91,11 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
                 if(it.photoPath.isNotEmpty()) {
                     binding.postWriteFragmentFlPhotoGroup.visibility = View.VISIBLE
                     binding.postWriteFragmentTvPhotoName.visibility = View.VISIBLE
+
+                    Glide.with(this)
+                        .load("${ApplicationClass.IMGS_URL}${it.photoPath}")
+                        .into(binding.postWriteFragmentIvPhoto)
+
                 } else {
                     binding.postWriteFragmentFlPhotoGroup.visibility = View.GONE
                     binding.postWriteFragmentTvPhotoName.visibility = View.GONE
