@@ -52,10 +52,9 @@ public class Board {
     }
 
     public void updateBoard(BoardRequest boardRequest) {
-        title = boardRequest.getTitle();
-        content = boardRequest.getContent();
-        photoPath = boardRequest.getPhotoPath();
-        writeDateTime = boardRequest.getWriteDateTime();
+        this.title = boardRequest.getTitle();
+        this.content = boardRequest.getContent();
+        this.photoPath = boardRequest.getPhotoPath();
     }
 
     @Builder
