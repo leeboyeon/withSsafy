@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.main.board
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,9 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardNoticeListBinding
 import com.ssafy.withssafy.src.main.team.TeamAdapter
+import kotlinx.coroutines.runBlocking
 
-
+private const val TAG = "BoardNoticeListFragment"
 class BoardNoticeListFragment : BaseFragment<FragmentBoardNoticeListBinding>(FragmentBoardNoticeListBinding::bind, R.layout.fragment_board_notice_list) {
     private lateinit var boardNoticeListAdapter: BoardNoticeListAdapter
     private var typeId = 0
@@ -29,6 +31,7 @@ class BoardNoticeListFragment : BaseFragment<FragmentBoardNoticeListBinding>(Fra
         binding.viewModel = noticeViewModel
         initAdapter()
         initTabLayout()
+        initButton()
     }
 
     private fun initButton() {
@@ -39,14 +42,12 @@ class BoardNoticeListFragment : BaseFragment<FragmentBoardNoticeListBinding>(Fra
 
     private fun initAdapter() {
         boardNoticeListAdapter = BoardNoticeListAdapter()
-        boardNoticeListAdapter.list = noticeViewModel.noticeAllList.value!!
-        boardNoticeListAdapter.filter.filter("")
-        boardNoticeListAdapter.filteredList = boardNoticeListAdapter.list
+        noticeViewModel.setNoticeFilterListDefault()
+        boardNoticeListAdapter.list = noticeViewModel.noticeFilterList.value!!
 
-//        noticeViewModel.noticeAllList.observe(viewLifecycleOwner) {
-//            boardNoticeListAdapter.list = it
-//            boardNoticeListAdapter.filteredList = boardNoticeListAdapter.list
-//        }
+        noticeViewModel.noticeFilterList.observe(viewLifecycleOwner) {
+            boardNoticeListAdapter.list = it
+        }
         binding.fragmentBoardNoticeListRv.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
             adapter = boardNoticeListAdapter
@@ -58,15 +59,15 @@ class BoardNoticeListFragment : BaseFragment<FragmentBoardNoticeListBinding>(Fra
         for(item in types){
             binding.frargmentBoardNoticeListTabLayout.addTab(binding.frargmentBoardNoticeListTabLayout.newTab().setText(item))
         }
-        boardNoticeListAdapter = BoardNoticeListAdapter()
         binding.frargmentBoardNoticeListTabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if(tab?.position == 0){
-                    boardNoticeListAdapter.filter.filter("")
+                    noticeViewModel.getFilterNoticeList(0)
                 }else{
-                    boardNoticeListAdapter.filter.filter(tab?.position.toString())
+                    noticeViewModel.getFilterNoticeList(tab?.position!!)
                 }
                 boardNoticeListAdapter.notifyDataSetChanged()
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {

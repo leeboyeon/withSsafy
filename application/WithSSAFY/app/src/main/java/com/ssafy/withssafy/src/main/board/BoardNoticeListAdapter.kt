@@ -13,9 +13,8 @@ import com.ssafy.withssafy.databinding.ItemNoticeListBinding
 import com.ssafy.withssafy.src.dto.notice.Notice
 
 private const val TAG = "BoardNoticeListAdapter"
-class BoardNoticeListAdapter : RecyclerView.Adapter<BoardNoticeListAdapter.BoardNoticeListViewHolder>(), Filterable {
+class BoardNoticeListAdapter : RecyclerView.Adapter<BoardNoticeListAdapter.BoardNoticeListViewHolder>(){
     var list = mutableListOf<Notice>()
-    var filteredList = list
     inner class BoardNoticeListViewHolder(private val binding: ItemNoticeListBinding) : RecyclerView.ViewHolder(binding.root) {
         var indexTv = binding.itemNoticeListIndex
         fun bind(notice : Notice, position: Int) {
@@ -31,44 +30,11 @@ class BoardNoticeListAdapter : RecyclerView.Adapter<BoardNoticeListAdapter.Board
 
     override fun onBindViewHolder(holder: BoardNoticeListViewHolder, position: Int) {
         holder.apply {
-            bind(filteredList[position], position)
+            bind(list[position], position)
         }
     }
 
     override fun getItemCount(): Int {
-        return filteredList.size
-    }
-
-    override fun getFilter(): Filter {
-        return object : Filter(){
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val charString = constraint.toString()
-                filteredList = if(charString.isEmpty()){
-                    list
-                }else{
-                    val filteringList = ArrayList<Notice>()
-                    for(item in list!!){
-                        if(item.typeId!=null){
-                            if(item!!.typeId == Integer.parseInt(charString))
-                                filteringList.add(item)
-                        }
-
-                    }
-
-                    Log.d(TAG, "performFiltering: $filteringList")
-                    filteringList
-                }
-                val filterResult = FilterResults()
-                filterResult.values = filteredList
-                return filterResult
-            }
-
-            @SuppressLint("NotifyDataSetChanged")
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredList = results?.values as MutableList<Notice>
-                notifyDataSetChanged()
-            }
-
-        }
+        return list.size
     }
 }

@@ -15,7 +15,7 @@ class NoticeViewModel : ViewModel() {
     private val _noticeAllList = MutableLiveData<MutableList<Notice>>()
     private val _classRoomId = MutableLiveData<Int>()
     var _uploadImageUri = MutableLiveData<Uri?>()
-    //var uploadImageUri: Uri? = null
+    private val _noticeFilterList = MutableLiveData<MutableList<Notice>>()
 
     val noticeAllList : LiveData<MutableList<Notice>>
         get() = _noticeAllList
@@ -25,6 +25,9 @@ class NoticeViewModel : ViewModel() {
 
     val uploadImageUri : LiveData<Uri?>
         get() = _uploadImageUri
+
+    val noticeFilterList : LiveData<MutableList<Notice>>
+        get() = _noticeFilterList
 
     fun setNoticeList(noticeList : MutableList<Notice>) {
         _noticeAllList.value = noticeList
@@ -38,6 +41,13 @@ class NoticeViewModel : ViewModel() {
         _uploadImageUri.value = uri
     }
 
+    fun setNoticeFilterListDefault() {
+        _noticeFilterList.value = _noticeAllList.value
+    }
+    fun setNoticeFilterList(noticeList : MutableList<Notice>) {
+        _noticeFilterList.value = noticeList
+    }
+
     suspend fun getNoticeList(classRoomId : Int) {
         val response = NoticeService().selectNoticeList(classRoomId)
         viewModelScope.launch {
@@ -49,5 +59,19 @@ class NoticeViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    fun getFilterNoticeList(typeId : Int) {
+        var nList = mutableListOf<Notice>()
+        if(typeId == 0) {
+            nList = noticeAllList.value!!
+        } else {
+            noticeAllList.value!!.forEach {
+                if(it.typeId == typeId) nList.add(it)
+            }
+        }
+        Log.d(TAG, "getFilterNoticeList: ${noticeAllList.value}")
+        Log.d(TAG, "getFilterNoticeList: $nList")
+        setNoticeFilterList(nList)
     }
 }
