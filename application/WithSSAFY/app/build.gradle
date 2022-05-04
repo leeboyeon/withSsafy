@@ -132,4 +132,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.0.0'
 
+    // timetableView - github.com/tlaabs/TimetableView
+    implementation 'com.github.tlaabs:TimetableView:1.0.3-fx1'
+
 }
