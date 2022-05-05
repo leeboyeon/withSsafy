@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.main.schedule
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.ColorStateListDrawable
@@ -11,8 +12,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TableRow
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.os.bundleOf
 import androidx.core.view.get
+import androidx.navigation.fragment.findNavController
 import com.github.tlaabs.timetableview.Sticker
 import com.github.tlaabs.timetableview.Time
 import com.github.tlaabs.timetableview.TimetableView
@@ -21,7 +27,9 @@ import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentClassCurriculumBinding
 import com.ssafy.withssafy.src.dto.Schedule
+import com.ssafy.withssafy.src.network.service.ScheduleService
 import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -29,6 +37,9 @@ import java.time.format.DateTimeFormatter
 private const val TAG = "ClassCurriculumFragment"
 class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(FragmentClassCurriculumBinding::bind,R.layout.fragment_class_curriculum) {
     private lateinit var timetable:TimetableView
+    val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
+    private var isStudent = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -47,6 +58,47 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
     private fun setListener() {
         initData()
         initTimeTable()
+        if(studentId != null) { // 교육생
+            isStudent = true
+        } else { // 관리자
+            initButtons()
+            isStudent = false
+        }
+
+    }
+    private fun initButtons(){
+        timetable.setOnStickerSelectEventListener { idx, schedules ->
+            showOptionDialog(schedules[idx].classTitle,scheduleViewModel.liveScheduleIndex.value!!.get(idx))
+        }
+    }
+    private fun showOptionDialog(title:String, id:Int){
+        var dialog = Dialog(requireContext())
+        var dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_class_curriculum,null)
+        if(dialogView.parent!=null){
+            (dialogView.parent as ViewGroup).removeView(dialogView)
+        }
+        dialog.setContentView(dialogView)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogView.findViewById<TextView>(R.id.fragment_classcurrcul_dialog_title).text = title
+        dialog.show()
+
+        dialogView.findViewById<AppCompatButton>(R.id.fragment_classcurrcul_dialog_modify).setOnClickListener {
+            var scheduleId = bundleOf("scheduleId" to id)
+            this@ClassCurriculumFragment.findNavController().navigate(R.id.curriculumWriteFragment, scheduleId)
+            dialog.dismiss()
+        }
+        dialogView.findViewById<AppCompatButton>(R.id.fragment_classcurrcul_dialog_delete).setOnClickListener {
+            val response : Response<Any?>
+            runBlocking {
+                response = ScheduleService().deleteSchedule(id)
+            }
+            if(response.code() == 204){
+                showCustomToast("삭제되었습니다.")
+            }
+        }
+        dialogView.findViewById<ImageButton>(R.id.fragment_classcurrcul_dialog_cancle).setOnClickListener {
+            dialog.dismiss()
+        }
     }
     private fun initData(){
         binding.fragmentScheduleAppBarTitle.text = "${scheduleViewModel.classSchedules.value!![0].weeks.toString()}주차"
@@ -73,7 +125,9 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
                 schedule.classTitle = item.title
                 schedule.classPlace= ""
                 schedule.professorName = ""
+
                 schedules.add(schedule)
+                scheduleViewModel.insertScheduleIndex(item.id)
             }
             timetable.add(schedules)
         }

@@ -27,29 +27,80 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
     private var titleType = "";
     private var week = 0
     private var roomId = 0
+
+    private var scheduleId = 0
+    var title = arrayListOf<String>("오전미팅","프로젝트진행","오후미팅","종료미팅","중식","라이브방송","직접입력")
+
     private lateinit var writeAdapter:ClassCurrculWriteAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            scheduleId = it.getInt("scheduleId")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setListener()
-    }
-    private fun setListener(){
         runBlocking {
             userViewModel.getUser(ApplicationClass.sharedPreferencesUtil.getUser().id,1)
         }
-
         roomId = userViewModel.loginUserInfo.value!!.classRoomId
+        setListener()
+    }
+    private fun setListener(){
         initCheckBox()
         initSpinner()
         initDatePicker()
         initTimePicker()
         initButtons()
+        if(scheduleId > 0){
+            initData()
+        }
         initAdapter()
+    }
+    private fun initData(){
+        runBlocking {
+            scheduleViewModel.getScheduleById(scheduleId)
+        }
+        var schedule = scheduleViewModel.schedule.value!!
+        if(schedule.classRoomId > 0){
+            binding.fragmentCurrculWriteTypeClass.isChecked = true
+            binding.fragmentCurrculWriteTypeFull.isChecked = false
+        }else{
+            binding.fragmentCurrculWriteTypeClass.isChecked = false
+            binding.fragmentCurrculWriteTypeFull.isChecked = true
+        }
+
+        binding.fragmentCurrculWriteWeeksSpinner.setSelection(schedule.weeks-1)
+        for(i in 0..title.size-1){
+            if(title[i].equals(schedule.title)){
+                binding.fragmentCurrculWriteTitleSpinner.setSelection(i)
+            }
+        }
+//        binding.fragmentCurrculWriteTitleSpinner.setSelection(6)
+        var startDate = schedule.startDate.substring(0,10)
+        binding.fragmentCurrculWriteStartDateTv.text = startDate
+        var startTime = schedule.startDate.substring(schedule.startDate.length-8,schedule.startDate.length-3)
+        Log.d(TAG, "initData: $startTime")
+        if(startTime.substring(0,2).toInt() > 12){
+            binding.fragmentCurrculWriteStartTimeTv.text = "AM ${startTime}"
+        }else{
+            binding.fragmentCurrculWriteStartTimeTv.text = "PM ${startTime}"
+        }
+
+        var endDate = schedule.endDate.substring(0,10)
+        binding.fragmentCurrculWriteEndDateTv.text = endDate
+        var endTime = schedule.endDate.substring(schedule.endDate.length-8,schedule.endDate.length-3)
+        Log.d(TAG, "initData: $endTime")
+        if(endTime.substring(0,2).toInt() > 12){
+            binding.fragmentCurrculWriteEndTimeTv.text = "AM ${endTime}"
+        }else{
+            binding.fragmentCurrculWriteEndTimeTv.text = "PM ${endTime}"
+        }
+
+        binding.fragmentCurrculWriteInsert.text = "수정"
+        binding.fragmentCurrculWriteAddBucketBtn.visibility = View.GONE
+        binding.fragmentCurrculWriteBucketRv.visibility = View.GONE
     }
     private fun initAdapter(){
         writeAdapter = ClassCurrculWriteAdapter()
@@ -61,6 +112,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
             adapter = writeAdapter
         }
+
     }
     private fun initButtons(){
         writeAdapter = ClassCurrculWriteAdapter()
@@ -90,7 +142,30 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
             writeAdapter.notifyDataSetChanged()
         }
         binding.fragmentCurrculWriteInsert.setOnClickListener {
-            insertSchedules()
+            if(scheduleId>0){
+                modifySchedule()
+            }else{
+                insertSchedules()
+            }
+        }
+    }
+    private fun modifySchedule(){
+        var schedule = Schedule(
+            roomId,
+            "${binding.fragmentCurrculWriteEndDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
+            scheduleId,
+            "",
+            "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
+            titleType,
+            ApplicationClass.sharedPreferencesUtil.getUser().id,
+            week
+        )
+        runBlocking {
+            val response = ScheduleService().modifySchedule(schedule)
+            if(response.code() == 204){
+                showCustomToast("수정되었습니다.")
+                this@CurriculumWriteFragment.findNavController().navigate(R.id.scheduleFragment)
+            }
         }
     }
     private fun insertSchedules(){
@@ -234,7 +309,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
         }
     }
     private fun initSpinner(){
-        var title = arrayListOf<String>("오전미팅","프로젝트진행","오후미팅","종료미팅","중식","라이브방송","직접입력")
+
         binding.fragmentCurrculWriteTitleSpinner.adapter = ArrayAdapter(requireContext(),androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,title)
         binding.fragmentCurrculWriteTitleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
