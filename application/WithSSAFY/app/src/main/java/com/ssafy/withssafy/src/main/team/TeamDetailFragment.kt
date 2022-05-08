@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ssafy.withssafy.R
@@ -51,6 +52,7 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
         initData()
         initButtons()
         initAdapter()
+        commentLayoutClickEvent()
     }
     private fun initData(){
         if(teamViewModel.study.value!!.photoPath == null || teamViewModel.study.value!!.photoPath == ""){
@@ -76,10 +78,16 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
         studyCommentAdapter.postUserId = teamViewModel.study.value!!.user!!.id
         studyCommentAdapter.setAddReplyItemClickListener(object: TeamCommentAdapter.ItemClickListener {
             override fun onClick(view: View, writerNick: String, position: Int, commentId: Int) {
-                
+
             }
 
         })
+    }
+    private fun commentLayoutClickEvent(){
+        binding.fragmentTeamDetailCommentInputLayout.setOnClickListener {
+            var postId = bundleOf("studyId" to studyId)
+            this@TeamDetailFragment.findNavController().navigate(R.id.studyCommentFragment,postId)
+        }
     }
     private fun showRequestDialog(){
         var dialog = Dialog(requireContext())

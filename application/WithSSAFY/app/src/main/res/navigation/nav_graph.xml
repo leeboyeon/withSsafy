@@ -269,5 +269,15 @@
             android:defaultValue="0"
             app:argType="integer"/>
     </fragment>
+    <fragment
+        android:id="@+id/studyCommentFragment"
+        android:name="com.ssafy.withssafy.src.main.team.StudyCommentFragment"
+        android:label="fragment_study_comment"
+        tools:layout="@layout/fragment_study_comment" >
+        <argument
+            android:name="studyId"
+            android:defaultValue="0"
+            app:argType="integer"/>
+    </fragment>
 
 </navigation>
