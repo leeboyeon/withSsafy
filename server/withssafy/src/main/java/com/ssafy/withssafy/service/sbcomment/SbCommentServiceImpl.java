@@ -41,8 +41,8 @@ public class SbCommentServiceImpl implements SbCommentService{
             dto.setId(comment.getId());
             dto.setContent(comment.getContent());
             dto.setParent(comment.getParent());
-            dto.setUser(modelMapper.map(comment.getUser(), UserDto.class));
-            dto.setStudyBoard(modelMapper.map(comment.getStudyBoard(), StudyBoardResponse.class));
+            dto.setUserId(comment.getUser().getId());
+            dto.setBoardId(comment.getStudyBoard().getId());
             dto.setWrite_dt(comment.getWrite_dt());
             result.add(dto);
         }
@@ -60,8 +60,8 @@ public class SbCommentServiceImpl implements SbCommentService{
             dto.setId(comment.getId());
             dto.setContent(comment.getContent());
             dto.setParent(comment.getParent());
-            dto.setUser(modelMapper.map(comment.getUser(), UserDto.class));
-            dto.setStudyBoard(modelMapper.map(comment.getStudyBoard(), StudyBoardResponse.class));
+            dto.setUserId(comment.getUser().getId());
+            dto.setBoardId(comment.getStudyBoard().getId());
             dto.setWrite_dt(comment.getWrite_dt());
             result.add(dto);
         }
@@ -79,8 +79,8 @@ public class SbCommentServiceImpl implements SbCommentService{
             dto.setId(comment.getId());
             dto.setContent(comment.getContent());
             dto.setParent(comment.getParent());
-            dto.setUser(modelMapper.map(comment.getUser(), UserDto.class));
-            dto.setStudyBoard(modelMapper.map(comment.getStudyBoard(), StudyBoardResponse.class));
+            dto.setUserId(comment.getUser().getId());
+            dto.setBoardId(comment.getStudyBoard().getId());
             dto.setWrite_dt(comment.getWrite_dt());
             result.add(dto);
         }
@@ -111,13 +111,14 @@ public class SbCommentServiceImpl implements SbCommentService{
             throw new InvalidRequestException(ErrorCode.DOESNT_EXIST);
         }
 
+        sbCommentRequest.setWriteDateTime();
 
         SbComment sbComment = modelMapper.map(sbCommentRequest, SbComment.class);
         sbComment.updateStudyBoard(studyBoardRepository.findById(sbCommentRequest.getBoardId()).get());
         SbComment trans = sbCommentRepository.save(sbComment);
         SbCommentDto result = modelMapper.map(trans, SbCommentDto.class);
-        result.setUser(modelMapper.map(trans.getUser(), UserDto.class));
-        result.setStudyBoard(modelMapper.map(trans.getStudyBoard(), StudyBoardResponse.class));
+        result.setUserId(trans.getUser().getId());
+        result.setBoardId(trans.getStudyBoard().getId());
         return result;
     }
 }
