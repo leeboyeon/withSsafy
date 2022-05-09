@@ -21,6 +21,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.get
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.github.tlaabs.timetableview.Sticker
 import com.github.tlaabs.timetableview.Time
@@ -104,6 +105,7 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
     @SuppressLint("ResourceAsColor")
     private fun initTimeTable(){
         classAdapter = ClassCurrculAdapter(scheduleViewModel, requireContext())
+
         val weeksSchedules : MutableList<WeekSchedule> = mutableListOf()
 
         scheduleViewModel.allClassSchedules.observe(viewLifecycleOwner) {
@@ -132,7 +134,6 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
                 idx++
 
                 if(weeks != item.weeks){
-                    Log.d(TAG, "initTimeTable: $weeks || $idx || ${schedules.size}")
                     weeksSchedules.add(WeekSchedule(weeks, schedules,scheduleDtos))
                     weeks = item.weeks
                     schedules = arrayListOf()
@@ -144,18 +145,20 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
                 scheduleViewModel.insertScheduleIndex(item.id)
 
                 if(idx == it.size){
-                    Log.d(TAG, "initTimeTable: $weeks || $idx || ${schedules.size}")
                     weeksSchedules.add(WeekSchedule(weeks,schedules,scheduleDtos))
                 }
             }
             classAdapter.scheduleList = weeksSchedules
+            binding.fragmentClassCurrculRv.scrollToPosition(weeksSchedules.size-1)
         }
 
         binding.fragmentClassCurrculRv.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
             adapter = classAdapter
+
             adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
+
         classAdapter.setModifyItemClickListener(object: ClassCurrculAdapter.ModifyClickListener {
             override fun onClick(scheduleId: Int) {
                 var scheduleIds = bundleOf("scheduleId" to scheduleId)
@@ -163,9 +166,6 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
             }
 
         })
-
-//        var json = timetable.createSaveData()
-//        timetable.load(json)
     }
     private fun findWeeks(date:String):Int{
         var dateTime = LocalDate.parse(date)

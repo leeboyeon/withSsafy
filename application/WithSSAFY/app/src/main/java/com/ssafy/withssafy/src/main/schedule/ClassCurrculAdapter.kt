@@ -49,11 +49,11 @@ class ClassCurrculAdapter(val scheduleViewModel: ScheduleViewModel, val context:
     override fun onBindViewHolder(holder: ClassViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.apply {
             bind(scheduleList[position])
-            timetable.setOnStickerSelectEventListener(object: TimetableView.OnStickerSelectedListener {
-                override fun OnStickerSelected(idx: Int, schedules: ArrayList<Schedule>?) {
-                    Log.d("TAG", "OnStickerSelected: ${schedules?.get(idx)!!.classTitle}")
-                }
-            })
+//            timetable.setOnStickerSelectEventListener(object: TimetableView.OnStickerSelectedListener {
+//                override fun OnStickerSelected(idx: Int, schedules: ArrayList<Schedule>?) {
+//                    Log.d("TAG", "OnStickerSelected: ${schedules?.get(idx)!!.classTitle}")
+//                }
+//            })
         }
     }
 
