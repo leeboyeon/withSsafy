@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class SbCommentRequest {
     private Long id;
-    private Long studyBoardId;
+    private Long boardId;
     private Long userId;
     private Long parent;
     private String content;

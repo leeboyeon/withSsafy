@@ -6,7 +6,10 @@ import com.ssafy.withssafy.dto.sbcomment.SbCommentRequest;
 import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
 import com.ssafy.withssafy.dto.user.UserDto;
 import com.ssafy.withssafy.entity.SbComment;
+import com.ssafy.withssafy.errorcode.ErrorCode;
+import com.ssafy.withssafy.exception.InvalidRequestException;
 import com.ssafy.withssafy.repository.SbCommentRepository;
+import com.ssafy.withssafy.repository.StudyBoardRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,6 +26,9 @@ public class SbCommentServiceImpl implements SbCommentService{
     SbCommentRepository sbCommentRepository;
 
     @Autowired
+    StudyBoardRepository studyBoardRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     @Override
@@ -37,6 +43,7 @@ public class SbCommentServiceImpl implements SbCommentService{
             dto.setParent(comment.getParent());
             dto.setUser(modelMapper.map(comment.getUser(), UserDto.class));
             dto.setStudyBoard(modelMapper.map(comment.getStudyBoard(), StudyBoardResponse.class));
+            dto.setWrite_dt(comment.getWrite_dt());
             result.add(dto);
         }
 
@@ -55,6 +62,7 @@ public class SbCommentServiceImpl implements SbCommentService{
             dto.setParent(comment.getParent());
             dto.setUser(modelMapper.map(comment.getUser(), UserDto.class));
             dto.setStudyBoard(modelMapper.map(comment.getStudyBoard(), StudyBoardResponse.class));
+            dto.setWrite_dt(comment.getWrite_dt());
             result.add(dto);
         }
 
@@ -73,6 +81,7 @@ public class SbCommentServiceImpl implements SbCommentService{
             dto.setParent(comment.getParent());
             dto.setUser(modelMapper.map(comment.getUser(), UserDto.class));
             dto.setStudyBoard(modelMapper.map(comment.getStudyBoard(), StudyBoardResponse.class));
+            dto.setWrite_dt(comment.getWrite_dt());
             result.add(dto);
         }
 
@@ -98,7 +107,13 @@ public class SbCommentServiceImpl implements SbCommentService{
 
     @Override
     public SbCommentDto insert(SbCommentRequest sbCommentRequest) {
+        if(!studyBoardRepository.findById(sbCommentRequest.getBoardId()).isPresent()){
+            throw new InvalidRequestException(ErrorCode.DOESNT_EXIST);
+        }
+
+
         SbComment sbComment = modelMapper.map(sbCommentRequest, SbComment.class);
+        sbComment.updateStudyBoard(studyBoardRepository.findById(sbCommentRequest.getBoardId()).get());
         SbComment trans = sbCommentRepository.save(sbComment);
         SbCommentDto result = modelMapper.map(trans, SbCommentDto.class);
         result.setUser(modelMapper.map(trans.getUser(), UserDto.class));
