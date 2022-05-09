@@ -1,9 +1,7 @@
 package com.ssafy.withssafy.api;
 
-import com.ssafy.withssafy.dto.comment.CommentDto;
 import com.ssafy.withssafy.dto.sbcomment.SbCommentDto;
 import com.ssafy.withssafy.dto.sbcomment.SbCommentRequest;
-import com.ssafy.withssafy.service.comment.CommentService;
 import com.ssafy.withssafy.service.sbcomment.SbCommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

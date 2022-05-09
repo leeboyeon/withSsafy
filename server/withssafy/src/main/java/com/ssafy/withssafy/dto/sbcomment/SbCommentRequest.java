@@ -1,7 +1,9 @@
 package com.ssafy.withssafy.dto.sbcomment;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
 import com.ssafy.withssafy.dto.user.UserDto;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
@@ -14,4 +16,7 @@ public class SbCommentRequest {
     private Long parent;
     private String content;
     private String write_dt;
+    public void setWriteDateTime(){
+        this.write_dt = String.valueOf(System.currentTimeMillis());
+    }
 }
