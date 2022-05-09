@@ -55,7 +55,7 @@ class BoardNoticeListFragment : BaseFragment<FragmentBoardNoticeListBinding>(Fra
         }
         boardNoticeListAdapter.setItemClickListener(object : BoardNoticeListAdapter.ItemClickListener {
             override fun onClick(view: View, position: Int, id: Int) {
-                var noticeId = bundleOf("noticeId" to 0)
+                var noticeId = bundleOf("noticeId" to id)
                 this@BoardNoticeListFragment.findNavController().navigate(R.id.baordNoticeDetailFragment, noticeId)
             }
 
