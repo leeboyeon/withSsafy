@@ -137,7 +137,6 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
                     userId,
                     commentContent
                 )
-                val response : Response<Any?>
                 try{
                     runBlocking {
                         response = StudyService().insertStudyComment(reply)
@@ -157,8 +156,12 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
             }
         }.addDisposable()
     }
-    protected fun Disposable.addDisposable() {
-        compositeDisposable.add(this)
+    /**
+     * content 길이 체크
+     * @param input
+     */
+    private fun contentLenChk(input: String) : Boolean {
+        return !(input.trim().isEmpty() || input.length > 255)
     }
     /**
      * RxBinding의 Throttle 기능 사용하는 Button 함수
