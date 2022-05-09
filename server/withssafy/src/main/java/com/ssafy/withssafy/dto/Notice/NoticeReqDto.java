@@ -1,4 +1,4 @@
-package com.ssafy.withssafy.dto.Notice;
+package com.ssafy.withssafy.dto.notice;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;

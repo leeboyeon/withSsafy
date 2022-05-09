@@ -1,14 +1,11 @@
 package com.ssafy.withssafy.entity;
 
-import com.ssafy.withssafy.dto.Notice.NoticeModifyReqDto;
-import com.ssafy.withssafy.dto.Notice.NoticeReqDto;
-import com.ssafy.withssafy.dto.board.BoardRequest;
+import com.ssafy.withssafy.dto.notice.NoticeModifyReqDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Entity
 @Table(name = "tbl_notice")
