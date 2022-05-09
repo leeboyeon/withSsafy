@@ -14,12 +14,16 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardNoticeDetailBinding
+import com.ssafy.withssafy.src.network.service.NoticeService
+import com.ssafy.withssafy.src.network.service.RecruitService
 import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 
 private const val TAG = "BoardNoticeDetailFragment"
 class BoardNoticeDetailFragment : BaseFragment<FragmentBoardNoticeDetailBinding>(FragmentBoardNoticeDetailBinding::bind, R.layout.fragment_board_notice_detail) {
 
     private var noticeId = 0
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,13 +75,49 @@ class BoardNoticeDetailFragment : BaseFragment<FragmentBoardNoticeDetailBinding>
                     return@setOnMenuItemClickListener true
                 }
                 R.id.delete -> {
-                    //deleteRecruit(id)
+                    deleteNotice(id)
                     return@setOnMenuItemClickListener true
                 } else -> {
                 return@setOnMenuItemClickListener false
             }
             }
         }
+    }
+
+    private fun updateData() {
+        userViewModel.classRoomInfo.observe(viewLifecycleOwner) {
+            var gen = it.generation
+            userViewModel.classRommList.value!!.forEach { classRoom ->
+                if(classRoom.generation == gen && classRoom.area == "전체" && classRoom.classDescription == "전체") {
+                    noticeViewModel.setClassRoomId(classRoom.id)
+                    noticeViewModel.classRoomId.observe(viewLifecycleOwner) {
+                        runBlocking {
+                            noticeViewModel.getNoticeList(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun deleteNotice(id: Int) {
+        var response: Response<Any?>
+        runBlocking {
+            response = NoticeService().deleteNoticeById(id)
+        }
+        if(response.code() == 204) {
+            showCustomToast("삭제되었습니다.")
+            runBlocking {
+                userViewModel.getClassRoom(userId)
+                userViewModel.getClassRoomList()
+                noticeViewModel.getNoticeList(0)
+            }
+            updateData()
+            this@BoardNoticeDetailFragment.findNavController().popBackStack()
+        } else {
+            Log.d(TAG, "공지사항 삭제 실패")
+        }
+
     }
 
 }

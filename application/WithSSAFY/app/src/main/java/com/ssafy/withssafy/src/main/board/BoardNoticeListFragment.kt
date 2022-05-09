@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardNoticeListBinding
 import com.ssafy.withssafy.src.main.team.TeamAdapter
@@ -20,6 +21,7 @@ private const val TAG = "BoardNoticeListFragment"
 class BoardNoticeListFragment : BaseFragment<FragmentBoardNoticeListBinding>(FragmentBoardNoticeListBinding::bind, R.layout.fragment_board_notice_list) {
     private lateinit var boardNoticeListAdapter: BoardNoticeListAdapter
     private var typeId = 0
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -30,9 +32,15 @@ class BoardNoticeListFragment : BaseFragment<FragmentBoardNoticeListBinding>(Fra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = noticeViewModel
+//        runBlocking {
+//            userViewModel.getClassRoom(userId)
+//            userViewModel.getClassRoomList()
+//            noticeViewModel.getNoticeList(0)
+//        }
         initAdapter()
         initTabLayout()
         initButton()
+        Log.d(TAG, "onViewCreated: ")
     }
 
     private fun initButton() {
