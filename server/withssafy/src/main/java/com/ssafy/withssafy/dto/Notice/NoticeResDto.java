@@ -1,5 +1,4 @@
-package com.ssafy.withssafy.dto.Notice;
-import io.swagger.annotations.ApiModelProperty;
+package com.ssafy.withssafy.dto.notice;
 import lombok.Data;
 import lombok.ToString;
 
@@ -15,5 +14,6 @@ public class NoticeResDto {
     private String content;
     private String photoPath;
     private String filePath;
+    private String classRoomId;
     private LocalDateTime writeDt;
 }
