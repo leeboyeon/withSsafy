@@ -13,10 +13,9 @@ import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.board.Board
 import java.util.*
 
-class BoardDetailAdapter (val context: Context) : RecyclerView.Adapter<BoardDetailAdapter.ViewHolder>(){
+class BoardDetailAdapter (val context: Context, val typeId : Int) : RecyclerView.Adapter<BoardDetailAdapter.ViewHolder>(){
 //class LocalBoardAdapter(val context: Context) : ListAdapter<Board, LocalBoardAdapter.LocalBoardViewHolder>(DiffCallback) {
-    lateinit var postList : MutableList<Board>    // !dto 수정
-    lateinit var userList: MutableList<User>
+    lateinit var postList : MutableList<Board>
     lateinit var userLikePost: MutableList<Board>
 
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id

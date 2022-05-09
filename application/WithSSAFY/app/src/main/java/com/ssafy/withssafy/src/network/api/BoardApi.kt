@@ -52,6 +52,12 @@ interface BoardApi {
     suspend fun deletePostById(@Path("id") id: Int) : Response<Any?>
 
     /**
+     * 좋아요 10개 이상 Hot 게시물 조회
+     */
+    @GET("boards/hot-board")
+    suspend fun getHotPostList() : Response<List<Board>>
+
+    /**
      * 게시물 좋아요 확인
      */
     @GET("boards/like")

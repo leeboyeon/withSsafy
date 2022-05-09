@@ -14,6 +14,7 @@ import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardDetailBinding
 import com.ssafy.withssafy.src.dto.board.Board
+import com.ssafy.withssafy.src.dto.board.BoardType
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.BoardService
 import kotlinx.coroutines.runBlocking
@@ -49,21 +50,56 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        runBlocking {
-            boardViewModel.getBoardListByType(typeId)
-            boardViewModel.getUserLikePostList(userId)
-        }
+        if(typeId < 0) {
+            binding.boardDetailFragmentBtnWritePost.visibility = View.INVISIBLE
 
-        boardViewModel.allBoardType.observe(viewLifecycleOwner) {
-            for (item in it) {
-                if(typeId == item.id) {
-                    binding.boardType = item
-                    break
+            when(typeId) {
+                -1 -> { //'내가 쓴 글'
+                    binding.boardType = BoardType(0, "내가 쓴 글")
+
+                }
+                -2 -> { // '댓글 단 글'
+                    binding.boardType = BoardType(0, "댓글 단 글")
+
+                }
+                -3 -> { // '좋아요한 글'
+                    binding.boardType = BoardType(0, "좋아요한 글")
+
+                    binding.boardDetailFragmentTvBoardTitle.text = "좋아요한 글"
+
+                    runBlocking {
+                        boardViewModel.getUserLikePostList(userId)
+                    }
+                }
+                -4 -> { // 'HOT 게시글'
+                    binding.boardType = BoardType(0, "HOT 게시글")
+
+                    runBlocking {
+                        boardViewModel.getHotPostList()
+                    }
+
+                }
+            }
+
+        } else {
+            runBlocking {
+                boardViewModel.getBoardListByType(typeId)
+                boardViewModel.getUserLikePostList(userId)
+            }
+
+            boardViewModel.allBoardType.observe(viewLifecycleOwner) {
+                for (item in it) {
+                    if(typeId == item.id) {
+                        binding.boardType = item
+                        break
+                    }
                 }
             }
         }
+
         initListener()
         initRecyclerView()
+        postItemClickEvent()
 
     }
 
@@ -84,10 +120,10 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
     }
 
     /**
-     * 게시글 recyclerView 초기화 + rv 아이템 클릭 이벤트
+     * 내가 쓴 글, 댓글 단 글, 좋아요한 글, HOT 게시글 recyclerView 초기화
      */
-    private fun initRecyclerView() { // 아이템 클릭하면 게시글 상세 화면(PostDetail)으로 이동
-        boardDetailAdapter = BoardDetailAdapter(requireContext())
+    private fun initMyRecyclerView() {
+        boardDetailAdapter = BoardDetailAdapter(requireContext(), typeId)
 
         boardViewModel.boardListByType.observe(viewLifecycleOwner) {
             boardDetailAdapter.postList = it
@@ -102,6 +138,40 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
             adapter = boardDetailAdapter
             adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
+    }
+
+    /**
+     * 게시글 recyclerView 초기화
+     */
+    private fun initRecyclerView() { // 아이템 클릭하면 게시글 상세 화면(PostDetail)으로 이동
+        boardDetailAdapter = BoardDetailAdapter(requireContext(), typeId)
+
+        if(typeId == -3) {
+            boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+                boardDetailAdapter.postList = it
+                boardDetailAdapter.userLikePost = it
+            }
+        } else {
+            boardViewModel.boardListByType.observe(viewLifecycleOwner) {
+                boardDetailAdapter.postList = it
+            }
+
+            boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+                boardDetailAdapter.userLikePost = it
+            }
+        }
+
+        binding.boardDetailFragmentRvPostList.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = boardDetailAdapter
+            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
+    }
+
+    /**
+     * 게시글 item 클릭 버튼 이벤트
+     */
+    private fun postItemClickEvent() {
 
         boardDetailAdapter.setItemClickListener(object : BoardDetailAdapter.ItemClickListener {
             override fun onClick(view: View, position: Int, postId: Int, typeId: Int) {
@@ -139,7 +209,6 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
 
             }
         })
-
     }
 
     /**
