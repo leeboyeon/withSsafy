@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.withssafy.src.dto.ClassRoom
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.network.service.NoticeService
 import com.ssafy.withssafy.src.network.service.UserService
 import kotlinx.coroutines.launch
 
@@ -174,6 +175,18 @@ class UserViewModel : ViewModel() {
                 }
             } else {
                 Log.d(TAG, "Error : ${response.message()}")
+            }
+        }
+    }
+
+    suspend fun getClassRoomInfo(id : Int) {
+        val response = UserService().getClassRoom(id)
+        viewModelScope.launch {
+            val res = response.body()
+            if(response.code() == 200) {
+                if(res != null) {
+                    setClassRoomInfo(res)
+                }
             }
         }
     }

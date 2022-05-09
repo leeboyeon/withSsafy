@@ -70,7 +70,8 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
         } else { // 관리자
             binding.boardNotiFragmentNoticeCFb.visibility = View.VISIBLE
             binding.boardNotiFragmentNoticeCFb.setOnClickListener {
-                this@BoardNoticeFragment.findNavController().navigate(R.id.noticeWriteFragment)
+                var noticeId = bundleOf("noticeId" to 0)
+                this@BoardNoticeFragment.findNavController().navigate(R.id.noticeWriteFragment, noticeId)
             }
         }
         binding.boardNotiFragmentClOperation.setOnClickListener { // 운영

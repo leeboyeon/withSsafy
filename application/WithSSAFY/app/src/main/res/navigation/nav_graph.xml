@@ -245,7 +245,10 @@
         android:name="com.ssafy.withssafy.src.main.board.NoticeWriteFragment"
         android:label="fragment_notice_wirte"
         tools:layout="@layout/fragment_notice_write">
-
+        <argument
+            android:name="noticeId"
+            android:defaultValue="0"
+            app:argType="integer"/>
     </fragment>
 
     <fragment

@@ -47,6 +47,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:id="@+id/fragment_boardNoticeDetail__more"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toTopOf="@id/fragment_boardNoticeDetail_appBarTitle"
+                app:layout_constraintBottom_toBottomOf="@id/fragment_boardNoticeDetail_appBarTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_more_black" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView

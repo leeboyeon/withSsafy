@@ -19,6 +19,7 @@ import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentNoticeWriteBinding
 import com.ssafy.withssafy.src.dto.notice.Notice
+import com.ssafy.withssafy.src.dto.notice.NoticeRequest
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.NoticeService
@@ -41,6 +42,7 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
     private val NOTICE_CODE = 100
     private var classRoomId = 0
     private var fileExtension : String? = ""
+    private var noticeId = 0
     private lateinit var mainActivity:MainActivity
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     override fun onAttach(context: Context) {
@@ -48,12 +50,58 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
         mainActivity = context as MainActivity
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            noticeId = it.getInt("noticeId")
+        }
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getClassRoomListInit()
         initSpinner()
         selectSpinner()
         initButton()
+        if(noticeId != 0) {
+            initData()
+        }
+    }
+
+    /**
+     * 수정하려고 넘어왔을 때 기존 데이터 초기화
+     */
+    private fun initData() {
+        val typeArr = arrayListOf("학습", "평가", "운영", "사이트", "기타")
+        binding.fragmentNoticeWriteAppBarTitle.setText("공지사항 수정")
+        binding.fragmentNoticeWriteTypeSpin.visibility = View.GONE
+        binding.fragmentNoticeWriteGenSpin.visibility = View.GONE
+        binding.fragmentNoticeWriteAreaSpin.visibility = View.GONE
+        binding.fragmentNoticeWriteClassSpin.visibility = View.GONE
+        binding.fragmentNoticeWriteTypeTxt.visibility = View.VISIBLE
+        binding.fragmentNoticeWriteGenTxt.visibility = View.VISIBLE
+        binding.fragmentNoticeWriteAreaTxt.visibility = View.VISIBLE
+        binding.fragmentNoticeWriteClassTxt.visibility = View.VISIBLE
+        noticeViewModel.notice.observe(viewLifecycleOwner) {
+            binding.fragmentNoticeWriteTitleEdit.setText(it.title)
+            binding.fragmentNoticeWriteContentEdit.setText(it.content)
+            binding.fragmentNoticeWriteTypeTxt.setText(typeArr.get(it.typeId - 1))
+            if(it.photoPath != "") {
+                binding.fragmentNoticeWritePhotoGroup.visibility = View.VISIBLE
+                    Glide.with(requireContext())
+                        .load("${ApplicationClass.IMGS_URL}${it.photoPath}")
+                        .into(binding.fragmentNoticeWritePhoto)
+                }
+            runBlocking {
+                userViewModel.getClassRoomInfo(it.classRoomId)
+            }
+            userViewModel.classRoomInfo.observe(viewLifecycleOwner) {
+                binding.fragmentNoticeWriteGenTxt.setText("${it.generation}기")
+                binding.fragmentNoticeWriteAreaTxt.setText(it.area)
+                binding.fragmentNoticeWriteClassTxt.setText(it.classDescription)
+            }
+        }
     }
 
     private fun getClassRoomListInit() {
@@ -117,7 +165,77 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
             binding.fragmentNoticeWritePhotoGroup.visibility = View.GONE
         }
         binding.fragmentNoticeWriteSuccess.setOnClickListener {
-            insertNotice()
+            if(noticeId != 0) {
+                updateNotice()
+            } else {
+                insertNotice()
+            }
+        }
+    }
+
+    private fun updateNotice() {
+        val title = binding.fragmentNoticeWriteTitleEdit.text.toString()
+        val content = binding.fragmentNoticeWriteContentEdit.text.toString()
+        if(title != "" && content != "") {
+            if (noticeViewModel.uploadImageUri.value == Uri.EMPTY || noticeViewModel.uploadImageUri.value == null) {
+                if(noticeViewModel.notice.value!!.photoPath != "") {
+                    var notice = NoticeRequest(content, noticeViewModel.notice.value!!.photoPath, title)
+                    runBlocking {
+                        val response = NoticeService().updateNotice(noticeId, notice)
+                        if (response.code() == 204) {
+                            showCustomToast("공지사항이 수정되었습니다.")
+                            this@NoticeWriteFragment.findNavController().popBackStack()
+                        } else {
+                            showCustomToast("공지사항 수정에 실패했습니다.")
+                        }
+                    }
+                } else {
+                    var notice = NoticeRequest(content, title)
+                    runBlocking {
+                        val response = NoticeService().updateNotice(noticeId, notice)
+                        if (response.code() == 204) {
+                            showCustomToast("공지사항이 수정되었습니다.")
+                            this@NoticeWriteFragment.findNavController().popBackStack()
+                        } else {
+                            showCustomToast("공지사항 수정에 실패했습니다.")
+                        }
+                    }
+                }
+            } else {
+                val file = File(noticeViewModel.uploadImageUri!!.value!!.path!!)
+                var inputStream: InputStream? = null
+                try {
+                    inputStream =
+                        mainActivity.contentResolver.openInputStream(noticeViewModel.uploadImageUri!!.value!!)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                fileExtension = mainActivity.contentResolver.getType(noticeViewModel.uploadImageUri!!.value!!)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+                val requestBody = RequestBody.create(MediaType.parse("image/*"), byteArrayOutputStream.toByteArray())
+                val uploadFile = MultipartBody.Part.createFormData("file", "${file.name}.${fileExtension?.substring(6)}", requestBody)
+                runBlocking {
+                    val responseFile = NoticeService().insertNoticePhoto(uploadFile)
+                    if (responseFile.code() == 200) {
+                        if (responseFile.body() != null) {
+                            Log.d(TAG, "insertNotice: ${responseFile.body()}")
+                            var notice = NoticeRequest(content, responseFile.body().toString(), title)
+                            Log.d(TAG, "insertNotice: $notice")
+                            val response = NoticeService().updateNotice(noticeId, notice)
+                            if (response.code() == 204) {
+                                showCustomToast("공지사항이 수정되었습니다.")
+                                this@NoticeWriteFragment.findNavController().popBackStack()
+                            } else {
+                                showCustomToast("공지사항 수정에 실패했습니다.")
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            showCustomToast("항목을 모두 입력해주세요.")
         }
     }
 
