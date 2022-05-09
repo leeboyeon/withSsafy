@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.entity;
 
+import com.ssafy.withssafy.dto.board.BoardTypeRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,11 @@ public class BoardType {
 
     @Column
     private String type;
+
+    public void updateBoardType(BoardTypeRequest boardTypeRequest){
+        this.type = boardTypeRequest.getType();
+    }
+
 
     @Builder
     public BoardType(Long id, String type){
