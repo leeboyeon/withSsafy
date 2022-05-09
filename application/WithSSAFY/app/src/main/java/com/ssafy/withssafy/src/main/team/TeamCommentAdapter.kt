@@ -19,7 +19,7 @@ import com.ssafy.withssafy.src.main.board.ReplyAdapter
 class TeamCommentAdapter(val context: Context) : RecyclerView.Adapter<TeamCommentAdapter.CommentViewHolder>(){
     lateinit var commentList: MutableList<Comment>
     lateinit var commentAllList : MutableList<Comment>
-    lateinit var commentReplyAdapter : ReplyAdapter
+    var commentReplyAdapter = ReplyAdapter(context)
     var postUserId: Int = -1
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
@@ -27,6 +27,7 @@ class TeamCommentAdapter(val context: Context) : RecyclerView.Adapter<TeamCommen
         val nick = binding.commentItemTvUserNick
         val moreBtn = binding.commentItemIvMoreBtn
         val addReply = binding.commentItemIbAddReply
+
         fun bind(data: Comment){
             binding.comment = data
             if(data.userId == postUserId){
@@ -42,7 +43,7 @@ class TeamCommentAdapter(val context: Context) : RecyclerView.Adapter<TeamCommen
                     replyList.add(reply)
                 }
             }
-            commentReplyAdapter = ReplyAdapter(context)
+//            commentReplyAdapter = ReplyAdapter(context)
 //                commentNestedAdapter.submitList(list)
             commentReplyAdapter.commentList = replyList
             commentReplyAdapter.postUserId = postUserId

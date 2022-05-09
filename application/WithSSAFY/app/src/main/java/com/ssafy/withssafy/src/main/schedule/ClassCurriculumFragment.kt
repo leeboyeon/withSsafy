@@ -107,7 +107,7 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
     private fun initTimeTable(){
         timetable = binding.timetable
 
-        scheduleViewModel.classSchedules.observe(viewLifecycleOwner){
+        scheduleViewModel.classSchedules.observe(viewLifecycleOwner) {
             var schedules = arrayListOf<com.github.tlaabs.timetableview.Schedule>()
             var idx = 0
             for(item in it){

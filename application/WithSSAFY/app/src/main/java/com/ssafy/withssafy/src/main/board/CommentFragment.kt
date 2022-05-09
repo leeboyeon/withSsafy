@@ -106,7 +106,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
      * 댓글, 대댓글 recyclerView init + 아이템 클릭 이벤트
      */
     private fun initRecyclerView() {
-        commentAdapter = CommentAdapter(requireContext(), boardViewModel)
+        commentAdapter = CommentAdapter(requireContext())
 
         binding.commentFragmentRvComment.apply {
             layoutManager = LinearLayoutManager(requireContext())

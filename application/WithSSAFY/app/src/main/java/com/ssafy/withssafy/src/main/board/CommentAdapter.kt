@@ -26,7 +26,7 @@ import com.ssafy.withssafy.src.viewmodel.BoardViewModel
  * @since 04/27/22
  * @author Jiwoo Choi
  */
-class CommentAdapter (val context: Context, val boardViewModel: BoardViewModel) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
+class CommentAdapter (val context: Context) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
     private val TAG = "CommentAdapter_ws"
 
     lateinit var commentList: MutableList<Comment>
