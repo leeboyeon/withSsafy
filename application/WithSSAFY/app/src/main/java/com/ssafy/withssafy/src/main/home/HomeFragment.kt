@@ -167,7 +167,7 @@ class HomeFragment : Fragment(){
      */
     private fun initViewPager() {
         binding.viewPager.apply {
-            bannerViewPagerAdapter = BannerViewPagerAdapter()
+            bannerViewPagerAdapter = BannerViewPagerAdapter(requireContext())
             adapter = bannerViewPagerAdapter
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {

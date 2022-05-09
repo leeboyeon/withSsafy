@@ -31,10 +31,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_item_package"
+                    android:background="@drawable/rectangle_corner_radius"
                     android:orientation="vertical">
 
 
@@ -51,8 +51,8 @@
                             android:layout_height="20dp"
                             android:padding="3dp"
                             android:src="@drawable/ic_mywrotepost_512px"
-                            app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvEventFcm"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvEventFcm"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,11 +60,11 @@
                             android:id="@+id/boardListFragment_tvEventFcm"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:gravity="center"
                             android:text="내가 쓴 글"
+                            android:textColor="@color/black"
                             android:textSize="16sp"
-                            android:layout_marginStart="10dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/boardListFragment_ivMyWrotePost"
                             app:layout_constraintStart_toEndOf="@+id/boardListFragment_ivMyWrotePost"
                             app:layout_constraintTop_toTopOf="@+id/boardListFragment_ivMyWrotePost" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -82,8 +82,8 @@
                             android:layout_height="20dp"
                             android:padding="3dp"
                             android:src="@drawable/ic_comment_512px"
-                            app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvPostInComment"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvPostInComment"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -91,10 +91,11 @@
                             android:id="@+id/boardListFragment_tvPostInComment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:gravity="center"
                             android:text="댓글 단 글"
+                            android:textColor="@color/black"
                             android:textSize="16sp"
-                            android:layout_marginStart="10dp"
                             app:layout_constraintBottom_toBottomOf="@+id/boardListFragment_ivPostInComment"
                             app:layout_constraintStart_toEndOf="@+id/boardListFragment_ivPostInComment"
                             app:layout_constraintTop_toTopOf="@+id/boardListFragment_ivPostInComment" />
@@ -113,8 +114,8 @@
                             android:layout_height="20dp"
                             android:padding="3dp"
                             android:src="@drawable/ic_clipping_512px"
-                            app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvClippingPost"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvClippingPost"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -122,10 +123,11 @@
                             android:id="@+id/boardListFragment_tvClippingPost"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:gravity="center"
                             android:text="스크랩"
+                            android:textColor="@color/black"
                             android:textSize="16sp"
-                            android:layout_marginStart="10dp"
                             app:layout_constraintBottom_toBottomOf="@+id/boardListFragment_ivClippingPost"
                             app:layout_constraintStart_toEndOf="@+id/boardListFragment_ivClippingPost"
                             app:layout_constraintTop_toTopOf="@+id/boardListFragment_ivClippingPost" />
@@ -143,8 +145,8 @@
                             android:layout_height="20dp"
                             android:padding="3dp"
                             android:src="@drawable/ic_hotpost_512px"
-                            app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvHotBoard"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvHotBoard"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -152,10 +154,11 @@
                             android:id="@+id/boardListFragment_tvHotBoard"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:gravity="center"
                             android:text="HOT 게시판"
+                            android:textColor="@color/black"
                             android:textSize="16sp"
-                            android:layout_marginStart="10dp"
                             app:layout_constraintBottom_toBottomOf="@+id/boardListFragment_ivHotBoard"
                             app:layout_constraintStart_toEndOf="@+id/boardListFragment_ivHotBoard"
                             app:layout_constraintTop_toTopOf="@+id/boardListFragment_ivHotBoard" />
@@ -166,11 +169,11 @@
                     android:id="@+id/boardListFragment_rvBoardList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_item_package"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    tools:listitem="@layout/item_board"/>
+                    android:background="@drawable/rectangle_corner_radius"
+                    tools:listitem="@layout/item_board" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

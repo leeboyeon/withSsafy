@@ -66,9 +66,6 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
         }
     }
     private fun initButtons(){
-        binding.fragmentJobAppBarPrev.setOnClickListener {
-            this@BoardJobFragment.findNavController().popBackStack()
-        }
         binding.fragmentJobAdminWrite.setOnClickListener {
             var recruitId = bundleOf("recruitId" to 0)
             this@BoardJobFragment.findNavController().navigate(R.id.action_boardJobFragment_to_adminJobWriteFragment, recruitId)

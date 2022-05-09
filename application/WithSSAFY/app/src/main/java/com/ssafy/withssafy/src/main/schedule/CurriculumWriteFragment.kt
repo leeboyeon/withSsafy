@@ -149,6 +149,9 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
                 insertSchedules()
             }
         }
+        binding.fragmentCurrculWriteAppBarPrev.setOnClickListener {
+            this@CurriculumWriteFragment.findNavController().popBackStack()
+        }
     }
     private fun modifySchedule(){
         var schedule = Schedule(

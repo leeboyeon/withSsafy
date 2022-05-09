@@ -1,14 +1,18 @@
 package com.ssafy.withssafy.src.main.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import com.gun0912.tedpermission.provider.TedPermissionProvider.context
 import com.ssafy.withssafy.R
 
-class BannerViewPagerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class BannerViewPagerAdapter(var context:Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     companion object {
         const val ITEM_COUNT = 3
     }
@@ -41,11 +45,12 @@ class BannerViewPagerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(bannerItem: Int) {
             var imageView = itemView.findViewById<ImageView>(R.id.iv_banner_image)
-//            Glide.with(itemView)
-//                .load("${ApplicationClass.IMGS_URL}${bannerItem}")
-//                .into(imageView)
+            Glide.with(context)
+                .load(bannerItem)
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
+                .into(imageView)
 
-            itemView.findViewById<ImageView>(R.id.iv_banner_image).setImageResource(bannerItem)
+//            itemView.findViewById<ImageView>(R.id.iv_banner_image).setImageResource(bannerItem)
         }
     }
 }

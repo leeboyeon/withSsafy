@@ -8,22 +8,22 @@
             name="notice"
             type="com.ssafy.withssafy.src.dto.notice.Notice" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/item_notice_list_index"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="1"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/item_notice_list_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="1"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/item_notice_list_title"
@@ -31,24 +31,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginStart="20dp"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@{notice.title}"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_notice_list_index"/>
+            android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/item_notice_list_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        app:wirteDateConvert="@{notice.writeDt}"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-         />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/item_notice_list_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/black"
+            app:wirteDateConvert="@{notice.writeDt}" />
+
+    </LinearLayout>
 </layout>

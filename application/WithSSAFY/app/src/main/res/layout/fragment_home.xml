@@ -33,66 +33,78 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="5dp"
-                android:paddingVertical="10dp">
+                android:paddingHorizontal="0dp"
+                android:paddingVertical="10dp"
+                android:weightSum="5">
 
                 <ImageButton
                     android:id="@+id/fragment_home_linkUser"
-                    android:layout_width="55dp"
+                    android:layout_width="50dp"
                     android:layout_height="60dp"
-                    android:layout_margin="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/circle_back"
-                    android:elevation="10dp"
-                    android:scaleType="centerCrop" />
+                    android:elevation="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/user_icon" />
 
                 <ImageButton
                     android:id="@+id/fragment_home_linkEduSsafy"
-                    android:layout_width="55dp"
+                    android:layout_width="50dp"
                     android:layout_height="60dp"
-                    android:layout_margin="3dp"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/circle_back"
-                    android:elevation="10dp"
+                    android:elevation="5dp"
+                    android:padding="2dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ssafylogo" />
 
 
                 <ImageButton
                     android:id="@+id/fragment_home_linkJobSsafy"
-                    android:layout_width="55dp"
+                    android:layout_width="50dp"
                     android:layout_height="60dp"
-                    android:layout_margin="3dp"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/circle_back"
-                    android:elevation="10dp"
+                    android:elevation="5dp"
+                    android:padding="2dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/jobssafy" />
 
 
                 <ImageButton
                     android:id="@+id/fragment_home_linkGitSsafy"
-                    android:layout_width="55dp"
+                    android:layout_width="50dp"
                     android:layout_height="60dp"
-                    android:layout_margin="3dp"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/circle_back"
-                    android:elevation="10dp"
+                    android:elevation="5dp"
+                    android:padding="2dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/git" />
 
 
                 <ImageButton
                     android:id="@+id/fragment_home_linkYoutubeSsafy"
-                    android:layout_width="55dp"
+                    android:layout_width="50dp"
                     android:layout_height="60dp"
-                    android:layout_margin="3dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/circle_back"
-                    android:elevation="10dp"
+                    android:elevation="5dp"
+                    android:padding="2dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/youtube"
                     app:useCompatPadding="false" />
@@ -118,7 +130,7 @@
                     android:id="@+id/fragment_home_moreRequest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
+                    android:layout_marginEnd="5dp"
                     app:layout_constraintBottom_toBottomOf="@+id/home_tv_request"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/home_tv_request">
@@ -150,7 +162,7 @@
                     android:id="@+id/home_tv_request"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="20dp"
                     android:text="요청함"
                     android:textColor="@color/black"
@@ -164,10 +176,10 @@
                     requestListData="@{userViewModel.stateZeroUserList}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginEnd="14dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -224,6 +236,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/home_tv_favorite_board"
                     app:spanCount="5"
                     tools:listitem="@layout/recyclerview_favorite_board_item" />
@@ -278,6 +293,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/home_iv_popular_more"
                     app:spanCount="5"
                     tools:listitem="@layout/recyclerview_popular_item" />
@@ -343,9 +361,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/home_tv_employ"
                     app:spanCount="5"
-                    tools:layout_editor_absoluteX="15dp"
                     tools:listitem="@layout/recyclerview_employ_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

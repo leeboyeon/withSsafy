@@ -38,9 +38,9 @@
                 android:id="@+id/boardNotiFragment_llNoti"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_item_package"
-                android:orientation="vertical"
                 android:layout_margin="10dp"
+                android:background="@drawable/rectangle_corner_radius"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -71,8 +71,8 @@
                         android:layout_marginStart="10dp"
                         android:gravity="center"
                         android:text="운영"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/boardNotiFragment_ivOperation"
                         app:layout_constraintStart_toEndOf="@+id/boardNotiFragment_ivOperation"
                         app:layout_constraintTop_toTopOf="@+id/boardNotiFragment_ivOperation" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -102,6 +102,7 @@
                         android:layout_marginStart="10dp"
                         android:gravity="center"
                         android:text="학습"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@+id/boardNotiFragment_ivLearning"
                         app:layout_constraintStart_toEndOf="@+id/boardNotiFragment_ivLearning"
@@ -133,6 +134,7 @@
                         android:layout_marginStart="10dp"
                         android:gravity="center"
                         android:text="평가"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/boardNotiFragment_ivEvaluation"
@@ -164,6 +166,7 @@
                         android:layout_marginStart="10dp"
                         android:gravity="center"
                         android:text="사이트"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/boardNotiFragment_ivSite"
@@ -194,6 +197,7 @@
                         android:layout_marginStart="10dp"
                         android:gravity="center"
                         android:text="기타"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/boardNotiFragment_ivOther"
@@ -206,10 +210,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_item_package"
+                android:background="@drawable/rectangle_corner_radius"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -221,6 +225,9 @@
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/font_family_ccd"
                         android:text="필독사항"
                         android:textColor="@color/black"
                         android:textSize="18sp"
@@ -242,24 +249,24 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
+                            android:layout_marginEnd="10dp"
                             android:text="더 보기"
                             android:textColor="@color/purple_200"
-                            android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/arrow"
                             app:layout_constraintEnd_toStartOf="@+id/arrow"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="@+id/arrow" />
 
                         <ImageView
                             android:id="@+id/arrow"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
-                            android:paddingTop="4dp"
-                            android:backgroundTint="@color/purple_200"
+                            android:layout_marginEnd="10dp"
+                            android:backgroundTint="@color/purple_700"
                             android:src="@drawable/ic_arrow_right_blue_512px"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/textView5" />
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -267,22 +274,24 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/boardNotiFragment_rvMustReadList"
+                    boardNoticeAllListData="@{viewModel.noticeAllList}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_board_noti_mustread"
-                    boardNoticeAllListData="@{viewModel.noticeAllList}"/>
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    tools:listitem="@layout/item_board_noti_mustread" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/boardNotiFragment_llAttendance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_item_package">
+                android:background="@drawable/rectangle_corner_radius"
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/boardNotiFragment_clAttendance"
@@ -293,40 +302,40 @@
                         android:id="@+id/boardNotiFragment_tvAttendanceRule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
                         android:text="학사규정"
-                        android:textSize="18sp"
                         android:textColor="@color/black"
+                        android:textSize="18sp"
                         android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                     <TextView
                         android:id="@+id/boardNotiFragment_tvAttendance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginEnd="10dp"
                         android:text="출결"
                         android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/boardNotiFragment_tvAttendanceRule"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
                         android:id="@+id/boardNotiFragment_ivAttendanceDetail"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:backgroundTint="@android:color/transparent"
                         android:padding="8dp"
                         android:scaleType="centerInside"
-                        android:backgroundTint="@android:color/transparent"
                         android:src="@drawable/ic_arrow_down"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
@@ -335,20 +344,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:scaleType="fitXY"
-                    android:visibility="gone"
-                    android:src="@drawable/ssafy_attendance" />
+                    android:src="@drawable/ssafy_attendance"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/boardNotiFragment_llLifeRule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_item_package">
+                android:background="@drawable/rectangle_corner_radius"
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/boardNotiFragment_clLifeRule"
@@ -359,40 +368,40 @@
                         android:id="@+id/boardNotiFragment_tvLifeRuleRule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
                         android:text="학사규정"
-                        android:textSize="18sp"
                         android:textColor="@color/black"
+                        android:textSize="18sp"
                         android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                     <TextView
                         android:id="@+id/boardNotiFragment_tvLifeRule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginEnd="10dp"
                         android:text="생활수칙"
                         android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/boardNotiFragment_tvLifeRuleRule"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
                         android:id="@+id/boardNotiFragment_ivLifeRuleDetail"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:backgroundTint="@android:color/transparent"
                         android:padding="8dp"
                         android:scaleType="centerInside"
-                        android:backgroundTint="@android:color/transparent"
                         android:src="@drawable/ic_arrow_down"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
@@ -401,20 +410,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:scaleType="fitXY"
-                    android:visibility="gone"
-                    android:src="@drawable/ssafy_liferule" />
+                    android:src="@drawable/ssafy_liferule"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/boardNotiFragment_llMileage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_item_package">
+                android:background="@drawable/rectangle_corner_radius"
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/boardNotiFragment_clMileage"
@@ -425,40 +434,40 @@
                         android:id="@+id/boardNotiFragment_tvMileageRule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
                         android:text="학사규정"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                     <TextView
                         android:id="@+id/boardNotiFragment_tvMileage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginEnd="10dp"
                         android:text="시상 및 마일리지"
                         android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/boardNotiFragment_tvMileageRule"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
                         android:id="@+id/boardNotiFragment_ivMileageDetail"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:backgroundTint="@android:color/transparent"
                         android:padding="8dp"
                         android:scaleType="centerInside"
-                        android:backgroundTint="@android:color/transparent"
                         android:src="@drawable/ic_arrow_down"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
@@ -467,8 +476,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:scaleType="fitXY"
-                    android:visibility="gone"
-                    android:src="@drawable/ssafy_mileage" />
+                    android:src="@drawable/ssafy_mileage"
+                    android:visibility="gone" />
             </LinearLayout>
 
             </LinearLayout>
