@@ -2,6 +2,7 @@ package com.ssafy.withssafy.dto.sbcomment;
 
 import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
 import com.ssafy.withssafy.dto.user.UserDto;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,9 +10,10 @@ import lombok.ToString;
 @ToString
 public class SbCommentDto {
     private Long id;
-    private StudyBoardResponse studyBoard;
-    private UserDto user;
+    private Long boardId;
+    private Long userId;
     private Long parent;
     private String content;
+    @ApiModelProperty(hidden = true)
     private String write_dt;
 }
