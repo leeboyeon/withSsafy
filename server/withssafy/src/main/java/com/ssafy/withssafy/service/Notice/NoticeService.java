@@ -1,14 +1,9 @@
 package com.ssafy.withssafy.service.Notice;
 
-import com.ssafy.withssafy.dto.Notice.NoticeModifyReqDto;
-import com.ssafy.withssafy.dto.Notice.NoticeReqDto;
-import com.ssafy.withssafy.dto.Notice.NoticeResDto;
-import com.ssafy.withssafy.dto.Notice.NoticeTypeDto;
-import com.ssafy.withssafy.dto.board.BoardRequest;
-import com.ssafy.withssafy.dto.board.BoardResponse;
-import com.ssafy.withssafy.dto.board.LikeDto;
-import com.ssafy.withssafy.entity.Board;
-import com.ssafy.withssafy.entity.LikeManagement;
+import com.ssafy.withssafy.dto.notice.NoticeModifyReqDto;
+import com.ssafy.withssafy.dto.notice.NoticeReqDto;
+import com.ssafy.withssafy.dto.notice.NoticeResDto;
+import com.ssafy.withssafy.dto.notice.NoticeTypeDto;
 import com.ssafy.withssafy.entity.Notice;
 import com.ssafy.withssafy.entity.NoticeType;
 import com.ssafy.withssafy.errorcode.ErrorCode;
