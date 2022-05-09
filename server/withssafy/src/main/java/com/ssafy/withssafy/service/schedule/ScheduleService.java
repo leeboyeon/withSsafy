@@ -66,4 +66,10 @@ public class ScheduleService {
         return recruits.stream().map(recruit -> modelMapper.map(recruit, ScheduleDto.class))
                 .collect(Collectors.toList());
     }
+
+    public List<ScheduleDto> findAllMySchedule(Long id){
+        List<Schedule> recruits = scheduleRepository.findAllByClassRoomId(id);
+        return recruits.stream().map(recruit -> modelMapper.map(recruit, ScheduleDto.class))
+                .collect(Collectors.toList());
+    }
 }
