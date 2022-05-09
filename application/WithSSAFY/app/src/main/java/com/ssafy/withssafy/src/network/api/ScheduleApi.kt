@@ -40,4 +40,11 @@ interface ScheduleApi {
      * */
     @DELETE("/shedule/{id}")
     suspend fun deleteSchdule(@Path("id")id:Int):Response<Any?>
+    /**
+     * 모든 스케줄 가져오기
+     * Get All MyClass Schedule
+     * @author : LeeBoYeon
+     * */
+    @GET("/schedule/myclass/all/{id}")
+    suspend fun getAllMyClassSchedule(@Path("id")id:Int) : Response<MutableList<Schedule>>
 }

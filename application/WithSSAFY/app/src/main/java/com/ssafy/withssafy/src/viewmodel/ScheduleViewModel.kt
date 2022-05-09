@@ -20,11 +20,18 @@ class ScheduleViewModel : ViewModel() {
     }
     private val _classSchedules = MutableLiveData<MutableList<Schedule>>()
     private val _schedule = MutableLiveData<Schedule>()
+    private val _allClassSchedules = MutableLiveData<MutableList<Schedule>>()
+
     val classSchedules : LiveData<MutableList<Schedule>>
         get() = _classSchedules
     val schedule : LiveData<Schedule>
         get() = _schedule
+    val allClassSchedules : LiveData<MutableList<Schedule>>
+        get() = _allClassSchedules
 
+    fun setAllClassSchedules (list:MutableList<Schedule>) {
+        _allClassSchedules.value = list
+    }
     fun setClassSchedules(list : MutableList<Schedule>){
         _classSchedules.value = list
     }
@@ -67,6 +74,18 @@ class ScheduleViewModel : ViewModel() {
             if(response.code() == 200){
                 if(res!=null){
                     setSchedule(res)
+                }
+            }
+        }
+    }
+
+    suspend fun getAllClassSchedules(id:Int){
+        val response = ScheduleService().getAllMyClassSchedule(id)
+        viewModelScope.launch {
+            val res = response.body()
+            if(response.code() == 200){
+                if(res!=null){
+                    setAllClassSchedules(res)
                 }
             }
         }

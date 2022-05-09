@@ -62,6 +62,10 @@ fun bindImageUrl(imageView: ImageView, url:String?){
 fun textViewConvertPeople(textView: TextView, size:Int){
     textView.text = "${size}명"
 }
+@BindingAdapter("textViewWeek")
+fun textViewConvertWeek(textView: TextView, week:Int){
+    textView.text = "${week}주차"
+}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @BindingAdapter("converMilliSecondToString")

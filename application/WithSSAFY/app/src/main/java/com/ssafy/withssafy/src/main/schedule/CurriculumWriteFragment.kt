@@ -301,6 +301,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
         binding.fragmentCurrculWriteTypeFull.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
                 binding.fragmentCurrculWriteTypeClass.isChecked = false
+                roomId = 0
                 type = 1
             }else{
                 binding.fragmentCurrculWriteTypeClass.isChecked = true

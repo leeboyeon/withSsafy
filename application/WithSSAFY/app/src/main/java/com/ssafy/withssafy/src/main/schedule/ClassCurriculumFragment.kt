@@ -13,12 +13,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
 import androidx.core.view.get
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.tlaabs.timetableview.Sticker
 import com.github.tlaabs.timetableview.Time
 import com.github.tlaabs.timetableview.TimetableView
@@ -27,6 +30,7 @@ import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentClassCurriculumBinding
 import com.ssafy.withssafy.src.dto.Schedule
+import com.ssafy.withssafy.src.dto.WeekSchedule
 import com.ssafy.withssafy.src.network.service.ScheduleService
 import kotlinx.coroutines.runBlocking
 import retrofit2.Response
@@ -40,6 +44,7 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     private var isStudent = false
+    private lateinit var classAdapter : ClassCurrculAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -51,89 +56,118 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
         runBlocking {
             userViewModel.getUser(ApplicationClass.sharedPreferencesUtil.getUser().id, 1)
             scheduleViewModel.getClassSchedule(userViewModel.loginUserInfo.value!!.classRoomId)
+            scheduleViewModel.getAllClassSchedules(userViewModel.loginUserInfo.value!!.classRoomId)
         }
+
         setListener()
     }
 
     private fun setListener() {
-        initData()
         initTimeTable()
         if(studentId != null) { // 교육생
             isStudent = true
         } else { // 관리자
-            initButtons()
+//            initButtons()
             isStudent = false
         }
 
     }
-    private fun initButtons(){
-        timetable.setOnStickerSelectEventListener { idx, schedules ->
-            showOptionDialog(schedules[idx].classTitle,scheduleViewModel.liveScheduleIndex.value!!.get(idx))
-        }
-    }
-    private fun showOptionDialog(title:String, id:Int){
-        var dialog = Dialog(requireContext())
-        var dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_class_curriculum,null)
-        if(dialogView.parent!=null){
-            (dialogView.parent as ViewGroup).removeView(dialogView)
-        }
-        dialog.setContentView(dialogView)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialogView.findViewById<TextView>(R.id.fragment_classcurrcul_dialog_title).text = title
-        dialog.show()
+//    private fun initButtons(){
+//        timetable.setOnStickerSelectEventListener { idx, schedules ->
+//            showOptionDialog(schedules[idx].classTitle,scheduleViewModel.liveScheduleIndex.value!!.get(idx))
+//        }
+//    }
+//    private fun showOptionDialog(title:String, id:Int){
+//        var dialog = Dialog(requireContext())
+//        var dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_class_curriculum,null)
+//        if(dialogView.parent!=null){
+//            (dialogView.parent as ViewGroup).removeView(dialogView)
+//        }
+//        dialog.setContentView(dialogView)
+//        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//        dialogView.findViewById<TextView>(R.id.fragment_classcurrcul_dialog_title).text = title
+//        dialog.show()
+//
+//        dialogView.findViewById<AppCompatButton>(R.id.fragment_classcurrcul_dialog_modify).setOnClickListener {
+//            var scheduleId = bundleOf("scheduleId" to id)
+//            this@ClassCurriculumFragment.findNavController().navigate(R.id.curriculumWriteFragment, scheduleId)
+//            dialog.dismiss()
+//        }
+//        dialogView.findViewById<AppCompatButton>(R.id.fragment_classcurrcul_dialog_delete).setOnClickListener {
+//            val response : Response<Any?>
+//            runBlocking {
+//                response = ScheduleService().deleteSchedule(id)
+//            }
+//            if(response.code() == 204){
+//                showCustomToast("삭제되었습니다.")
+//            }
+//        }
+//        dialogView.findViewById<ImageButton>(R.id.fragment_classcurrcul_dialog_cancle).setOnClickListener {
+//            dialog.dismiss()
+//        }
+//    }
 
-        dialogView.findViewById<AppCompatButton>(R.id.fragment_classcurrcul_dialog_modify).setOnClickListener {
-            var scheduleId = bundleOf("scheduleId" to id)
-            this@ClassCurriculumFragment.findNavController().navigate(R.id.curriculumWriteFragment, scheduleId)
-            dialog.dismiss()
-        }
-        dialogView.findViewById<AppCompatButton>(R.id.fragment_classcurrcul_dialog_delete).setOnClickListener {
-            val response : Response<Any?>
-            runBlocking {
-                response = ScheduleService().deleteSchedule(id)
-            }
-            if(response.code() == 204){
-                showCustomToast("삭제되었습니다.")
-            }
-        }
-        dialogView.findViewById<ImageButton>(R.id.fragment_classcurrcul_dialog_cancle).setOnClickListener {
-            dialog.dismiss()
-        }
-    }
-    private fun initData(){
-        binding.fragmentScheduleAppBarTitle.text = "${scheduleViewModel.classSchedules.value!![0].weeks.toString()}주차"
-    }
     @SuppressLint("ResourceAsColor")
     private fun initTimeTable(){
-        timetable = binding.timetable
+        classAdapter = ClassCurrculAdapter(scheduleViewModel, requireContext())
 
-        scheduleViewModel.classSchedules.observe(viewLifecycleOwner){
-            var schedules = arrayListOf<com.github.tlaabs.timetableview.Schedule>()
-            var idx = 0
-            for(item in it){
-                var startTime = item.startDate.substring(item.startDate.length-8,item.startDate.length)
-                var startTimeHour = startTime.substring(0,2)
-                var startTimeMinute = startTime.substring(3,5)
-                var endTime = item.endDate.substring(item.endDate.length-8,item.endDate.length)
-                var endTimeHour = endTime.substring(0,2)
-                var endTimeMinute = endTime.substring(3,5)
-                var schedule = com.github.tlaabs.timetableview.Schedule()
+        scheduleViewModel.allClassSchedules.observe(viewLifecycleOwner) {
+            val weeksSchedules : MutableList<WeekSchedule> = mutableListOf()
+            val schedules : ArrayList<com.github.tlaabs.timetableview.Schedule> = arrayListOf()
+            if(it.isNotEmpty()){
+                var weeks = it[0].weeks
+                var idx = 0;
+                for(item in it){
 
-                schedule.startTime = Time(startTimeHour.toInt(), startTimeMinute.toInt())
-                schedule.endTime = Time(endTimeHour.toInt(), endTimeMinute.toInt())
-                schedule.day = findWeeks(item.startDate.substring(0,10))-1
-                schedule.classTitle = item.title
-                schedule.classPlace= ""
-                schedule.professorName = ""
+                    var startTime = item.startDate.substring(item.startDate.length-8,item.startDate.length)
+                    var startTimeHour = startTime.substring(0,2)
+                    var startTimeMinute = startTime.substring(3,5)
+                    var endTime = item.endDate.substring(item.endDate.length-8,item.endDate.length)
+                    var endTimeHour = endTime.substring(0,2)
+                    var endTimeMinute = endTime.substring(3,5)
+                    var schedule = com.github.tlaabs.timetableview.Schedule()
 
-                schedules.add(schedule)
-                scheduleViewModel.insertScheduleIndex(item.id)
+                    schedule.startTime = Time(startTimeHour.toInt(), startTimeMinute.toInt())
+                    schedule.endTime = Time(endTimeHour.toInt(), endTimeMinute.toInt())
+                    schedule.day = findWeeks(item.startDate.substring(0,10))-1
+                    schedule.classTitle = item.title
+                    schedule.classPlace= ""
+                    schedule.professorName = ""
+                    schedules.add(schedule)
+                    idx++;
+                    scheduleViewModel.insertScheduleIndex(item.id)
+                    if(idx == it.size){
+                        weeksSchedules.add(WeekSchedule(weeks, schedules))
+                        schedules.clear()
+                    }
+                    if(weeks != item.weeks){
+                        weeksSchedules.add(WeekSchedule(weeks, schedules))
+                        weeks = item.weeks
+                        schedules.clear()
+                    }
+                }
+                for(i in 0..weeksSchedules.size-1){
+                    Log.d(TAG, "initTimeTable: ${weeksSchedules[i]}")
+                }
             }
-            timetable.add(schedules)
+            classAdapter.scheduleList = weeksSchedules
         }
 
-        var json = timetable.createSaveData()
-        timetable.load(json)
+        binding.fragmentClassCurrculRv.apply {
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = classAdapter
+            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
+        classAdapter.setModifyItemClickListener(object: ClassCurrculAdapter.ModifyClickListener {
+            override fun onClick(scheduleId: Int) {
+                var scheduleIds = bundleOf("scheduleId" to scheduleId)
+                this@ClassCurriculumFragment.findNavController().navigate(R.id.curriculumWriteFragment, scheduleIds)
+            }
+
+        })
+
+//        var json = timetable.createSaveData()
+//        timetable.load(json)
     }
     private fun findWeeks(date:String):Int{
         var dateTime = LocalDate.parse(date)
