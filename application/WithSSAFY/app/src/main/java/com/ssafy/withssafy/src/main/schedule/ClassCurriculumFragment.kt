@@ -64,13 +64,7 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
 
     private fun setListener() {
         initTimeTable()
-        if(studentId != null) { // 교육생
-            isStudent = true
-        } else { // 관리자
-//            initButtons()
-            isStudent = false
-        }
-
+        isStudent = studentId != null
     }
 //    private fun initButtons(){
 //        timetable.setOnStickerSelectEventListener { idx, schedules ->
@@ -110,44 +104,48 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
     @SuppressLint("ResourceAsColor")
     private fun initTimeTable(){
         classAdapter = ClassCurrculAdapter(scheduleViewModel, requireContext())
+        val weeksSchedules : MutableList<WeekSchedule> = mutableListOf()
 
         scheduleViewModel.allClassSchedules.observe(viewLifecycleOwner) {
-            val weeksSchedules : MutableList<WeekSchedule> = mutableListOf()
-            val schedules : ArrayList<com.github.tlaabs.timetableview.Schedule> = arrayListOf()
-            if(it.isNotEmpty()){
-                var weeks = it[0].weeks
-                var idx = 0;
-                for(item in it){
+            var schedules : ArrayList<com.github.tlaabs.timetableview.Schedule> = arrayListOf()
+            var scheduleDtos : MutableList<Schedule> = mutableListOf()
+            var weeks = it[0].weeks
+            var lastWeeks = it[it.size-1].weeks
+            var idx = 0;
+            for(item in it){
 
-                    var startTime = item.startDate.substring(item.startDate.length-8,item.startDate.length)
-                    var startTimeHour = startTime.substring(0,2)
-                    var startTimeMinute = startTime.substring(3,5)
-                    var endTime = item.endDate.substring(item.endDate.length-8,item.endDate.length)
-                    var endTimeHour = endTime.substring(0,2)
-                    var endTimeMinute = endTime.substring(3,5)
-                    var schedule = com.github.tlaabs.timetableview.Schedule()
+                var startTime = item.startDate.substring(item.startDate.length-8,item.startDate.length)
+                var startTimeHour = startTime.substring(0,2)
+                var startTimeMinute = startTime.substring(3,5)
+                var endTime = item.endDate.substring(item.endDate.length-8,item.endDate.length)
+                var endTimeHour = endTime.substring(0,2)
+                var endTimeMinute = endTime.substring(3,5)
+                var schedule = com.github.tlaabs.timetableview.Schedule()
 
-                    schedule.startTime = Time(startTimeHour.toInt(), startTimeMinute.toInt())
-                    schedule.endTime = Time(endTimeHour.toInt(), endTimeMinute.toInt())
-                    schedule.day = findWeeks(item.startDate.substring(0,10))-1
-                    schedule.classTitle = item.title
-                    schedule.classPlace= ""
-                    schedule.professorName = ""
-                    schedules.add(schedule)
-                    idx++;
-                    scheduleViewModel.insertScheduleIndex(item.id)
-                    if(idx == it.size){
-                        weeksSchedules.add(WeekSchedule(weeks, schedules))
-                        schedules.clear()
-                    }
-                    if(weeks != item.weeks){
-                        weeksSchedules.add(WeekSchedule(weeks, schedules))
-                        weeks = item.weeks
-                        schedules.clear()
-                    }
+                schedule.startTime = Time(startTimeHour.toInt(), startTimeMinute.toInt())
+                schedule.endTime = Time(endTimeHour.toInt(), endTimeMinute.toInt())
+                schedule.day = findWeeks(item.startDate.substring(0,10))-1
+                schedule.classTitle = item.title
+                schedule.classPlace= ""
+                schedule.professorName = ""
+
+                idx++
+
+                if(weeks != item.weeks){
+                    Log.d(TAG, "initTimeTable: $weeks || $idx || ${schedules.size}")
+                    weeksSchedules.add(WeekSchedule(weeks, schedules,scheduleDtos))
+                    weeks = item.weeks
+                    schedules = arrayListOf()
+                    scheduleDtos = mutableListOf()
                 }
-                for(i in 0..weeksSchedules.size-1){
-                    Log.d(TAG, "initTimeTable: ${weeksSchedules[i]}")
+
+                schedules.add(schedule)
+                scheduleDtos.add(item)
+                scheduleViewModel.insertScheduleIndex(item.id)
+
+                if(idx == it.size){
+                    Log.d(TAG, "initTimeTable: $weeks || $idx || ${schedules.size}")
+                    weeksSchedules.add(WeekSchedule(weeks,schedules,scheduleDtos))
                 }
             }
             classAdapter.scheduleList = weeksSchedules

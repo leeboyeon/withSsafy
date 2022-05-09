@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.main.schedule
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -23,22 +24,20 @@ import com.ssafy.withssafy.src.network.service.ScheduleService
 import com.ssafy.withssafy.src.viewmodel.ScheduleViewModel
 import kotlinx.coroutines.runBlocking
 import retrofit2.Response
+import java.util.ArrayList
 
 class ClassCurrculAdapter(val scheduleViewModel: ScheduleViewModel, val context:Context) : RecyclerView.Adapter<ClassCurrculAdapter.ClassViewHolder>() {
     var scheduleList = mutableListOf<WeekSchedule>()
-    var scheduleDtoList = mutableListOf<com.ssafy.withssafy.src.dto.Schedule>()
     inner class ClassViewHolder(private val binding:ItemClassCurriculrumBinding) : RecyclerView.ViewHolder(binding.root){
+        var timetable = itemView.findViewById<TimetableView>(R.id.timetable)
         fun bind(schedule:WeekSchedule){
             binding.schedule = schedule
-            var timetable = itemView.findViewById<TimetableView>(R.id.timetable)
-            timetable.add(schedule.schedules)
 
+            timetable.add(schedule.schedules)
             var json = timetable.createSaveData()
             timetable.load(json)
 
-            timetable.setOnStickerSelectEventListener { idx, schedules ->
-                showOptionDialog(schedules[idx].classTitle,scheduleViewModel.liveScheduleIndex.value!!.get(idx))
-            }
+
             binding.executePendingBindings()
         }
     }
@@ -47,15 +46,21 @@ class ClassCurrculAdapter(val scheduleViewModel: ScheduleViewModel, val context:
         return ClassViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_class_curriculrum,parent,false))
     }
 
-    override fun onBindViewHolder(holder: ClassViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ClassViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.apply {
             bind(scheduleList[position])
+            timetable.setOnStickerSelectEventListener(object: TimetableView.OnStickerSelectedListener {
+                override fun OnStickerSelected(idx: Int, schedules: ArrayList<Schedule>?) {
+                    Log.d("TAG", "OnStickerSelected: ${schedules?.get(idx)!!.classTitle}")
+                }
+            })
         }
     }
 
     override fun getItemCount(): Int {
         return scheduleList.size
     }
+    @SuppressLint("InflateParams")
     private fun showOptionDialog(title:String, id:Int){
         var dialog = Dialog(context)
         var dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_class_curriculum,null)
