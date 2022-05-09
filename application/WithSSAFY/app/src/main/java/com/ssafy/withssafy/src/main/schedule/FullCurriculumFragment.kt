@@ -27,12 +27,22 @@ class FullCurriculumFragment : BaseFragment<FragmentFullCurriculumBinding>(Fragm
         initAdapter()
     }
     private fun initAdapter(){
-        calendarMonthAdapter = CalenderMonthAdapter(requireContext())
+        var date = arrayListOf<String>()
+        scheduleViewModel.allClassSchedules.observe(viewLifecycleOwner){
+
+            for(item in it){
+                date.add(item.startDate)
+            }
+
+        }
+        calendarMonthAdapter = CalenderMonthAdapter(requireContext(),date)
+
         binding.fragmentScheduleFullRv.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
             adapter = calendarMonthAdapter
             scrollToPosition(Int.MAX_VALUE/2)
         }
+
         val snap = PagerSnapHelper()
         if(binding.fragmentScheduleFullRv.onFlingListener == null){
             snap.attachToRecyclerView(binding.fragmentScheduleFullRv)

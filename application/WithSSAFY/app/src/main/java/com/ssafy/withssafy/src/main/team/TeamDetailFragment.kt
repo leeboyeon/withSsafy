@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
@@ -30,7 +32,7 @@ import kotlinx.coroutines.runBlocking
 private const val TAG = "TeamDetailFragment"
 class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamDetailBinding::bind, R.layout.fragment_team_detail) {
     private var studyId = 0
-    private lateinit var studyCommentAdapter: TeamCommentAdapter
+    private lateinit var studyCommentAdapter: CommentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +70,7 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
         }
     }
     private fun initAdapter(){
-        studyCommentAdapter = TeamCommentAdapter(requireContext())
+        studyCommentAdapter = CommentAdapter(requireContext())
         teamViewModel.studyComments.observe(viewLifecycleOwner){
             studyCommentAdapter.commentAllList = it
         }
@@ -76,12 +78,16 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
             studyCommentAdapter.commentList = it
         }
         studyCommentAdapter.postUserId = teamViewModel.study.value!!.user!!.id
-        studyCommentAdapter.setAddReplyItemClickListener(object: TeamCommentAdapter.ItemClickListener {
+        studyCommentAdapter.setAddReplyItemClickListener(object: CommentAdapter.ItemClickListener {
             override fun onClick(view: View, writerNick: String, position: Int, commentId: Int) {
 
             }
-
         })
+
+        binding.postDetailFragmentRvComment.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = studyCommentAdapter
+        }
     }
     private fun commentLayoutClickEvent(){
         binding.fragmentTeamDetailCommentInputLayout.setOnClickListener {

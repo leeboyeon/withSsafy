@@ -43,8 +43,9 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
         super.onViewCreated(view, savedInstanceState)
         runBlocking {
             userViewModel.getUser(ApplicationClass.sharedPreferencesUtil.getUser().id,1)
+            userViewModel.getClassRoomList()
         }
-        roomId = userViewModel.loginUserInfo.value!!.classRoomId
+
         setListener()
     }
     private fun setListener(){
@@ -170,6 +171,8 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
     }
     private fun insertSchedules(){
         var schedules = scheduleViewModel.liveScheduleBucket.value!!
+
+
         runBlocking {
             val response = ScheduleService().insertSchedule(schedules)
             if(response.code() == 204){
@@ -178,20 +181,37 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
         }
     }
     private fun insertBucket(){
+        if(titleType.equals("")){
+            titleType = binding.fragmentCurrculWriteTitleEdit.text.toString()
+        }
+        if(type == 0){
+            var schedule = Schedule(
+                classRoomId = roomId,
+                endDate = "${binding.fragmentCurrculWriteEndDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
+                0,
+                memo = "",
+                startDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
+                title = titleType,
+                ApplicationClass.sharedPreferencesUtil.getUser().id,
+                week
+            )
+            Log.d(TAG, "insertBucket: $schedule")
+            scheduleViewModel.insertScheduleBucket(schedule)
+        }else{
+            var schedule = Schedule(
+                classRoomId = roomId,
+                endDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
+                0,
+                memo = "",
+                startDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
+                title = titleType,
+                ApplicationClass.sharedPreferencesUtil.getUser().id,
+                0
+            )
+            Log.d(TAG, "insertBucket: $schedule")
+            scheduleViewModel.insertScheduleBucket(schedule)
+        }
 
-        Log.d(TAG, "insertBucket: $roomId")
-        var schedule = Schedule(
-            classRoomId = roomId,
-            endDate = "${binding.fragmentCurrculWriteEndDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
-            0,
-            memo = "",
-            startDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
-            title = titleType,
-            ApplicationClass.sharedPreferencesUtil.getUser().id,
-            week
-        )
-        Log.d(TAG, "insertBucket: $schedule")
-        scheduleViewModel.insertScheduleBucket(schedule)
     }
     private fun initTimePicker(){
         //종료시간 선택
@@ -296,6 +316,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
                 binding.fragmentCurrculWriteTypeFull.isChecked = true
                 type = 1
             }
+            initLayout(type)
         }
 
         binding.fragmentCurrculWriteTypeFull.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -307,6 +328,25 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
                 binding.fragmentCurrculWriteTypeClass.isChecked = true
                 type = 0
             }
+            initLayout(type)
+        }
+    }
+    private fun initLayout(type:Int){
+        //반체크
+        if(type == 0){
+            roomId = userViewModel.loginUserInfo.value!!.classRoomId
+            binding.constraintLayout16.visibility = View.VISIBLE
+            binding.roomIdSpinnerLayout.visibility = View.GONE
+            binding.fragmentCurrculWriteEndDateTv.visibility = View.VISIBLE
+            binding.fragmentCurrculWriteEndDateBtn.visibility = View.VISIBLE
+        }//전체체크
+        else if(type == 1){
+            binding.constraintLayout16.visibility = View.GONE
+            binding.roomIdSpinnerLayout.visibility = View.VISIBLE
+            binding.fragmentCurrculWriteEndDateTv.visibility = View.GONE
+            binding.fragmentCurrculWriteEndDateBtn.visibility = View.GONE
+
+            Log.d(TAG, "initLayout: ${userViewModel.classRommList}")
         }
     }
     private fun initSpinner(){
@@ -321,7 +361,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
             ) {
                 if(position == 6){
                     binding.fragmentCurrculWriteTitleEdit.visibility = View.VISIBLE
-                    titleType = binding.fragmentCurrculWriteTitleEdit.text.toString()
+                    titleType = ""
                 }else{
                     binding.fragmentCurrculWriteTitleEdit.visibility = View.GONE
                     titleType = binding.fragmentCurrculWriteTitleSpinner.getItemAtPosition(position).toString()
@@ -351,6 +391,33 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+        }
+        var rooms = arrayListOf<String>()
+        var roomIdxs = arrayListOf<Int>()
+        for(item in userViewModel.classRommList.value!!){
+            if(item.classDescription.equals("전체")){
+                rooms.add("${item.area}_${item.generation}기 ${item.classDescription}")
+                roomIdxs.add(item.id)
+            }
+
+        }
+        binding.roomListSpinner.adapter = ArrayAdapter(requireContext(), com.airbnb.lottie.R.layout.support_simple_spinner_dropdown_item,rooms)
+        binding.roomListSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+                roomId = roomIdxs[position]
+
+                Log.d(TAG, "onItemSelected: $roomId")
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
         }

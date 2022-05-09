@@ -17,7 +17,7 @@ import com.ssafy.withssafy.util.CommonUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CalenderMonthAdapter(val context: Context):RecyclerView.Adapter<CalenderMonthAdapter.MonthViewHolder>() {
+class CalenderMonthAdapter(val context: Context,var dates:ArrayList<String>):RecyclerView.Adapter<CalenderMonthAdapter.MonthViewHolder>() {
     val center = Int.MAX_VALUE/2
     private var calender = Calendar.getInstance()
 
