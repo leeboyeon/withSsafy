@@ -33,7 +33,39 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
             boardViewModel.getAllBoardType()
         }
 
+        initListener()
         initAdapter()
+    }
+
+    private fun initListener() {
+
+        // '내가 쓴 글' 클릭 이벤트
+        binding.boardListFragmentClMyWrotePost.setOnClickListener {
+            this@BoardListFragment.findNavController().navigate(R.id.action_boardListFragment_to_boardDetailFragment,
+                bundleOf("typeId" to -1)
+            )
+        }
+
+        // '댓글 단 글' 클릭 이벤트
+        binding.boardListFragmentClPostInComment.setOnClickListener {
+            this@BoardListFragment.findNavController().navigate(R.id.action_boardListFragment_to_boardDetailFragment,
+                bundleOf("typeId" to -2)
+            )
+        }
+
+        // '좋아요한 글' 클릭 이벤트
+        binding.boardListFragmentClClippingPost.setOnClickListener {
+            this@BoardListFragment.findNavController().navigate(R.id.action_boardListFragment_to_boardDetailFragment,
+                bundleOf("typeId" to -3)
+            )
+        }
+
+        // 'HOT 게시글' 클릭 이벤트
+        binding.boardListFragmentClHotBoard.setOnClickListener {
+            this@BoardListFragment.findNavController().navigate(R.id.action_boardListFragment_to_boardDetailFragment,
+                bundleOf("typeId" to -4)
+            )
+        }
     }
 
     private fun initAdapter() {

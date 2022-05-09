@@ -282,4 +282,38 @@ class BoardViewModel : ViewModel() {
     }
 
 
+    /**
+     * Hot 게시글 조회
+     */
+    private val _hotPostList = MutableLiveData<MutableList<Board>>()
+
+    val hotPostList : LiveData<MutableList<Board>>
+        get() = _hotPostList
+
+    private fun setHotPost(list: MutableList<Board>) = viewModelScope.launch {
+        _hotPostList.value = list
+    }
+
+    suspend fun getHotPostList() {
+        try {
+            val response = BoardService().getHotPostList()
+
+            viewModelScope.launch {
+                if(response.isSuccessful) {
+                    val res = response.body()
+                    if(res != null) {
+                        setHotPost(res as MutableList<Board>)
+                    } else {
+                        Log.d(TAG, "getHotPostList: $response", )
+                    }
+                } else {
+                    Log.e(TAG, "getHotPostList: 통신 실패", )
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "getHotPostList ${e.message()}", )
+        }
+    }
+
+
 }
