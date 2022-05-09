@@ -72,6 +72,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
             boardViewModel.getCommentList(postId)
         }
 
+
         initDataBinding()
         initListener()
         initCommentRecyclerView()
@@ -234,7 +235,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
      */
     private fun initCommentRecyclerView() {
 
-        commentAdapter = CommentAdapter(requireContext(), boardViewModel)
+        commentAdapter = CommentAdapter(requireContext())
 
         binding.postDetailFragmentRvComment.apply {
             layoutManager = LinearLayoutManager(requireContext())

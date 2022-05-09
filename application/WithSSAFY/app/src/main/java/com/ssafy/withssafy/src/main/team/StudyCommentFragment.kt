@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -22,7 +21,6 @@ import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.board.CommentAdapter
 import com.ssafy.withssafy.src.network.service.StudyService
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import retrofit2.Response
@@ -33,7 +31,7 @@ private const val TAG = "StudyCommentFragment"
 class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentStudyCommentBinding::bind,R.layout.fragment_study_comment) {
     lateinit var mainActivity:MainActivity
     private lateinit var mInputMethodManager: InputMethodManager
-    private lateinit var studyCommentAdapter : TeamCommentAdapter
+    private lateinit var studyCommentAdapter : CommentAdapter
 
     private var studyId by Delegates.notNull<Int>()
     private var parentId = -1
@@ -45,6 +43,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
         super.onAttach(context)
         mainActivity = context as MainActivity
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -62,32 +61,41 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
         }
         setListener()
     }
+
     private fun setListener(){
         initButtons()
         initAdapter()
         layoutListener()
+        insertCommentAndReply()
     }
+
     private fun initButtons(){
         binding.studyCommentFragmentIbBack.setOnClickListener {
             this@StudyCommentFragment.findNavController().popBackStack()
         }
     }
+
     private fun initAdapter(){
-        studyCommentAdapter = TeamCommentAdapter(requireContext())
+        studyCommentAdapter = CommentAdapter(requireContext())
         binding.studyCommentFragmentRvComment.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = studyCommentAdapter
             adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
+
         teamViewModel.studyParentComments.observe(viewLifecycleOwner){
             studyCommentAdapter.commentList = it
         }
+
         teamViewModel.studyComments.observe(viewLifecycleOwner){
             studyCommentAdapter.commentAllList = it
         }
-        studyCommentAdapter.postUserId = teamViewModel.study.value!!.userId
 
-        studyCommentAdapter.setAddReplyItemClickListener(object : TeamCommentAdapter.ItemClickListener {
+        studyCommentAdapter.postUserId = teamViewModel.study.value!!.user!!.id
+        Log.d(TAG, "initAdapter: ${studyCommentAdapter.postUserId}")
+
+        // 댓글, 대댓글 작성 클릭 이벤트
+        studyCommentAdapter.setAddReplyItemClickListener(object : CommentAdapter.ItemClickListener {
             override fun onClick(view: View, writerNick: String, position: Int, commentId: Int) {
                 showKeyboard(binding.studyCommentFragmentEtComment)
                 binding.studyCommentFragmentTvWriterNick.visibility = View.VISIBLE
@@ -97,9 +105,65 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
 
                 insertCommentAndReply()
             }
+        })
 
+        // 댓글 수정 클릭 이벤트
+        studyCommentAdapter.setModifyItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 댓글 삭제 클릭 이벤트
+        studyCommentAdapter.setDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 댓글 작성자에게 쪽지 보내기 클릭 이벤트
+        studyCommentAdapter.setSendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 댓글 신고 클릭 이벤트
+        studyCommentAdapter.setReportItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 대댓글 수정 클릭 이벤트
+        studyCommentAdapter.setReplyModifyItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 대댓글 삭제 클릭 이벤트
+        studyCommentAdapter.setReplyDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 대댓글 작성자에게 쪽지 보내기 클릭 이벤트
+        studyCommentAdapter.setReplySendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
+        })
+
+        // 대댓글 신고 클릭 이벤트
+        studyCommentAdapter.setReplyReportItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, userId: Int) {
+
+            }
         })
     }
+
     private fun insertCommentAndReply(){
         binding.studyCommentFragmentTvConfirm.onThrottleClick{
             val commentContent = binding.studyCommentFragmentEtComment.text.toString()
@@ -115,17 +179,17 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
                     runBlocking {
                         response = StudyService().insertStudyComment(comment)
                     }
-                        if(response.isSuccessful){
-                            showCustomToast("댓글 등록 성공")
-                            runBlocking {
-                                teamViewModel.getStudyCommentByBoardId(studyId)
-                            }
-                            studyCommentAdapter.notifyDataSetChanged()
-                            clearEditText()
-                            clearFocus(mainActivity)
-                        }else{
-                            Log.d(TAG, "insertCommentAndReply: ")
+                    if(response.isSuccessful){
+                        showCustomToast("댓글 등록 성공")
+                        runBlocking {
+                            teamViewModel.getStudyCommentByBoardId(studyId)
                         }
+                        studyCommentAdapter.notifyDataSetChanged()
+                        clearEditText()
+                        clearFocus(mainActivity)
+                    }else{
+                        Log.d(TAG, "insertCommentAndReply: ")
+                    }
 
                 }catch (e:HttpException){
                     Log.e(TAG, "insertCommentAndReply: ${e.message()}", )
@@ -156,6 +220,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
             }
         }.addDisposable()
     }
+
     /**
      * content 길이 체크
      * @param input
@@ -163,6 +228,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
     private fun contentLenChk(input: String) : Boolean {
         return !(input.trim().isEmpty() || input.length > 255)
     }
+
     /**
      * RxBinding의 Throttle 기능 사용하는 Button 함수
      * @param throttleSecond 해당 시간동안 중복 클릭 방지 (기본으로 1초)
@@ -187,6 +253,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
             InputMethodManager.SHOW_FORCED or InputMethodManager.HIDE_IMPLICIT_ONLY
         )
     }
+
     /**
      * 댓글 조회 레이아웃에 키보드 감지 리스너 등록
      */
@@ -195,6 +262,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
             mOnGlobalLayoutListener
         )
     }
+
     /**
      * 키보드 UP/DOWN 감지 리스너
      */
@@ -217,6 +285,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
             }
         }
     }
+
     private fun clearFocus(activity: Activity) {
         val v: View = activity.currentFocus ?: return
         val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -225,6 +294,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
         activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         clearEditText()
     }
+
     /**
      * 댓글 주인 nick 초기화 및 comment text 초기화
      */
@@ -233,12 +303,15 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
         binding.studyCommentFragmentTvWriterNick.text = ""
         binding.studyCommentFragmentEtComment.setText("")
     }
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            StudyCommentFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+
+
+    override fun onStop() {
+        super.onStop()
+        binding.studyCommentFragment.viewTreeObserver.removeOnGlobalLayoutListener(mOnGlobalLayoutListener)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivity.hideBottomNavi(false)
     }
 }
