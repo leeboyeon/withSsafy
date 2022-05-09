@@ -43,4 +43,8 @@ public class SbComment {
         this.content = content;
         this.write_dt = write_dt;
     }
+
+    public void updateStudyBoard(StudyBoard studyBoard){
+        this.studyBoard = studyBoard;
+    }
 }
