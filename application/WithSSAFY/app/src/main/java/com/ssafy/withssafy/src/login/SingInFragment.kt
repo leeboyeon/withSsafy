@@ -73,12 +73,12 @@ class SingInFragment : BaseFragment<FragmentSingInBinding>(FragmentSingInBinding
     inner class LoginCallback: RetrofitCallback<UserInfoResponse> {
         override fun onSuccess(code: Int, user: UserInfoResponse) {
             if (code == 200) {
-                Log.d(TAG, "onSuccess: ${user.id}")
+                Log.d(TAG, "onSuccess: ${user}")
                 if(user.studentId != null && user.state == 0) {
                     showCustomToast("관리자 승인이 진행중입니다.")
                 } else {
                     showCustomToast("로그인 되었습니다.")
-                    ApplicationClass.sharedPreferencesUtil.addUser(User(user.id, user.password, user.deviceToken, user.studentId))
+                    ApplicationClass.sharedPreferencesUtil.addUser(User(user.id, user.password, user.deviceToken, user.studentId), user.classRoomDto.id)
                     if(binding.signInFragmentCbAutoLogin.isChecked) {
                         ApplicationClass.sharedPreferencesUtil.setAutoLogin(user.id)
                     }
