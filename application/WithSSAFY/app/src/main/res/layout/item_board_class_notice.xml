@@ -8,7 +8,7 @@
 
         <variable
             name="user"
-            type="com.ssafy.withssafy.src.dto.User" />
+            type="com.ssafy.withssafy.src.network.response.UserAuthResponse" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
             android:id="@+id/boardClassNoticeItem_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="김싸피"
+            android:text="@{user.user.name}"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,9 +33,8 @@
             android:id="@+id/boardClassNoticeItem_auth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="컨설턴트"
+            authConvert="@{user.auth}"
             android:textColor="@color/black"
-            android:layout_marginStart="5dp"
             app:layout_constraintStart_toEndOf="@+id/boardClassNoticeItem_name"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

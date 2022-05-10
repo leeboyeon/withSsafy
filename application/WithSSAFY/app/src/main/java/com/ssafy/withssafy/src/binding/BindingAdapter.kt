@@ -319,4 +319,15 @@ fun bindingCNoticeList(recyclerView: RecyclerView, data:List<Notice>?){
     adapter.list = data as MutableList<Notice>
     adapter.notifyDataSetChanged()
 }
+@BindingAdapter("authConvert")
+fun bindingAuthConvert(textView: TextView, auth:Int){
+    if(auth == 0) {
+        textView.text = "(관리자)"
+    } else if(auth == 1) {
+        textView.text = "(컨설턴트)"
+    } else if(auth == 2) {
+        textView.text = "(프로)"
+    }
+
+}
 

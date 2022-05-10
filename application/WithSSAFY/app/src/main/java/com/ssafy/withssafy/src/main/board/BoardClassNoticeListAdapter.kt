@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.main.board
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,24 +18,13 @@ import kotlinx.coroutines.runBlocking
 class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLifecycleOwner: LifecycleOwner): RecyclerView.Adapter<BoardClassNoticeListAdapter.BoardClassNoticeListViewHolder>() {
     var list = mutableListOf<Notice>()
     inner class BoardClassNoticeListViewHolder(private val binding: ItemClassNoticeBinding ) : RecyclerView.ViewHolder(binding.root) {
-        var nameTxt = binding.itemClassNoticeName
-        var authTxt = binding.itemClassNoticeAuth
         fun bind(notice : Notice) {
             binding.notice = notice
-            binding.executePendingBindings()
             runBlocking {
                 userViewModel.getUserInfoAuth(notice.userId)
             }
-            userViewModel.userInfoAuth.observe(viewLifecycleOwner) {
-                nameTxt.setText(it.user.name)
-                if(it.auth == 0) {
-                    authTxt.setText("(관리자)")
-                } else if(it.auth == 1) {
-                    authTxt.setText("(컨설턴트)")
-                } else if(it.auth == 2) {
-                    authTxt.setText("(프로)")
-                }
-            }
+            binding.user = userViewModel.userInfoAuth.value!!
+            binding.executePendingBindings()
 
         }
     }

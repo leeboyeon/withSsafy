@@ -141,7 +141,6 @@ class HomeFragment : Fragment(){
         noticeViewModel.classNoticeList.observe(viewLifecycleOwner) {
             Log.d(TAG, "initAdapter BoardClassNoticeAdapter: $it")
             boardClassNoticeAdapter.list = it
-            boardClassNoticeAdapter.notifyDataSetChanged()
         }
 
         binding.homeRvClassNotice.apply {
