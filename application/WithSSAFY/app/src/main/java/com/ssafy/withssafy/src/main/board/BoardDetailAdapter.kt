@@ -21,13 +21,17 @@ class BoardDetailAdapter (val context: Context, val typeId : Int) : RecyclerView
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
     inner class ViewHolder(private val binding: ItemPostListBinding) : RecyclerView.ViewHolder(binding.root) {
+
         val heartBtn = binding.postListItemLottieHeart
         val commentBtn = binding.postListItemLlComment
         val moreBtn = binding.postListItemBtnMore
         val item = binding.postListItemCl
 
         fun bindInfo(board: Board) {
-
+            if(typeId > 0) {
+                binding.postListItemTvBoardType.visibility = View.GONE
+                binding.postListItemViewLine1.visibility = View.GONE
+            }
             for (item in userLikePost) {   // 로그인 유저가 좋아요 누른 게시글 표시
                 if(board.id == item.id) {
                     heartBtn.progress = 0.5F
