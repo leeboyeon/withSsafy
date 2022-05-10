@@ -193,7 +193,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
                 popup.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.sendNote -> {  // 쪽지 보내기 -> 댓글 작성자 id 필요
-
+                            mainActivity.showDialogSendMessage(postWriteId,ApplicationClass.sharedPreferencesUtil.getUser().id)
                             return@setOnMenuItemClickListener true
                         }
                         R.id.report -> {    // 신고 -> 댓글 작성자 id, 댓글 id
@@ -281,7 +281,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         // 댓글 작성자에게 쪽지 보내기 클릭 이벤트
         commentAdapter.setSendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
             override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+                mainActivity.showDialogSendMessage(userId,ApplicationClass.sharedPreferencesUtil.getUser().id)
             }
         })
 
@@ -307,7 +307,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         // 대댓글 작성자에게 쪽지 보내기 클릭 이벤트
         commentAdapter.setReplySendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
             override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+                mainActivity.showDialogSendMessage(userId,ApplicationClass.sharedPreferencesUtil.getUser().id)
             }
         })
 

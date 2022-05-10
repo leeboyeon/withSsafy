@@ -2,11 +2,14 @@ package com.ssafy.withssafy.src.main
 
 import android.Manifest
 import android.app.Activity
+import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -14,10 +17,14 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -41,6 +48,7 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseActivity
 import com.ssafy.withssafy.databinding.ActivityMainBinding
+import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.login.SingInActivity
 import com.ssafy.withssafy.src.main.board.BoardFragment
@@ -49,7 +57,9 @@ import com.ssafy.withssafy.src.main.notification.NotificationFragment
 import com.ssafy.withssafy.src.main.schedule.ScheduleFragment
 import com.ssafy.withssafy.src.main.team.TeamFragment
 import com.ssafy.withssafy.src.network.api.FCMApi
+import com.ssafy.withssafy.src.network.service.MessageService
 import com.ssafy.withssafy.src.viewmodel.BoardViewModel
+import com.ssafy.withssafy.src.viewmodel.MessageViewModel
 import com.ssafy.withssafy.src.viewmodel.NoticeViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -85,51 +95,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initNavigation()
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.main_frame_layout, HomeFragment())
-//            .commit()
-//
-//        bottomNavigation = binding.mainBottomNav
-//        bottomNavigation.setOnItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.homeFragment -> {
-//                    supportFragmentManager.beginTransaction()
-//                        .replace(R.id.main_frame_layout, HomeFragment())
-//                        .commit()
-//                    true
-//                }
-//                R.id.scheduleFragment -> {
-//                    supportFragmentManager.beginTransaction()
-//                        .replace(R.id.main_frame_layout, ScheduleFragment())
-//                        .commit()
-//                    true
-//                }
-//                R.id.boardFragment -> {
-//                    supportFragmentManager.beginTransaction()
-//                        .replace(R.id.main_frame_layout, BoardFragment())
-//                        .commit()
-//                    true
-//                }
-//                R.id.notificationFragment -> {
-//                    supportFragmentManager.beginTransaction()
-//                        .replace(R.id.main_frame_layout, NotificationFragment())
-//                        .commit()
-//                    true
-//                }
-//                R.id.teamFragment -> {
-//                    supportFragmentManager.beginTransaction()
-//                        .replace(R.id.main_frame_layout, TeamFragment())
-//                        .commit()
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-//        bottomNavigation.setOnItemReselectedListener { item ->
-//            if(bottomNavigation.selectedItemId != item.itemId) {
-//                bottomNavigation.selectedItemId = item.itemId
-//            }
-//        }
     }
 
     /**
@@ -283,6 +248,45 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
+    fun showDialogSendMessage(toId:Int,fromId:Int) : Boolean{
+        var flag = false
+        var dialog = Dialog(this)
+        var dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_send_message,null)
+        if(dialogView.parent!=null){
+            (dialogView.parent as ViewGroup).removeView(dialogView)
+        }
+        dialog.setContentView(dialogView)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        var params = dialog.window?.attributes
+        params?.width = WindowManager.LayoutParams.MATCH_PARENT
+        params?.height = WindowManager.LayoutParams.MATCH_PARENT
+        dialog.window?.attributes = params
+        dialog.show()
+        dialogView.findViewById<ImageButton>(R.id.fragment_messageDetail_dialog_appBarPrev).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialogView.findViewById<TextView>(R.id.fragment_messageDetail_dialog_insert).setOnClickListener {
+            var message = Message(
+                dialogView.findViewById<EditText>(R.id.fragment_messageDetail_dialog_sendMsgContent).text.toString(),
+                0,
+                ApplicationClass.sharedPreferencesUtil.getUser().id,
+                toId
+            )
 
+            runBlocking {
+                val response = MessageService().insertMessage(message)
+                if(response.code() == 204){
+                    dialog.dismiss()
+                    MessageViewModel().getMessageTalk(ApplicationClass.sharedPreferencesUtil.getUser().id, fromId)
+//                    detailAdapter.notifyDataSetChanged()
+                    flag = true
+                }
+            }
+        }
+        if(flag){
+            return true
+        }
+        return false
+    }
 
 }

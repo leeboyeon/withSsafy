@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.main.notification
 
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentMessageDetailBinding
 import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.study.StudyMemberRequest
+import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.MessageService
 import com.ssafy.withssafy.src.network.service.StudyService
 import kotlinx.coroutines.runBlocking
@@ -31,6 +33,7 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
     private var fromId = 0
     private var toId = 0
     private lateinit var detailAdapter: MessageDetailAdapter
+    private lateinit var mainActivity:MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,6 +42,10 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = messageViewModel
@@ -61,7 +68,9 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
             this@MessageDetailFragment.findNavController().popBackStack()
         }
         binding.fragmentMessageDetailSendMsg.setOnClickListener {
-            showDialogSendMessage()
+            if(mainActivity.showDialogSendMessage(toId, fromId)){
+                detailAdapter.notifyDataSetChanged()
+            }
         }
     }
     private fun initAdapter(){
@@ -139,39 +148,7 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
             dialog.dismiss()
         }
     }
-    private fun showDialogSendMessage(){
-        var dialog = Dialog(requireContext())
-        var dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_send_message,null)
-        if(dialogView.parent!=null){
-            (dialogView.parent as ViewGroup).removeView(dialogView)
-        }
-        dialog.setContentView(dialogView)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        var params = dialog.window?.attributes
-        params?.width = WindowManager.LayoutParams.MATCH_PARENT
-        params?.height = WindowManager.LayoutParams.MATCH_PARENT
-        dialog.window?.attributes = params
-        dialog.show()
-        dialogView.findViewById<ImageButton>(R.id.fragment_messageDetail_dialog_appBarPrev).setOnClickListener {
-            dialog.dismiss()
-        }
-        dialogView.findViewById<TextView>(R.id.fragment_messageDetail_dialog_insert).setOnClickListener {
-            var message = Message(
-                dialogView.findViewById<EditText>(R.id.fragment_messageDetail_dialog_sendMsgContent).text.toString(),
-                0,
-                ApplicationClass.sharedPreferencesUtil.getUser().id,
-                toId
-            )
-            runBlocking {
-                val response = MessageService().insertMessage(message)
-                if(response.code() == 204){
-                    dialog.dismiss()
-                    messageViewModel.getMessageTalk(ApplicationClass.sharedPreferencesUtil.getUser().id, fromId)
-                    detailAdapter.notifyDataSetChanged()
-                }
-            }
-        }
-    }
+
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
