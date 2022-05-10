@@ -1,4 +1,4 @@
-package com.ssafy.withssafy.repository;
+package com.ssafy.withssafy.repository.board;
 
 import com.ssafy.withssafy.entity.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardCustomRepository {
     List<Board> findAllByTypeId(Long typeId);
 
     @Query("SELECT board FROM Board board WHERE board.likes.size >= 10 ORDER BY board.likes.size DESC")

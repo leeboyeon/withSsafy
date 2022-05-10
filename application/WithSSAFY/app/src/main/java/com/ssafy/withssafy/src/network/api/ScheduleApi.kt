@@ -47,4 +47,19 @@ interface ScheduleApi {
      * */
     @GET("/schedule/myclass/all/{id}")
     suspend fun getAllMyClassSchedule(@Path("id")id:Int) : Response<MutableList<Schedule>>
+    /**
+     * 내 기수 전체 일정 조회
+     * Get All Generation Schedule
+     * @author : LeeBoYeon
+     * */
+    @GET("/schedule/all/{id}")
+    suspend fun getAllMyGenarateSchedule(@Path("id")id:Int) : Response<MutableList<Schedule>>
+    /**
+     * 내 기수 특정 날짜 전체 일정 조회
+     * Get All Generation Schedule by Date
+     * @author : LeeBoYeon
+     * */
+    @GET("/schedule/all/day/{id}")
+    suspend fun getGenarateScheduleDetail(@Path("id")id:Int,@Query("day")day:String) : Response<MutableList<Schedule>>
+
 }

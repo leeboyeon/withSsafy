@@ -29,9 +29,11 @@ public class BoardController {
     }
 
     @GetMapping("/q")
-    @ApiOperation(value = "게시물 필터 후 조회")
-    public ResponseEntity<List<BoardResponse>> getBoardsByType(@RequestParam(value = "type") Long typeId) {
-        return new ResponseEntity<>(boardService.getBoardsByTypeId(typeId), HttpStatus.OK);
+    @ApiOperation(value = "게시물 필터 후 조회 (type)")
+    public ResponseEntity<List<BoardResponse>> getBoardsByType(
+            @RequestParam(value = "type", required = false) Long typeId
+            , @RequestParam(value = "UID", required = false) Long userId) {
+        return new ResponseEntity<>(boardService.getBoardsByFilter(typeId, userId), HttpStatus.OK);
     }
 
     @GetMapping("/hot-board")

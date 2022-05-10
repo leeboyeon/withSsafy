@@ -19,7 +19,7 @@ public class Manager {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
     @Builder
     public Manager(Long id, int auth, User user){

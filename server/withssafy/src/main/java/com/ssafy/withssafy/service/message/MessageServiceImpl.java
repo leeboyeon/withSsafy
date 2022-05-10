@@ -53,9 +53,9 @@ public class MessageServiceImpl implements MessageService{
         List<MessageDto> res = new ArrayList<>();
         Set<Long> set = new HashSet<>();
         for(Message m: messages){
-            Long to = m.getU_to().getId();
-            Long from = m.getU_from().getId();
-            Long a = to==id?from:to;
+            long to = m.getU_to().getId();
+            long from = m.getU_from().getId();
+            long a = to==id?from:to;
             if(!set.contains(a)){
                 set.add(a);
                 res.add(modelMapper.map(m, MessageDto.class));

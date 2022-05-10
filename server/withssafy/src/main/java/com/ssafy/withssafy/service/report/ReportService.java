@@ -11,7 +11,7 @@ import com.ssafy.withssafy.entity.Report;
 import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
-import com.ssafy.withssafy.repository.BoardRepository;
+import com.ssafy.withssafy.repository.board.BoardRepository;
 import com.ssafy.withssafy.repository.CommentRepository;
 import com.ssafy.withssafy.repository.ReportRepository;
 import com.ssafy.withssafy.repository.UserRepository;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional

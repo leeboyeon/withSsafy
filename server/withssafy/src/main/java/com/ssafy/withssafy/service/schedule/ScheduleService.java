@@ -78,4 +78,10 @@ public class ScheduleService {
         return recruits.stream().map(recruit -> modelMapper.map(recruit, ScheduleDto.class))
                 .collect(Collectors.toList());
     }
+
+    public List<ScheduleDto> findAllScheduleByDay(Long id, LocalDate date){
+        List<Schedule> recruits = scheduleRepository.findAllGenerationNoticyByDay(id, date);
+        return recruits.stream().map(recruit -> modelMapper.map(recruit, ScheduleDto.class))
+                .collect(Collectors.toList());
+    }
 }

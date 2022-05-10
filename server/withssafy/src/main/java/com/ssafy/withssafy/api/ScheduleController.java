@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -75,6 +76,16 @@ public class ScheduleController {
     @ApiOperation(value = "내 기수 전체 일정 조회")
     public ResponseEntity<List<ScheduleDto>> getAllSchedule(@ApiParam("반 id") @PathVariable Long id){
         List<ScheduleDto> scheduleDtoList = scheduleService.findAllSchedule(id);
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleDtoList);
+    }
+
+    @GetMapping("/all/day/{id}")
+    @ApiOperation(value = "내 기수 전체 일정 특정 날짜 조회")
+    public ResponseEntity<List<ScheduleDto>> getAllScheduleByDay(@ApiParam("반 id") @PathVariable Long id,
+                                                                 @ApiParam("yyyy-MM-dd") @RequestParam String day){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(day,formatter);
+        List<ScheduleDto> scheduleDtoList = scheduleService.findAllScheduleByDay(id, date);
         return ResponseEntity.status(HttpStatus.OK).body(scheduleDtoList);
     }
 }
