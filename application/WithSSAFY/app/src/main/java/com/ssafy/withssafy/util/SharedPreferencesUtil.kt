@@ -10,19 +10,21 @@ class SharedPreferencesUtil (context: Context) {
     var preferences: SharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     //사용자 정보 저장
-    fun addUser(user: User){
+    fun addUser(user: User, classRoomId : Int){
         val editor = preferences.edit()
         editor.putInt("id", user.id)
         editor.putString("token", user.deviceToken)
         editor.putString("studentId", user.studentId)
+        editor.putInt("classRoomId", classRoomId)
         editor.apply()
     }
 
     fun getUser(): User {
         val id = preferences.getInt("id", 0)
         val studentId = preferences.getString("studentId", null)
+        val classRoomId = preferences.getInt("classRoomId", 0)
         if (id != 0) {
-            return User(id, studentId)
+            return User(id, studentId, classRoomId)
         } else {
             return User()
         }

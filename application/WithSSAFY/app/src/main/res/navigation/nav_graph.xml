@@ -287,4 +287,13 @@
             app:argType="integer"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/boardClassNoticeListFragment"
+        android:name="com.ssafy.withssafy.src.main.board.BoardClassNoticeListFragment"
+        android:label="fragment_board_class_notice_list"
+        tools:layout="@layout/fragment_board_class_notice_list">
+
+    </fragment>
+
+
 </navigation>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="study"
+            type="com.ssafy.withssafy.src.dto.notice.Notice" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/item_class_notice_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="김싸피"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/item_class_notice_auth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(프로)"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toEndOf="@id/item_class_notice_name"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/item_class_notice_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="05:26"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/item_class_notice_auth"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/grey"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/item_class_notice_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="9시 라이브방송 접속 안내"
+        app:layout_constraintTop_toBottomOf="@id/item_class_notice_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/item_class_notice_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="에듀싸피를 통해 접속해주세요!"
+        app:layout_constraintTop_toBottomOf="@id/item_class_notice_title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black" />
+
+    <ImageView
+        android:id="@+id/item_class_notice_img"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="5dp"
+        android:scaleType="fitXY"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_class_notice_content"
+        tools:src="@tools:sample/avatars" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
