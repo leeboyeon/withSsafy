@@ -7,8 +7,8 @@ import com.ssafy.withssafy.entity.Board;
 import com.ssafy.withssafy.entity.LikeManagement;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
-import com.ssafy.withssafy.repository.BoardRepository;
 import com.ssafy.withssafy.repository.LikeManagementRepository;
+import com.ssafy.withssafy.repository.board.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -67,6 +67,13 @@ public class BoardService {
 
     public List<BoardResponse> getBoardsByTypeId(Long typeId) {
         List<Board> boards = boardRepository.findAllByTypeId(typeId);
+
+        return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<BoardResponse> getBoardsByFilter(Long typeId, Long userId) {
+        List<Board> boards = boardRepository.findByDynamicQuery(typeId, userId);
 
         return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
                 .collect(Collectors.toList());
