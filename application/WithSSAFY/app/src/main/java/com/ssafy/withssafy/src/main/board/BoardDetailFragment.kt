@@ -1,10 +1,19 @@
 package com.ssafy.withssafy.src.main.board
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,8 +24,12 @@ import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardDetailBinding
 import com.ssafy.withssafy.src.dto.board.Board
 import com.ssafy.withssafy.src.dto.board.BoardType
+import com.ssafy.withssafy.src.dto.report.Report
+import com.ssafy.withssafy.src.dto.report.ReportRequest
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.BoardService
+import com.ssafy.withssafy.src.network.service.ReportService
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import retrofit2.Response
@@ -196,7 +209,7 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
         // 게시글 신고 클릭 이벤트
         boardDetailAdapter.setReportItemClickListener(object : BoardDetailAdapter.MenuClickListener {
             override fun onClick(position: Int, board: Board) {
-
+                mainActivity.showReportDialog(board.id, true)
             }
         })
     }
@@ -224,4 +237,5 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
             Log.e(TAG, "deletePost: ${e.response()}", )
         }
     }
+
 }

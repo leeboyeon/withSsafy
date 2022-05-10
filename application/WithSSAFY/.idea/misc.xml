@@ -20,8 +20,10 @@
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/bg_comment_input.xml" value="0.151" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/bg_comment_option.xml" value="0.238" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/comment.xml" value="0.238" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/drawable_button_stroke_left.xml" value="0.155" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/edit_background.xml" value="0.238" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/dialog_report.xml" value="0.31645569620253167" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/dialog_update_reply.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/footer_add_photo.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_board.xml" value="0.25364583333333335" />
@@ -64,20 +66,18 @@
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/dialog_team_request.xml" value="0.25" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_admin_job_write.xml" value="0.5" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_board.xml" value="0.14303733602421795" />
-        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_board_detail.xml" value="0.5" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_board_job.xml" value="0.5" />
-        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_board_list.xml" value="0.25" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_board_list.xml" value="0.22" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_board_notice.xml" value="0.25" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_board_notice_list.xml" value="0.33" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_class_curriculum.xml" value="0.3151041666666667" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_comment.xml" value="0.1" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_curriculum_write.xml" value="0.33" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_full_curriculum.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_job_detail.xml" value="0.33" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_message_detail.xml" value="0.33" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_noti_list.xml" value="0.16145307769929365" />
-        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_post_detail.xml" value="0.33" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_request.xml" value="0.16145307769929365" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_schedule.xml" value="0.22" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/fragment_sing_in.xml" value="0.25" />
@@ -94,7 +94,7 @@
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_message_detail_talk.xml" value="0.33" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_message_group.xml" value="0.3015625" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_notice_list.xml" value="0.25" />
-        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_post_list.xml" value="1.5" />
+        <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_post_list.xml" value="0.16145307769929365" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_reply_list.xml" value="0.16145307769929365" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_request_home_item.xml" value="0.4722222222222222" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/layout/item_schedule.xml" value="0.16145307769929365" />
