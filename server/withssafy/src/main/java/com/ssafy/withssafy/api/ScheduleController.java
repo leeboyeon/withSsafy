@@ -70,4 +70,11 @@ public class ScheduleController {
         List<ScheduleDto> scheduleDtoList = scheduleService.findAllMySchedule(id);
         return ResponseEntity.status(HttpStatus.OK).body(scheduleDtoList);
     }
+
+    @GetMapping("/all/{id}")
+    @ApiOperation(value = "내 기수 전체 일정 조회")
+    public ResponseEntity<List<ScheduleDto>> getAllSchedule(@ApiParam("반 id") @PathVariable Long id){
+        List<ScheduleDto> scheduleDtoList = scheduleService.findAllSchedule(id);
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleDtoList);
+    }
 }
