@@ -111,7 +111,7 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
     }
 
     private fun initSpinner() {
-        var typeList = arrayListOf("선택", "학습", "평가", "운영", "사이트", "기타")
+        var typeList = arrayListOf("선택", "학습", "평가", "운영", "사이트", "기타", "반별")
         var genList = arrayListOf("선택")
         var areaList = arrayListOf("선택", "전체", "서울", "대전", "광주", "구미", "부울경")
         var classList = arrayListOf("선택", "전체")

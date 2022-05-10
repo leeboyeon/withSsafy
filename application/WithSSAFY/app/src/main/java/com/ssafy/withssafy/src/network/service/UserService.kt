@@ -151,4 +151,6 @@ class UserService {
     suspend fun selectStateZeroUser() = RetrofitUtil.userService.selectStateZeroUser()
 
     suspend fun updateUserToken(userId: Int, token: String) = RetrofitUtil.userService.updateUserDeviceToken(userId, token)
+
+    suspend fun getUserStatus(userId: Int) = RetrofitUtil.userService.getUserStatus(userId)
 }

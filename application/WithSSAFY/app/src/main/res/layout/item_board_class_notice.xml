@@ -5,10 +5,14 @@
         <variable
             name="notice"
             type="com.ssafy.withssafy.src.dto.notice.Notice" />
+
+        <variable
+            name="user"
+            type="com.ssafy.withssafy.src.dto.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/boardListFragment_clHotBoard"
+        android:id="@+id/boardListFragment_classNoticeBoard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="3dp"
@@ -16,12 +20,23 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/boardNotiMustReadItem_category"
+            android:id="@+id/boardClassNoticeItem_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="학습"
+            android:text="김싸피"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/boardClassNoticeItem_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="컨설턴트"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@+id/boardClassNoticeItem_name"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -37,6 +52,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/boardNotiMustReadItem_category"/>
+            app:layout_constraintStart_toEndOf="@+id/boardClassNoticeItem_auth"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

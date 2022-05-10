@@ -16,6 +16,7 @@ import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.notice.Notice
 import com.ssafy.withssafy.src.dto.study.Study
+import com.ssafy.withssafy.src.main.board.BoardClassNoticeAdapter
 import com.ssafy.withssafy.src.main.board.BoardNoticeAllAdapter
 import com.ssafy.withssafy.src.main.board.BoardNoticeListAdapter
 import com.ssafy.withssafy.src.main.board.JobAdapter
@@ -233,7 +234,28 @@ fun bindingBoardNoticeAllList(recyclerView: RecyclerView, data:List<Notice>?){
     }else{
         adapter = recyclerView.adapter as BoardNoticeAllAdapter
     }
-    adapter.list = data as MutableList<Notice>
+    if(data == null) {
+        adapter.list = mutableListOf<Notice>()
+    } else {
+        adapter.list = data as MutableList<Notice>
+    }
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("boardClassNoticeListData")
+fun bindingClassNoticeList(recyclerView: RecyclerView, data:List<Notice>?){
+    var adapter = recyclerView.adapter as BoardClassNoticeAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as BoardClassNoticeAdapter
+    }
+    if(data == null) {
+        adapter.list = mutableListOf<Notice>()
+    } else {
+        adapter.list = data as MutableList<Notice>
+    }
     adapter.notifyDataSetChanged()
 }
 

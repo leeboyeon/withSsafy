@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.withssafy.src.dto.ClassRoom
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.network.response.UserAuthResponse
 import com.ssafy.withssafy.src.network.service.NoticeService
 import com.ssafy.withssafy.src.network.service.UserService
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class UserViewModel : ViewModel() {
     private val TAG = "UserViewModel_싸피"
@@ -24,6 +26,7 @@ class UserViewModel : ViewModel() {
     private val _classRoomInfo = MutableLiveData<ClassRoom>()
     private val _userInfo = MutableLiveData<User>()
     private val _stateZeroUserList = MutableLiveData<MutableList<User>>()
+    private val _userInfoAuth = MutableLiveData<UserAuthResponse>()
 
     val allUserList : LiveData<MutableList<User>>
         get() = _allUserList
@@ -45,6 +48,9 @@ class UserViewModel : ViewModel() {
 
     val stateZeroUserList : LiveData<MutableList<User>>
         get() = _stateZeroUserList
+
+    val userInfoAuth : LiveData<UserAuthResponse>
+        get() = _userInfoAuth
 
     private fun setAllUserList(userList : MutableList<User>) = viewModelScope.launch {
         _allUserList.value = userList
@@ -70,6 +76,10 @@ class UserViewModel : ViewModel() {
 
     private fun setStateZeroUserList(userList: MutableList<User>) = viewModelScope.launch {
         _stateZeroUserList.value = userList
+    }
+
+    private fun setUserInfoAuth(userInfoAuth : UserAuthResponse) = viewModelScope.launch {
+        _userInfoAuth.value = userInfoAuth
     }
 
     suspend fun getAllUserList() {
@@ -188,6 +198,25 @@ class UserViewModel : ViewModel() {
                     setClassRoomInfo(res)
                 }
             }
+        }
+    }
+
+    suspend fun getUserInfoAuth(userId: Int) {
+        try {
+            val response = UserService().getUserStatus(userId)
+            viewModelScope.launch {
+                var res = response.body()
+                if (response.code() == 200) {
+                    if (res != null) {
+                        setUserInfoAuth(res)
+                        Log.d(TAG, "getUserInfoAuth: $res")
+                    }
+                } else {
+                    Log.d(TAG, "Error : ${response.message()}")
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "getAllList: ${e.message()}", )
         }
     }
 

@@ -22,6 +22,7 @@ private const val TAG = "BoardNoticeFragment"
 class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoardNoticeBinding::bind, R.layout.fragment_board_notice) {
     private lateinit var mainActivity: MainActivity
     lateinit var boardNoticeAllAdapter: BoardNoticeAllAdapter
+    lateinit var boardClassNoticeAdapter: BoardClassNoticeAdapter
 
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
@@ -36,7 +37,6 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
         runBlocking {
             userViewModel.getClassRoom(userId)
             userViewModel.getClassRoomList()
-            noticeViewModel.getNoticeList(0)
         }
         initData()
         initSsafyRuleDetailToggle()
@@ -49,6 +49,9 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
      */
     private fun initData() {
         userViewModel.classRoomInfo.observe(viewLifecycleOwner) {
+            runBlocking {
+                noticeViewModel.getClassNoticeList(it.id)
+            }
             var gen = it.generation
             userViewModel.classRommList.value!!.forEach { classRoom ->
                 if(classRoom.generation == gen && classRoom.area == "전체" && classRoom.classDescription == "전체") {
@@ -117,7 +120,23 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
 
         })
 
+        boardClassNoticeAdapter = BoardClassNoticeAdapter(userViewModel, viewLifecycleOwner)
+        noticeViewModel.classNoticeList.observe(viewLifecycleOwner) {
+            Log.d(TAG, "initAdapter BoardClassNoticeAdapter: $it")
+            boardClassNoticeAdapter.list = it
+            boardClassNoticeAdapter.notifyDataSetChanged()
+        }
 
+        binding.boardNotiFragmentRvClassReadList.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = boardClassNoticeAdapter
+        }
+        boardClassNoticeAdapter.setItemClickListener(object : BoardClassNoticeAdapter.ItemClickListener {
+            override fun onClick(view: View, position: Int, id: Int) {
+                var noticeId = bundleOf("noticeId" to id)
+                //this@BoardNoticeFragment.findNavController().navigate(R.id.baordNoticeDetailFragment, noticeId)
+            }
+        })
     }
 
     private fun initSsafyRuleDetailToggle() {

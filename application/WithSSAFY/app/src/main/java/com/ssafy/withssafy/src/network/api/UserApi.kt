@@ -3,6 +3,7 @@ package com.ssafy.withssafy.src.network.api
 import com.ssafy.withssafy.src.dto.ClassRoom
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.network.response.UserAuthResponse
 import com.ssafy.withssafy.src.network.response.UserInfoResponse
 import retrofit2.Call
 import retrofit2.Response
@@ -68,5 +69,11 @@ interface UserApi {
      */
     @PATCH("user/manager/update-device-token")
     suspend fun updateUserDeviceToken(@Query("id") userId: Int, @Query("token") token: String) : Response<User>
+
+    /**
+     * user 이름, auth 조회
+     * */
+    @GET("user/manager/{userId}")
+    suspend fun getUserStatus(@Path("userId") userId: Int) : Response<UserAuthResponse>
 
 }
