@@ -16,5 +16,6 @@ class RetrofitUtil {
         val schduleApi = ApplicationClass.retrofit.create(ScheduleApi::class.java)
         val fcmService = ApplicationClass.retrofit.create(FCMApi::class.java)
         val noticeApi = ApplicationClass.retrofit.create(NoticeApi::class.java)
+        val reportApi = ApplicationClass.retrofit.create(ReportApi::class.java)
     }
 }

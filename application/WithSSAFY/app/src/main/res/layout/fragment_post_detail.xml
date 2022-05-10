@@ -26,8 +26,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="13dp"
-                android:layout_marginBottom="13dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginBottom="19dp"
                 android:background="@android:color/transparent"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_arrow_left"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{post.boardType.type}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/postDetailFragment_ibBack"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -55,12 +55,63 @@
                 android:background="@android:color/transparent"
                 android:scaleType="centerCrop"
                 android:visibility="visible"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
+                android:layout_marginBottom="15dp"
+                app:srcCompat="@drawable/ic_more_black"
                 app:layout_constraintBottom_toBottomOf="@+id/postDetailFragment_tvBoardTitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/postDetailFragment_tvBoardTitle"
-                app:srcCompat="@drawable/ic_more_black" />
+                app:layout_constraintTop_toTopOf="@+id/postDetailFragment_tvBoardTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/postDetailFragment_appbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/postDetailFragment_ibBack"-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginTop="13dp"-->
+<!--                android:layout_marginBottom="13dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:scaleType="centerInside"-->
+<!--                android:src="@drawable/ic_arrow_left"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/postDetailFragment_tvBoardTitle"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@{post.boardType.type}"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/postDetailFragment_ibBack"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/postDetailFragment_ibBack" />-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/postDetailFragment_btnMore"-->
+<!--                android:layout_width="22dp"-->
+<!--                android:layout_height="22dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:visibility="visible"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/postDetailFragment_tvBoardTitle"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/postDetailFragment_tvBoardTitle"-->
+<!--                app:srcCompat="@drawable/ic_more_black" />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
