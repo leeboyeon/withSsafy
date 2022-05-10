@@ -2,7 +2,6 @@ package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
-import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -124,4 +123,11 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getUserStateZero(){
         return new ResponseEntity<>(userService.findStateZero(), HttpStatus.OK);
     }
+
+    @GetMapping("/manager/{userId}")
+    @ApiOperation(value = "유저의 정보와 권한")
+    public ResponseEntity<?> getAuthByUserId(@PathVariable(value = "userId") Long userId){
+        return new ResponseEntity<>(userService.findAuthByUserId(userId), HttpStatus.OK);
+    }
+
 }
