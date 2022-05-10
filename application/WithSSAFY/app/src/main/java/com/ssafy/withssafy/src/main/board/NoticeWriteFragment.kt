@@ -112,7 +112,7 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
 
     private fun initSpinner() {
         var typeList = arrayListOf("선택", "학습", "평가", "운영", "사이트", "기타")
-        var genList = arrayListOf("선택", "전체")
+        var genList = arrayListOf("선택")
         var areaList = arrayListOf("선택", "전체", "서울", "대전", "광주", "구미", "부울경")
         var classList = arrayListOf("선택", "전체")
 
@@ -243,7 +243,7 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
         val title = binding.fragmentNoticeWriteTitleEdit.text.toString()
         val content = binding.fragmentNoticeWriteContentEdit.text.toString()
         if(title != "" && content != "" && type != 0 && gen != "" && area != "" && classNum != "") {
-            if (noticeViewModel.uploadImageUri == Uri.EMPTY || noticeViewModel.uploadImageUri == null) {
+            if (noticeViewModel.uploadImageUri.value == Uri.EMPTY || noticeViewModel.uploadImageUri.value == null) {
                 var notice = Notice(classRoomId, content, title, type, userId)
                 runBlocking {
                     val response = NoticeService().insertNotice(notice)
