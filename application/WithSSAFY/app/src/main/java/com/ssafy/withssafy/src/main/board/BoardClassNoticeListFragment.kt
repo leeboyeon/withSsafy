@@ -71,13 +71,6 @@ class BoardClassNoticeListFragment : BaseFragment<FragmentBoardClassNoticeListBi
                 binding.fragmentBoardClassNoticeListRv.smoothScrollToPosition(position)
             }
         }
-        boardClassNoticeListAdapter.setItemClickListener(object: BoardClassNoticeListAdapter.ItemClickListener {
-            override fun onClick(view: View, position: Int, id: Int) {
-//                var recruitId = bundleOf("recruitId" to id)
-//                this@BoardClassNoticeListFragment.findNavController().navigate(R.id.jobDetailFragment, recruitId)
-            }
-
-        })
     }
 
 

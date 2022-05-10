@@ -279,7 +279,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     boardClassNoticeListData="@{viewModel.classNoticeList}"
-                    tools:listitem="@layout/item_board_noti_mustread" />
+                    tools:listitem="@layout/item_board_class_notice" />
             </LinearLayout>
 
             <LinearLayout

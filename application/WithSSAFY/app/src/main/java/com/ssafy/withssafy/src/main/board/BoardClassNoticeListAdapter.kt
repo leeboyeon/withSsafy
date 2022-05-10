@@ -46,9 +46,6 @@ class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLife
     override fun onBindViewHolder(holder: BoardClassNoticeListViewHolder, position: Int) {
         holder.apply {
             bind(list[position])
-            itemView.setOnClickListener {
-                itemClickListener.onClick(it,position, list[position].id!!)
-            }
         }
     }
 
@@ -56,11 +53,4 @@ class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLife
         return list.size
     }
 
-    private lateinit var itemClickListener : ItemClickListener
-    interface ItemClickListener{
-        fun onClick(view: View, position: Int, id: Int)
-    }
-    fun setItemClickListener(itemClickListener: ItemClickListener){
-        this.itemClickListener = itemClickListener
-    }
 }

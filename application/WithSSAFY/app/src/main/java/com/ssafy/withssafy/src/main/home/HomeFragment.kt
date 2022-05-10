@@ -21,8 +21,10 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.FragmentHomeBinding
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.main.board.BoardClassNoticeAdapter
 import com.ssafy.withssafy.src.main.board.JobAdapter
 import com.ssafy.withssafy.src.viewmodel.HomeViewModel
+import com.ssafy.withssafy.src.viewmodel.NoticeViewModel
 import com.ssafy.withssafy.src.viewmodel.RecruitViewModel
 import com.ssafy.withssafy.src.viewmodel.UserViewModel
 import kotlinx.coroutines.delay
@@ -37,14 +39,17 @@ class HomeFragment : Fragment(){
     private val homeViewModel: HomeViewModel by activityViewModels()
     private val recruitViewModel : RecruitViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
+    private val noticeViewModel: NoticeViewModel by activityViewModels()
     private lateinit var mainActivity: MainActivity
 
-    lateinit var favoriteBoardAdapter: FavoriteBoardAdapter
+    //lateinit var favoriteBoardAdapter: FavoriteBoardAdapter
+    lateinit var boardClassNoticeAdapter: BoardClassNoticeAdapter
     lateinit var popularPostAdapter: PopularPostAdapter
     lateinit var employInfoAdapter: EmployInfoAdapter
     lateinit var requestAdapter: RequestAdapter
 
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
+    val classRoomId = ApplicationClass.sharedPreferencesUtil.getUser().classRoomId
 
     // 롤링 배너
     private lateinit var bannerViewPagerAdapter: BannerViewPagerAdapter
@@ -73,9 +78,11 @@ class HomeFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         binding.recruitViewModel = recruitViewModel
         binding.userViewModel = userViewModel
+        binding.noticeViewModel = noticeViewModel
         runBlocking {
             recruitViewModel.getRecentRecruitList()
             userViewModel.getStateZeroUserList()
+            noticeViewModel.getClassNoticeList(classRoomId)
         }
 
         val bannerList = arrayListOf<Int>(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
@@ -119,6 +126,9 @@ class HomeFragment : Fragment(){
             var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UC_XI3ByFO1uZIIH-g-zJZiw"))
             startActivity(intent)
         }
+        binding.fragmentHomeMoreNotice.setOnClickListener {
+            this@HomeFragment.findNavController().navigate(R.id.boardClassNoticeListFragment)
+        }
         binding.fragmentHomeMoreJob.setOnClickListener {
             this@HomeFragment.findNavController().navigate(R.id.boardJobFragment)
         }
@@ -127,11 +137,24 @@ class HomeFragment : Fragment(){
         }
     }
     private fun initAdapter() {
-        favoriteBoardAdapter = FavoriteBoardAdapter()
-        binding.homeRvFavoriteBoard.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = favoriteBoardAdapter
+        boardClassNoticeAdapter = BoardClassNoticeAdapter(userViewModel, viewLifecycleOwner)
+        noticeViewModel.classNoticeList.observe(viewLifecycleOwner) {
+            Log.d(TAG, "initAdapter BoardClassNoticeAdapter: $it")
+            boardClassNoticeAdapter.list = it
+            boardClassNoticeAdapter.notifyDataSetChanged()
         }
+
+        binding.homeRvClassNotice.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = boardClassNoticeAdapter
+        }
+        boardClassNoticeAdapter.setItemClickListener(object : BoardClassNoticeAdapter.ItemClickListener {
+            override fun onClick(view: View, position: Int, id: Int) {
+                var position = bundleOf("position" to position)
+                this@HomeFragment.findNavController().navigate(R.id.boardClassNoticeListFragment, position)
+                Log.d(TAG, "onClick: $position")
+            }
+        })
 
         popularPostAdapter = PopularPostAdapter()
         binding.homeRvPopular.apply {
