@@ -72,10 +72,11 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
                     }
                 }
                 -4 -> { // 'HOT 게시글'
-                    binding.boardType = BoardType(0, "HOT 게시글")
+                    binding.boardType = BoardType(0, "\uD83D\uDD25HOT 게시글\uD83D\uDD25")
 
                     runBlocking {
                         boardViewModel.getHotPostList()
+                        boardViewModel.getUserLikePostList(userId)
                     }
 
                 }
@@ -119,26 +120,6 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
         }
     }
 
-    /**
-     * 내가 쓴 글, 댓글 단 글, 좋아요한 글, HOT 게시글 recyclerView 초기화
-     */
-    private fun initMyRecyclerView() {
-        boardDetailAdapter = BoardDetailAdapter(requireContext(), typeId)
-
-        boardViewModel.boardListByType.observe(viewLifecycleOwner) {
-            boardDetailAdapter.postList = it
-        }
-
-        boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
-            boardDetailAdapter.userLikePost = it
-        }
-
-        binding.boardDetailFragmentRvPostList.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = boardDetailAdapter
-            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        }
-    }
 
     /**
      * 게시글 recyclerView 초기화
@@ -151,6 +132,15 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
                 boardDetailAdapter.postList = it
                 boardDetailAdapter.userLikePost = it
             }
+        } else if(typeId == -4) {
+            boardViewModel.hotPostList.observe(viewLifecycleOwner) {
+                boardDetailAdapter.postList = it
+            }
+
+            boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+                boardDetailAdapter.userLikePost = it
+            }
+
         } else {
             boardViewModel.boardListByType.observe(viewLifecycleOwner) {
                 boardDetailAdapter.postList = it
