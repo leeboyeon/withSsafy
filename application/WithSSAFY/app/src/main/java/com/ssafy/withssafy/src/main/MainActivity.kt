@@ -322,7 +322,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             val report : ReportRequest
             if(postOrComment == true) { // 게시글 신고인 경우
                 report = ReportRequest(id = 0, board = id, comment = null, content = content, user = userId)
-            } else {
+            } else {    // 댓글 신고인 경우
                 report = ReportRequest(id = 0, board = null, comment = id, content = content, user = userId)
             }
 
