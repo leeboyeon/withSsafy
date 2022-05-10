@@ -16,10 +16,7 @@ import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.notice.Notice
 import com.ssafy.withssafy.src.dto.study.Study
-import com.ssafy.withssafy.src.main.board.BoardClassNoticeAdapter
-import com.ssafy.withssafy.src.main.board.BoardNoticeAllAdapter
-import com.ssafy.withssafy.src.main.board.BoardNoticeListAdapter
-import com.ssafy.withssafy.src.main.board.JobAdapter
+import com.ssafy.withssafy.src.main.board.*
 import com.ssafy.withssafy.src.main.home.EmployInfoAdapter
 import com.ssafy.withssafy.src.main.home.RequestAdapter
 import com.ssafy.withssafy.src.main.notification.MessageDetailAdapter
@@ -293,7 +290,33 @@ fun bindingWriteDateConvert(textView: TextView, date:String){
 
 @BindingAdapter("noticeImageUrl")
 fun bindNoticeImageUrl(imageView: ImageView, url:String?){
-    Glide.with(imageView.context)
-        .load("${ApplicationClass.IMGS_URL}${url}")
-        .into(imageView)
+    if(url == "") {
+        imageView.visibility = View.GONE
+    } else {
+        imageView.visibility = View.VISIBLE
+        Glide.with(imageView.context)
+            .load("${ApplicationClass.IMGS_URL}${url}")
+            .into(imageView)
+    }
 }
+
+@BindingAdapter("wirteDateClassNoticeConvert")
+fun bindingWriteDateClassNoticeConvert(textView: TextView, date:String){
+    var date = date.split("T")
+    var time = date.get(1).split(":")
+    textView.text = "${date.get(0)} ${time.get(0)}:${time.get(1)}"
+}
+
+@BindingAdapter("classNoticeListData")
+fun bindingCNoticeList(recyclerView: RecyclerView, data:List<Notice>?){
+    var adapter = recyclerView.adapter as BoardClassNoticeListAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as BoardClassNoticeListAdapter
+    }
+    adapter.list = data as MutableList<Notice>
+    adapter.notifyDataSetChanged()
+}
+

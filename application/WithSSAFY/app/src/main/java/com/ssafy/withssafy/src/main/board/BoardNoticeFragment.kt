@@ -26,6 +26,7 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
 
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
+    val classRoomId = ApplicationClass.sharedPreferencesUtil.getUser().classRoomId
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -35,7 +36,7 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = noticeViewModel
         runBlocking {
-            userViewModel.getClassRoom(userId)
+            userViewModel.getClassRoomInfo(classRoomId)
             userViewModel.getClassRoomList()
         }
         initData()
@@ -97,6 +98,9 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
             var typeId = bundleOf("typeId" to 5)
             this@BoardNoticeFragment.findNavController().navigate(R.id.boardNoticeListFragment, typeId)
         }
+        binding.boardNotiFragmentClassReadMore.setOnClickListener {
+            this@BoardNoticeFragment.findNavController().navigate(R.id.boardClassNoticeListFragment)
+        }
         binding.boardNotiFragmentLlMustReadMore.setOnClickListener {
             var typeId = bundleOf("typeId" to 0)
             this@BoardNoticeFragment.findNavController().navigate(R.id.boardNoticeListFragment, typeId)
@@ -133,7 +137,9 @@ class BoardNoticeFragment : BaseFragment<FragmentBoardNoticeBinding>(FragmentBoa
         }
         boardClassNoticeAdapter.setItemClickListener(object : BoardClassNoticeAdapter.ItemClickListener {
             override fun onClick(view: View, position: Int, id: Int) {
-                this@BoardNoticeFragment.findNavController().navigate(R.id.boardClassNoticeListFragment)
+                var position = bundleOf("position" to position)
+                this@BoardNoticeFragment.findNavController().navigate(R.id.boardClassNoticeListFragment, position)
+                Log.d(TAG, "onClick: $position")
             }
         })
     }

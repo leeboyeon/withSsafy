@@ -71,6 +71,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_boardClassNoticeList_appBar"
+            app:classNoticeListData="@{viewModel.classNoticeList}"
             tools:listitem="@layout/item_class_notice" />
 
 

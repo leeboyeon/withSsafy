@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="study"
+            name="notice"
             type="com.ssafy.withssafy.src.dto.notice.Notice" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +37,7 @@
         android:id="@+id/item_class_notice_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="05:26"
+        app:wirteDateClassNoticeConvert="@{notice.writeDt}"
         android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@id/item_class_notice_auth"
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="9시 라이브방송 접속 안내"
+        android:text="@{notice.title}"
         app:layout_constraintTop_toBottomOf="@id/item_class_notice_name"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/black" />
@@ -59,7 +59,7 @@
         android:id="@+id/item_class_notice_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="에듀싸피를 통해 접속해주세요!"
+        android:text="@{notice.content}"
         app:layout_constraintTop_toBottomOf="@id/item_class_notice_title"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/black" />
@@ -75,6 +75,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_class_notice_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        app:noticeImageUrl="@{notice.photoPath}"
         tools:src="@tools:sample/avatars" />
 
 
