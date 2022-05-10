@@ -26,11 +26,22 @@ class EmployInfoAdapter() : RecyclerView.Adapter<EmployInfoAdapter.EmployInfoHol
     override fun onBindViewHolder(holder: EmployInfoHolder, position: Int) {
         holder.apply {
             bind(list[position])
+            itemView.setOnClickListener {
+                itemClickListener.onClick(it,position, list[position].id!!)
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    private lateinit var itemClickListener : ItemClickListener
+    interface ItemClickListener{
+        fun onClick(view: View, position: Int, id: Int)
+    }
+    fun setItemClickListener(itemClickListener: ItemClickListener){
+        this.itemClickListener = itemClickListener
     }
 
 }

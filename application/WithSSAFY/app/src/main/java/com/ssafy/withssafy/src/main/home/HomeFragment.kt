@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.FragmentHomeBinding
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.main.board.JobAdapter
 import com.ssafy.withssafy.src.viewmodel.HomeViewModel
 import com.ssafy.withssafy.src.viewmodel.RecruitViewModel
 import com.ssafy.withssafy.src.viewmodel.UserViewModel
@@ -145,6 +147,12 @@ class HomeFragment : Fragment(){
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = employInfoAdapter
         }
+        employInfoAdapter.setItemClickListener(object : EmployInfoAdapter.ItemClickListener{
+            override fun onClick(view: View, position: Int, id: Int) {
+                var recruitId = bundleOf("recruitId" to id)
+                this@HomeFragment.findNavController().navigate(R.id.jobDetailFragment, recruitId)
+            }
+        })
 
         requestAdapter = RequestAdapter(true)
         userViewModel.stateZeroUserList.observe(viewLifecycleOwner) {
