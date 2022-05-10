@@ -275,3 +275,8 @@ fun bindNoticeImageUrl(imageView: ImageView, url:String?){
         .load("${ApplicationClass.IMGS_URL}${url}")
         .into(imageView)
 }
+
+@BindingAdapter("timeConvert")
+fun bindTimeConvert(textView: TextView, date:String){
+    textView.text = date.substring(date.length-8,date.length-3)
+}

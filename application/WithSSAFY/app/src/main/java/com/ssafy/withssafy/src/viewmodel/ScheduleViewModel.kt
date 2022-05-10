@@ -22,6 +22,7 @@ class ScheduleViewModel : ViewModel() {
     private val _schedule = MutableLiveData<Schedule>()
     private val _allClassSchedules = MutableLiveData<MutableList<Schedule>>()
     private val _allGenarateSchedules = MutableLiveData<MutableList<Schedule>>()
+    private val _genarateScheduleDetails = MutableLiveData<MutableList<Schedule>>()
 
     val classSchedules : LiveData<MutableList<Schedule>>
         get() = _classSchedules
@@ -31,6 +32,8 @@ class ScheduleViewModel : ViewModel() {
         get() = _allClassSchedules
     val allGenarateSchedules : LiveData<MutableList<Schedule>>
         get() = _allGenarateSchedules
+    val genarateScheduleDetails : LiveData<MutableList<Schedule>>
+        get() = _genarateScheduleDetails
 
     fun setAllClassSchedules (list:MutableList<Schedule>) {
         _allClassSchedules.value = list
@@ -43,6 +46,9 @@ class ScheduleViewModel : ViewModel() {
     }
     fun setAllGenarateSchedules(list:MutableList<Schedule>){
         _allGenarateSchedules.value = list
+    }
+    fun setGenarateScheduleDetails(list:MutableList<Schedule>){
+        _genarateScheduleDetails.value = list
     }
 
     fun insertScheduleIndex(idx : Int){
@@ -106,6 +112,20 @@ class ScheduleViewModel : ViewModel() {
                 if(response.code() == 200){
                     if(res!=null){
                         setAllGenarateSchedules(res)
+                    }
+                }
+            }
+        }
+    }
+
+    suspend fun getGenarateScheduleDetails(day:String, id:Int){
+        val response = ScheduleService().getGenarateScheduleDetail(id,day)
+        viewModelScope.launch {
+            val res = response.body()
+            if(response.isSuccessful){
+                if(response.code() == 200){
+                    if(res!=null){
+                        setGenarateScheduleDetails(res)
                     }
                 }
             }

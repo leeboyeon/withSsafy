@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentFullCurriculumBinding
+import kotlinx.coroutines.runBlocking
 
 class FullCurriculumFragment : BaseFragment<FragmentFullCurriculumBinding>(FragmentFullCurriculumBinding::bind,R.layout.fragment_full_curriculum) {
     private lateinit var calendarMonthAdapter:CalenderMonthAdapter
@@ -21,6 +23,10 @@ class FullCurriculumFragment : BaseFragment<FragmentFullCurriculumBinding>(Fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        runBlocking {
+            userViewModel.getUser(ApplicationClass.sharedPreferencesUtil.getUser().id, 1)
+            scheduleViewModel.getAllGenarateSchedules(userViewModel.loginUserInfo.value!!.classRoomId)
+        }
         setListener()
     }
     private fun setListener(){
@@ -28,14 +34,12 @@ class FullCurriculumFragment : BaseFragment<FragmentFullCurriculumBinding>(Fragm
     }
     private fun initAdapter(){
         var date = arrayListOf<String>()
-        scheduleViewModel.allClassSchedules.observe(viewLifecycleOwner){
-
+        scheduleViewModel.allGenarateSchedules.observe(viewLifecycleOwner){
             for(item in it){
                 date.add(item.startDate)
             }
-
         }
-        calendarMonthAdapter = CalenderMonthAdapter(requireContext(),date)
+        calendarMonthAdapter = CalenderMonthAdapter(requireContext(),date,scheduleViewModel,userViewModel.loginUserInfo.value!!.classRoomId,viewLifecycleOwner)
 
         binding.fragmentScheduleFullRv.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
