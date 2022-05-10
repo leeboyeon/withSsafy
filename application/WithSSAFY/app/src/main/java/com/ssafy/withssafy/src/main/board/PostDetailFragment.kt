@@ -197,7 +197,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
                             return@setOnMenuItemClickListener true
                         }
                         R.id.report -> {    // 신고 -> 댓글 작성자 id, 댓글 id
-
+                            mainActivity.showReportDialog(postId, true)
                             return@setOnMenuItemClickListener true
                         }
                         else -> {

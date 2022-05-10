@@ -29,6 +29,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -50,6 +51,8 @@ import com.ssafy.withssafy.config.BaseActivity
 import com.ssafy.withssafy.databinding.ActivityMainBinding
 import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.dto.report.Report
+import com.ssafy.withssafy.src.dto.report.ReportRequest
 import com.ssafy.withssafy.src.login.SingInActivity
 import com.ssafy.withssafy.src.main.board.BoardFragment
 import com.ssafy.withssafy.src.main.home.HomeFragment
@@ -58,6 +61,7 @@ import com.ssafy.withssafy.src.main.schedule.ScheduleFragment
 import com.ssafy.withssafy.src.main.team.TeamFragment
 import com.ssafy.withssafy.src.network.api.FCMApi
 import com.ssafy.withssafy.src.network.service.MessageService
+import com.ssafy.withssafy.src.network.service.ReportService
 import com.ssafy.withssafy.src.viewmodel.BoardViewModel
 import com.ssafy.withssafy.src.viewmodel.MessageViewModel
 import com.ssafy.withssafy.src.viewmodel.NoticeViewModel
@@ -67,6 +71,7 @@ import java.util.concurrent.TimeUnit
 import com.ssafy.withssafy.src.viewmodel.TeamViewModel
 import com.ssafy.withssafy.util.RetrofitUtil
 import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
 import retrofit2.Response
 import kotlin.math.round
 
@@ -80,6 +85,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val teamViewModel : TeamViewModel by viewModels()
     private val noticeViewModel : NoticeViewModel by viewModels()
     private val boardViewModel : BoardViewModel by viewModels()
+
+    private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
     // 권한 허가
     var permissionListener: PermissionListener = object : PermissionListener {
@@ -287,6 +294,58 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             return true
         }
         return false
+    }
+
+    /**
+     * 게시글 신고 다이얼로그
+     */
+    fun showReportDialog(id: Int, postOrComment: Boolean) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_report,null)
+
+        if(dialogView.parent != null){
+            (dialogView.parent as ViewGroup).removeAllViews()
+        }
+
+        val dialog = Dialog(this)
+        dialog.setContentView(dialogView)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.show()
+
+        dialogView.findViewById<Button>(R.id.reportDialog_btnCancel).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogView.findViewById<AppCompatButton>(R.id.reportDialog_btnReport).setOnClickListener {
+            val content = dialogView.findViewById<TextView>(R.id.reportDialog_tvContent).text.toString()
+
+            val report : ReportRequest
+            if(postOrComment == true) { // 게시글 신고인 경우
+                report = ReportRequest(id = 0, board = id, comment = null, content = content, user = userId)
+            } else {
+                report = ReportRequest(id = 0, board = null, comment = id, content = content, user = userId)
+            }
+
+            try {
+                var response : Response<Report>
+                runBlocking {
+                    response = ReportService().addReport(report)
+                }
+                if(response.isSuccessful) {
+                    val res = response.body()
+                    if(res != null) {
+                        showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.")
+                        dialog.dismiss()
+                    } else {
+                        Log.d(TAG, "report: $response", )
+                    }
+                } else {
+                    Log.e(TAG, "report: 통신 실패", )
+                }
+            } catch (e: HttpException) {
+                Log.e(TAG, "report ${e.message()}", )
+            }
+        }
     }
 
 }
