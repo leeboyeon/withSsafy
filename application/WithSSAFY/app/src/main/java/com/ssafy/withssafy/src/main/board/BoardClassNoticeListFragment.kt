@@ -43,6 +43,11 @@ class BoardClassNoticeListFragment : BaseFragment<FragmentBoardClassNoticeListBi
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        mainActivity.hideBottomNavi(false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = noticeViewModel

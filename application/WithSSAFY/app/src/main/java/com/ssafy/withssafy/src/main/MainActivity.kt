@@ -126,6 +126,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
+
     /**
      * read gallery 권한 체크
      */

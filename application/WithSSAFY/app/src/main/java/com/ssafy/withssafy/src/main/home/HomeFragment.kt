@@ -133,6 +133,7 @@ class HomeFragment : Fragment(){
             startActivity(intent)
         }
         binding.fragmentHomeMoreNotice.setOnClickListener {
+            mainActivity.hideBottomNavi(true)
             this@HomeFragment.findNavController().navigate(R.id.boardClassNoticeListFragment)
         }
         binding.fragmentHomeMoreJob.setOnClickListener {
