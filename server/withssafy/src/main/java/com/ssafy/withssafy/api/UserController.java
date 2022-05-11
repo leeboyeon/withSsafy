@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.api;
 
+import com.google.firebase.remoteconfig.internal.TemplateResponse;
 import com.ssafy.withssafy.dto.user.LoginDto;
 import com.ssafy.withssafy.dto.user.UserDto;
 import com.ssafy.withssafy.service.user.UserService;
@@ -130,4 +131,9 @@ public class UserController {
         return new ResponseEntity<>(userService.findAuthByUserId(userId), HttpStatus.OK);
     }
 
+    @GetMapping("/token/{token}")
+    @ApiOperation(value = "Device Token으로 유저 찾기")
+    public ResponseEntity<UserDto> getUserByDeviceToken(@PathVariable(value = "token")String token){
+        return new ResponseEntity<>(userService.findByDeviceToken(token), HttpStatus.OK);
+    }
 }
