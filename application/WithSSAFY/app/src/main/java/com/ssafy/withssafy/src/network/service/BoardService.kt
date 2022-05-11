@@ -33,4 +33,6 @@ class BoardService {
 
     suspend fun getBoardListByTypeId(type: Int) = RetrofitUtil.boardApi.selectBoardListByTypeId(type)
 
+    suspend fun getBoardListByUserId(userId: Int) = RetrofitUtil.boardApi.selectBoardListByUserId(userId)
+
 }

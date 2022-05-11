@@ -255,13 +255,12 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="5dp"
                         android:layout_marginBottom="5dp"
-                        app:reportListData="@{homeViewModel.reportList}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/homeFragment_tvReportName"
-                        tools:listitem="@layout/item_report" />
-                    <!--                    requestListData="@{userViewModel.stateZeroUserList}"-->
+                        app:reportListData="@{homeViewModel.reportList}"
+                        tools:listitem="@layout/item_report_list" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

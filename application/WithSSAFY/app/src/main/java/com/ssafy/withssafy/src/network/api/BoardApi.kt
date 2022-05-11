@@ -81,5 +81,10 @@ interface BoardApi {
     @GET("boards/q")
     suspend fun selectBoardListByTypeId(@Query("type") type: Int) : Response<List<Board>>
 
+    /**
+     * user 작성한 게시글 조회
+     */
+    @GET("boards/q")
+    suspend fun selectBoardListByUserId(@Query("UID") userId: Int) : Response<List<Board>>
 
 }
