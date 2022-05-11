@@ -15,9 +15,10 @@ import com.ssafy.withssafy.src.viewmodel.NoticeViewModel
 import com.ssafy.withssafy.src.viewmodel.UserViewModel
 import kotlinx.coroutines.runBlocking
 
-class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLifecycleOwner: LifecycleOwner): RecyclerView.Adapter<BoardClassNoticeListAdapter.BoardClassNoticeListViewHolder>() {
+class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLifecycleOwner: LifecycleOwner, var isStudent : Boolean): RecyclerView.Adapter<BoardClassNoticeListAdapter.BoardClassNoticeListViewHolder>() {
     var list = mutableListOf<Notice>()
     inner class BoardClassNoticeListViewHolder(private val binding: ItemClassNoticeBinding ) : RecyclerView.ViewHolder(binding.root) {
+        val moreBtn = binding.itemClassNoticeMore
         fun bind(notice : Notice) {
             binding.notice = notice
             runBlocking {
@@ -25,6 +26,12 @@ class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLife
             }
             binding.user = userViewModel.userInfoAuth.value!!
             binding.executePendingBindings()
+
+            if(isStudent) {
+                moreBtn.visibility = View.GONE
+            } else {
+                moreBtn.visibility = View.VISIBLE
+            }
 
         }
     }
@@ -36,11 +43,24 @@ class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLife
     override fun onBindViewHolder(holder: BoardClassNoticeListViewHolder, position: Int) {
         holder.apply {
             bind(list[position])
+
+            moreBtn.setOnClickListener{
+                moreCLickListener.onClick(it, position, list[position].id, list[position])
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    interface MoreClickListener{
+        fun onClick(view: View, position: Int, id: Int, notice: Notice)
+    }
+
+    private lateinit var moreCLickListener : BoardClassNoticeListAdapter.MoreClickListener
+    fun setMoreClickListener(moreClickListener: BoardClassNoticeListAdapter.MoreClickListener) {
+        this.moreCLickListener = moreClickListener
     }
 
 }

@@ -16,4 +16,5 @@ public class ReportResDto {
     private CommentDto comment;
     private UserDto user;
     private String content;
+    private String write_dt;
 }

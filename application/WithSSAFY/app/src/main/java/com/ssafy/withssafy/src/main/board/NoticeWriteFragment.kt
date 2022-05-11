@@ -73,7 +73,7 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
      * 수정하려고 넘어왔을 때 기존 데이터 초기화
      */
     private fun initData() {
-        val typeArr = arrayListOf("학습", "평가", "운영", "사이트", "기타")
+        val typeArr = arrayListOf("학습", "평가", "운영", "사이트", "기타", "반별")
         binding.fragmentNoticeWriteAppBarTitle.setText("공지사항 수정")
         binding.fragmentNoticeWriteTypeSpin.visibility = View.GONE
         binding.fragmentNoticeWriteGenSpin.visibility = View.GONE

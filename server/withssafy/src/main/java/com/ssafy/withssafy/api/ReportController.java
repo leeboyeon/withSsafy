@@ -41,4 +41,16 @@ public class ReportController {
     public ResponseEntity<ReportResDto> delete(@RequestParam Long id){
         return new ResponseEntity<>(reportService.delete(id),HttpStatus.OK);
     }
+
+    @GetMapping("/board")
+    @ApiOperation(value = "board를 신고한 유저 목록을 불러온다")
+    public ResponseEntity<List<Long>> getUserIdByBoardId(@RequestParam Long boardId){
+        return new ResponseEntity<>(reportService.findByBoardId(boardId), HttpStatus.OK);
+    }
+
+    @GetMapping("comment")
+    @ApiOperation(value = "comment를 신고한 유저 목록을 불러온다")
+    public ResponseEntity<List<Long>> getUserIdByCommentId(@RequestParam Long commentId){
+        return new ResponseEntity<>(reportService.findByCommentId(commentId), HttpStatus.OK);
+    }
 }
