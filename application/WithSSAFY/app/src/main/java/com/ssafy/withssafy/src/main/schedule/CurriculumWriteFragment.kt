@@ -96,7 +96,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
         }
 
         binding.fragmentCurrculWriteWeeksSpinner.setSelection(schedule.weeks-1)
-
+        binding.fragmentCurrWriteMemoEdit.setText(schedule.memo)
         var flag = false
         for(i in 0..title.size-1){
             if(title[i].equals(schedule.title)){
@@ -208,7 +208,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
                 classRoomId = roomId,
                 endDate = "${binding.fragmentCurrculWriteEndDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
                 scheduleId,
-                memo = "",
+                memo = binding.fragmentCurrWriteMemoEdit.text.toString(),
                 startDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
                 title = titleType,
                 ApplicationClass.sharedPreferencesUtil.getUser().id,
@@ -219,7 +219,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
                 classRoomId = roomId,
                 endDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
                 scheduleId,
-                memo = "",
+                memo = binding.fragmentCurrWriteMemoEdit.text.toString(),
                 startDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
                 title = titleType,
                 ApplicationClass.sharedPreferencesUtil.getUser().id,
@@ -253,7 +253,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
                 classRoomId = roomId,
                 endDate = "${binding.fragmentCurrculWriteEndDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
                 0,
-                memo = "",
+                memo = binding.fragmentCurrWriteMemoEdit.text.toString(),
                 startDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
                 title = titleType,
                 ApplicationClass.sharedPreferencesUtil.getUser().id,
@@ -266,7 +266,7 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
                 classRoomId = roomId,
                 endDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
                 0,
-                memo = "",
+                memo = binding.fragmentCurrWriteMemoEdit.text.toString(),
                 startDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
                 title = titleType,
                 ApplicationClass.sharedPreferencesUtil.getUser().id,

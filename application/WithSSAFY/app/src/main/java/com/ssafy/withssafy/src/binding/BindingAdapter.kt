@@ -64,7 +64,12 @@ fun textViewConvertPeople(textView: TextView, size:Int){
 }
 @BindingAdapter("textViewWeek")
 fun textViewConvertWeek(textView: TextView, week:Int){
-    textView.text = "${week}주차"
+    if(week == 0){
+        textView.text = "시간표가 없습니다."
+    }else{
+        textView.text = "${week}주차"
+    }
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

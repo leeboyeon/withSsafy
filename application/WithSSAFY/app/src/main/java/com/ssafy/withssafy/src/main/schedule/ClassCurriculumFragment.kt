@@ -107,50 +107,54 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
         classAdapter = ClassCurrculAdapter(scheduleViewModel, requireContext())
 
         val weeksSchedules : MutableList<WeekSchedule> = mutableListOf()
-
-        scheduleViewModel.allClassSchedules.observe(viewLifecycleOwner) {
-            var schedules : ArrayList<com.github.tlaabs.timetableview.Schedule> = arrayListOf()
-            var scheduleDtos : MutableList<Schedule> = mutableListOf()
-            var weeks = it[0].weeks
-            var lastWeeks = it[it.size-1].weeks
-            var idx = 0;
-            for(item in it){
-
-                var startTime = item.startDate.substring(item.startDate.length-8,item.startDate.length)
-                var startTimeHour = startTime.substring(0,2)
-                var startTimeMinute = startTime.substring(3,5)
-                var endTime = item.endDate.substring(item.endDate.length-8,item.endDate.length)
-                var endTimeHour = endTime.substring(0,2)
-                var endTimeMinute = endTime.substring(3,5)
-                var schedule = com.github.tlaabs.timetableview.Schedule()
-
-                schedule.startTime = Time(startTimeHour.toInt(), startTimeMinute.toInt())
-                schedule.endTime = Time(endTimeHour.toInt(), endTimeMinute.toInt())
-                schedule.day = findWeeks(item.startDate.substring(0,10))-1
-                schedule.classTitle = item.title
-                schedule.classPlace= ""
-                schedule.professorName = ""
-
-                idx++
-
-                if(weeks != item.weeks){
-                    weeksSchedules.add(WeekSchedule(weeks, schedules,scheduleDtos))
-                    weeks = item.weeks
-                    schedules = arrayListOf()
-                    scheduleDtos = mutableListOf()
-                }
-
-                schedules.add(schedule)
-                scheduleDtos.add(item)
-                scheduleViewModel.insertScheduleIndex(item.id)
-
-                if(idx == it.size){
-                    weeksSchedules.add(WeekSchedule(weeks,schedules,scheduleDtos))
-                }
-            }
+        if(scheduleViewModel.allClassSchedules.value!!.size == 0){
+            weeksSchedules.add(WeekSchedule(0, arrayListOf(), mutableListOf()))
             classAdapter.scheduleList = weeksSchedules
-            binding.fragmentClassCurrculRv.scrollToPosition(weeksSchedules.size-1)
+        }else{
+            scheduleViewModel.allClassSchedules.observe(viewLifecycleOwner) {
+                var schedules : ArrayList<com.github.tlaabs.timetableview.Schedule> = arrayListOf()
+                var scheduleDtos : MutableList<Schedule> = mutableListOf()
+                var weeks = it[0].weeks
+
+                var idx = 0;
+                for(item in it){
+                    var startTime = item.startDate.substring(item.startDate.length-8,item.startDate.length)
+                    var startTimeHour = startTime.substring(0,2)
+                    var startTimeMinute = startTime.substring(3,5)
+                    var endTime = item.endDate.substring(item.endDate.length-8,item.endDate.length)
+                    var endTimeHour = endTime.substring(0,2)
+                    var endTimeMinute = endTime.substring(3,5)
+                    var schedule = com.github.tlaabs.timetableview.Schedule()
+
+                    schedule.startTime = Time(startTimeHour.toInt(), startTimeMinute.toInt())
+                    schedule.endTime = Time(endTimeHour.toInt(), endTimeMinute.toInt())
+                    schedule.day = findWeeks(item.startDate.substring(0,10))-1
+                    schedule.classTitle = item.title
+                    schedule.classPlace= item.memo
+                    schedule.professorName = ""
+
+                    idx++
+
+                    if(weeks != item.weeks){
+                        weeksSchedules.add(WeekSchedule(weeks, schedules,scheduleDtos))
+                        weeks = item.weeks
+                        schedules = arrayListOf()
+                        scheduleDtos = mutableListOf()
+                    }
+
+                    schedules.add(schedule)
+                    scheduleDtos.add(item)
+                    scheduleViewModel.insertScheduleIndex(item.id)
+
+                    if(idx == it.size){
+                        weeksSchedules.add(WeekSchedule(weeks,schedules,scheduleDtos))
+                    }
+                }
+                classAdapter.scheduleList = weeksSchedules
+                binding.fragmentClassCurrculRv.scrollToPosition(weeksSchedules.size-1)
+            }
         }
+
 
         binding.fragmentClassCurrculRv.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
