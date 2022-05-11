@@ -69,7 +69,10 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
             when(typeId) {
                 -1 -> { //'내가 쓴 글'
                     binding.boardType = BoardType(0, "내가 쓴 글")
-
+                    runBlocking {
+                        boardViewModel.getUserWrotePostList(userId)
+                        boardViewModel.getUserLikePostList(userId)
+                    }
                 }
                 -2 -> { // '댓글 단 글'
                     binding.boardType = BoardType(0, "댓글 단 글")
@@ -78,7 +81,6 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
                 -3 -> { // '좋아요한 글'
                     binding.boardType = BoardType(0, "좋아요한 글")
 
-                    binding.boardDetailFragmentTvBoardTitle.text = "좋아요한 글"
 
                     runBlocking {
                         boardViewModel.getUserLikePostList(userId)
@@ -140,27 +142,42 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
     private fun initRecyclerView() { // 아이템 클릭하면 게시글 상세 화면(PostDetail)으로 이동
         boardDetailAdapter = BoardDetailAdapter(requireContext(), typeId)
 
-        if(typeId == -3) {
-            boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
-                boardDetailAdapter.postList = it
-                boardDetailAdapter.userLikePost = it
-            }
-        } else if(typeId == -4) {
-            boardViewModel.hotPostList.observe(viewLifecycleOwner) {
-                boardDetailAdapter.postList = it
-            }
+        when(typeId) {
+            -1 -> {
+                boardViewModel.userWrotePostList.observe(viewLifecycleOwner) {
+                    boardDetailAdapter.postList = it
+                }
 
-            boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
-                boardDetailAdapter.userLikePost = it
+                boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+                    boardDetailAdapter.userLikePost = it
+                }
             }
+            -2 -> {
 
-        } else {
-            boardViewModel.boardListByType.observe(viewLifecycleOwner) {
-                boardDetailAdapter.postList = it
             }
+            -3 -> {
+                boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+                    boardDetailAdapter.postList = it
+                    boardDetailAdapter.userLikePost = it
+                }
+            }
+            -4 -> {
+                boardViewModel.hotPostList.observe(viewLifecycleOwner) {
+                    boardDetailAdapter.postList = it
+                }
 
-            boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
-                boardDetailAdapter.userLikePost = it
+                boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+                    boardDetailAdapter.userLikePost = it
+                }
+            }
+            else -> {
+                boardViewModel.boardListByType.observe(viewLifecycleOwner) {
+                    boardDetailAdapter.postList = it
+                }
+
+                boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+                    boardDetailAdapter.userLikePost = it
+                }
             }
         }
 

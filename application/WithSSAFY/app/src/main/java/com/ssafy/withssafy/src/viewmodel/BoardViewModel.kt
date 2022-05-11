@@ -316,4 +316,36 @@ class BoardViewModel : ViewModel() {
     }
 
 
+    /**
+     * 사용자가 작성한 게시글 리스트 조회
+     */
+    private val _userWrotePostList = MutableLiveData<MutableList<Board>>()
+
+    val userWrotePostList : LiveData<MutableList<Board>>
+        get() = _userWrotePostList
+
+    private fun setUserWrotePost(list: MutableList<Board>) = viewModelScope.launch {
+        _userWrotePostList.value = list
+    }
+
+    suspend fun getUserWrotePostList(userId: Int) {
+        try {
+            val response = BoardService().getBoardListByUserId(userId)
+
+            viewModelScope.launch {
+                if(response.isSuccessful) {
+                    val res = response.body()
+                    if(res != null) {
+                        setUserWrotePost(res as MutableList<Board>)
+                    } else {
+                        Log.d(TAG, "getUserWrotePostList: $response", )
+                    }
+                } else {
+                    Log.e(TAG, "getUserWrotePostList: 통신 실패", )
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "getUserWrotePostList ${e.message()}", )
+        }
+    }
 }
