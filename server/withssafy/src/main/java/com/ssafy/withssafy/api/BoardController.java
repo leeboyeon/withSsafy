@@ -29,7 +29,7 @@ public class BoardController {
     }
 
     @GetMapping("/q")
-    @ApiOperation(value = "게시물 필터 후 조회 (type)")
+    @ApiOperation(value = "게시물 필터 후 조회")
     public ResponseEntity<List<BoardResponse>> getBoardsByType(
             @RequestParam(value = "type", required = false) Long typeId
             , @RequestParam(value = "UID", required = false) Long userId) {
@@ -47,6 +47,13 @@ public class BoardController {
     public ResponseEntity<List<BoardResponse>> getLikedBoards(@RequestParam(value = "uid") Long userId) {
         return new ResponseEntity<>(boardService.getLikedBoards(userId), HttpStatus.OK);
     }
+
+    @GetMapping("/comment/{id}")
+    @ApiOperation(value = "사용자가 댓글 단 게시물 조회")
+    public ResponseEntity<?> getBoardsByComment(@PathVariable(value = "id") Long userId) {
+        return new ResponseEntity<>(boardService.getBoardByComment(userId), HttpStatus.OK);
+    }
+
 
     @GetMapping("/{id}")
     @ApiOperation(value = "id로 게시물 조회")
