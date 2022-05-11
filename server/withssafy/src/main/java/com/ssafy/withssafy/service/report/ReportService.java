@@ -17,6 +17,7 @@ import com.ssafy.withssafy.repository.ReportRepository;
 import com.ssafy.withssafy.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -51,6 +52,7 @@ public class ReportService {
     }
 
 
+    @Modifying(clearAutomatically = true)
     public ReportResDto insert(ReportReqDto reportDto) {
         if (!userRepository.findById(reportDto.getUser()).isPresent()){
             throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
@@ -64,6 +66,27 @@ public class ReportService {
             throw new InvalidRequestException(ErrorCode.DOESNT_EXIST);
         }
 
+        if(reportDto.getBoard() != null) {
+            List<Report> list = reportRepository.findByBoardId(reportDto.getBoard());
+            if (list.size() > 3) {
+                // 누적 3회라면
+                reportRepository.deleteAll(list);
+                boardRepository.deleteById(reportDto.getBoard());
+                return null;
+            }
+        }
+
+        if (reportDto.getComment() != null){
+            List<Report> list = reportRepository.findByCommentId(reportDto.getComment());
+            if(list.size() >3 ){
+                // 누적 3회라면
+                reportRepository.deleteAll(list);
+                commentRepository.deleteById(reportDto.getComment());
+                return null;
+            }
+        }
+
+        reportDto.setWriteDateTime();
         Report report = modelMapper.map(reportDto, Report.class);
         User user = userRepository.findById(reportDto.getUser()).get();
         Board board = null;
@@ -89,6 +112,24 @@ public class ReportService {
         if(report.getComment() != null) result.setComment(modelMapper.map(report.getComment(), CommentDto.class));
         if(report.getBoard() != null) result.setBoard(modelMapper.map(report.getBoard(), BoardResponse.class));
         if(report.getUser() != null) result.setUser(modelMapper.map(report.getUser(), UserDto.class));
+        return result;
+    }
+
+    public List<Long> findByCommentId(Long commentId) {
+        List<Long> result = new ArrayList<>();
+        List<Report> list = reportRepository.findByCommentId(commentId);
+        for (Report r : list){
+            result.add(r.getUser().getId());
+        }
+        return result;
+    }
+
+    public List<Long> findByBoardId(Long boardId) {
+        List<Long> result = new ArrayList<>();
+        List<Report> list = reportRepository.findByBoardId(boardId);
+        for (Report r : list){
+            result.add(r.getUser().getId());
+        }
         return result;
     }
 }

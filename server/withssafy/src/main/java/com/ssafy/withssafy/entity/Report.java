@@ -30,13 +30,17 @@ public class Report {
     @Column
     private String content;
 
+    @Column
+    private String write_dt;
+
     @Builder
-    public Report(Long id, Board board , Comment comment, User user, String content){
+    public Report(Long id, Board board , Comment comment, User user, String content, String write_dt){
         this.id = id;
         this.board = board;
         this.comment = comment;
         this.user = user;
         this.content = content;
+        this.write_dt = write_dt;
     }
 
     public void setReport(Board board, Comment comment, User user){
