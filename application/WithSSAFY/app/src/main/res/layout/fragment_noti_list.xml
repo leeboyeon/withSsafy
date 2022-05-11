@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.ssafy.withssafy.src.viewmodel.NotificationViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -51,6 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/noti_list_view"
+            app:notiListData="@{viewModel.notiList}"
             tools:listitem="@layout/recyclerview_noti_list_item" />
 
 

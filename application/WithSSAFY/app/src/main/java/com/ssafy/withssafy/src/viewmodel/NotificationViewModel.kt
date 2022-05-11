@@ -45,7 +45,7 @@ class NotificationViewModel : ViewModel() {
             val res = response.body()
             if(response.code() == 200) {
                 if(res != null) {
-                    setNotiListByType(res)
+                    setNotiList(res)
                 }
             }
         }

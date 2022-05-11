@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.src.dto.Message
+import com.ssafy.withssafy.src.dto.Notification
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.notice.Notice
@@ -23,6 +24,7 @@ import com.ssafy.withssafy.src.main.home.ReportAdapter
 import com.ssafy.withssafy.src.main.home.RequestAdapter
 import com.ssafy.withssafy.src.main.notification.MessageDetailAdapter
 import com.ssafy.withssafy.src.main.notification.MessageGroupAdapter
+import com.ssafy.withssafy.src.main.notification.NotiListAdapter
 import com.ssafy.withssafy.src.main.team.TeamAdapter
 import com.ssafy.withssafy.util.CommonUtils
 import java.text.SimpleDateFormat
@@ -355,4 +357,17 @@ fun bindingAuthConvert(textView: TextView, auth:Int){
 @BindingAdapter("timeConvert")
 fun bindTimeConvert(textView: TextView, date:String){
     textView.text = date.substring(date.length-8,date.length-3)
+}
+
+@BindingAdapter("notiListData")
+fun bindingNotiList(recyclerView: RecyclerView, data:List<Notification>?){
+    var adapter = recyclerView.adapter as NotiListAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as NotiListAdapter
+    }
+    adapter.list = data as MutableList<Notification>
+    adapter.notifyDataSetChanged()
 }
