@@ -136,7 +136,8 @@ class HomeFragment : Fragment(){
             this@HomeFragment.findNavController().navigate(R.id.boardClassNoticeListFragment)
         }
         binding.fragmentHomeMoreJob.setOnClickListener {
-            this@HomeFragment.findNavController().navigate(R.id.boardJobFragment)
+            var typeId = bundleOf("typeId" to 1)
+            this@HomeFragment.findNavController().navigate(R.id.boardFragment, typeId)
         }
         binding.fragmentHomeMoreRequest.setOnClickListener {
             this@HomeFragment.findNavController().navigate(R.id.requestFragment)
