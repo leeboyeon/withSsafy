@@ -32,4 +32,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
     void updateClassById(Long id, Long classId);
 
     List<User> findByState(@Param("state") int state);
+
+    User findByDeviceToken(String token);
+
+    @Query(value = "SELECT * FROM tbl_user WHERE device_token=:token", nativeQuery = true)
+    List<User> findUsersByDeviceToken(String token);
 }

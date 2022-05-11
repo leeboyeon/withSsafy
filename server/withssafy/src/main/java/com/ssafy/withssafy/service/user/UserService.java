@@ -159,11 +159,15 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
+            List<User> list = userRepository.findUsersByDeviceToken(token);
+            for(User u : list){
+                u.updateDeviceToken(null);
+            }
+
             user.get().updateDeviceToken(token);
         } else {
             throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
         }
-
         return modelMapper.map(user.get(), UserDto.class);
     }
 
@@ -183,5 +187,9 @@ public class UserService {
         }
 
         throw new InvalidRequestException(ErrorCode.INVALID_REQUEST);
+    }
+
+    public UserDto findByDeviceToken(String token) {
+        return modelMapper.map(userRepository.findByDeviceToken(token), UserDto.class);
     }
 }
