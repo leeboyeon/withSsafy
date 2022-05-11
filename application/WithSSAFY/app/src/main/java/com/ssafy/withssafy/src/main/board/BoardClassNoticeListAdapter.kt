@@ -45,7 +45,7 @@ class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLife
             bind(list[position])
 
             moreBtn.setOnClickListener{
-                moreCLickListener.onClick(it, position, list[position].id)
+                moreCLickListener.onClick(it, position, list[position].id, list[position])
             }
         }
     }
@@ -55,7 +55,7 @@ class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLife
     }
 
     interface MoreClickListener{
-        fun onClick(view: View, position: Int, id: Int)
+        fun onClick(view: View, position: Int, id: Int, notice: Notice)
     }
 
     private lateinit var moreCLickListener : BoardClassNoticeListAdapter.MoreClickListener

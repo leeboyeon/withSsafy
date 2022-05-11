@@ -18,7 +18,9 @@ import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentBoardClassNoticeListBinding
 import com.ssafy.withssafy.src.dto.notice.Notice
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.network.service.NoticeService
 import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 
 private const val TAG = "BoardClassNoticeListFragment"
 class BoardClassNoticeListFragment : BaseFragment<FragmentBoardClassNoticeListBinding>(FragmentBoardClassNoticeListBinding::bind, R.layout.fragment_board_class_notice_list) {
@@ -77,32 +79,49 @@ class BoardClassNoticeListFragment : BaseFragment<FragmentBoardClassNoticeListBi
             }
         }
         boardClassNoticeListAdapter.setMoreClickListener(object : BoardClassNoticeListAdapter.MoreClickListener {
-            override fun onClick(view: View, position: Int, id: Int) {
-                showPopMenu(view, id)
+            override fun onClick(view: View, position: Int, id: Int, notice: Notice) {
+                showPopMenu(view, id, notice)
             }
 
         })
     }
 
-    private fun showPopMenu(view: View, id: Int) {
+    private fun showPopMenu(view: View, id: Int, notice: Notice) {
         val popup = PopupMenu(context, view)
         MenuInflater(context).inflate(R.menu.recruit_popup_menu, popup.menu)
         popup.show()
         popup.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.update -> {
-//                    var recruitId = bundleOf("recruitId" to id)
-//                    this@BoardClassNoticeListFragment.findNavController().navigate(R.id.action_boardJobFragment_to_adminJobWriteFragment, recruitId)
+                    noticeViewModel.setNotice(notice)
+                    var noticeId = bundleOf("noticeId" to id)
+                    this@BoardClassNoticeListFragment.findNavController().navigate(R.id.noticeWriteFragment, noticeId)
                     return@setOnMenuItemClickListener true
                 }
                 R.id.delete -> {
-                    //deleteRecruit(id)
+                    deleteNotice(id)
                     return@setOnMenuItemClickListener true
                 } else -> {
                 return@setOnMenuItemClickListener false
             }
             }
         }
+    }
+
+    private fun deleteNotice(id: Int) {
+        var response: Response<Any?>
+        runBlocking {
+            response = NoticeService().deleteNoticeById(id)
+        }
+        if(response.code() == 204) {
+            showCustomToast("삭제되었습니다.")
+            runBlocking {
+                noticeViewModel.getClassNoticeList(classRoomId)
+            }
+        } else {
+            Log.d(TAG, "공지사항 삭제 실패")
+        }
+
     }
 
 
