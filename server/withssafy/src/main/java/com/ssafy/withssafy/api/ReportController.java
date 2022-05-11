@@ -32,7 +32,7 @@ public class ReportController {
 
     @PostMapping
     @ApiOperation(value = "신고를 접수합니다.")
-    public ResponseEntity<ReportResDto> insert(@RequestBody ReportReqDto reportDto){
+    public ResponseEntity<List<ReportResDto>> insert(@RequestBody ReportReqDto reportDto){
         return new ResponseEntity<>(reportService.insert(reportDto), HttpStatus.OK);
     }
 

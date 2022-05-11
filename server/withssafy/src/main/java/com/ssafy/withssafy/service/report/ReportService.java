@@ -53,7 +53,7 @@ public class ReportService {
 
 
     @Modifying(clearAutomatically = true)
-    public ReportResDto insert(ReportReqDto reportDto) {
+    public List<ReportResDto> insert(ReportReqDto reportDto) {
         if (!userRepository.findById(reportDto.getUser()).isPresent()){
             throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
         }
@@ -66,26 +66,6 @@ public class ReportService {
             throw new InvalidRequestException(ErrorCode.DOESNT_EXIST);
         }
 
-        if(reportDto.getBoard() != null) {
-            List<Report> list = reportRepository.findByBoardId(reportDto.getBoard());
-            if (list.size() > 3) {
-                // 누적 3회라면
-                reportRepository.deleteAll(list);
-                boardRepository.deleteById(reportDto.getBoard());
-                return null;
-            }
-        }
-
-        if (reportDto.getComment() != null){
-            List<Report> list = reportRepository.findByCommentId(reportDto.getComment());
-            if(list.size() >3 ){
-                // 누적 3회라면
-                reportRepository.deleteAll(list);
-                commentRepository.deleteById(reportDto.getComment());
-                return null;
-            }
-        }
-
         reportDto.setWriteDateTime();
         Report report = modelMapper.map(reportDto, Report.class);
         User user = userRepository.findById(reportDto.getUser()).get();
@@ -96,8 +76,27 @@ public class ReportService {
         if(reportDto.getComment() != null) comment = commentRepository.findById(reportDto.getComment()).get();
 
         report.setReport(board, comment, user);
-        Report result = reportRepository.save(report);
-        return modelMapper.map(result, ReportResDto.class);
+        reportRepository.save(report);
+
+        List<Report> list;
+        if(reportDto.getBoard() != null) {
+            list = reportRepository.findByBoardId(reportDto.getBoard());
+        }else{
+            list = reportRepository.findByCommentId(reportDto.getComment());
+        }
+
+        List<ReportResDto> result = new ArrayList<>();
+        for(Report r : list){
+            ReportResDto item = new ReportResDto();
+            item.setId(r.getId());
+            item.setWrite_dt(r.getWrite_dt());
+            item.setContent(r.getContent());
+            if(r.getUser() != null ) item.setUser(modelMapper.map(r.getUser(), UserDto.class));
+            if(r.getBoard() != null) item.setBoard(modelMapper.map(r.getBoard(), BoardResponse.class));
+            if(r.getComment() != null) item.setComment(modelMapper.map(r.getComment(), CommentDto.class));
+            result.add(item);
+        }
+        return result;
     }
 
     public ReportResDto delete(Long id) {
