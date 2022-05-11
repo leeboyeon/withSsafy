@@ -63,7 +63,8 @@ public class NotificationController {
 
     @DeleteMapping
     @ApiOperation(value = "보낸 아이디에 해당하는 알림을 삭제합니다.")
-    public ResponseEntity<NotificationResponseDto> delete(@RequestParam Long id){
-        return new ResponseEntity<>(notificationService.delete(id), HttpStatus.OK);
+    public ResponseEntity<?> delete(@RequestParam Long id){
+        notificationService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
