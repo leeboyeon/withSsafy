@@ -34,6 +34,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
@@ -327,7 +328,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
 
             try {
-                var response : Response<Report>
+                var response : Response<Any?>
                 runBlocking {
                     response = ReportService().addReport(report)
                 }
@@ -335,10 +336,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     val res = response.body()
                     if(res != null) {
                         showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.")
-                        dialog.dismiss()
                     } else {
+
                         Log.d(TAG, "report: $response", )
                     }
+                    dialog.dismiss()
                 } else {
                     Log.e(TAG, "report: 통신 실패", )
                 }
