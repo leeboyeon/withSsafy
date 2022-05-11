@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.RecyclerviewNotiListItemBinding
 import com.ssafy.withssafy.src.dto.Notification
-import com.ssafy.withssafy.src.main.board.JobAdapter
+import com.ssafy.withssafy.src.network.service.NotificationService
+import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 import java.util.*
 
+private const val TAG = "NotiListAdapter"
 class NotiListAdapter(val context: Context) : RecyclerView.Adapter<NotiListAdapter.NotiListHolder>() {
     var list = mutableListOf<Notification>()
     inner class NotiListHolder(private val binding: RecyclerviewNotiListItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -29,8 +32,7 @@ class NotiListAdapter(val context: Context) : RecyclerView.Adapter<NotiListAdapt
                 notiIcon.setImageResource(R.drawable.work)
             }
             itemView.findViewById<TextView>(R.id.rv_item_tv_noti_list_delete).setOnClickListener {
-                removeData(this.layoutPosition)
-                Toast.makeText(context, "삭제했습니다.", Toast.LENGTH_SHORT).show()
+                removeData(this.layoutPosition, noti.id)
             }
             binding.executePendingBindings()
         }
@@ -47,9 +49,23 @@ class NotiListAdapter(val context: Context) : RecyclerView.Adapter<NotiListAdapt
         }
     }
 
-    fun removeData(position: Int) {
+    fun removeData(position: Int, id: Int) {
+        Log.d(TAG, "removeData: $position, $id")
+        deleteNoti(id)
         list.removeAt(position)
         notifyItemRemoved(position)
+    }
+
+    private fun deleteNoti(id: Int) {
+        var response: Response<Any?>
+        runBlocking {
+            response = NotificationService().deleteNotificationById(id)
+        }
+        if(response.code() == 204) {
+            Toast.makeText(context, "알림을 삭제했습니다.", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "알림 삭제를 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun getItemCount(): Int {

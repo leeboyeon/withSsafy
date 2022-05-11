@@ -41,13 +41,14 @@ class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListB
     }
 
     private fun initSpinner() {
+        val txtArr = arrayListOf("전체 알림", "공지사항 알림", "사용자 알림", "취업공고 알림")
         val spin = binding.notiListSp
         spin.apply {
             adapter = ArrayAdapter.createFromResource(requireContext(), R.array.noti, android.R.layout.simple_spinner_dropdown_item)
         }
-        // spin.selectedItem.toString()
         spin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                binding.notiListTv1.setText(txtArr.get(position))
                 when (position) {
                     0 -> {
                         runBlocking {
