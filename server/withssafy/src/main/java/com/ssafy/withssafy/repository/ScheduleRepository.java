@@ -13,7 +13,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
 
     List<Schedule> findAllByClassRoomIdAndStartDateBetween(Long classRoomId, LocalDateTime fromDate, LocalDateTime toDate);
 //    List<Schedule> findAllByClassRoomIdAndWeeks(Long classRoomId, int weeks);
-    List<Schedule> findAllByClassRoomId(Long classRoomId);
+    List<Schedule> findAllByClassRoomIdOrderByStartDate(Long classRoomId);
 
     @Query(value = "select s.* from tbl_schedule s\n" +
             "where s.class_room_id in (select c2.id\n" +

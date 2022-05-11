@@ -133,10 +133,12 @@ class HomeFragment : Fragment(){
             startActivity(intent)
         }
         binding.fragmentHomeMoreNotice.setOnClickListener {
+            mainActivity.hideBottomNavi(true)
             this@HomeFragment.findNavController().navigate(R.id.boardClassNoticeListFragment)
         }
         binding.fragmentHomeMoreJob.setOnClickListener {
-            this@HomeFragment.findNavController().navigate(R.id.boardJobFragment)
+            var typeId = bundleOf("typeId" to 1)
+            this@HomeFragment.findNavController().navigate(R.id.boardFragment, typeId)
         }
         binding.fragmentHomeMoreRequest.setOnClickListener {
             this@HomeFragment.findNavController().navigate(R.id.requestFragment)
@@ -177,6 +179,7 @@ class HomeFragment : Fragment(){
         }
         employInfoAdapter.setItemClickListener(object : EmployInfoAdapter.ItemClickListener{
             override fun onClick(view: View, position: Int, id: Int) {
+                mainActivity.hideBottomNavi(true)
                 var recruitId = bundleOf("recruitId" to id)
                 this@HomeFragment.findNavController().navigate(R.id.jobDetailFragment, recruitId)
             }

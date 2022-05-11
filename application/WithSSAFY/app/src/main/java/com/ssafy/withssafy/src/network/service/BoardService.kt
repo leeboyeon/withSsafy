@@ -23,6 +23,8 @@ class BoardService {
 
     suspend fun deletePost(postId: Int) = RetrofitUtil.boardApi.deletePostById(postId)
 
+    suspend fun getPostInAComment(userId: Int) = RetrofitUtil.boardApi.selectPostInComment(userId)
+
     suspend fun getHotPostList() = RetrofitUtil.boardApi.getHotPostList()
 
     suspend fun postLikeOrNot(boardId: Int, userId: Int) = RetrofitUtil.boardApi.postLikeOrNot(boardId, userId)

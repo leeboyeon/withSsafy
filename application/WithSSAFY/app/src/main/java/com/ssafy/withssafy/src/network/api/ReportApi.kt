@@ -11,7 +11,7 @@ interface ReportApi {
     suspend fun selectReportList() : Response<List<Report>>
 
     @POST("report")
-    suspend fun insertReport(@Body reportDto: ReportRequest) : Response<Report>
+    suspend fun insertReport(@Body reportDto: ReportRequest) : Response<Any?>
 
     @DELETE("report")
     suspend fun deleteReport(@Query("id") id: Int) : Response<Report>
