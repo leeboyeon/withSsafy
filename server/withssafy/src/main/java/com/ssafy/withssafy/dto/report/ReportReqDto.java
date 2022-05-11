@@ -12,4 +12,8 @@ public class ReportReqDto {
     private Long comment;
     private Long user;
     private String content;
+    private String write_dt;
+    public void setWriteDateTime(){
+        this.write_dt = String.valueOf(System.currentTimeMillis());
+    }
 }
