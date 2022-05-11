@@ -52,6 +52,12 @@ interface BoardApi {
     suspend fun deletePostById(@Path("id") id: Int) : Response<Any?>
 
     /**
+     * 사용자가 댓글 단 게시물 조회
+     */
+    @GET("boards/comment/{id}")
+    suspend fun selectPostInComment(@Path("id") userId: Int) : Response<List<Board>>
+
+    /**
      * 좋아요 10개 이상 Hot 게시물 조회
      */
     @GET("boards/hot-board")

@@ -348,4 +348,39 @@ class BoardViewModel : ViewModel() {
             Log.e(TAG, "getUserWrotePostList ${e.message()}", )
         }
     }
+
+
+
+    /**
+     * 사용자가 댓글 단 게시글 리스트 조회
+     */
+    private val _userPostListOnComment = MutableLiveData<MutableList<Board>>()
+
+    val userPostListOnComment : LiveData<MutableList<Board>>
+        get() = _userPostListOnComment
+
+    private fun setUserPostListOnComment(list: MutableList<Board>) = viewModelScope.launch {
+        _userPostListOnComment.value = list
+    }
+
+    suspend fun getUserPostListOnComment(userId: Int) {
+        try {
+            val response = BoardService().getPostInAComment(userId)
+
+            viewModelScope.launch {
+                if(response.isSuccessful) {
+                    val res = response.body()
+                    if(res != null) {
+                        setUserPostListOnComment(res as MutableList<Board>)
+                    } else {
+                        Log.d(TAG, "getUserPostListOnComment: $response", )
+                    }
+                } else {
+                    Log.e(TAG, "getUserPostListOnComment: 통신 실패", )
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "getUserPostListOnComment ${e.message()}", )
+        }
+    }
 }
