@@ -15,9 +15,11 @@ import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.notice.Notice
+import com.ssafy.withssafy.src.dto.report.Report
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.main.board.*
 import com.ssafy.withssafy.src.main.home.EmployInfoAdapter
+import com.ssafy.withssafy.src.main.home.ReportAdapter
 import com.ssafy.withssafy.src.main.home.RequestAdapter
 import com.ssafy.withssafy.src.main.notification.MessageDetailAdapter
 import com.ssafy.withssafy.src.main.notification.MessageGroupAdapter
@@ -189,6 +191,19 @@ fun bindingRequestList(recyclerView: RecyclerView, data:List<User>?){
         adapter = recyclerView.adapter as RequestAdapter
     }
     adapter.list = data as MutableList<User>
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("reportListData")
+fun bindingReportList(recyclerView: RecyclerView, data:List<Report>?){
+    var adapter = recyclerView.adapter as ReportAdapter
+    if(recyclerView.adapter == null){
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+    }else{
+        adapter = recyclerView.adapter as ReportAdapter
+    }
+    adapter.list = data as MutableList<Report>
     adapter.notifyDataSetChanged()
 }
 

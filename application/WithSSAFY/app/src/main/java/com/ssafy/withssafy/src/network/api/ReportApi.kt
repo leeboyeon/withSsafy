@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface ReportApi {
 
     @GET("report")
-    suspend fun selectReportList() : Response<Report>
+    suspend fun selectReportList() : Response<List<Report>>
 
     @POST("report")
     suspend fun insertReport(@Body reportDto: ReportRequest) : Response<Report>

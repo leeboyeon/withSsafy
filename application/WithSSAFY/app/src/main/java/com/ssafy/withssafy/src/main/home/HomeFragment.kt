@@ -47,6 +47,7 @@ class HomeFragment : Fragment(){
     lateinit var popularPostAdapter: PopularPostAdapter
     lateinit var employInfoAdapter: EmployInfoAdapter
     lateinit var requestAdapter: RequestAdapter
+    lateinit var reportAdapter: ReportAdapter
 
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
     val classRoomId = ApplicationClass.sharedPreferencesUtil.getUser().classRoomId
@@ -79,10 +80,13 @@ class HomeFragment : Fragment(){
         binding.recruitViewModel = recruitViewModel
         binding.userViewModel = userViewModel
         binding.noticeViewModel = noticeViewModel
+        binding.homeViewModel = homeViewModel
+
         runBlocking {
             recruitViewModel.getRecentRecruitList()
             userViewModel.getStateZeroUserList()
             noticeViewModel.getClassNoticeList(classRoomId)
+            homeViewModel.getReportList()
         }
 
         val bannerList = arrayListOf<Int>(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
@@ -102,8 +106,10 @@ class HomeFragment : Fragment(){
         Log.d(TAG, "onViewCreated: $studentId")
         if(studentId != null) { // 교육생
             binding.homeLayoutAdminRequestLayout.visibility = View.GONE
+            binding.homeFragmentClReport.visibility = View.GONE
         } else { // 관리자
             binding.homeLayoutAdminRequestLayout.visibility = View.VISIBLE
+            binding.homeFragmentClReport.visibility = View.VISIBLE
         }
     }
     private fun initButtons(){
@@ -188,7 +194,21 @@ class HomeFragment : Fragment(){
             override fun onClick(view: View, position: Int, id: Int) {
 
             }
+        })
 
+        reportAdapter = ReportAdapter(true)
+        homeViewModel.reportList.observe(viewLifecycleOwner) {
+            reportAdapter.list = it
+        }
+
+        binding.homeFragmentRvReport.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = reportAdapter
+        }
+        reportAdapter.setItemClickListener(object : ReportAdapter.ItemClickListener {
+            override fun onClick(view: View, position: Int, id: Int) {
+
+            }
         })
     }
 
