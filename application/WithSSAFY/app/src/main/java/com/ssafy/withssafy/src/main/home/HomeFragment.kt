@@ -20,13 +20,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.FragmentHomeBinding
+import com.ssafy.withssafy.src.dto.board.Board
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.board.BoardClassNoticeAdapter
 import com.ssafy.withssafy.src.main.board.JobAdapter
-import com.ssafy.withssafy.src.viewmodel.HomeViewModel
-import com.ssafy.withssafy.src.viewmodel.NoticeViewModel
-import com.ssafy.withssafy.src.viewmodel.RecruitViewModel
-import com.ssafy.withssafy.src.viewmodel.UserViewModel
+import com.ssafy.withssafy.src.viewmodel.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -40,6 +38,7 @@ class HomeFragment : Fragment(){
     private val recruitViewModel : RecruitViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val noticeViewModel: NoticeViewModel by activityViewModels()
+    private val boardViewModel: BoardViewModel by activityViewModels()
     private lateinit var mainActivity: MainActivity
 
     //lateinit var favoriteBoardAdapter: FavoriteBoardAdapter
@@ -49,6 +48,7 @@ class HomeFragment : Fragment(){
     lateinit var requestAdapter: RequestAdapter
     lateinit var reportAdapter: ReportAdapter
 
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     val studentId = ApplicationClass.sharedPreferencesUtil.getUser().studentId
     val classRoomId = ApplicationClass.sharedPreferencesUtil.getUser().classRoomId
 
@@ -87,6 +87,8 @@ class HomeFragment : Fragment(){
             userViewModel.getStateZeroUserList()
             noticeViewModel.getClassNoticeList(classRoomId)
             homeViewModel.getReportList()
+            boardViewModel.getHotPostList()
+            boardViewModel.getUserLikePostList(userId)
         }
 
         val bannerList = arrayListOf<Int>(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
@@ -143,6 +145,9 @@ class HomeFragment : Fragment(){
         binding.fragmentHomeMoreRequest.setOnClickListener {
             this@HomeFragment.findNavController().navigate(R.id.requestFragment)
         }
+        binding.homeClMore.setOnClickListener {
+            this@HomeFragment.findNavController().navigate(R.id.action_homeFragment_to_boardDetailFragment, bundleOf("typeId" to -4))
+        }
     }
     private fun initAdapter() {
         boardClassNoticeAdapter = BoardClassNoticeAdapter(userViewModel, viewLifecycleOwner)
@@ -164,10 +169,25 @@ class HomeFragment : Fragment(){
         })
 
         popularPostAdapter = PopularPostAdapter()
+
+        boardViewModel.hotPostList.observe(viewLifecycleOwner) {
+            popularPostAdapter.list = it
+        }
+        boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+            popularPostAdapter.userLikePost = it
+        }
+
         binding.homeRvPopular.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = popularPostAdapter
         }
+
+        popularPostAdapter.setItemClickListener(object : PopularPostAdapter.ItemClickListener {
+            override fun onClick(view: View, board: Board) {
+                this@HomeFragment.findNavController().navigate(R.id.action_homeFragment_to_postDetailFragment,
+                    bundleOf("postId" to board.id, "typeId" to board.boardType.id))
+            }
+        })
 
         employInfoAdapter = EmployInfoAdapter()
         recruitViewModel.recentRecruitList.observe(viewLifecycleOwner) {

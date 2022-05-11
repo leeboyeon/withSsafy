@@ -77,6 +77,11 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
                 -2 -> { // '댓글 단 글'
                     binding.boardType = BoardType(0, "댓글 단 글")
 
+                    runBlocking {
+                        boardViewModel.getUserPostListOnComment(userId)
+                        boardViewModel.getUserLikePostList(userId)
+                    }
+
                 }
                 -3 -> { // '좋아요한 글'
                     binding.boardType = BoardType(0, "좋아요한 글")
@@ -153,7 +158,14 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
                 }
             }
             -2 -> {
+                boardViewModel.userPostListOnComment.observe(viewLifecycleOwner) {
+                    boardDetailAdapter.postList = it
 
+                }
+
+                boardViewModel.userLikePostList.observe(viewLifecycleOwner) {
+                    boardDetailAdapter.userLikePost = it
+                }
             }
             -3 -> {
                 boardViewModel.userLikePostList.observe(viewLifecycleOwner) {

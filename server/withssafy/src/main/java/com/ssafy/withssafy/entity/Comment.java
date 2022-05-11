@@ -25,8 +25,9 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
-    private int parent;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent")
+    private Comment parent;
 
     @Column
     private String content;
@@ -34,8 +35,12 @@ public class Comment {
     @Column
     private String write_dt;
 
+    public Long getParent() {
+        return this.parent == null ? null : this.parent.getId();
+    }
+
     @Builder
-    public Comment(Long id, Board board, User user, int parent, String content, String write_dt){
+    public Comment(Long id, Board board, User user, Comment parent, String content, String write_dt){
         this.id = id;
         this.board = board;
         this.user = user;
