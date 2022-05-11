@@ -85,6 +85,13 @@ public class BoardService {
         return board.map(value -> modelMapper.map(value, BoardResponse.class)).orElse(null);
     }
 
+    public List<BoardResponse> getBoardByComment(Long userId){
+        List<Board> boards = boardRepository.findByComment(userId);
+
+        return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public void removeBoardById(Long id) {
         boardRepository.deleteById(id);

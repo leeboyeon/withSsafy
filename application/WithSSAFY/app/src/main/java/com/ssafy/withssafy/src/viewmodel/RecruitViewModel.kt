@@ -87,9 +87,12 @@ class RecruitViewModel : ViewModel(){
                 if(res != null) {
                     var recentList = res
                     recentList.sortByDescending { Integer.parseInt(it.startDate.replace("-", ""))}
-                    Log.d("RecruitViewModel", "getRecentRecruitList: $recentList")
-                    val list = recentList.subList(0, 5)
-                    setRecentRecrutList(list)
+                    if(recentList.size > 5) {
+                        val list = recentList.subList(0, 5)
+                        setRecentRecrutList(list)
+                    } else {
+                        setRecentRecrutList(recentList)
+                    }
                 }
             }
         }
