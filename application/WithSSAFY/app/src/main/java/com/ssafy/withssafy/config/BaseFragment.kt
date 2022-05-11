@@ -33,6 +33,7 @@ abstract class BaseFragment <B: ViewBinding> (
     protected val recruitViewModel : RecruitViewModel by activityViewModels()
     protected val scheduleViewModel : ScheduleViewModel by activityViewModels()
     protected val noticeViewModel : NoticeViewModel by activityViewModels()
+    protected val notificationViewModel : NotificationViewModel by activityViewModels()
 
     protected val compositeDisposable = CompositeDisposable()
 
