@@ -43,24 +43,24 @@ class SingInActivity : BaseActivity<ActivitySingInBinding>(ActivitySingInBinding
 
         Log.d(TAG, "onCreate: ${userViewModel.allUserList.value}")
 
-        val userId = ApplicationClass.sharedPreferencesUtil.getAutoLogin()
-        if (userId != null && userId != -1){
-            runBlocking {
-                userViewModel.getUser(userId,1)
-            }
-            if(userViewModel.isAutoLoginPossible.value == 1) {
-                openFragment(1)
-            } else {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.login_frame_layout, SingInFragment())
-                    .commit()
-            }
-
-        } else {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.login_frame_layout, SingInFragment())
-                .commit()
-        }
+//        val userId = ApplicationClass.sharedPreferencesUtil.getAutoLogin()
+//        if (userId != null && userId != -1){
+//            runBlocking {
+//                userViewModel.getUser(userId,1)
+//            }
+//            if(userViewModel.isAutoLoginPossible.value == 1) {
+//                openFragment(1)
+//            } else {
+//                supportFragmentManager.beginTransaction()
+//                    .replace(R.id.login_frame_layout, SingInFragment())
+//                    .commit()
+//            }
+//
+//        } else {
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.login_frame_layout, SingInFragment())
+//                .commit()
+//        }
 
         Log.d(TAG, "onCreate: ${sha256("test")}\n${sha256("admin")}")
         initFcm()

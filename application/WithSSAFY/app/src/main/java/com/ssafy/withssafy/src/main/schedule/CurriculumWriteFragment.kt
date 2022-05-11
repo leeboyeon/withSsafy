@@ -16,9 +16,11 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentCurriculumWriteBinding
+import com.ssafy.withssafy.src.dto.ClassRoom
 import com.ssafy.withssafy.src.dto.Schedule
 import com.ssafy.withssafy.src.network.service.ScheduleService
 import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 import java.util.*
 
 private const val TAG = "CurriculumWriteFragment"
@@ -56,28 +58,71 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
         initButtons()
         if(scheduleId > 0){
             initData()
+            deleteButtonClick()
         }
         initAdapter()
+    }
+    private fun deleteButtonClick(){
+        binding.scheduleDeleteButn.setOnClickListener {
+            val response:Response<Any?>
+            runBlocking {
+                response = ScheduleService().deleteSchedule(scheduleId)
+            }
+            if(response.code() == 204){
+                if(response.isSuccessful){
+                    showCustomToast("삭제되었습니다.")
+                    this@CurriculumWriteFragment.findNavController().navigate(R.id.scheduleFragment)
+                }
+            }
+
+        }
     }
     private fun initData(){
         runBlocking {
             scheduleViewModel.getScheduleById(scheduleId)
         }
         var schedule = scheduleViewModel.schedule.value!!
-        if(schedule.classRoomId > 0){
-            binding.fragmentCurrculWriteTypeClass.isChecked = true
-            binding.fragmentCurrculWriteTypeFull.isChecked = false
-        }else{
+        binding.scheduleDeleteButn.visibility = View.VISIBLE
+
+        Log.d(TAG, "initData: ${schedule.classRoomId}")
+        if( schedule.classRoomId >= 272 ){
             binding.fragmentCurrculWriteTypeClass.isChecked = false
             binding.fragmentCurrculWriteTypeFull.isChecked = true
+            binding.fragmentCurrculWriteWeeksSpinner.visibility = View.GONE
+            binding.roomIdSpinnerLayout.visibility = View.VISIBLE
+        }else{
+            binding.fragmentCurrculWriteTypeClass.isChecked = true
+            binding.fragmentCurrculWriteTypeFull.isChecked = false
         }
 
         binding.fragmentCurrculWriteWeeksSpinner.setSelection(schedule.weeks-1)
+
+        var flag = false
         for(i in 0..title.size-1){
             if(title[i].equals(schedule.title)){
                 binding.fragmentCurrculWriteTitleSpinner.setSelection(i)
+                flag = true
             }
         }
+        if(!flag){
+            binding.fragmentCurrculWriteTitleSpinner.setSelection(6)
+            binding.fragmentCurrculWriteTitleEdit.visibility = View.VISIBLE
+            binding.fragmentCurrculWriteTitleEdit.setText(schedule.title)
+        }
+        var rooms = userViewModel.classRommList.value!!
+        var tmp = arrayListOf<ClassRoom>()
+        for(item in rooms){
+            if(item.classDescription.equals("전체")){
+                tmp.add(item)
+            }
+        }
+        for(i in 0..tmp.size-1){
+            if(tmp[i].id == schedule.classRoomId){
+                binding.roomListSpinner.setSelection(i)
+            }
+        }
+
+
 //        binding.fragmentCurrculWriteTitleSpinner.setSelection(6)
         var startDate = schedule.startDate.substring(0,10)
         binding.fragmentCurrculWriteStartDateTv.text = startDate
@@ -154,18 +199,36 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
         }
     }
     private fun modifySchedule(){
-        var schedule = Schedule(
-            roomId,
-            "${binding.fragmentCurrculWriteEndDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
-            scheduleId,
-            "",
-            "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
-            titleType,
-            ApplicationClass.sharedPreferencesUtil.getUser().id,
-            week
-        )
+        if(titleType.equals("")){
+            titleType = binding.fragmentCurrculWriteTitleEdit.text.toString()
+        }
+        var schedules:Schedule
+        if(type == 0){
+            schedules = Schedule(
+                classRoomId = roomId,
+                endDate = "${binding.fragmentCurrculWriteEndDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
+                scheduleId,
+                memo = "",
+                startDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
+                title = titleType,
+                ApplicationClass.sharedPreferencesUtil.getUser().id,
+                week
+            )
+        }else{
+            schedules = Schedule(
+                classRoomId = roomId,
+                endDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteEndTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteEndTimeTv.length())}",
+                scheduleId,
+                memo = "",
+                startDate = "${binding.fragmentCurrculWriteStartDateTv.text.toString()} ${binding.fragmentCurrculWriteStartTimeTv.text.toString().substring(3,binding.fragmentCurrculWriteStartTimeTv.length())}",
+                title = titleType,
+                ApplicationClass.sharedPreferencesUtil.getUser().id,
+                0
+            )
+        }
+
         runBlocking {
-            val response = ScheduleService().modifySchedule(schedule)
+            val response = ScheduleService().modifySchedule(schedules)
             if(response.code() == 204){
                 showCustomToast("수정되었습니다.")
                 this@CurriculumWriteFragment.findNavController().navigate(R.id.scheduleFragment)
@@ -174,8 +237,6 @@ class CurriculumWriteFragment : BaseFragment<FragmentCurriculumWriteBinding>(Fra
     }
     private fun insertSchedules(){
         var schedules = scheduleViewModel.liveScheduleBucket.value!!
-
-
         runBlocking {
             val response = ScheduleService().insertSchedule(schedules)
             if(response.code() == 204){
