@@ -38,7 +38,7 @@ interface ScheduleApi {
      * Delete Schedule By Id
      * @author : LeeBoYeon
      * */
-    @DELETE("/shedule/{id}")
+    @DELETE("/schedule/{id}")
     suspend fun deleteSchdule(@Path("id")id:Int):Response<Any?>
     /**
      * 모든 스케줄 가져오기

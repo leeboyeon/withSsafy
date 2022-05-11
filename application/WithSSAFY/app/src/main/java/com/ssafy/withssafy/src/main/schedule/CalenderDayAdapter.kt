@@ -14,8 +14,12 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
@@ -29,7 +33,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 private const val TAG = "CalenderDayAdapter"
-class CalenderDayAdapter(val tmpMonth:Int, val dayList:MutableList<Date>,val dates:ArrayList<String>, val scheduleViewModel: ScheduleViewModel, val context:Context, var roomId:Int, var lifecycle:LifecycleOwner):
+class CalenderDayAdapter(val tmpMonth:Int, val dayList:MutableList<Date>,val dates:ArrayList<String>, val scheduleViewModel: ScheduleViewModel, val context:Context, var roomId:Int, var lifecycle:LifecycleOwner, var fragment: Fragment):
     RecyclerView.Adapter<CalenderDayAdapter.DayViewHolder>() {
     val ROW = 6
 
@@ -139,6 +143,12 @@ class CalenderDayAdapter(val tmpMonth:Int, val dayList:MutableList<Date>,val dat
             layoutManager = LinearLayoutManager(context)
             adapter = detailAdapter
         }
-
+        detailAdapter.setItemClickListener(object : DayDetailAdapter.ItemClickListener{
+            override fun onClick(view: View, position: Int, scheduleId: Int) {
+                var scheduleId = bundleOf("scheduleId" to scheduleId)
+                fragment.findNavController().navigate(R.id.curriculumWriteFragment, scheduleId)
+                dialog.dismiss()
+            }
+        })
     }
 }

@@ -39,7 +39,7 @@ class FullCurriculumFragment : BaseFragment<FragmentFullCurriculumBinding>(Fragm
                 date.add(item.startDate)
             }
         }
-        calendarMonthAdapter = CalenderMonthAdapter(requireContext(),date,scheduleViewModel,userViewModel.loginUserInfo.value!!.classRoomId,viewLifecycleOwner)
+        calendarMonthAdapter = CalenderMonthAdapter(requireContext(),date,scheduleViewModel,userViewModel.loginUserInfo.value!!.classRoomId,viewLifecycleOwner,this)
 
         binding.fragmentScheduleFullRv.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)

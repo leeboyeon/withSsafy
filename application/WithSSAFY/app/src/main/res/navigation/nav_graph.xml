@@ -241,7 +241,10 @@
         android:name="com.ssafy.withssafy.src.main.schedule.CurriculumWriteFragment"
         android:label="fragment_curriculum_write"
         tools:layout="@layout/fragment_curriculum_write">
-
+        <argument
+            android:defaultValue="0"
+            android:name="scheduleId"
+            app:argType="integer"/>
     </fragment>
 
     <fragment
