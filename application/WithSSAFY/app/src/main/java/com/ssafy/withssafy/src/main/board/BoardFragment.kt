@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class BoardFragment : BaseFragment<FragmentBoardBinding>(FragmentBoardBinding::bind, R.layout.fragment_board) {
     private val TAG = "BoardFragment_ws"
     private lateinit var mainActivity: MainActivity
-    private var typeId: Int = -1
+    private var typeId: Int = 0
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity

@@ -24,7 +24,8 @@ class BoardClassNoticeListAdapter(val userViewModel: UserViewModel, val viewLife
             runBlocking {
                 userViewModel.getUserInfoAuth(notice.userId)
             }
-            binding.user = userViewModel.userInfoAuth.value!!
+            if(userViewModel.userInfoAuth.value != null)
+                binding.user = userViewModel.userInfoAuth.value!!
             binding.executePendingBindings()
 
             if(isStudent) {

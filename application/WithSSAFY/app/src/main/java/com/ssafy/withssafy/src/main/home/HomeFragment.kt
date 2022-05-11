@@ -179,6 +179,7 @@ class HomeFragment : Fragment(){
         }
         employInfoAdapter.setItemClickListener(object : EmployInfoAdapter.ItemClickListener{
             override fun onClick(view: View, position: Int, id: Int) {
+                mainActivity.hideBottomNavi(true)
                 var recruitId = bundleOf("recruitId" to id)
                 this@HomeFragment.findNavController().navigate(R.id.jobDetailFragment, recruitId)
             }
