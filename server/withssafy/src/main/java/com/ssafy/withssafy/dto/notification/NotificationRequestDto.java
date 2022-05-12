@@ -13,4 +13,8 @@ public class NotificationRequestDto {
     private String dateTime;
     private String title;
     private String content;
+
+    public void setWriteDateTime(){
+        this.dateTime = String.valueOf(System.currentTimeMillis());
+    }
 }
