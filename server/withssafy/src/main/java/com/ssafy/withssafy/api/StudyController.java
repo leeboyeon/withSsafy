@@ -71,4 +71,15 @@ public class StudyController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/study")
+    @ApiOperation(value = "스터디만 조회")
+    public ResponseEntity<List<StudyBoardResponse>> findByType(){
+        return new ResponseEntity<>(studyService.findByType(0), HttpStatus.OK);
+    }
+
+    @GetMapping("/team-building")
+    @ApiOperation(value = "팀빌딩만 조회")
+    public ResponseEntity<List<StudyBoardResponse>> findByArea(@RequestParam Long classRoomId){
+        return new ResponseEntity<>(studyService.findByArea(classRoomId), HttpStatus.OK);
+    }
 }
