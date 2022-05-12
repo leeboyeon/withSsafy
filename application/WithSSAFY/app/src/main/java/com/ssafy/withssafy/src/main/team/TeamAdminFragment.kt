@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.main.team
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,17 +12,24 @@ import androidx.navigation.fragment.findNavController
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentTeamAdminBinding
+import com.ssafy.withssafy.src.dto.study.Build
+import com.ssafy.withssafy.src.main.MainActivity
 
 class TeamAdminFragment : BaseFragment<FragmentTeamAdminBinding>(FragmentTeamAdminBinding::bind, R.layout.fragment_team_admin) {
     var minPeople = 0
     var maxPeople = 0;
     var classification = -1;
+    private lateinit var mainActivity:MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListener()
@@ -35,10 +43,13 @@ class TeamAdminFragment : BaseFragment<FragmentTeamAdminBinding>(FragmentTeamAdm
             this@TeamAdminFragment.findNavController().popBackStack()
         }
         binding.fragmentTeamAdminSuccess.setOnClickListener {
-            teamViewModel.maxPeople = maxPeople
-            teamViewModel.minPeople = minPeople
-            teamViewModel.classificationType = classification
-            teamViewModel.option = binding.fragmentTeamAdminOptionEdit.text.toString()
+            var teamDao = mainActivity.teamDB?.teamDao()
+            val r = Runnable {
+                teamDao?.insertTeamType(Build(0,minPeople, maxPeople,classification,binding.fragmentTeamAdminOptionEdit.text.toString()))
+            }
+            val thread = Thread(r)
+            thread.start()
+
             this@TeamAdminFragment.findNavController().navigate(R.id.teamFragment)
         }
     }

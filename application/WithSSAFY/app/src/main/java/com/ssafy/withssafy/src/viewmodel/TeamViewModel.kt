@@ -23,6 +23,8 @@ class TeamViewModel : ViewModel(){
     private val _study = MutableLiveData<Study>()
     private val _studyCommentList = MutableLiveData<MutableList<Comment>>()
     private val _studyCommentParentList = MutableLiveData<MutableList<Comment>>()
+    private val _teamBuildList = MutableLiveData<MutableList<Study>>()
+
     var count = 0;
     var classificationType = -1;
     var minPeople = 0;
@@ -39,6 +41,8 @@ class TeamViewModel : ViewModel(){
         get() = _studyCommentList
     val studyParentComments : LiveData<MutableList<Comment>>
         get() = _studyCommentParentList
+    val teamBuildList : LiveData<MutableList<Study>>
+        get() = _teamBuildList
 
     fun setStudyList(list: MutableList<Study>){
         _studyList.value = list
@@ -52,6 +56,10 @@ class TeamViewModel : ViewModel(){
     fun setStudyCommentParentList(list:MutableList<Comment>){
         _studyCommentParentList.value = list
     }
+    fun setTeamBuildList(list:MutableList<Study>){
+        _teamBuildList.value = list
+    }
+
     fun getButtonText() : ObservableField<String>{
         return peopleText
     }
@@ -70,7 +78,6 @@ class TeamViewModel : ViewModel(){
             count = 0
             updateButtonText()
         }
-
     }
     suspend fun getStudys(){
         val response = StudyService().getStudys()
@@ -115,4 +122,16 @@ class TeamViewModel : ViewModel(){
             }
         }
     }
+    suspend fun getTeamBuildListByRoomId(roomId:Int){
+        val response = StudyService().getTeamBuildListByRoomId(roomId)
+        viewModelScope.launch {
+            val res = response.body()
+            if(response.code() == 200){
+                if(res!=null){
+                    setTeamBuildList(res)
+                }
+            }
+        }
+    }
+
 }

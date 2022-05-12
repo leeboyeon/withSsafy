@@ -105,12 +105,10 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(FragmentStudyBinding::b
         })
     }
     private fun deleteStudy(id:Int, position:Int){
-        Log.d(TAG, "deleteStudy: $id    /   $position")
         var response : Response<Any?>
         runBlocking {
             response = StudyService().deleteStudy(id)
         }
-        Log.d(TAG, "deleteStudy: ${response.code()}")
         if(response.isSuccessful){
             showCustomToast("삭제되었습니다.")
             runBlocking {

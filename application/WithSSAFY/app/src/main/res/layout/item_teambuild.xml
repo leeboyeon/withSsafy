@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="study"
@@ -10,23 +10,34 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="20dp">
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/fragment_teamBuild_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{study.user.name}"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/fragment_teamBuild_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="6dp"
             android:text="@{study.title}"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/fragment_teamBuild_name" />
 
         <ImageView
-            android:id="@+id/fragment_team_moreBtn"
+            android:id="@+id/fragment_teamBuild_more"
             android:layout_width="18dp"
             android:layout_height="018dp"
             android:layout_marginTop="16dp"
@@ -48,7 +59,7 @@
             app:layout_constraintTop_toBottomOf="@+id/fragment_teamBuild_title" />
 
         <TextView
-            android:id="@+id/fragment_team_memberSize"
+            android:id="@+id/fragment_teamBuild_memberSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -60,7 +71,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView5" />
 
         <TextView
-            android:id="@+id/fragment_team_date"
+            android:id="@+id/fragment_teamBuild_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -70,7 +81,7 @@
         <!--        app:converMilliSecondToString="@{study.writeDateTime.toString()}"-->
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/fragment_team_ingOred"
+            android:id="@+id/fragment_teamBuild_ingOred"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginTop="16dp"
@@ -80,11 +91,11 @@
             android:textSize="10sp"
             app:chipBackgroundColor="@color/purple_200"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/fragment_team_date"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_team_date" />
+            app:layout_constraintStart_toStartOf="@+id/fragment_teamBuild_date"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_teamBuild_date" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/fragment_team_studyType"
+            android:id="@+id/fragment_teamBuild_studyType"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
@@ -92,12 +103,12 @@
             android:textColor="@color/white"
             android:textSize="10sp"
             app:chipBackgroundColor="@color/purple_200"
-            app:layout_constraintBottom_toBottomOf="@+id/fragment_team_ingOred"
-            app:layout_constraintStart_toEndOf="@+id/fragment_team_ingOred"
-            app:layout_constraintTop_toTopOf="@+id/fragment_team_ingOred" />
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_teamBuild_ingOred"
+            app:layout_constraintStart_toEndOf="@+id/fragment_teamBuild_ingOred"
+            app:layout_constraintTop_toTopOf="@+id/fragment_teamBuild_ingOred" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/fragment_team_studyLoc"
+            android:id="@+id/fragment_teamBuild_studyLoc"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
@@ -105,9 +116,9 @@
             android:textColor="@color/white"
             android:textSize="10sp"
             app:chipBackgroundColor="@color/purple_200"
-            app:layout_constraintBottom_toBottomOf="@+id/fragment_team_studyType"
-            app:layout_constraintStart_toEndOf="@+id/fragment_team_studyType"
-            app:layout_constraintTop_toTopOf="@+id/fragment_team_studyType" />
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_teamBuild_studyType"
+            app:layout_constraintStart_toEndOf="@+id/fragment_teamBuild_studyType"
+            app:layout_constraintTop_toTopOf="@+id/fragment_teamBuild_studyType" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -115,9 +126,9 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/chip_background"
             android:elevation="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/fragment_team_studyLoc"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_teamBuild_studyLoc"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/fragment_team_studyLoc">
+            app:layout_constraintTop_toTopOf="@+id/fragment_teamBuild_studyLoc">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -137,14 +148,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="5dp"
-                app:studyLimitText="@{study}"
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:studyLimitText="@{study}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
