@@ -37,11 +37,12 @@
             android:id="@+id/timetable"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:header_title="@array/header_title"
-            app:sticker_colors="@array/default_sticker_color"
+            app:cell_height="60dp"
+            app:column_count="6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_schedule_appBar" />
+            app:layout_constraintTop_toBottomOf="@+id/fragment_schedule_appBar"
+            app:row_count="11" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

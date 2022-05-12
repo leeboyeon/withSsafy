@@ -67,41 +67,6 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
         initTimeTable()
         isStudent = studentId != null
     }
-//    private fun initButtons(){
-//        timetable.setOnStickerSelectEventListener { idx, schedules ->
-//            showOptionDialog(schedules[idx].classTitle,scheduleViewModel.liveScheduleIndex.value!!.get(idx))
-//        }
-//    }
-//    private fun showOptionDialog(title:String, id:Int){
-//        var dialog = Dialog(requireContext())
-//        var dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_class_curriculum,null)
-//        if(dialogView.parent!=null){
-//            (dialogView.parent as ViewGroup).removeView(dialogView)
-//        }
-//        dialog.setContentView(dialogView)
-//        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        dialogView.findViewById<TextView>(R.id.fragment_classcurrcul_dialog_title).text = title
-//        dialog.show()
-//
-//        dialogView.findViewById<AppCompatButton>(R.id.fragment_classcurrcul_dialog_modify).setOnClickListener {
-//            var scheduleId = bundleOf("scheduleId" to id)
-//            this@ClassCurriculumFragment.findNavController().navigate(R.id.curriculumWriteFragment, scheduleId)
-//            dialog.dismiss()
-//        }
-//        dialogView.findViewById<AppCompatButton>(R.id.fragment_classcurrcul_dialog_delete).setOnClickListener {
-//            val response : Response<Any?>
-//            runBlocking {
-//                response = ScheduleService().deleteSchedule(id)
-//            }
-//            if(response.code() == 204){
-//                showCustomToast("삭제되었습니다.")
-//            }
-//        }
-//        dialogView.findViewById<ImageButton>(R.id.fragment_classcurrcul_dialog_cancle).setOnClickListener {
-//            dialog.dismiss()
-//        }
-//    }
-
     @SuppressLint("ResourceAsColor")
     private fun initTimeTable(){
         classAdapter = ClassCurrculAdapter(scheduleViewModel, requireContext())
@@ -165,10 +130,10 @@ class ClassCurriculumFragment : BaseFragment<FragmentClassCurriculumBinding>(Fra
 
         classAdapter.setModifyItemClickListener(object: ClassCurrculAdapter.ModifyClickListener {
             override fun onClick(scheduleId: Int) {
-                var scheduleIds = bundleOf("scheduleId" to scheduleId)
-                this@ClassCurriculumFragment.findNavController().navigate(R.id.curriculumWriteFragment, scheduleIds)
+                Log.d(TAG, "onClick: ${scheduleId}")
+//                var scheduleIds = bundleOf("scheduleId" to scheduleId)
+//                this@ClassCurriculumFragment.findNavController().navigate(R.id.curriculumWriteFragment, scheduleIds)
             }
-
         })
     }
     private fun findWeeks(date:String):Int{

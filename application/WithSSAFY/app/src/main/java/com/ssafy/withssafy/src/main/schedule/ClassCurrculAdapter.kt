@@ -12,10 +12,12 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.github.tlaabs.timetableview.Schedule
+import com.github.tlaabs.timetableview.Sticker
 import com.github.tlaabs.timetableview.TimetableView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.databinding.ItemClassCurriculrumBinding
@@ -26,19 +28,26 @@ import kotlinx.coroutines.runBlocking
 import retrofit2.Response
 import java.util.ArrayList
 
+private const val TAG = "ClassCurrculAdapter"
 class ClassCurrculAdapter(val scheduleViewModel: ScheduleViewModel, val context:Context) : RecyclerView.Adapter<ClassCurrculAdapter.ClassViewHolder>() {
     var scheduleList = mutableListOf<WeekSchedule>()
     inner class ClassViewHolder(private val binding:ItemClassCurriculrumBinding) : RecyclerView.ViewHolder(binding.root){
         var timetable = itemView.findViewById<TimetableView>(R.id.timetable)
+        @SuppressLint("ResourceType")
         fun bind(schedule:WeekSchedule){
             binding.schedule = schedule
+            binding.executePendingBindings()
 
             timetable.add(schedule.schedules)
+
             var json = timetable.createSaveData()
             timetable.load(json)
 
-
-            binding.executePendingBindings()
+            timetable.setOnStickerSelectEventListener(object: TimetableView.OnStickerSelectedListener {
+                override fun OnStickerSelected(idx: Int, schedules: ArrayList<Schedule>?) {
+                    modifyClickListener.onClick(schedule.scheduleDtos[idx].id)
+                }
+            })
         }
     }
 
@@ -49,11 +58,6 @@ class ClassCurrculAdapter(val scheduleViewModel: ScheduleViewModel, val context:
     override fun onBindViewHolder(holder: ClassViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.apply {
             bind(scheduleList[position])
-//            timetable.setOnStickerSelectEventListener(object: TimetableView.OnStickerSelectedListener {
-//                override fun OnStickerSelected(idx: Int, schedules: ArrayList<Schedule>?) {
-//                    Log.d("TAG", "OnStickerSelected: ${schedules?.get(idx)!!.classTitle}")
-//                }
-//            })
         }
     }
 

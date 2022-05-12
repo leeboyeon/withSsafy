@@ -329,7 +329,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
 
             try {
-                var response : Response<Any?>
+                var response : Response<Report>
                 runBlocking {
                     response = ReportService().addReport(report)
                 }
