@@ -56,11 +56,14 @@ import com.ssafy.withssafy.src.dto.report.Report
 import com.ssafy.withssafy.src.dto.report.ReportRequest
 import com.ssafy.withssafy.src.login.SingInActivity
 import com.ssafy.withssafy.src.main.board.BoardFragment
+import com.ssafy.withssafy.src.main.board.CommentAdapter
 import com.ssafy.withssafy.src.main.home.HomeFragment
 import com.ssafy.withssafy.src.main.notification.NotificationFragment
 import com.ssafy.withssafy.src.main.schedule.ScheduleFragment
 import com.ssafy.withssafy.src.main.team.TeamFragment
 import com.ssafy.withssafy.src.network.api.FCMApi
+import com.ssafy.withssafy.src.network.service.BoardService
+import com.ssafy.withssafy.src.network.service.CommentService
 import com.ssafy.withssafy.src.network.service.MessageService
 import com.ssafy.withssafy.src.network.service.ReportService
 import com.ssafy.withssafy.src.viewmodel.BoardViewModel
@@ -336,12 +339,41 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 if(response.isSuccessful) {
                     val res = response.body()
                     if(res != null) {
-//                        if(res.size >= 4) {
-//                            showCustomToast("신고가 접수되었습니다.\n")
-//                        }
-                        showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.\n${res.size}")
-                    } else {
-                        Log.d(TAG, "report: $response", )
+                        if(res.size < 4) {    // 신고 횟수가 4회 미만
+                            showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.\n")
+                            Log.d(TAG, "report: $response", )
+                        } else {
+                            val firstReport = res[0]
+                            if(firstReport.comment != null) { // 댓글 신고 횟수 4회 이상 - 해당 댓글 삭제
+                                var deleteCmtResponse : Response<Any?>
+
+                                runBlocking {
+                                    deleteCmtResponse = CommentService().deleteComment(firstReport.comment.id)
+                                }
+
+                                if(deleteCmtResponse.isSuccessful) {
+                                    showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 댓글은 삭제 처리 되었습니다.\n")
+                                    runBlocking {
+                                        boardViewModel.getCommentList(firstReport.comment.boardId)
+                                    }
+                                    val commentAdapter = CommentAdapter(this)
+                                    commentAdapter.notifyDataSetChanged()
+                                }
+                            } else if(firstReport.board != null) {    // 게시글 신고 횟수 4회 이상 - 해당 게시글 삭제
+                                var deletePostResponse : Response<Any?>
+
+                                runBlocking {
+                                    deletePostResponse = BoardService().deletePost(firstReport.board.id)
+                                }
+
+                                if(deletePostResponse.isSuccessful) {
+                                    showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 게시글은 삭제 처리 되었습니다.\n")
+                                    runBlocking {
+                                        boardViewModel.getPostDetail(firstReport.board.id)
+                                    }
+                                }
+                            }
+                        }
                     }
                     dialog.dismiss()
                 } else {
