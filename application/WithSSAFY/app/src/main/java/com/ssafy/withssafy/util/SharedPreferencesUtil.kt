@@ -13,7 +13,6 @@ class SharedPreferencesUtil (context: Context) {
     fun addUser(user: User, classRoomId : Int){
         val editor = preferences.edit()
         editor.putInt("id", user.id)
-        editor.putString("token", user.deviceToken)
         editor.putString("studentId", user.studentId)
         editor.putInt("classRoomId", classRoomId)
         editor.apply()
