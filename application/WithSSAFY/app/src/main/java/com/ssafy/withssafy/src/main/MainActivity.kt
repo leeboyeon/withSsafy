@@ -329,16 +329,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
 
             try {
-                var response : Response<Report>
+                var response : Response<List<Report>>
                 runBlocking {
                     response = ReportService().addReport(report)
                 }
                 if(response.isSuccessful) {
                     val res = response.body()
                     if(res != null) {
-                        showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.")
+//                        if(res.size >= 4) {
+//                            showCustomToast("신고가 접수되었습니다.\n")
+//                        }
+                        showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.\n${res.size}")
                     } else {
-
                         Log.d(TAG, "report: $response", )
                     }
                     dialog.dismiss()
