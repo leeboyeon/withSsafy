@@ -12,24 +12,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentNotiListBinding
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.home.FavoriteBoardAdapter
+import kotlinx.coroutines.runBlocking
 
-// 임시로 해놓은 data class
-data class Data (
-    val id: Int,
-    val title:String,
-    val content:String,
-    val period:String
-) {
-    constructor(title: String, content: String, period: String) : this(0, title, content, period)
-}
-
+private const val TAG = "NotiListFragment"
 class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListBinding::bind, R.layout.fragment_noti_list) {
     private lateinit var mainActivity: MainActivity
-
+    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
     lateinit var notiListAdapter: NotiListAdapter
 
     override fun onAttach(context: Context) {
@@ -39,21 +32,37 @@ class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = notificationViewModel
+        runBlocking {
+            notificationViewModel.getNotiList(userId)
+        }
         initSpinner()
         initAdapter()
     }
 
     private fun initSpinner() {
+        val txtArr = arrayListOf("전체 알림", "공지사항 알림", "사용자 알림", "취업공고 알림")
         val spin = binding.notiListSp
         spin.apply {
             adapter = ArrayAdapter.createFromResource(requireContext(), R.array.noti, android.R.layout.simple_spinner_dropdown_item)
         }
-        // spin.selectedItem.toString()
         spin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                binding.notiListTv1.setText(txtArr.get(position))
+                when (position) {
+                    0 -> {
+                        runBlocking {
+                            notificationViewModel.getNotiList(userId)
+                        }
+                        notiListAdapter.notifyDataSetChanged()
+                    }
+                    else -> {
+                        runBlocking {
+                            notificationViewModel.getNotiListByType(position, userId)
+                        }
+                        notiListAdapter.notifyDataSetChanged()
+                    }
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -63,14 +72,10 @@ class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListB
     }
 
     private fun initAdapter() {
-        val data = arrayListOf<Data>()
-        data.apply {
-            add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
-            add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
-            add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
-            add(Data(title = "현대백화점 그룹", content = "현대백화점 IT 개발 운영(서버, 안드로이드)", period = "2022년 4월 12일 ~ 2022년 5월 10일"))
+        notiListAdapter = NotiListAdapter(requireContext())
+        notificationViewModel.notiList.observe(viewLifecycleOwner) {
+            notiListAdapter.list = it
         }
-        notiListAdapter = NotiListAdapter(requireContext(), data)
         binding.notiListRv.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = notiListAdapter

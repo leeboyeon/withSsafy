@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <data>
+        <variable
+            name="noti"
+            type="com.ssafy.withssafy.src.dto.Notification" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,16 +57,17 @@
                 android:backgroundTint="@color/purple_500"
                 app:cardCornerRadius="160dp"
                 app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/rv_item_tv_noti_list_period"
+                android:layout_marginVertical="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/rv_item_tv_noti_list_title">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/rv_item_iv_noti_list_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     android:src="@drawable/alert"
                     app:tint="@color/white" />
             </androidx.cardview.widget.CardView>
@@ -72,39 +78,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="10dp"
-                android:text="현대백화점 그룹"
+                android:text="@{noti.title}"
                 android:textColor="@color/black"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@id/rv_item_cv_noti_list_icon"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/rv_item_cv_noti_list_icon"/>
 
             <TextView
                 android:id="@+id/rv_item_tv_noti_list_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="5dp"
-                android:text="현대백화점 IT 개발 운영(서버, 안드로이드)"
+                android:text="@{noti.content}"
+                android:layout_marginTop="4dp"
                 android:textColor="@color/more_dark_grey"
                 android:textSize="11sp"
                 app:layout_constraintLeft_toRightOf="@id/rv_item_cv_noti_list_icon"
                 app:layout_constraintTop_toBottomOf="@id/rv_item_tv_noti_list_title" />
 
-            <TextView
-                android:id="@+id/rv_item_tv_noti_list_period"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="10dp"
-                android:text="2022년 4월 12일 ~ 2022년 5월 10일"
-                android:textColor="@color/more_dark_grey"
-                android:textSize="11sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/rv_item_cv_noti_list_icon"
-                app:layout_constraintTop_toBottomOf="@id/rv_item_tv_noti_list_content" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
