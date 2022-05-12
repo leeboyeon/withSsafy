@@ -3,11 +3,13 @@ package com.ssafy.withssafy.service.studyboard;
 import com.ssafy.withssafy.dto.studyboard.StudyBoardRequest;
 import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
 import com.ssafy.withssafy.dto.studyboard.StudyMemberRequest;
+import com.ssafy.withssafy.entity.ClassRoom;
 import com.ssafy.withssafy.entity.StudyBoard;
 import com.ssafy.withssafy.entity.StudyMember;
 import com.ssafy.withssafy.entity.User;
 import com.ssafy.withssafy.errorcode.ErrorCode;
 import com.ssafy.withssafy.exception.InvalidRequestException;
+import com.ssafy.withssafy.repository.ClassRoomRepository;
 import com.ssafy.withssafy.repository.StudyBoardRepository;
 import com.ssafy.withssafy.repository.StudyMemberRepository;
 import com.ssafy.withssafy.util.FileManager;
@@ -28,6 +30,8 @@ public class StudyService {
     private final StudyBoardRepository studyBoardRepository;
 
     private final StudyMemberRepository studyMemberRepository;
+
+    private final ClassRoomRepository classRoomRepository;
 
     private final ModelMapper modelMapper;
 
@@ -98,5 +102,22 @@ public class StudyService {
     public void leaveStudy(Long studyId, StudyMemberRequest studyMemberRequest) {
         studyMemberRequest.setStudyBoardId(studyId);
         studyMemberRepository.deleteBySbIdAndUserId(studyMemberRequest);
+    }
+
+    public List<StudyBoardResponse> findByType(int type) {
+        List<StudyBoard> studyBoards = studyBoardRepository.findByType(type);
+        return studyBoards.stream().map(studyBoard -> modelMapper.map(studyBoard, StudyBoardResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<StudyBoardResponse> findByArea(Long classRoomId) {
+        if(!classRoomRepository.findById(classRoomId).isPresent()){
+            throw new InvalidRequestException(ErrorCode.DOESNT_EXIST);
+        }
+
+        ClassRoom cr = classRoomRepository.findById(classRoomId).get();
+        List<StudyBoard> studyBoards = studyBoardRepository.findByAreaAndType(cr.getArea(), 1);
+        return studyBoards.stream().map(studyBoard -> modelMapper.map(studyBoard, StudyBoardResponse.class))
+                .collect(Collectors.toList());
     }
 }

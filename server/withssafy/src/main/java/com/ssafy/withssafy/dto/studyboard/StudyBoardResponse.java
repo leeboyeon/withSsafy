@@ -27,4 +27,6 @@ public class StudyBoardResponse {
     private int isOuting;
 
     private StudyMember[] studyMembers;
+
+    private int type;
 }

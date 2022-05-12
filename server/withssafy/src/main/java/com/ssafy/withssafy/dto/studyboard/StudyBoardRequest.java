@@ -28,6 +28,8 @@ public class StudyBoardRequest {
 
     private byte isOuting;
 
+    private int type;
+
     public void setWriteDateTime(){
         this.writeDateTime = String.valueOf(System.currentTimeMillis());
     }

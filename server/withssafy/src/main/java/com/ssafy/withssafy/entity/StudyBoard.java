@@ -49,6 +49,9 @@ public class StudyBoard {
     @Column(name = "is_outing")
     private byte isOuting;
 
+    @Column
+    private int type;
+
     public void updateStudyBoard(StudyBoardRequest studyBoardRequest){
         this.title = studyBoardRequest.getTitle();
         this.content = studyBoardRequest.getContent();
@@ -57,11 +60,12 @@ public class StudyBoard {
         this.photoPath = studyBoardRequest.getPhotoPath();
         this.sbLimit = studyBoardRequest.getSbLimit();
         this.isOuting = studyBoardRequest.getIsOuting();
+        this.type = studyBoardRequest.getType();
     }
 
 
     @Builder
-    public StudyBoard(Long id, User user, String title, String content, String area, String photoPath, String category, int sbLimit, String writeDateTime, byte isOuting){
+    public StudyBoard(Long id, User user, String title, String content, String area, String photoPath, String category, int sbLimit, String writeDateTime, byte isOuting, int type){
         this.id = id;
         this.user = user;
         this.title = title;
@@ -72,5 +76,6 @@ public class StudyBoard {
         this.sbLimit = sbLimit;
         this.writeDateTime = writeDateTime;
         this.isOuting = isOuting;
+        this.type = type;
     }
 }
