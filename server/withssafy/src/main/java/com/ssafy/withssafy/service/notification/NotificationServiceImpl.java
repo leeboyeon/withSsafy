@@ -33,6 +33,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public NotificationResponseDto insert(NotificationRequestDto notificationRequestDto) {
+        notificationRequestDto.setWriteDateTime();
         Notification notification = modelMapper.map(notificationRequestDto, Notification.class);
         notification.setUser(userRepository.findById(notificationRequestDto.getUser()).get());
         return modelMapper.map(notificationRepository.save(notification), NotificationResponseDto.class);
