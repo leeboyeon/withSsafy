@@ -18,12 +18,16 @@ class TeamViewModel : ViewModel(){
     lateinit var uploadedImage: Bitmap
     var uploadImageUri: Uri? = null
 
-
+//classification  0 => common 1 => special 2=> free
     private val _studyList = MutableLiveData<MutableList<Study>>()
     private val _study = MutableLiveData<Study>()
     private val _studyCommentList = MutableLiveData<MutableList<Comment>>()
     private val _studyCommentParentList = MutableLiveData<MutableList<Comment>>()
     var count = 0;
+    var classificationType = -1;
+    var minPeople = 0;
+    var maxPeople = 0;
+    var option:String? = null
     private val peopleText : ObservableField<String> = ObservableField("0")
 
 

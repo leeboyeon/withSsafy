@@ -8,7 +8,7 @@ data class User(
     val studentId: String?,
     val classRoomId: Int,
     val state: Int?,
-    val deviceToken: String
+    val deviceToken: String?
 ) {
     constructor() : this(id = 0, name = "", userId = "", password = "", studentId = "", classRoomId = 0, state = 0, deviceToken = "")
     constructor(id: Int, studentId: String?) : this(id = id, name = "", userId = "", password = "", studentId = studentId, classRoomId = 0, state = 0, deviceToken = "")

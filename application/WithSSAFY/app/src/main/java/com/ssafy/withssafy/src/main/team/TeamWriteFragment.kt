@@ -57,19 +57,129 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = teamViewModel
-        teamViewModel.count = 0;
-        teamViewModel.updateButtonText()
+
         setListener()
     }
     private fun setListener(){
+        binding.fragmentTeamWriteTypeBuild.setOnCheckedChangeListener {buttonView, isChecked ->
+            if(isChecked){
+                binding.fragmentTeamWriteTypeStudy.isChecked = false
+                initTeam()
+            }else{
+                binding.fragmentTeamWriteTypeStudy.isChecked = true
+                initStudy()
+            }
+        }
+        binding.fragmentTeamWriteTypeStudy.setOnCheckedChangeListener {buttonView, isChecked ->
+            if(isChecked){
+                binding.fragmentTeamWriteTypeBuild.isChecked = false
+                initStudy()
+            }else{
+                binding.fragmentTeamWriteTypeBuild.isChecked = true
+                initTeam()
+            }
+        }
 
         initButtons()
-        initSpinner()
-        initCheckBox()
+//        initSpinner()
+//        initCheckBox()
         if(studyId > 0){
             initData()
         }
     }
+    private fun initTeam(){
+        var commonList = arrayListOf<String>("웹 기술","웹 디자인","웹 IoT","모바일")
+        var specializationList = arrayListOf<String>("인공지능영상","인공지능음성","빅데이터추천","빅데이터분산","P2P거래","디지털화폐","IoT제어")
+        var freeList = arrayListOf<String>("자유주제","오픈소스","기업연계")
+
+        if(teamViewModel.classificationType == 0 || teamViewModel.classificationType == -1){
+            binding.fragmentTeamWriteStudyType.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, commonList)
+        }else if(teamViewModel.classificationType == 1){
+            binding.fragmentTeamWriteStudyType.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, specializationList)
+        }else if(teamViewModel.classificationType == 2){
+            binding.fragmentTeamWriteStudyType.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, freeList)
+        }
+        binding.fragmentTeamWriteStudyType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                category = binding.fragmentTeamWriteStudyType.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+
+        var local = arrayListOf<String>("서울","구미","대전","부울경","광주")
+        binding.fragmentTeamWriteLoc.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, local)
+        binding.fragmentTeamWriteLoc.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                area = binding.fragmentTeamWriteLoc.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+
+        teamViewModel.count = teamViewModel.minPeople
+        teamViewModel.updateButtonText()
+
+        binding.optionText.setText(teamViewModel.option)
+        binding.fragmentTeamWriteOnlineCheck.visibility = View.GONE
+        binding.fragmentTeamWriteOfflineCheck.visibility = View.GONE
+        binding.optionText.visibility = View.VISIBLE
+    }
+    private fun initStudy(){
+        //Spinner
+        var categorys = arrayListOf<String>("선택안함","어학","프로그래밍","면접","취업","CS","자율","기타")
+        binding.fragmentTeamWriteStudyType.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categorys)
+        binding.fragmentTeamWriteStudyType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                category = binding.fragmentTeamWriteStudyType.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
+        var local = arrayListOf<String>("선택안함","서울","경기","인천","강원","제주","대전","충북","충남/세종","부산","울산","경남","대구","경북","광주","전남","전주/전북")
+        binding.fragmentTeamWriteLoc.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, local)
+        binding.fragmentTeamWriteLoc.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                area = binding.fragmentTeamWriteLoc.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
+
+        //모집인원
+        teamViewModel.count = 0;
+        teamViewModel.updateButtonText()
+
+        //옵션
+        initCheckBox()
+    }
+
     private fun initData(){
         runBlocking {
             teamViewModel.getStudy(studyId)
