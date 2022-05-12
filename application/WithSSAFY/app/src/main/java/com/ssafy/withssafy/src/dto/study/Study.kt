@@ -14,9 +14,10 @@ data class Study(
     val user: UserX?,
     val writeDateTime: String,
     val photoPath: String?,
-    val userId:Int
+    val userId:Int,
+    val type:Int
 ){
-    constructor(area: String,category: String, content:String, id: Int,isOuting: Int,sbLimit: Int,title: String,writeDateTime: String,userId: Int): this(area, category, content, id, isOuting, sbLimit, null, title, null, writeDateTime, "", userId)
-    constructor(area: String,category: String, content:String, id: Int,isOuting: Int,sbLimit: Int,title: String,writeDateTime: String, photoPath: String,userId: Int): this(area, category, content, id, isOuting, sbLimit, null, title, null, writeDateTime, photoPath, userId)
-    constructor(area: String,category: String,content: String,isOuting: Int,sbLimit: Int,title: String,writeDateTime: String,userId: Int) : this(area, category, content, null, isOuting, sbLimit, null, title, null, writeDateTime, "", userId)
+    constructor(area: String,category: String, content:String, id: Int,isOuting: Int,sbLimit: Int,title: String,writeDateTime: String,userId: Int,type:Int): this(area, category, content, id, isOuting, sbLimit, null, title, null, writeDateTime, "", userId,type)
+    constructor(area: String,category: String, content:String, id: Int,isOuting: Int,sbLimit: Int,title: String,writeDateTime: String, photoPath: String,userId: Int,type:Int): this(area, category, content, id, isOuting, sbLimit, null, title, null, writeDateTime, photoPath, userId,type)
+    constructor(area: String,category: String,content: String,isOuting: Int,sbLimit: Int,title: String,writeDateTime: String,userId: Int,type:Int) : this(area, category, content, null, isOuting, sbLimit, null, title, null, writeDateTime, "", userId,type)
 }

@@ -60,6 +60,12 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
         if(teamViewModel.study.value!!.photoPath == null || teamViewModel.study.value!!.photoPath == ""){
             binding.fragmentTeamDetailImg.visibility = View.GONE
         }
+        if(teamViewModel.study.value!!.type == 1){
+            binding.fragmentTeamDetailAppBarTitle.text = "팀빌딩모집"
+        }else{
+            binding.fragmentTeamDetailAppBarTitle.text = "스터디모집"
+        }
+
     }
     private fun initButtons(){
         binding.fragmentTeamDetailAppBarPrev.setOnClickListener {

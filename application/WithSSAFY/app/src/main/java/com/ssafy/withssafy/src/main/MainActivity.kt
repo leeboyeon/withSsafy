@@ -71,6 +71,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 import com.ssafy.withssafy.src.viewmodel.TeamViewModel
 import com.ssafy.withssafy.util.RetrofitUtil
+import com.ssafy.withssafy.util.TeamDB
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import retrofit2.Response
@@ -89,6 +90,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
+    var teamDB : TeamDB? = null
+
     // 권한 허가
     var permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() { // 권한 허가시 실행 할 내용
@@ -102,6 +105,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        teamDB = TeamDB.getInstance(this)!!
         initNavigation()
     }
 
