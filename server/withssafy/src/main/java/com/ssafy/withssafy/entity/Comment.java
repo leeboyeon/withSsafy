@@ -25,8 +25,8 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
     private Comment parent;
 
     @Column
@@ -35,8 +35,8 @@ public class Comment {
     @Column
     private String write_dt;
 
-    public Long getParent() {
-        return this.parent == null ? null : this.parent.getId();
+    public void setParentId(Long id){
+        parent = Comment.builder().id(id).build();
     }
 
     @Builder

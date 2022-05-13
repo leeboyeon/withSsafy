@@ -14,8 +14,12 @@ public class CommentDto {
     @ApiModelProperty(example = "댓글 작성자 아이디")
     private Long userId;
     @ApiModelProperty(example = "댓글 깊이")
-    private int parent;
+    private Long parentId;
     @ApiModelProperty(example = "댓글 내용")
     private String content;
     private String write_dt;
+
+    public void setWriteDateTime(){
+        this.write_dt = String.valueOf(System.currentTimeMillis());
+    }
 }
