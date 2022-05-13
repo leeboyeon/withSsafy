@@ -12,6 +12,15 @@
         android:layout_height="match_parent"
         tools:context=".src.main.notification.NotiListFragment">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/noti_list_bar"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
         <TextView
             android:id="@+id/noti_list_tv1"
             android:layout_width="wrap_content"
@@ -44,6 +53,8 @@
             app:layout_constraintTop_toBottomOf="@id/noti_list_tv1"
             android:background="#d1d1d1" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/noti_list_rv"
             android:layout_width="match_parent"
@@ -52,7 +63,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/noti_list_view"
+            app:layout_constraintTop_toBottomOf="@id/noti_list_bar"
             app:notiListData="@{viewModel.notiList}"
             tools:listitem="@layout/recyclerview_noti_list_item" />
 

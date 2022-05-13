@@ -20,6 +20,7 @@
             android:layout_margin="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="5dp"
+            android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +62,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@{@string/home_date_format(recruit.endDate)}"
                     android:textSize="11sp"
+                    android:textColor="@color/grey"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/rv_item_employ_job"
                     app:layout_constraintTop_toBottomOf="@+id/rv_item_employ_job" />
