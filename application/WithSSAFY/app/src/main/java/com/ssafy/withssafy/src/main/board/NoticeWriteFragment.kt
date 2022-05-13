@@ -226,6 +226,7 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
                             val response = NoticeService().updateNotice(noticeId, notice)
                             if (response.code() == 204) {
                                 showCustomToast("공지사항이 수정되었습니다.")
+                                noticeViewModel.setUploadImageUri(null)
                                 this@NoticeWriteFragment.findNavController().popBackStack()
                             } else {
                                 showCustomToast("공지사항 수정에 실패했습니다.")
@@ -280,6 +281,7 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
                             if (response.code() == 204) {
                                 showCustomToast("공지사항이 등록되었습니다.")
                                 this@NoticeWriteFragment.findNavController().popBackStack()
+                                noticeViewModel.setUploadImageUri(null)
                             } else {
                                 showCustomToast("공지사항 등록에 실패했습니다.")
                             }
