@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,7 +46,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
     // 대댓글 작성 시 필요한 parentId == commentId
     private var parentId = -1
 
-    val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
+    private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
     var lastHeightDiff = 0
     var isOpenKeyboard = false
@@ -63,6 +64,11 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
             postId = it.getInt("postId")
         }
         mInputMethodManager = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mOnGlobalLayoutListener.onGlobalLayout()
+    }
+
+    override fun onResume() {
+        super.onResume()
         mOnGlobalLayoutListener.onGlobalLayout()
     }
 
@@ -152,28 +158,29 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
 
         // 댓글 삭제 클릭 이벤트
         commentAdapter.setDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
                 deleteComment(commentId, position, true)
             }
         })
 
         // 댓글 작성자에게 쪽지 보내기 클릭 이벤트
         commentAdapter.setSendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showDialogSendMessage(writerUserId, userId)
 
             }
         })
 
         // 댓글 신고 클릭 이벤트
         commentAdapter.setReportItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-                mainActivity.showReportDialog(commentId, false, null, commentAdapter, null)
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showReportDialog(commentId, false, null, commentAdapter, null, 0, false)
             }
         })
 
         // 대댓글 수정 클릭 이벤트
         commentAdapter.setReplyModifyItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
                 showKeyboard(binding.commentFragmentEtComment)
 
                 val cmtList = boardViewModel.commentListOnPost.value!!
@@ -191,22 +198,22 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
 
         // 대댓글 삭제 클릭 이벤트
         commentAdapter.setReplyDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
                 deleteComment(commentId, position, false)
             }
         })
 
         // 대댓글 작성자에게 쪽지 보내기 클릭 이벤트
         commentAdapter.setReplySendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showDialogSendMessage(writerUserId, userId)
             }
         })
 
         // 대댓글 신고 클릭 이벤트
         commentAdapter.setReplyReportItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-                mainActivity.showReportDialog(commentId, false, null, commentAdapter, null)
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showReportDialog(commentId, false, null, commentAdapter, null, 0, false)
             }
         })
 
@@ -457,13 +464,16 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
             subscribe?.invoke()
         }
 
+
     override fun onStop() {
         super.onStop()
         binding.commentFragment.viewTreeObserver.removeOnGlobalLayoutListener(mOnGlobalLayoutListener)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+//        findViewById<ConstraintLayout>(R.id.commentFragment).viewTreeObserver.removeOnGlobalLayoutListener(mOnGlobalLayoutListener)
+//        binding.commentFragment.viewTreeObserver.removeOnGlobalLayoutListener(mOnGlobalLayoutListener)
         mainActivity.hideBottomNavi(false)
+        super.onDestroyView()
     }
 }

@@ -190,7 +190,7 @@ class CommentAdapter (val context: Context) : RecyclerView.Adapter<CommentAdapte
 
 
     interface MenuClickListener {
-        fun onClick(position: Int, commentId: Int, userId: Int)
+        fun onClick(position: Int, commentId: Int, writerUserId: Int)
     }
 
     // 댓글 클릭 이벤트
