@@ -40,6 +40,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public CommentDto insert(CommentDto commentDto) {
+        commentDto.setWriteDateTime();
         Comment comment = modelMapper.map(commentDto, Comment.class);
         Comment result = commentRepository.save(comment);
         return modelMapper.map(result, CommentDto.class);

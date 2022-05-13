@@ -42,7 +42,7 @@
                         android:id="@+id/boardListFragment_clMyWrotePost"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -50,7 +50,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:padding="3dp"
-                            android:src="@drawable/ic_mywrotepost_512px"
+                            android:src="@drawable/note"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvEventFcm"
                             app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
                         android:id="@+id/boardListFragment_clPostInComment"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -81,7 +81,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:padding="3dp"
-                            android:src="@drawable/ic_comment_512px"
+                            android:src="@drawable/message"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvPostInComment"
                             app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +105,7 @@
                         android:id="@+id/boardListFragment_clClippingPost"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -113,7 +113,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:padding="3dp"
-                            android:src="@drawable/heart"
+                            android:src="@drawable/heartt"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvClippingPost"
                             app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +144,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:padding="3dp"
-                            android:src="@drawable/ic_hotpost_512px"
+                            android:src="@drawable/lights"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/boardListFragment_tvHotBoard"
                             app:layout_constraintStart_toStartOf="parent"

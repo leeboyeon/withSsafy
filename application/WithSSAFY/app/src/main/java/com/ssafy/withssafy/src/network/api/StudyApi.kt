@@ -15,7 +15,7 @@ interface StudyApi {
      * @author : LeeBoYeon
      * 모든 스터디목록 불러오기
      */
-    @GET("/study-boards")
+    @GET("/study-boards/study")
     suspend fun getStudys() : Response<MutableList<Study>>
     /**
      * Study Update
@@ -121,4 +121,14 @@ interface StudyApi {
      */
     @GET("/sb-comment/user/{userId}")
     suspend fun getStudyCommentByUserId(@Path("userId")userId:Int) : Response<MutableList<Comment>>
+
+    /**
+     * TeamBuilding Get By roomId
+     * type이 1인 나의 지역 팀빌딩리스트 가져오기
+     * @author : LeeBoYeon
+     * */
+    @GET("/study-boards/team-building")
+    suspend fun getTeamBuildListByRoomId(@Query("classRoomId")classRoomId:Int) : Response<MutableList<Study>>
+
+
 }

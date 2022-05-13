@@ -34,7 +34,6 @@
             android:text="익명"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/commentItem_ivUserImg"
             app:layout_constraintEnd_toStartOf="@+id/commentItem_clOption"
             app:layout_constraintStart_toEndOf="@+id/commentItem_ivUserImg"
@@ -74,11 +73,12 @@
                 android:id="@+id/commentItem_ibAddReply"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/ic_comment_btn_512px"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:padding="1dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="3dp"
+                android:src="@drawable/ic_comment_btn_512px"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/commentItem_view1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,23 +88,23 @@
                 android:layout_height="10dp"
                 android:background="@color/dark_grey"
                 android:orientation="horizontal"
-                android:layout_marginStart="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/commentItem_ibAddReply"
-                app:layout_constraintStart_toEndOf="@+id/commentItem_ibAddReply"
-                app:layout_constraintTop_toTopOf="@+id/commentItem_ibAddReply" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <ImageView
                 android:id="@+id/commentItem_ivMoreBtn"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:src="@drawable/ic_more_black"
                 android:visibility="visible"
-                android:layout_marginEnd="3dp"
-                android:layout_marginStart="10dp"
-                app:layout_constraintStart_toEndOf="@+id/commentItem_view1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/commentItem_view1"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -129,7 +129,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/black"
+            android:background="@color/dark_grey"
             app:layout_constraintBottom_toTopOf="@+id/commentItem_rvReply"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

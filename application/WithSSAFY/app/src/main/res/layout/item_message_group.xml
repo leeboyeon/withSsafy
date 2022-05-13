@@ -15,13 +15,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            app:messageTextView="@{message}"
+            android:layout_marginTop="13dp"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:messageTextView="@{message}" />
 
         <TextView
             android:id="@+id/fragment_message_groupLastMsg"

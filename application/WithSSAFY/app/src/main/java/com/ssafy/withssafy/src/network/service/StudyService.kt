@@ -38,4 +38,6 @@ class StudyService {
     suspend fun getStudyCommentByBoardId(boardId:Int) : Response<MutableList<Comment>> = RetrofitUtil.studyService.getStudyCommentByBoardId(boardId)
 
     suspend fun getStudyCommentByUserId(userId:Int) : Response<MutableList<Comment>> = RetrofitUtil.studyService.getStudyCommentByUserId(userId)
+
+    suspend fun getTeamBuildListByRoomId(roomId:Int) : Response<MutableList<Study>> = RetrofitUtil.studyService.getTeamBuildListByRoomId(roomId)
 }

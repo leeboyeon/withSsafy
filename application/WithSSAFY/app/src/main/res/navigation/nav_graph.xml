@@ -322,6 +322,20 @@
             app:argType="integer"/>
 
     </fragment>
+    <fragment
+        android:id="@+id/studyFragment"
+        android:name="com.ssafy.withssafy.src.main.team.StudyFragment"
+        android:label="StudyFragment" />
+    <fragment
+        android:id="@+id/teamAdminFragment"
+        android:name="com.ssafy.withssafy.src.main.team.TeamAdminFragment"
+        android:label="fragment_team_admin"
+        tools:layout="@layout/fragment_team_admin" />
+    <fragment
+        android:id="@+id/teamBuildFragment"
+        android:name="com.ssafy.withssafy.src.main.team.TeamBuildFragment"
+        android:label="fragment_team_build"
+        tools:layout="@layout/fragment_team_build" />
 
     <fragment
         android:id="@+id/reportFragment"

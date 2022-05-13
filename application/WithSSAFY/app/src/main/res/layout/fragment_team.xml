@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <variable
-            name="viewModel"
-            type="com.ssafy.withssafy.src.viewmodel.TeamViewModel" />
+
     </data>
     <FrameLayout
         android:layout_width="match_parent"
@@ -16,57 +14,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fragment_team_appBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/fragment_team_appBarTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="스터디"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/frargment_team_tabLayout"
+                android:id="@+id/teamFragment_tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_team_appBar"
-                app:tabMode="scrollable">
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabMode="scrollable"></com.google.android.material.tabs.TabLayout>
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="전체" />
-
-            </com.google.android.material.tabs.TabLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_team_Rv"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/teamFragment_vp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frargment_team_tabLayout"
-                app:studyListData="@{viewModel.studyList}"
-                tools:listitem="@layout/item_team" />
+                app:layout_constraintTop_toBottomOf="@+id/teamFragment_tabLayout" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fragment_team_write"
