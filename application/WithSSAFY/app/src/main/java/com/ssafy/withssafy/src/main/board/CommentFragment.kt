@@ -229,6 +229,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                     userId = userId,
                     content = commentContent
                 )
+                Log.d(TAG, "insertCommentAndReply: $comment")
 
                 var response: Response<Any?>
 
@@ -262,7 +263,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                     userId = userId,
                     content = commentContent,
                 )
-
+                Log.d(TAG, "insertCommentAndReply: $reply")
                 var response: Response<Any?>
 
                 try {

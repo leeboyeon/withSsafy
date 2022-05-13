@@ -13,7 +13,7 @@ data class Comment(
     val studyBoard: StudyBoard?,
     val user: UserX?
 ) {
-    constructor(boardId: Int, userId: Int, content: String) : this(0, 0, boardId, userId, content, null,null,null)  // 댓글 입력
+    constructor(boardId: Int, userId: Int, content: String) : this(0, null, boardId, userId, content, null,null,null)  // 댓글 입력
     constructor(parent: Int, boardId: Int, userId: Int, content: String) : this(0, parent, boardId, userId, content, null,null,null)  // 대댓글 입력
     constructor(id: Int, content: String) : this(id, 0, 0, 0, content, null,null,null)
 }
