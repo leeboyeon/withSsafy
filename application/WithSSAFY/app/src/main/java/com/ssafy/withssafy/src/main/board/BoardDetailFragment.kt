@@ -238,7 +238,7 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
         // 게시글 신고 클릭 이벤트
         boardDetailAdapter.setReportItemClickListener(object : BoardDetailAdapter.MenuClickListener {
             override fun onClick(position: Int, board: Board) {
-                mainActivity.showReportDialog(board.id, true)
+                mainActivity.showReportDialog(board.id, true, null, null, boardDetailAdapter)
             }
         })
     }
