@@ -112,7 +112,21 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
         dialogView.findViewById<TextView>(R.id.fragment_team_requestStudyName).text = teamViewModel.study.value!!.title
         dialog.show()
 
+        runBlocking {
+            teamViewModel.getTeamInfo()
+        }
         dialogView.findViewById<AppCompatButton>(R.id.fragment_team_requestRequst).setOnClickListener {
+            var team = teamViewModel.teamInfo.value!!
+            runBlocking {
+                userViewModel.getUser(ApplicationClass.sharedPreferencesUtil.getUser().id, 1)
+            }
+            if(team.classification == 0){
+                if(teamViewModel.study.value!!.user!!.roomId != userViewModel.loginUserInfo.value!!.classRoomId)
+                {
+                    showCustomToast("같은 반의 팀빌딩만 신청하실 수 있습니다.")
+                    dialog.dismiss()
+                }
+            }
             if(teamViewModel.study.value!!.studyMembers?.size != null){
                 for(item in teamViewModel.study.value!!.studyMembers!!){
                     if(item.id == ApplicationClass.sharedPreferencesUtil.getUser().id){
@@ -140,6 +154,8 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
                     }
                 }
             }
+
+
 
         }
         dialogView.findViewById<AppCompatButton>(R.id.fragment_team_requestCancle).setOnClickListener {
