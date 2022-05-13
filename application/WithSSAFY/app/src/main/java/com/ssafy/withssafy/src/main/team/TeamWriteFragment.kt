@@ -20,7 +20,6 @@ import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentTeamWriteBinding
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.dto.UserX
-import com.ssafy.withssafy.src.dto.study.Build
 import com.ssafy.withssafy.src.dto.study.StudyMember
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.StudyService

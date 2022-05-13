@@ -124,20 +124,39 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
             }
 
             if(teamViewModel.study.value!!.studyMembers?.size != null){
-                for(item in teamViewModel.study.value!!.studyMembers!!){
-                    if(item.id == ApplicationClass.sharedPreferencesUtil.getUser().id){
-                        showCustomToast("이미 추가된 사용자입니다.")
-                        dialog.dismiss()
-                        Log.d(TAG, "showRequestDialog: 이미 추가된 사용자임")
-                    }else{
-                        if(teamViewModel.study.value!!.user!!.id == ApplicationClass.sharedPreferencesUtil.getUser().id){
-                            showCustomToast("본인의 스터디에는 신청하실 수 없습니다.")
+                if(teamViewModel.study.value!!.studyMembers!!.size == teamViewModel.study.value!!.sbLimit){
+                    showCustomToast("지원이 마감되었습니다. 신청하실 수 없습니다.")
+                    dialog.dismiss()
+                }else{
+                    for(item in teamViewModel.study.value!!.studyMembers!!){
+                        if(item.id == ApplicationClass.sharedPreferencesUtil.getUser().id){
+                            showCustomToast("이미 추가된 사용자입니다.")
                             dialog.dismiss()
+                            Log.d(TAG, "showRequestDialog: 이미 추가된 사용자임")
                         }else{
-                            if(team!!.classification == 0){
-                                if(teamViewModel.study.value!!.user!!.classroomId != userViewModel.loginUserInfo.value!!.classRoomId) {
-                                    showCustomToast("같은 반의 팀빌딩만 신청하실 수 있습니다.")
-                                    dialog.dismiss()
+                            if(teamViewModel.study.value!!.user!!.id == ApplicationClass.sharedPreferencesUtil.getUser().id){
+                                showCustomToast("본인의 스터디에는 신청하실 수 없습니다.")
+                                dialog.dismiss()
+                            }else{
+                                if(team!!.classification == 0){
+                                    if(teamViewModel.study.value!!.user!!.classroomId != userViewModel.loginUserInfo.value!!.classRoomId) {
+                                        showCustomToast("같은 반의 팀빌딩만 신청하실 수 있습니다.")
+                                        dialog.dismiss()
+                                    }else{
+                                        var message = Message(
+                                            "[스터디 ${teamViewModel.study.value!!.id}] '${teamViewModel.study.value!!.title}’에 지원하였습니다.",
+                                            0,
+                                            ApplicationClass.sharedPreferencesUtil.getUser().id,
+                                            teamViewModel.study.value!!.user!!.id
+                                        )
+                                        runBlocking {
+                                            val response = MessageService().insertMessage(message)
+                                            if (response.code() == 204) {
+                                                showCustomToast("지원에 성공하셨습니다.")
+                                                dialog.dismiss()
+                                            }
+                                        }
+                                    }
                                 }else{
                                     var message = Message(
                                         "[스터디 ${teamViewModel.study.value!!.id}] '${teamViewModel.study.value!!.title}’에 지원하였습니다.",
@@ -153,25 +172,12 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
                                         }
                                     }
                                 }
-                            }else{
-                                var message = Message(
-                                    "[스터디 ${teamViewModel.study.value!!.id}] '${teamViewModel.study.value!!.title}’에 지원하였습니다.",
-                                    0,
-                                    ApplicationClass.sharedPreferencesUtil.getUser().id,
-                                    teamViewModel.study.value!!.user!!.id
-                                )
-                                runBlocking {
-                                    val response = MessageService().insertMessage(message)
-                                    if (response.code() == 204) {
-                                        showCustomToast("지원에 성공하셨습니다.")
-                                        dialog.dismiss()
-                                    }
-                                }
-                            }
 
+                            }
                         }
                     }
                 }
+
             }
         }
         dialogView.findViewById<AppCompatButton>(R.id.fragment_team_requestCancle).setOnClickListener {

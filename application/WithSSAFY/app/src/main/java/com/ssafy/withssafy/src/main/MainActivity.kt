@@ -3,9 +3,6 @@ package com.ssafy.withssafy.src.main
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -28,56 +25,34 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.messaging.FirebaseMessaging
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.gun0912.tedpermission.provider.TedPermissionProvider.context
-import com.jakewharton.rxbinding3.view.clicks
-import com.jakewharton.rxbinding3.widget.textChanges
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseActivity
 import com.ssafy.withssafy.databinding.ActivityMainBinding
 import com.ssafy.withssafy.src.dto.Message
-import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.report.Report
 import com.ssafy.withssafy.src.dto.report.ReportRequest
 import com.ssafy.withssafy.src.login.SingInActivity
 import com.ssafy.withssafy.src.main.board.BoardDetailAdapter
-import com.ssafy.withssafy.src.main.board.BoardFragment
 import com.ssafy.withssafy.src.main.board.CommentAdapter
-import com.ssafy.withssafy.src.main.home.HomeFragment
 import com.ssafy.withssafy.src.main.home.ReportAdapter
-import com.ssafy.withssafy.src.main.notification.NotificationFragment
-import com.ssafy.withssafy.src.main.schedule.ScheduleFragment
-import com.ssafy.withssafy.src.main.team.TeamFragment
-import com.ssafy.withssafy.src.network.api.FCMApi
 import com.ssafy.withssafy.src.network.service.BoardService
 import com.ssafy.withssafy.src.network.service.CommentService
 import com.ssafy.withssafy.src.network.service.MessageService
 import com.ssafy.withssafy.src.network.service.ReportService
 import com.ssafy.withssafy.src.viewmodel.*
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
-import java.util.concurrent.TimeUnit
-import com.ssafy.withssafy.util.RetrofitUtil
-import com.ssafy.withssafy.util.TeamDB
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import retrofit2.Response
-import kotlin.math.round
 
 private const val TAG = "MainActivity_ws"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -93,7 +68,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
-    var teamDB : TeamDB? = null
 
     // 권한 허가
     var permissionListener: PermissionListener = object : PermissionListener {
@@ -108,7 +82,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        teamDB = TeamDB.getInstance(this)!!
         initNavigation()
     }
 
