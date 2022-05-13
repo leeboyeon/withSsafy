@@ -141,7 +141,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
             }
         }
 
-        var local = arrayListOf<String>("서울","구미","대전","부울경","광주")
+        var local = arrayListOf<String>("선택안함","서울","구미","대전","부울경","광주")
         binding.fragmentTeamWriteLoc.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, local)
         binding.fragmentTeamWriteLoc.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -303,7 +303,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
                     }
                 }
             }
-            var local = arrayListOf<String>("서울","구미","대전","부울경","광주")
+            var local = arrayListOf<String>("선택안함","서울","구미","대전","부울경","광주")
             for(item in 0..local.size){
                 if(local[item].contains(study.area)){
                     Log.d(TAG, "initData: ${item}")
