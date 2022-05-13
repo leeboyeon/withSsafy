@@ -4,7 +4,7 @@ data class Comment(
     val boardId: Int,
     val content: String,
     val id: Int,
-    val parent: Int,
+    val parentId: Int,
     val userId: Int,
     val write_dt: String
 )

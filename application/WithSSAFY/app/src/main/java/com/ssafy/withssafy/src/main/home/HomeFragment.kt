@@ -145,8 +145,11 @@ class HomeFragment : Fragment(){
         binding.fragmentHomeMoreRequest.setOnClickListener {
             this@HomeFragment.findNavController().navigate(R.id.requestFragment)
         }
-        binding.homeClMore.setOnClickListener {
+        binding.homeIvPopularMore.setOnClickListener {
             this@HomeFragment.findNavController().navigate(R.id.action_homeFragment_to_boardDetailFragment, bundleOf("typeId" to -4))
+        }
+        binding.homeFragmentClMoreReport.setOnClickListener {
+            this@HomeFragment.findNavController().navigate(R.id.action_homeFragment_to_reportFragment)
         }
     }
     private fun initAdapter() {

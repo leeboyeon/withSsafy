@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import com.ssafy.withssafy.src.dto.study.Study
 import androidx.lifecycle.viewModelScope
 import com.ssafy.withssafy.src.dto.board.Comment
+import com.ssafy.withssafy.src.dto.study.Team
 import com.ssafy.withssafy.src.network.service.StudyService
 import kotlinx.coroutines.launch
 
@@ -24,6 +25,7 @@ class TeamViewModel : ViewModel(){
     private val _studyCommentList = MutableLiveData<MutableList<Comment>>()
     private val _studyCommentParentList = MutableLiveData<MutableList<Comment>>()
     private val _teamBuildList = MutableLiveData<MutableList<Study>>()
+    private val _teamInfo = MutableLiveData<Team>()
 
     var count = 0;
     var classificationType = -1;
@@ -43,6 +45,8 @@ class TeamViewModel : ViewModel(){
         get() = _studyCommentParentList
     val teamBuildList : LiveData<MutableList<Study>>
         get() = _teamBuildList
+    val teamInfo : LiveData<Team>
+        get() = _teamInfo
 
     fun setStudyList(list: MutableList<Study>){
         _studyList.value = list
@@ -59,7 +63,9 @@ class TeamViewModel : ViewModel(){
     fun setTeamBuildList(list:MutableList<Study>){
         _teamBuildList.value = list
     }
-
+    fun setTeamInfo(team:Team){
+        _teamInfo.value = team
+    }
     fun getButtonText() : ObservableField<String>{
         return peopleText
     }
@@ -113,7 +119,7 @@ class TeamViewModel : ViewModel(){
 
                     val replyList = mutableListOf<Comment>()
                     for(cmt in commentList){
-                        if(cmt.parent == 0){
+                        if(cmt.parentId == 0 || cmt.parentId == null){
                             replyList.add(cmt)
                         }
                     }
@@ -134,4 +140,15 @@ class TeamViewModel : ViewModel(){
         }
     }
 
+    suspend fun getTeamInfo(){
+        val response = StudyService().getTeamInfo()
+        viewModelScope.launch {
+            val res = response.body()
+            if(response.code() == 200){
+                if(res!=null){
+                    setTeamInfo(res)
+                }
+            }
+        }
+    }
 }

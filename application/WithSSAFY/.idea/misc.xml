@@ -24,6 +24,7 @@
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/drawable/edit_background.xml" value="0.238" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/dialog_report.xml" value="0.31645569620253167" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/dialog_report_detail.xml" value="0.4" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/dialog_update_reply.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/footer_add_photo.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_board.xml" value="0.25364583333333335" />
@@ -36,6 +37,8 @@
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_job_detail.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_post_detail.xml" value="0.24613987284287012" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_post_write.xml" value="0.25364583333333335" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_report.xml" value="0.1" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_request.xml" value="0.1" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_team_detail.xml" value="0.12604166666666666" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_board.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_board_noti_mustread.xml" value="0.25" />
@@ -44,10 +47,13 @@
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_photo_list.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_post_list.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_reply_list.xml" value="0.43204868154158216" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_report_detail_list.xml" value="0.264" />
+        <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/item_report_list.xml" value="0.264" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/layout/recyclerview_popular_item.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/menu/popup_menu.xml" value="0.25364583333333335" />
         <entry key="..\:/SSAFY/GIT/S06P31D201/application/WithSSAFY/app/src/main/res/menu/popup_menu_writer.xml" value="0.12760416666666666" />
+        <entry key="..\:/SSAFY/workspace/S06P31D201/application/WithSSAFY/app/src/main/res/layout/fragment_home.xml" value="0.1824074074074074" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/button_background.xml" value="0.1705" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/dialog_backgroud.xml" value="0.112" />
         <entry key="..\:/Users/LeeBoyeon/Desktop/Ssafy/project3/application/WithSSAFY/app/src/main/res/drawable/drawable_toggle_background.xml" value="0.2555" />
@@ -133,7 +139,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

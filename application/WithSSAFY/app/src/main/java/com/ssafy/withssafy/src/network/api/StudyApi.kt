@@ -4,6 +4,7 @@ import com.ssafy.withssafy.src.dto.board.Comment
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.dto.study.StudyComment
 import com.ssafy.withssafy.src.dto.study.StudyMemberRequest
+import com.ssafy.withssafy.src.dto.study.Team
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -129,4 +130,18 @@ interface StudyApi {
      * */
     @GET("/study-boards/team-building")
     suspend fun getTeamBuildListByRoomId(@Query("classRoomId")classRoomId:Int) : Response<MutableList<Study>>
+
+    /**
+     * Team 정보 입력하기
+     * @author : LeeBoYeon
+     * */
+    @PUT("/team")
+    suspend fun insertTeamInfo(@Body teamDto:Team) : Response<Any?>
+
+    /**
+     * Team 마지막 컬럼 가져오기
+     * @author : LeeBoYeon
+     * */
+    @GET("/team/last")
+    suspend fun getTeamInfo() : Response<Team>
 }

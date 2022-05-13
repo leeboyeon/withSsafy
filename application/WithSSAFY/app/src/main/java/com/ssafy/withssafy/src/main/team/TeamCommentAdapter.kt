@@ -39,7 +39,7 @@ class TeamCommentAdapter(val context: Context) : RecyclerView.Adapter<TeamCommen
             // 대댓글 rv adapter 추가하기
             val replyList = mutableListOf<Comment>()
             for (reply in commentAllList) {
-                if(reply.parent == data.id) {
+                if(reply.parentId == data.id) {
                     replyList.add(reply)
                 }
             }

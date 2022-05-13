@@ -55,21 +55,23 @@ import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.report.Report
 import com.ssafy.withssafy.src.dto.report.ReportRequest
 import com.ssafy.withssafy.src.login.SingInActivity
+import com.ssafy.withssafy.src.main.board.BoardDetailAdapter
 import com.ssafy.withssafy.src.main.board.BoardFragment
+import com.ssafy.withssafy.src.main.board.CommentAdapter
 import com.ssafy.withssafy.src.main.home.HomeFragment
+import com.ssafy.withssafy.src.main.home.ReportAdapter
 import com.ssafy.withssafy.src.main.notification.NotificationFragment
 import com.ssafy.withssafy.src.main.schedule.ScheduleFragment
 import com.ssafy.withssafy.src.main.team.TeamFragment
 import com.ssafy.withssafy.src.network.api.FCMApi
+import com.ssafy.withssafy.src.network.service.BoardService
+import com.ssafy.withssafy.src.network.service.CommentService
 import com.ssafy.withssafy.src.network.service.MessageService
 import com.ssafy.withssafy.src.network.service.ReportService
-import com.ssafy.withssafy.src.viewmodel.BoardViewModel
-import com.ssafy.withssafy.src.viewmodel.MessageViewModel
-import com.ssafy.withssafy.src.viewmodel.NoticeViewModel
+import com.ssafy.withssafy.src.viewmodel.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.TimeUnit
-import com.ssafy.withssafy.src.viewmodel.TeamViewModel
 import com.ssafy.withssafy.util.RetrofitUtil
 import com.ssafy.withssafy.util.TeamDB
 import kotlinx.coroutines.runBlocking
@@ -87,6 +89,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val teamViewModel : TeamViewModel by viewModels()
     private val noticeViewModel : NoticeViewModel by viewModels()
     private val boardViewModel : BoardViewModel by viewModels()
+    private val homeViewModel : HomeViewModel by viewModels()
 
     private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
@@ -305,7 +308,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     /**
      * 게시글 신고 다이얼로그
      */
-    fun showReportDialog(id: Int, postOrComment: Boolean) {
+    fun showReportDialog(id: Int, postOrComment: Boolean, reportAdapter: ReportAdapter?, commentAdapter: CommentAdapter?, boardDetailAdapter: BoardDetailAdapter?) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_report,null)
 
         if(dialogView.parent != null){
@@ -333,17 +336,63 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
 
             try {
-                var response : Response<Report>
+                var response : Response<List<Report>>
                 runBlocking {
                     response = ReportService().addReport(report)
                 }
                 if(response.isSuccessful) {
                     val res = response.body()
                     if(res != null) {
-                        showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.")
-                    } else {
+                        if(res.size < 4) {    // 신고 횟수가 4회 미만
+                            showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.")
+                        } else {
+                            val firstReport = res[0]
+                            if(firstReport.comment != null) { // 댓글 신고 횟수 4회 이상 - 해당 댓글 삭제
+                                var deleteCmtResponse : Response<Any?>
 
-                        Log.d(TAG, "report: $response", )
+                                runBlocking {
+                                    deleteCmtResponse = CommentService().deleteComment(firstReport.comment.id)
+                                }
+                                runBlocking {
+                                    homeViewModel.getReportList()
+                                }
+
+                                if(deleteCmtResponse.isSuccessful) {
+                                    showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 댓글은 삭제 처리 되었습니다.")
+                                    runBlocking {
+                                        boardViewModel.getCommentList(firstReport.comment.boardId)
+                                    }
+                                }
+                            } else if(firstReport.board != null) {    // 게시글 신고 횟수 4회 이상 - 해당 게시글 삭제
+                                var deletePostResponse : Response<Any?>
+
+                                runBlocking {
+                                    deletePostResponse = BoardService().deletePost(firstReport.board.id)
+                                }
+                                runBlocking {
+                                    homeViewModel.getReportList()
+                                }
+
+                                if(deletePostResponse.isSuccessful) {
+                                    showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 게시글은 삭제 처리 되었습니다.")
+                                    runBlocking {
+                                        boardViewModel.getPostDetail(firstReport.board.id)
+                                    }
+                                }
+                            }
+
+                            if(reportAdapter != null) {
+                                reportAdapter.notifyDataSetChanged()
+                            }
+
+                            if(commentAdapter != null) {
+                                commentAdapter.notifyDataSetChanged()
+                            }
+
+                            if(boardDetailAdapter != null) {
+                                boardDetailAdapter.notifyDataSetChanged()
+                            }
+                        }
                     }
                     dialog.dismiss()
                 } else {

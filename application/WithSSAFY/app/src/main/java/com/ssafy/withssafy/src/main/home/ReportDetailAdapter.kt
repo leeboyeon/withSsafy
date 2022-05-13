@@ -6,59 +6,57 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.databinding.ItemReportDetailListBinding
 import com.ssafy.withssafy.databinding.ItemReportListBinding
 import com.ssafy.withssafy.src.dto.report.Report
 
-class ReportAdapter(private val isHome: Boolean) : RecyclerView.Adapter<ReportAdapter.ReportHolder>() {
+class ReportDetailAdapter() : RecyclerView.Adapter<ReportDetailAdapter.ReportHolder>() {
 
-    var list = mutableListOf<Report>()
+    lateinit var list: MutableList<Report>
 
-    inner class ReportHolder(private val binding: ItemReportListBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ReportHolder(private val binding: ItemReportDetailListBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(report : Report) {
             binding.report = report
 
             if(report.comment == null) {
-                binding.reportAtHomeItemTvCategory.text = "[게시글]"
+                binding.reportDetailItemTvType.text = "게시글"
             } else if(report.board == null) {
-                binding.reportAtHomeItemTvCategory.text = "[댓글]"
+                binding.reportDetailItemTvType.text = "댓글"
             }
-            binding.executePendingBindings()
 
+            binding.executePendingBindings()
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportAdapter.ReportHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportDetailAdapter.ReportHolder {
         return ReportHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_report_list,
+                R.layout.item_report_detail_list,
                 parent,
                 false
             )
         )
     }
 
-    override fun onBindViewHolder(holder: ReportAdapter.ReportHolder, position: Int) {
+    override fun onBindViewHolder(holder: ReportDetailAdapter.ReportHolder, position: Int) {
+        val item = list[position]
         holder.apply {
-            bind(list[position])
+            bind(item)
 
             itemView.setOnClickListener {
-                itemClickListener.onClick(it, position, list[position].id)
+                itemClickListener.onClick(it, item, position)
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return if(list.size > 5 && isHome) {
-            5
-        } else {
-            list.size
-        }
+        return list.size
     }
 
     interface ItemClickListener{
-        fun onClick(view: View, position: Int, id: Int)
+        fun onClick(view: View, report: Report, position: Int)
     }
 
     private lateinit var itemClickListener : ItemClickListener
@@ -66,6 +64,5 @@ class ReportAdapter(private val isHome: Boolean) : RecyclerView.Adapter<ReportAd
     fun setItemClickListener(itemClickListener: ItemClickListener){
         this.itemClickListener = itemClickListener
     }
-
 
 }

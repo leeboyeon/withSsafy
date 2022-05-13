@@ -36,7 +36,8 @@ public class Comment {
     private String write_dt;
 
     public void setParentId(Long id){
-        parent = Comment.builder().id(id).build();
+        if(id != null)
+            parent = Comment.builder().id(id).build();
     }
 
     @Builder
