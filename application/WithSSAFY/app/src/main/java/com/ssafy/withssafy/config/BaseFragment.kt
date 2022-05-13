@@ -52,7 +52,6 @@ abstract class BaseFragment <B: ViewBinding> (
     }
 
     fun showCustomToast(message: String) {
-        Log.d("basefragment", "showCustomToast: $message")
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 

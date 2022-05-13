@@ -16,7 +16,6 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentTeamBuildBinding
-import com.ssafy.withssafy.src.dto.study.Build
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.StudyService
