@@ -76,6 +76,11 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
         mainActivity.hideBottomNavi(true)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivity.hideBottomNavi(false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
