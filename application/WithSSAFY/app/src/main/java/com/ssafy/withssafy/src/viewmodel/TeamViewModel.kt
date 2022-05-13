@@ -26,7 +26,7 @@ class TeamViewModel : ViewModel(){
     private val _studyCommentParentList = MutableLiveData<MutableList<Comment>>()
     private val _teamBuildList = MutableLiveData<MutableList<Study>>()
     private val _teamInfo = MutableLiveData<Team>()
-
+    var flag = false
     var count = 0;
     var classificationType = -1;
     var minPeople = 0;
@@ -73,17 +73,32 @@ class TeamViewModel : ViewModel(){
         peopleText.set(count.toString());
     }
     fun onButtonAddClick(){
-        ++count;
+        if(!flag){
+            ++count;
+        }else{
+            if(count < maxPeople){
+                ++count
+            }
+        }
+
         updateButtonText()
     }
     fun onButtonMinusClick(){
-        if(count > 0){
-            --count;
-            updateButtonText()
+        if(!flag){
+            if(count > 0){
+                --count;
+                updateButtonText()
+            }else{
+                count = 0
+                updateButtonText()
+            }
         }else{
-            count = 0
-            updateButtonText()
+            if(count > minPeople){
+                --count
+                updateButtonText()
+            }
         }
+
     }
     suspend fun getStudys(){
         val response = StudyService().getStudys()
