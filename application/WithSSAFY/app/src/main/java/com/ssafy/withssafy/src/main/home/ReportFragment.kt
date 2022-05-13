@@ -80,15 +80,15 @@ class ReportFragment : BaseFragment<FragmentReportBinding>(FragmentReportBinding
         binding.reportFragmentRv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
         reportDetailAdapter.setItemClickListener(object : ReportDetailAdapter.ItemClickListener {
-            override fun onClick(view: View, report: Report) {
-                showReportHandlingDialog(report)
+            override fun onClick(view: View, report: Report, position: Int) {
+                showReportHandlingDialog(report, position)
             }
 
         })
     }
 
 
-    private fun showReportHandlingDialog(report: Report) {
+    private fun showReportHandlingDialog(report: Report, position: Int) {
         val dialogView = LayoutInflater.from(TedPermissionProvider.context).inflate(R.layout.dialog_report_detail,null)
 
         if(dialogView.parent != null){
@@ -127,7 +127,23 @@ class ReportFragment : BaseFragment<FragmentReportBinding>(FragmentReportBinding
 
         dialog.show()
 
-        dialogView.findViewById<Button>(R.id.reportDetailDialog_btnCancel).setOnClickListener { // 신고 반려 -> report delete
+        dialogView.findViewById<AppCompatButton>(R.id.reportDetailDialog_btnCancel).setOnClickListener { // 신고 반려 -> report delete
+            var response : Response<Report>
+            runBlocking {
+                response = ReportService().deleteReport(report.id)
+            }
+
+            if(response.isSuccessful) {
+                val res = response.body()
+                if(res != null) {
+                    showCustomToast("신고 내역이 삭제되었습니다.")
+                    runBlocking {
+                        homeViewModel.getReportList()
+                    }
+                    reportDetailAdapter.notifyItemRemoved(position)
+                }
+            }
+
             dialog.dismiss()
         }
 

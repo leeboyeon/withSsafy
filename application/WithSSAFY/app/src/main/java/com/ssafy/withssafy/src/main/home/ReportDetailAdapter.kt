@@ -46,7 +46,7 @@ class ReportDetailAdapter() : RecyclerView.Adapter<ReportDetailAdapter.ReportHol
             bind(item)
 
             itemView.setOnClickListener {
-                itemClickListener.onClick(it, item)
+                itemClickListener.onClick(it, item, position)
             }
         }
     }
@@ -56,7 +56,7 @@ class ReportDetailAdapter() : RecyclerView.Adapter<ReportDetailAdapter.ReportHol
     }
 
     interface ItemClickListener{
-        fun onClick(view: View, report: Report)
+        fun onClick(view: View, report: Report, position: Int)
     }
 
     private lateinit var itemClickListener : ItemClickListener
