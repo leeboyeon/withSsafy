@@ -119,7 +119,7 @@ class TeamViewModel : ViewModel(){
 
                     val replyList = mutableListOf<Comment>()
                     for(cmt in commentList){
-                        if(cmt.parent == 0){
+                        if(cmt.parentId == 0 || cmt.parentId == null){
                             replyList.add(cmt)
                         }
                     }

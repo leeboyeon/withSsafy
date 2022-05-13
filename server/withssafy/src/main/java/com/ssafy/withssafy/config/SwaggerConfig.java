@@ -26,7 +26,7 @@ public class SwaggerConfig {
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
-//                .host("k6d201.p.ssafy.io")
+                .host("k6d201.p.ssafy.io")
 //                .host("127.0.0.1")
                 .groupName(version)
                 .select()

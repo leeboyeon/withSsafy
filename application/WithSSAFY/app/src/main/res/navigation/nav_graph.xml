@@ -45,6 +45,10 @@
                 android:defaultValue="-1"/>
         </action>
 
+        <action
+            android:id="@+id/action_homeFragment_to_reportFragment"
+            app:destination="@+id/reportFragment"/>
+
     </fragment>
 
     <fragment
@@ -333,5 +337,9 @@
         android:label="fragment_team_build"
         tools:layout="@layout/fragment_team_build" />
 
-
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.ssafy.withssafy.src.main.home.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" />
 </navigation>
