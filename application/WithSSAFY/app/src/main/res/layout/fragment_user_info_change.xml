@@ -14,13 +14,13 @@
 
        <ImageButton
            android:id="@+id/pw_change_back"
-           android:layout_width="24dp"
-           android:layout_height="24dp"
-           android:layout_marginStart="10dp"
-           android:layout_marginTop="20dp"
+           android:layout_width="18dp"
+           android:layout_height="18dp"
+           android:layout_marginStart="16dp"
+           android:layout_marginTop="16dp"
            android:background="@android:color/transparent"
            android:scaleType="centerInside"
-           android:src="@drawable/ic_arrow_left"
+           android:src="@drawable/back"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,10 +31,11 @@
            android:text="비밀번호 변경"
            android:textColor="@color/black"
            android:textStyle="bold"
-           android:textSize="18sp"
+           android:textSize="16sp"
+           android:fontFamily="@font/baseregular"
            android:includeFontPadding="false"
-           android:layout_marginTop="20dp"
-           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintBottom_toBottomOf="@id/pw_change_back"
+           app:layout_constraintTop_toTopOf="@id/pw_change_back"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"/>
 
@@ -138,13 +139,13 @@
 
         <ImageButton
             android:id="@+id/class_change_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_arrow_left"
+            android:src="@drawable/back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -155,10 +156,11 @@
             android:text="반정보 변경"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="16sp"
+            android:fontFamily="@font/baseregular"
             android:includeFontPadding="false"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/class_change_back"
+            app:layout_constraintBottom_toBottomOf="@id/class_change_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 

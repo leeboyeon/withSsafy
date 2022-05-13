@@ -32,6 +32,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="팀빌딩 설정"
+            android:textStyle="bold"
+            android:fontFamily="@font/baseregular"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

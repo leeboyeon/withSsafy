@@ -42,7 +42,7 @@
                 android:fontFamily="@font/baseregular"
                 android:text="@{post.boardType.type}"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/postDetailFragment_ibBack"
                 app:layout_constraintEnd_toEndOf="parent"

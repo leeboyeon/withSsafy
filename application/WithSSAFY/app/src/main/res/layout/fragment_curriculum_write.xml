@@ -20,8 +20,8 @@
 
             <ImageButton
                 android:id="@+id/fragment_currculWrite_appBarPrev"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
@@ -39,6 +39,8 @@
                 android:text="커리큘럼 등록"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/baseregular"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
