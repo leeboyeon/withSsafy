@@ -65,6 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val noticeViewModel : NoticeViewModel by viewModels()
     private val boardViewModel : BoardViewModel by viewModels()
     private val homeViewModel : HomeViewModel by viewModels()
+    private val userViewModel : UserViewModel by viewModels()
 
     private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
@@ -313,90 +314,125 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
 
                 try {
-                    var response : Response<List<Report>>
+                    var reportAllow = false // 신고 가능 여부 확인
+
+                    var dupChkResponse : Response<List<Int>>
                     runBlocking {
-                        response = ReportService().addReport(report)
-                    }
-                    if(response.isSuccessful) {
-                        val res = response.body()
-                        if(res != null) {
-                            if(res.size < 4) {    // 신고 횟수가 4회 미만
-                                showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.")
+                        dupChkResponse = if(postOrComment == true) {
+                            ReportService().getUserListByBoardId(id)
+                        } else {
+                            ReportService().getUserListByCommentId(id)
+                        }
+
+                        if(dupChkResponse.isSuccessful) {
+                            val res = dupChkResponse.body()
+                            if(res != null) {
+                                if(res.isEmpty()) {
+                                    reportAllow = true
+                                } else {
+                                    for (reporterId in res) {
+                                        if(reporterId == userId) {  // 해당 게시글에 로그인한 유저가 신고한 내역이 있으면
+                                            reportAllow = false
+                                            showCustomToast("해당 글에 신고를 접수한 내역이 있습니다.")
+                                            break
+                                        }
+                                    }
+                                }
                             } else {
-                                val firstReport = res[0]
-                                if(firstReport.comment != null) { // 댓글 신고 횟수 4회 이상 - 해당 댓글 삭제
-                                    var deleteCmtResponse : Response<Any?>
+                                Log.e(TAG, "showReportDialog: ${dupChkResponse.message()}", )
+                            }
+                        } else {
+                            Log.e(TAG, "showReportDialog: ${dupChkResponse.message()}", )
+                        }
+                    }
 
-                                    runBlocking {
-                                        deleteCmtResponse = CommentService().deleteComment(firstReport.comment.id)
-                                    }
-                                    runBlocking {
-                                        homeViewModel.getReportList()
-                                    }
+                    if(reportAllow) {
+                        var response : Response<List<Report>>
+                        runBlocking {
+                            response = ReportService().addReport(report)
+                        }
+                        if(response.isSuccessful) {
+                            val res = response.body()
+                            if(res != null) {
+                                if(res.size < 4) {    // 신고 횟수가 4회 미만
+                                    showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.")
+                                } else {
+                                    val firstReport = res[0]
+                                    if(firstReport.comment != null) { // 댓글 신고 횟수 4회 이상 - 해당 댓글 삭제
+                                        var deleteCmtResponse : Response<Any?>
 
-                                    if(deleteCmtResponse.isSuccessful) {
-                                        showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 댓글은 삭제 처리 되었습니다.")
                                         runBlocking {
-                                            boardViewModel.getCommentList(firstReport.comment.boardId)
+                                            deleteCmtResponse = CommentService().deleteComment(firstReport.comment.id)
                                         }
-                                    }
-                                } else if(firstReport.board != null) {    // 게시글 신고 횟수 4회 이상 - 해당 게시글 삭제
-                                    var deletePostResponse : Response<Any?>
+                                        runBlocking {
+                                            homeViewModel.getReportList()
+                                        }
 
-                                    runBlocking {
-                                        deletePostResponse = BoardService().deletePost(firstReport.board.id)
-                                        homeViewModel.getReportList()
-                                    }
-
-
-                                    if(deletePostResponse.isSuccessful) {
-                                        showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 게시글은 삭제 처리 되었습니다.")
-                                        if(detailChk == true) { // boardDetail
+                                        if(deleteCmtResponse.isSuccessful) {
+                                            showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 댓글은 삭제 처리 되었습니다.")
                                             runBlocking {
-                                                boardViewModel.getUserLikePostList(userId)
+                                                boardViewModel.getCommentList(firstReport.comment.boardId)
                                             }
-                                            when(boardTypeId) {
-                                                -2 -> {
-                                                    runBlocking {
-                                                        boardViewModel.getUserPostListOnComment(userId)
+                                        }
+                                    } else if(firstReport.board != null) {    // 게시글 신고 횟수 4회 이상 - 해당 게시글 삭제
+                                        var deletePostResponse : Response<Any?>
+
+                                        runBlocking {
+                                            deletePostResponse = BoardService().deletePost(firstReport.board.id)
+                                            homeViewModel.getReportList()
+                                        }
+
+
+                                        if(deletePostResponse.isSuccessful) {
+                                            showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 게시글은 삭제 처리 되었습니다.")
+                                            if(detailChk == true) { // boardDetail
+                                                runBlocking {
+                                                    boardViewModel.getUserLikePostList(userId)
+                                                }
+                                                when(boardTypeId) {
+                                                    -2 -> {
+                                                        runBlocking {
+                                                            boardViewModel.getUserPostListOnComment(userId)
+                                                        }
+                                                    }
+                                                    -4 -> {
+                                                        runBlocking {
+                                                            boardViewModel.getHotPostList()
+                                                        }
+                                                    }
+                                                    else -> {
+                                                        runBlocking {
+                                                            boardViewModel.getBoardListByType(firstReport.board.boardType.id)
+                                                        }
                                                     }
                                                 }
-                                                -4 -> {
-                                                    runBlocking {
-                                                        boardViewModel.getHotPostList()
-                                                    }
+                                                if(boardDetailAdapter != null) {
+                                                    boardDetailAdapter.notifyDataSetChanged()
                                                 }
-                                                else -> {
-                                                    runBlocking {
-                                                        boardViewModel.getBoardListByType(firstReport.board.boardType.id)
-                                                    }
-                                                }
+                                            } else {
+                                                this.onBackPressed()
                                             }
-                                            if(boardDetailAdapter != null) {
-                                                boardDetailAdapter.notifyDataSetChanged()
-                                            }
-                                        } else {
-                                            this.onBackPressed()
                                         }
                                     }
-                                }
 
-                                if(reportAdapter != null) {
-                                    reportAdapter.notifyDataSetChanged()
-                                }
+                                    if(reportAdapter != null) {
+                                        reportAdapter.notifyDataSetChanged()
+                                    }
 
-                                if(commentAdapter != null) {
-                                    commentAdapter.notifyDataSetChanged()
+                                    if(commentAdapter != null) {
+                                        commentAdapter.notifyDataSetChanged()
+                                    }
                                 }
                             }
+                        } else {
+                            Log.e(TAG, "report: 통신 실패", )
                         }
-                        dialog.dismiss()
-                    } else {
-                        Log.e(TAG, "report: 통신 실패", )
                     }
+                    dialog.dismiss()
                 } catch (e: HttpException) {
                     Log.e(TAG, "report ${e.message()}", )
                 }
+
             } else {
                 showCustomToast("신고 사유를 작성해 주세요.")
             }
