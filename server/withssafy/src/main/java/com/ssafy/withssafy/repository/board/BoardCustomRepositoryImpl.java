@@ -27,6 +27,7 @@ public class BoardCustomRepositoryImpl implements  BoardCustomRepository {
                         eqUserId(userId),
                         eqBoardType(boardType)
                 )
+                .orderBy(board.writeDateTime.desc())
                 .fetch();
     }
 
@@ -37,6 +38,7 @@ public class BoardCustomRepositoryImpl implements  BoardCustomRepository {
                 .join(board.comments, QComment.comment)
                 .on(QComment.comment.user.id.eq(userId))
                 .groupBy(board.id)
+                .orderBy(board.writeDateTime.desc())
                 .fetch();
     }
 

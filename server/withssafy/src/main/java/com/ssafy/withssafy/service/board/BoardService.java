@@ -11,6 +11,7 @@ import com.ssafy.withssafy.repository.LikeManagementRepository;
 import com.ssafy.withssafy.repository.board.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -47,26 +48,26 @@ public class BoardService {
     }
 
     public List<BoardResponse> getBoards() {
-        List<Board> boards = boardRepository.findAll();
+        List<Board> boards = boardRepository.findAll(sortByWriteDateTime());
 
         return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
                 .collect(Collectors.toList());
     }
 
     public List<BoardResponse> getHotBoards() {
-        List<Board> boards = boardRepository.findAllHotBoards();
+        List<Board> boards = boardRepository.findAllHotBoards(sortByWriteDateTime());
         return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
                 .collect(Collectors.toList());
     }
 
     public List<BoardResponse> getLikedBoards(Long userId) {
-        List<Board> boards = boardRepository.findAllLikedBoardByUserId(userId);
+        List<Board> boards = boardRepository.findAllLikedBoardByUserId(userId, sortByWriteDateTime());
         return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
                 .collect(Collectors.toList());
     }
 
     public List<BoardResponse> getBoardsByTypeId(Long typeId) {
-        List<Board> boards = boardRepository.findAllByTypeId(typeId);
+        List<Board> boards = boardRepository.findAllByTypeId(typeId, sortByWriteDateTime());
 
         return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
                 .collect(Collectors.toList());
@@ -85,7 +86,7 @@ public class BoardService {
         return board.map(value -> modelMapper.map(value, BoardResponse.class)).orElse(null);
     }
 
-    public List<BoardResponse> getBoardByComment(Long userId){
+    public List<BoardResponse> getBoardByComment(Long userId) {
         List<Board> boards = boardRepository.findByComment(userId);
 
         return boards.stream().map(board -> modelMapper.map(board, BoardResponse.class))
@@ -111,5 +112,9 @@ public class BoardService {
     public boolean isLike(Long boardId, Long userId) {
         LikeManagement likeManagement = likeManagementRepository.findByBoardIdAndUserId(boardId, userId);
         return likeManagement != null;
+    }
+
+    private Sort sortByWriteDateTime() {
+        return Sort.by(Sort.Direction.DESC, "writeDateTime");
     }
 }

@@ -467,7 +467,7 @@
                             android:background="@drawable/edit_nonpadding_background"
                             android:ems="10"
                             android:textSize="14sp"
-                            android:inputType="textPersonName"
+                            android:inputType="textMultiLine"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/fragment_jobWrite_welfareTitle"
                             app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_welfareTitle" />

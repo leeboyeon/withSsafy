@@ -319,7 +319,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     }
                     if(response.isSuccessful) {
                         val res = response.body()
-                        Log.d(TAG, "showReportDialog: $res")
                         if(res != null) {
                             if(res.size < 4) {    // 신고 횟수가 4회 미만
                                 showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.")
@@ -389,8 +388,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                                 if(commentAdapter != null) {
                                     commentAdapter.notifyDataSetChanged()
                                 }
-
-
                             }
                         }
                         dialog.dismiss()

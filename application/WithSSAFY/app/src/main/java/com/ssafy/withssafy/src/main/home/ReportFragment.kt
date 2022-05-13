@@ -37,6 +37,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 class ReportFragment : BaseFragment<FragmentReportBinding>(FragmentReportBinding::bind, R.layout.fragment_report) {
+    private val TAG = "ReportFragment_싸피"
     private lateinit var mainActivity: MainActivity
 
     private lateinit var reportDetailAdapter: ReportDetailAdapter
@@ -149,61 +150,47 @@ class ReportFragment : BaseFragment<FragmentReportBinding>(FragmentReportBinding
 
         dialogView.findViewById<AppCompatButton>(R.id.reportDetailDialog_btnReportConfirm).setOnClickListener { // 신고 접수 -> 해당 게시글 및 댓글 삭제
 
-//            if(boardOrComment == true) {
-//
-//            }
-//
-//            try {
-//                var response : Response<List<Report>>
-//                runBlocking {
-//                    response = ReportService().addReport(report)
-//                }
-//                if(response.isSuccessful) {
-//                    val res = response.body()
-//                    if(res != null) {
-//                        if(res.size < 3) {    // 신고 횟수가 3회 미만
-//                            showCustomToast("신고가 접수되었습니다.\n관리자 확인 후 처리될 예정입니다.\n")
-//                            Log.d(com.ssafy.withssafy.src.main.TAG, "report: $response", )
-//                        } else {
-//                            val firstReport = res[0]
-//                            if(firstReport.comment != null) { // 댓글 신고 횟수 4회 이상 - 해당 댓글 삭제
-//                                var deleteCmtResponse : Response<Any?>
-//
-//                                runBlocking {
-//                                    deleteCmtResponse = CommentService().deleteComment(firstReport.comment.id)
-//                                }
-//
-//                                if(deleteCmtResponse.isSuccessful) {
-//                                    showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 댓글은 삭제 처리 되었습니다.\n")
-//                                    runBlocking {
-//                                        boardViewModel.getCommentList(firstReport.comment.boardId)
-//                                    }
-//                                    val commentAdapter = CommentAdapter(this)
-//                                    commentAdapter.notifyDataSetChanged()
-//                                }
-//                            } else if(firstReport.board != null) {    // 게시글 신고 횟수 4회 이상 - 해당 게시글 삭제
-//                                var deletePostResponse : Response<Any?>
-//
-//                                runBlocking {
-//                                    deletePostResponse = BoardService().deletePost(firstReport.board.id)
-//                                }
-//
-//                                if(deletePostResponse.isSuccessful) {
-//                                    showCustomToast("누적된 신고 횟수가 기준치를 초과하였기에 해당 게시글은 삭제 처리 되었습니다.\n")
-//                                    runBlocking {
-//                                        boardViewModel.getPostDetail(firstReport.board.id)
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                    dialog.dismiss()
-//                } else {
-//                    Log.e(com.ssafy.withssafy.src.main.TAG, "report: 통신 실패", )
-//                }
-//            } catch (e: HttpException) {
-//                Log.e(com.ssafy.withssafy.src.main.TAG, "report ${e.message()}", )
-//            }
+            try {
+                if(boardOrComment == true && report.board != null) { // 게시글 신고인 경우
+                    var deletePostResponse : Response<Any?>
+
+                    runBlocking {
+                        deletePostResponse = BoardService().deletePost(report.board.id)
+                    }
+
+                    if(deletePostResponse.isSuccessful) {
+                        showCustomToast("해당 게시글이 삭제되었습니다.")
+                        runBlocking {
+                            homeViewModel.getReportList()
+                        }
+                        reportDetailAdapter.notifyDataSetChanged()
+                    } else {
+                        showCustomToast("게시글 삭제 통신 오류")
+                        Log.e(TAG, "showReportHandlingDialog: ${deletePostResponse.message()}", )
+                    }
+
+                } else if(boardOrComment == false && report.comment != null) {    // 댓글 신고인 경우
+                    var deleteCmtResponse : Response<Any?>
+
+                    runBlocking {
+                        deleteCmtResponse = CommentService().deleteComment(report.comment.id)
+                    }
+
+                    if(deleteCmtResponse.isSuccessful) {
+                        showCustomToast("해당 댓글이 삭제되었습니다.")
+                        runBlocking {
+                            homeViewModel.getReportList()
+                        }
+                        reportDetailAdapter.notifyDataSetChanged()
+                    } else {
+                        showCustomToast("댓글 삭제 통신 오류")
+                        Log.e(TAG, "showReportHandlingDialog: ${deleteCmtResponse.message()}", )
+                    }
+                }
+                dialog.dismiss()
+            } catch (e: HttpException) {
+                Log.e(TAG, "report ${e.message()}", )
+            }
         }
 
     }
