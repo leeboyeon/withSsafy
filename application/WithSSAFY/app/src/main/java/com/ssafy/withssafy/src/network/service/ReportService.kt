@@ -10,4 +10,8 @@ class ReportService {
     suspend fun addReport(report: ReportRequest) = RetrofitUtil.reportApi.insertReport(report)
 
     suspend fun deleteReport(reportId: Int) = RetrofitUtil.reportApi.deleteReport(reportId)
+
+    suspend fun getUserListByBoardId(boardId: Int) = RetrofitUtil.reportApi.selectUserListByBoardId(boardId)
+
+    suspend fun getUserListByCommentId(commentId: Int) = RetrofitUtil.reportApi.selectUserListByCommentId(commentId)
 }

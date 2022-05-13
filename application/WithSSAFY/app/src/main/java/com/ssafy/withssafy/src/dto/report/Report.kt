@@ -1,9 +1,10 @@
 package com.ssafy.withssafy.src.dto.report
 
 data class Report(
+    val id: Int,
     val board: Board?,
     val comment: Comment?,
+    val user: User,
     val content: String,
-    val id: Int,
-    val user: User
+    val write_dt: String
 )

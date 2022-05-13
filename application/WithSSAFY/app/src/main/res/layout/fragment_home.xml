@@ -220,6 +220,8 @@
                             android:layout_height="19dp"
                             android:layout_marginEnd="10dp"
                             android:text="더보기"
+                            android:clickable="false"
+                            android:focusable="false"
                             android:textColor="@color/purple_700"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/homeFragment_ivMoreReport"
@@ -231,6 +233,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/arrow_right"
+                            android:clickable="false"
+                            android:focusable="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -360,7 +364,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/home_cl_more"
+                        android:id="@+id/home_cl_popular_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@id/home_tv_popular"
@@ -371,9 +375,10 @@
                             android:id="@+id/home_tv_popular_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:clickable="false"
                             android:text="더보기"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:layout_marginEnd="10dp"
                             android:textColor="@color/purple_700"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -404,7 +409,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/home_cl_more"
+                        app:layout_constraintTop_toBottomOf="@+id/home_cl_popular_more"
                         app:spanCount="5"
                         tools:listitem="@layout/recyclerview_popular_item" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

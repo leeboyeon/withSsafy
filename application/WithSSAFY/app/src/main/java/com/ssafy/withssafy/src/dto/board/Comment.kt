@@ -5,7 +5,7 @@ import com.ssafy.withssafy.src.dto.study.UserX
 
 data class Comment(
     val id: Int,
-    val parent: Int,
+    val parentId: Int?,
     val boardId: Int,
     val userId: Int,
     val content: String,
@@ -13,7 +13,7 @@ data class Comment(
     val studyBoard: StudyBoard?,
     val user: UserX?
 ) {
-    constructor(boardId: Int, userId: Int, content: String) : this(0, 0, boardId, userId, content, "1651118400",null,null)  // 댓글 입력
-    constructor(parent: Int, boardId: Int, userId: Int, content: String) : this(0, parent, boardId, userId, content, "1651118400",null,null)  // 대댓글 입력
+    constructor(boardId: Int, userId: Int, content: String) : this(0, 0, boardId, userId, content, null,null,null)  // 댓글 입력
+    constructor(parent: Int, boardId: Int, userId: Int, content: String) : this(0, parent, boardId, userId, content, null,null,null)  // 대댓글 입력
     constructor(id: Int, content: String) : this(id, 0, 0, 0, content, null,null,null)
 }
