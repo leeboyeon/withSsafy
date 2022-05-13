@@ -92,8 +92,10 @@
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/fragment_team_detail.xml" value="0.2" />
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/fragment_team_write.xml" value="0.264" />
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_calendar_detail.xml" value="0.264" />
-        <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_class_notice.xml" value="0.1" />
+        <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_class_curriculrum.xml" value="0.1" />
+        <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_class_notice.xml" value="0.6" />
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_comment_list.xml" value="0.264" />
+        <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_job.xml" value="0.1" />
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_message_detail_talk.xml" value="0.4" />
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_message_group.xml" value="0.264" />
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_notice_list.xml" value="0.264" />
@@ -101,6 +103,7 @@
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_reply_list.xml" value="0.264" />
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_request_home_item.xml" value="0.4" />
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/item_schedule.xml" value="0.6" />
+        <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/recyclerview_employ_item.xml" value="0.536" />
         <entry key="..\:/ssafy/workspace/withSsafy/application/WithSSAFY/app/src/main/res/layout/recyclerview_favorite_board_item.xml" value="0.23802083333333332" />
       </map>
     </option>

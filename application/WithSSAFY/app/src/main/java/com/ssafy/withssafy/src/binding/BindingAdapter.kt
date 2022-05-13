@@ -371,3 +371,11 @@ fun bindingNotiList(recyclerView: RecyclerView, data:List<Notification>?){
     adapter.list = data as MutableList<Notification>
     adapter.notifyDataSetChanged()
 }
+@BindingAdapter("textViewJob")
+fun bindTextViewJob(textView: TextView, job:String){
+    if(job.length > 10) {
+        textView.text = "${job.substring(0, 10)}···"
+    }else{
+        textView.text = job
+    }
+}
