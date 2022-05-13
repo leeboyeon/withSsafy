@@ -13,7 +13,11 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentTeamAdminBinding
 import com.ssafy.withssafy.src.dto.study.Build
+import com.ssafy.withssafy.src.dto.study.Team
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.network.service.StudyService
+import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 
 class TeamAdminFragment : BaseFragment<FragmentTeamAdminBinding>(FragmentTeamAdminBinding::bind, R.layout.fragment_team_admin) {
     var minPeople = 0
@@ -43,14 +47,21 @@ class TeamAdminFragment : BaseFragment<FragmentTeamAdminBinding>(FragmentTeamAdm
             this@TeamAdminFragment.findNavController().popBackStack()
         }
         binding.fragmentTeamAdminSuccess.setOnClickListener {
-            var teamDao = mainActivity.teamDB?.teamDao()
-            val r = Runnable {
-                teamDao?.insertTeamType(Build(0,minPeople, maxPeople,classification,binding.fragmentTeamAdminOptionEdit.text.toString()))
+//            var teamDao = mainActivity.teamDB?.teamDao()
+//            val r = Runnable {
+//                teamDao?.insertTeamType(Build(0,minPeople, maxPeople,classification,binding.fragmentTeamAdminOptionEdit.text.toString()))
+//            }
+//            val thread = Thread(r)
+//            thread.start()
+            var teamInfo = Team(classification,0,maxPeople,minPeople,binding.fragmentTeamAdminOptionEdit.text.toString())
+            val response:Response<Any?>
+            runBlocking {
+                response = StudyService().insertTeamInfo(teamInfo)
             }
-            val thread = Thread(r)
-            thread.start()
-
-            this@TeamAdminFragment.findNavController().navigate(R.id.teamFragment)
+            if(response.code() == 200){
+                showCustomToast("입력되었습니다.")
+                this@TeamAdminFragment.findNavController().navigate(R.id.teamFragment)
+            }
         }
     }
     private fun initSpinner(){

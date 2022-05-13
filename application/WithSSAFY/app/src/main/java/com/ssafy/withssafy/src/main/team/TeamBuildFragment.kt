@@ -31,7 +31,6 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
     private lateinit var mainActivity:MainActivity
     private lateinit var teamBuildAdapter: TeamBuildAdapter
     private var lastFilterText = ""
-    var team: Build? = null
     private var classification = -1
 
     var commonList = arrayListOf<String>("웹 기술","웹 디자인","웹 IoT","모바일")
@@ -54,15 +53,16 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
         runBlocking {
             userViewModel.getUser(ApplicationClass.sharedPreferencesUtil.getUser().id, 1)
             teamViewModel.getTeamBuildListByRoomId(userViewModel.loginUserInfo.value!!.classRoomId)
+            teamViewModel.getTeamInfo()
         }
-        var teamDao = mainActivity.teamDB?.teamDao()
-
-        val job = CoroutineScope(Dispatchers.IO).launch {
-            team = teamDao?.getTeamTypes()
-        }
-        runBlocking {
-            job.join()
-        }
+//        var teamDao = mainActivity.teamDB?.teamDao()
+//
+//        val job = CoroutineScope(Dispatchers.IO).launch {
+//            team = teamDao?.getTeamTypes()
+//        }
+//        runBlocking {
+//            job.join()
+//        }
 
         setListener()
     }
@@ -73,6 +73,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
     private fun initAdapter(){
         teamBuildAdapter = TeamBuildAdapter(requireContext())
         var tmpList = mutableListOf<Study>()
+        var team = teamViewModel.teamInfo.value!!
         teamViewModel.teamBuildList.observe(viewLifecycleOwner){
             if(team!=null){
                 if(team!!.classification == 0){
@@ -140,6 +141,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
         })
     }
     private fun initSpinner(){
+        var team = teamViewModel.teamInfo.value!!
         if(team != null){
             if(team!!.classification == 0){
                 for(item in commonList){

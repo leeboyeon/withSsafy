@@ -4,6 +4,7 @@ import com.ssafy.withssafy.src.dto.board.Comment
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.dto.study.StudyComment
 import com.ssafy.withssafy.src.dto.study.StudyMemberRequest
+import com.ssafy.withssafy.src.dto.study.Team
 import com.ssafy.withssafy.util.RetrofitUtil
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -40,4 +41,8 @@ class StudyService {
     suspend fun getStudyCommentByUserId(userId:Int) : Response<MutableList<Comment>> = RetrofitUtil.studyService.getStudyCommentByUserId(userId)
 
     suspend fun getTeamBuildListByRoomId(roomId:Int) : Response<MutableList<Study>> = RetrofitUtil.studyService.getTeamBuildListByRoomId(roomId)
+
+    suspend fun insertTeamInfo(team: Team):Response<Any?> = RetrofitUtil.studyService.insertTeamInfo(team)
+
+    suspend fun getTeamInfo() : Response<Team> = RetrofitUtil.studyService.getTeamInfo()
 }

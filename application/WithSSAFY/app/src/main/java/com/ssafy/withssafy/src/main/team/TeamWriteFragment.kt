@@ -62,7 +62,9 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = teamViewModel
-
+        runBlocking {
+            teamViewModel.getTeamInfo()
+        }
         setListener()
     }
     private fun setListener(){
@@ -93,27 +95,26 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
         }
     }
     private fun initTeam(){
+
         var classification = -1
         var minPeople = 0
         var maxPeople = 0
         var options = "없음"
 
-        var teamDao = mainActivity.teamDB?.teamDao()
-        var team:Build? = null
-        val job = CoroutineScope(Dispatchers.IO).launch {
-            team = teamDao?.getTeamTypes()!!
+//        var teamDao = mainActivity.teamDB?.teamDao()
+//        var team:Build? = null
+//        val job = CoroutineScope(Dispatchers.IO).launch {
+//            team = teamDao?.getTeamTypes()!!
+//        }
+//        runBlocking {
+//            job.join()
+//        }
+        teamViewModel.teamInfo.observe(viewLifecycleOwner){
+            classification = it.classification
+            minPeople = it.minLimit
+            maxPeople = it.maxLimit
+            options = it.options
         }
-        runBlocking {
-            job.join()
-        }
-        if(team != null){
-            classification = team!!.classification
-            minPeople = team!!.minLimit
-            maxPeople = team!!.maxLimit
-            options = team!!.options
-        }
-
-
 
         var commonList = arrayListOf<String>("선택안함","웹 기술","웹 디자인","웹 IoT","모바일")
         var specializationList = arrayListOf<String>("선택안함","인공지능영상","인공지능음성","빅데이터추천","빅데이터분산","P2P거래","디지털화폐","IoT제어")
@@ -266,14 +267,7 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
 
             var classification = -1
             var options = ""
-            var teamDao = mainActivity.teamDB?.teamDao()
-            var team:Build? = null
-            val job = CoroutineScope(Dispatchers.IO).launch {
-                team = teamDao?.getTeamTypes()!!
-            }
-            runBlocking {
-                job.join()
-            }
+            var team = teamViewModel.teamInfo.value!!
             if(team != null){
                 classification = team!!.classification
                 options = team!!.options
