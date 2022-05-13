@@ -167,7 +167,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
         // 댓글 신고 클릭 이벤트
         commentAdapter.setReportItemClickListener(object : CommentAdapter.MenuClickListener {
             override fun onClick(position: Int, commentId: Int, userId: Int) {
-                mainActivity.showReportDialog(commentId, false)
+                mainActivity.showReportDialog(commentId, false, null, commentAdapter, null)
             }
         })
 
@@ -206,7 +206,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
         // 대댓글 신고 클릭 이벤트
         commentAdapter.setReplyReportItemClickListener(object : CommentAdapter.MenuClickListener {
             override fun onClick(position: Int, commentId: Int, userId: Int) {
-                mainActivity.showReportDialog(commentId, false)
+                mainActivity.showReportDialog(commentId, false, null, commentAdapter, null)
             }
         })
 

@@ -11,7 +11,7 @@ import com.ssafy.withssafy.src.dto.report.Report
 
 class ReportAdapter(private val isHome: Boolean) : RecyclerView.Adapter<ReportAdapter.ReportHolder>() {
 
-    lateinit var list: MutableList<Report>
+    var list = mutableListOf<Report>()
 
     inner class ReportHolder(private val binding: ItemReportListBinding) : RecyclerView.ViewHolder(binding.root) {
 
