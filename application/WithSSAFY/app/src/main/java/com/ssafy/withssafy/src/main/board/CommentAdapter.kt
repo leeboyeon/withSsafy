@@ -59,7 +59,7 @@ class CommentAdapter (val context: Context) : RecyclerView.Adapter<CommentAdapte
             // 대댓글 rv adapter 추가하기
             val replyList = mutableListOf<Comment>()
             for (reply in commentAllList) {
-                if(reply.parentId == comment.id) {
+                if(reply.parentId != null && reply.parentId == comment.id) {
                     replyList.add(reply)
                 }
             }

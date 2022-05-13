@@ -101,20 +101,15 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
         var maxPeople = 0
         var options = "없음"
 
-//        var teamDao = mainActivity.teamDB?.teamDao()
-//        var team:Build? = null
-//        val job = CoroutineScope(Dispatchers.IO).launch {
-//            team = teamDao?.getTeamTypes()!!
-//        }
-//        runBlocking {
-//            job.join()
-//        }
         teamViewModel.teamInfo.observe(viewLifecycleOwner){
             classification = it.classification
             minPeople = it.minLimit
             maxPeople = it.maxLimit
             options = it.options
         }
+        teamViewModel.flag = true
+        teamViewModel.minPeople = minPeople
+        teamViewModel.maxPeople = maxPeople
 
         var commonList = arrayListOf<String>("선택안함","웹 기술","웹 디자인","웹 IoT","모바일")
         var specializationList = arrayListOf<String>("선택안함","인공지능영상","인공지능음성","빅데이터추천","빅데이터분산","P2P거래","디지털화폐","IoT제어")
@@ -167,6 +162,8 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
         binding.optionText.visibility = View.VISIBLE
     }
     private fun initStudy(){
+
+        teamViewModel.flag = false
         //Spinner
         var categorys = arrayListOf<String>("선택안함","어학","프로그래밍","면접","취업","CS","자율","기타")
         binding.fragmentTeamWriteStudyType.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categorys)
