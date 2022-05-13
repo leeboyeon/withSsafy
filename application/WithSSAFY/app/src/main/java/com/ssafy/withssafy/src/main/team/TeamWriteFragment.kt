@@ -68,6 +68,8 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
         setListener()
     }
     private fun setListener(){
+        initStudy()
+        binding.fragmentTeamWriteTypeStudy.isChecked = true
         binding.fragmentTeamWriteTypeBuild.setOnCheckedChangeListener {buttonView, isChecked ->
             if(isChecked){
                 binding.fragmentTeamWriteTypeStudy.isChecked = false
@@ -88,8 +90,6 @@ class TeamWriteFragment : BaseFragment<FragmentTeamWriteBinding>(FragmentTeamWri
         }
 
         initButtons()
-//        initSpinner()
-//        initCheckBox()
         if(studyId > 0){
             initData()
         }
