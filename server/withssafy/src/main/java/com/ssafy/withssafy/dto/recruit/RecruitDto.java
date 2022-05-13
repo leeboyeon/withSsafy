@@ -43,5 +43,7 @@ public class RecruitDto {
     private String startDate;
     @ApiModelProperty(example = "2020-01-05")
     private String endDate;
+    @ApiModelProperty(example = "이미지 경로")
+    private String photoPath;
 
 }

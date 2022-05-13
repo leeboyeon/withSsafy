@@ -57,9 +57,12 @@ public class Recruit {
     @Column(length = 10)
     private String endDate;
 
+    @Column(name = "photo_path")
+    private String photoPath;
+
 
     @Builder
-    public Recruit(Long id, User user, String company, String career, String education, String job, String employType, String salary, String location, String taskDescription, String preferenceDescription, String welfare, String workingHours, String startDate, String endDate) {
+    public Recruit(Long id, User user, String company, String career, String education, String job, String employType, String salary, String location, String taskDescription, String preferenceDescription, String welfare, String workingHours, String startDate, String endDate, String photoPath) {
         this.id = id;
         this.user = user;
         this.company = company;
@@ -75,5 +78,6 @@ public class Recruit {
         this.workingHours = workingHours;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.photoPath = photoPath;
     }
 }
