@@ -129,4 +129,6 @@ interface StudyApi {
      * */
     @GET("/study-boards/team-building")
     suspend fun getTeamBuildListByRoomId(@Query("classRoomId")classRoomId:Int) : Response<MutableList<Study>>
+
+
 }
