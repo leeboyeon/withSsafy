@@ -12,19 +12,43 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
 
-        <TextView
-            android:id="@+id/fragment_job_CompanyName"
-            android:layout_width="100dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout21"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="@{recruit.company}"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/fragment_job_title"
-            app:layout_constraintBottom_toBottomOf="@id/fragment_job_chip_view"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="fitXY"
+                app:jobImageUrl="@{recruit.photoPath}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/fragment_job_CompanyName"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="@{recruit.company}"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/fragment_job_title"
@@ -35,7 +59,7 @@
             android:text="@{recruit.job}"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragment_job_CompanyName"
+            app:layout_constraintStart_toEndOf="@+id/constraintLayout21"
             app:layout_constraintTop_toBottomOf="@+id/fragment_job_frame" />
 
         <FrameLayout
@@ -71,9 +95,11 @@
             android:id="@+id/fragment_job_chip_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout21"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/fragment_job_title"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_job_title"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_job_title">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -84,9 +110,9 @@
                     android:id="@+id/fragment_job_career"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:backgroundTint="@color/more_light_grey"
                     android:text="@{recruit.career}"
                     android:textColor="@color/black"
-                    android:backgroundTint="@color/more_light_grey"
                     android:textSize="12sp"
                     app:chipEndPadding="10dp"
                     app:chipStartPadding="10dp" />
@@ -95,10 +121,10 @@
                     android:id="@+id/fragment_job_Education"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/more_light_grey"
                     android:text="@{recruit.education}"
                     android:textColor="@color/black"
-                    android:backgroundTint="@color/more_light_grey"
-                    android:layout_marginStart="8dp"
                     android:textSize="12sp"
                     app:chipEndPadding="10dp"
                     app:chipStartPadding="10dp" />

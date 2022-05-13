@@ -74,7 +74,7 @@ class BoardJobFragment : BaseFragment<FragmentBoardJobBinding>(FragmentBoardJobB
     private fun initAdapter(){
         jobAdapter = JobAdapter(isStudent)
         recruitViewModel.recruitList.observe(viewLifecycleOwner) {
-                    jobAdapter.list = it
+            jobAdapter.list = it
         }
         binding.fragmentJobRv.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)

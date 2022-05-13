@@ -80,23 +80,25 @@
 
                     <TextView
                         android:id="@+id/textView14"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp"
                         android:text="@{viewModel.recruit.company}"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView5"
+                        app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
                     <TextView
                         android:id="@+id/fragment_jobDetail_companyInfoAddr"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@{viewModel.recruit.location}"
                         android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/textView14"
                         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -112,12 +114,13 @@
 
                     <TextView
                         android:id="@+id/fragment_jobDetail_companyInfoMoney"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="@{viewModel.recruit.salary}"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="@+id/textView18"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView18"
                         app:layout_constraintTop_toTopOf="@+id/textView18" />
 
@@ -128,14 +131,14 @@
                         android:layout_marginTop="8dp"
                         android:text="근무시간 |"
                         android:textColor="@color/black"
-                        app:layout_constraintTop_toBottomOf="@id/textView18"
-                        app:layout_constraintStart_toStartOf="@id/textView18"/>
+                        app:layout_constraintStart_toStartOf="@id/textView18"
+                        app:layout_constraintTop_toBottomOf="@id/textView18" />
 
                     <TextView
                         android:id="@+id/textView44"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginBottom="10dp"
                         android:text="@{@string/date_format(viewModel.recruit.startDate, viewModel.recruit.endDate)}"
                         android:textSize="12sp"
@@ -145,14 +148,26 @@
 
                     <TextView
                         android:id="@+id/textView46"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="@{viewModel.recruit.workingHours}"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="@+id/textView45"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView45"
                         app:layout_constraintTop_toTopOf="@+id/textView45" />
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="fitXY"
+                        app:jobImageUrl = "@{viewModel.recruit.photoPath}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:srcCompat="@tools:sample/avatars" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TableLayout

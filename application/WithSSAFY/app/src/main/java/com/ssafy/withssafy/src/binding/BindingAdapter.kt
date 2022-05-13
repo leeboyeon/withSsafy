@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.Notification
@@ -58,6 +59,18 @@ fun bindImageUrl(imageView: ImageView, url:String?){
     Glide.with(imageView.context)
         .load("${ApplicationClass.IMGS_URL}${url}")
         .into(imageView)
+}
+@BindingAdapter("jobImageUrl")
+fun bindJobImageUrl(imageView: ImageView, url:String?){
+    if(url == null || url == ""){
+        Glide.with(imageView.context)
+            .load(R.drawable.images)
+            .into(imageView)
+    }else{
+        Glide.with(imageView.context)
+            .load("${ApplicationClass.IMGS_URL}${url}")
+            .into(imageView)
+    }
 }
 
 @BindingAdapter("textViewPeople")

@@ -15,7 +15,8 @@ data class Recruit(
     val taskDescription: String,
     val userId: Int,
     val welfare: String,
-    val workingHours: String
+    val workingHours: String,
+    val photoPath : String
 ) {
 //    constructor(career: String, company: String, education: String, employType: String, endDate: String, job: String, location: String, preferenceDescription: String,
 //    salary: String, startDate: String, taskDescription: String, userId: Int, welfare: String, workingHours: String) : this(career = career, company = company,

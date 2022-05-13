@@ -1,5 +1,9 @@
 package com.ssafy.withssafy.src.main.board
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,14 +13,24 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentAdminJobWriteBinding
 import com.ssafy.withssafy.src.dto.Recruit
+import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.RecruitService
+import com.ssafy.withssafy.src.network.service.StudyService
 import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -30,8 +44,16 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
     private var startDate = ""
     private var endDate = ""
     private var recruitId = 0
+    private val STORAGE_CODE = 99
+    private var fileExtension : String? = ""
 
+    private lateinit var mainActivity : MainActivity
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -71,6 +93,19 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
             runBlocking {
                 insertRecruit()
             }
+        }
+        binding.fragmentJobWriteCameraBtn.setOnClickListener {
+            mainActivity.openGallery(STORAGE_CODE)
+            if(teamViewModel.uploadImageUri != null){
+                binding.fragmentJobWritePhotoGroup.visibility = View.VISIBLE
+                Glide.with(requireContext())
+                    .load(teamViewModel.uploadImageUri)
+                    .into(binding.fragmentJobWriteCompanyImg)
+            }
+        }
+        binding.fragmentJobWriteCompanyCancle.setOnClickListener {
+            teamViewModel.uploadImageUri = null
+            binding.fragmentJobWritePhotoGroup.visibility = View.GONE
         }
     }
 
@@ -243,30 +278,143 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
         var taskDescription = binding.fragmentJobWriteTaskEdit.text.toString()
         var welfare = binding.fragmentJobWriteWelfareEdit.text.toString()
         var workingHours = binding.fragmentJobWriteCompanyInfoWorkTimeEdit.text.toString()
-        var recruit = Recruit(career, company, education, employType, endDate, recruitId, job, location, preferenceDescription, salary, startDate, taskDescription, userId, welfare, workingHours)
-        runBlocking {
-            if(recruitId == 0) {
-                val response = RecruitService().insertRecruit(recruit)
-                Log.d(TAG, "insertRecruit: ${response.body()}")
-                Log.d(TAG, "insertRecruit: ${response.code()}")
-                if (response.code() == 204) {
-                    showCustomToast("채용 공고 작성이 완료되었습니다.")
-                    this@AdminJobWriteFragment.findNavController().popBackStack()
-                } else {
-                    showCustomToast("채용 공고 작성이 실패했습니다.")
+        var recruit = Recruit(
+            career,
+            company,
+            education,
+            employType,
+            endDate,
+            recruitId,
+            job,
+            location,
+            preferenceDescription,
+            salary,
+            startDate,
+            taskDescription,
+            userId,
+            welfare,
+            workingHours,
+            ""
+        )
+
+        if(recruitId == 0){
+            if(teamViewModel.uploadImageUri == Uri.EMPTY || teamViewModel.uploadImageUri == null){
+                runBlocking {
+                    val response = RecruitService().insertRecruit(recruit)
+                    Log.d(TAG, "insertRecruit: ${response.body()}")
+                    Log.d(TAG, "insertRecruit: ${response.code()}")
+                    if (response.code() == 204) {
+                        showCustomToast("채용 공고 작성이 완료되었습니다.")
+                        this@AdminJobWriteFragment.findNavController().popBackStack()
+                    } else {
+                        showCustomToast("채용 공고 작성이 실패했습니다.")
+                    }
                 }
-            } else {
-                val response = RecruitService().updateRecruit(recruit)
-                Log.d(TAG, "updateRecruit: ${response.body()}")
-                Log.d(TAG, "updateRecruit: ${response.code()}")
-                if (response.code() == 204) {
-                    showCustomToast("채용 공고 수정이 완료되었습니다.")
-                    this@AdminJobWriteFragment.findNavController().popBackStack()
-                } else {
-                    showCustomToast("채용 공고 수정이 실패했습니다.")
+            }else{
+                val file = File(teamViewModel.uploadImageUri!!.path!!)
+                var inputStream: InputStream? = null
+                try{
+                    inputStream = mainActivity.contentResolver.openInputStream(teamViewModel.uploadImageUri!!)
+                }catch (e : IOException){
+                    e.printStackTrace()
+                }
+                fileExtension = mainActivity.contentResolver.getType(teamViewModel.uploadImageUri!!)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream)
+                val requestBody = RequestBody.create(MediaType.parse("image/*"),byteArrayOutputStream.toByteArray())
+                val uploadFile = MultipartBody.Part.createFormData("file","${file.name}.${fileExtension?.substring(6)}",requestBody)
+                runBlocking {
+                    val responseFile = StudyService().insertPhoto(uploadFile)
+                    if(responseFile.code() == 200){
+                        if(responseFile.body() != null){
+                            var recruit : Recruit? = null
+                            recruit = Recruit(
+                                career,
+                                company,
+                                education,
+                                employType,
+                                endDate,
+                                recruitId,
+                                job,
+                                location,
+                                preferenceDescription,
+                                salary,
+                                startDate,
+                                taskDescription,
+                                userId,
+                                welfare,
+                                workingHours,
+                                responseFile.body().toString())
+                            val response = RecruitService().insertRecruit(recruit)
+                            if(response.code() == 204){
+                                showCustomToast("추가되었습니다.")
+                                this@AdminJobWriteFragment.findNavController().popBackStack()
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            if(teamViewModel.uploadImageUri == Uri.EMPTY || teamViewModel.uploadImageUri == null) {
+                runBlocking {
+                    val response = RecruitService().updateRecruit(recruit)
+                    Log.d(TAG, "updateRecruit: ${response.body()}")
+                    Log.d(TAG, "updateRecruit: ${response.code()}")
+                    if (response.code() == 204) {
+                        showCustomToast("채용 공고 수정이 완료되었습니다.")
+                        this@AdminJobWriteFragment.findNavController().popBackStack()
+                    } else {
+                        showCustomToast("채용 공고 수정이 실패했습니다.")
+                    }
+                }
+            }else{
+                val file = File(teamViewModel.uploadImageUri!!.path!!)
+                var inputStream:InputStream? = null
+                try{
+                    inputStream = mainActivity.contentResolver.openInputStream(teamViewModel.uploadImageUri!!)
+                }catch (e : IOException){
+                    e.printStackTrace()
+                }
+                fileExtension = mainActivity.contentResolver.getType(teamViewModel.uploadImageUri!!)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream)
+                val requestBody = RequestBody.create(MediaType.parse("image/*"),byteArrayOutputStream.toByteArray())
+                val uploadFile = MultipartBody.Part.createFormData("file","${file.name}.${fileExtension?.substring(6)}",requestBody)
+                runBlocking {
+                    val responseFile = StudyService().insertPhoto(uploadFile)
+                    if(responseFile.code() == 200){
+                        if(responseFile.body() != null){
+                            var recruit:Recruit?=null
+                            recruit = Recruit(
+                                career,
+                                company,
+                                education,
+                                employType,
+                                endDate,
+                                recruitId,
+                                job,
+                                location,
+                                preferenceDescription,
+                                salary,
+                                startDate,
+                                taskDescription,
+                                userId,
+                                welfare,
+                                workingHours,
+                                responseFile.body().toString())
+                            val response = RecruitService().updateRecruit(recruit!!)
+                            if(response.isSuccessful){
+                                showCustomToast("수정되었습니다.")
+                                this@AdminJobWriteFragment.findNavController().popBackStack()
+                            }
+                        }
+                    }
                 }
             }
         }
+
     }
     companion object {
         @JvmStatic

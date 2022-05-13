@@ -27,6 +27,7 @@ class BoardViewModel : ViewModel() {
     /**
      * 사진 추가
      */
+    var uploadImageUri: Uri? = null
     private var _boardImgUri = MutableLiveData<Uri>()  // 파일 uri
 
     val boardImgUri : LiveData<Uri>

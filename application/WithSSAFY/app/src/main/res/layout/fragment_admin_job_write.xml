@@ -77,6 +77,64 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        app:layout_constraintEnd_toEndOf="@+id/fragment_jobWrite_companyInfo_WorkTimeLayout"
+                        app:layout_constraintStart_toStartOf="@+id/fragment_jobWrite_companyInfo_WorkTimeLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_companyInfo_WorkTimeLayout">
+
+                        <FrameLayout
+                            android:id="@+id/fragment_jobWrite_photoGroup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toStartOf="@+id/fragment_jobWrite_cameraBtn"
+                            app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_cameraBtn">
+
+                            <ImageButton
+                                android:id="@+id/fragment_jobWrite_companyCancle"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginRight="8dp"
+                                android:background="@android:color/transparent"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/cancel" />
+
+                            <ImageView
+                                android:id="@+id/fragment_jobWrite_companyImg"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:scaleType="fitXY"
+                                tools:src="@tools:sample/avatars" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/textView61"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="기업사진"
+                            android:textColor="@color/black"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageButton
+                            android:id="@+id/fragment_jobWrite_cameraBtn"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/camera"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <TextView
                         android:id="@+id/fragment_jobWrite_companyInfoTitle"
                         android:layout_width="wrap_content"
@@ -94,8 +152,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="기업명"
-                        android:textSize="14sp"
                         android:textColor="@color/black"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="@+id/fragment_jobWrite_companyInfoTitle"
                         app:layout_constraintTop_toBottomOf="@+id/fragment_jobWrite_companyInfoTitle" />
 
@@ -107,9 +165,10 @@
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/edit_nonpadding_background"
                         android:ems="10"
-                        android:textSize="14sp"
                         android:inputType="textPersonName"
                         android:padding="5dp"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/fragment_jobWrite_companyInfo_Name"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/fragment_jobWrite_companyInfo_Name"
                         app:layout_constraintTop_toTopOf="@+id/fragment_jobWrite_companyInfo_Name" />
