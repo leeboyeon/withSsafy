@@ -125,12 +125,11 @@
                         android:id="@+id/textView45"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="8dp"
                         android:text="근무시간 |"
                         android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="@+id/fragment_jobDetail_companyInfoMoney"
-                        app:layout_constraintStart_toEndOf="@+id/fragment_jobDetail_companyInfoMoney"
-                        app:layout_constraintTop_toTopOf="@id/fragment_jobDetail_companyInfoMoney" />
+                        app:layout_constraintTop_toBottomOf="@id/textView18"
+                        app:layout_constraintStart_toStartOf="@id/textView18"/>
 
                     <TextView
                         android:id="@+id/textView44"
