@@ -11,4 +11,5 @@ public interface CommentService {
     CommentDto insert(CommentDto commentDto);
     CommentDto update(CommentDto commentDto);
     boolean delete(Long id);
+    CommentDto findById(Long id);
 }

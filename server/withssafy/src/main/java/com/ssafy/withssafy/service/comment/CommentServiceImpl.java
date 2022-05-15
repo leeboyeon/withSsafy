@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,5 +62,12 @@ public class CommentServiceImpl implements CommentService{
         if (!commentRepository.findById(id).isPresent()) return false;
         commentRepository.deleteById(id);
         return !commentRepository.findById(id).isPresent();
+    }
+
+    @Override
+    public CommentDto findById(Long id) {
+        Optional<Comment> comment = commentRepository.findById(id);
+
+        return comment.map(value -> modelMapper.map(value, CommentDto.class)).orElse(null);
     }
 }
