@@ -11,6 +11,7 @@ import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.jakewharton.rxbinding3.view.clicks
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
@@ -19,6 +20,7 @@ import com.ssafy.withssafy.databinding.FragmentStudyCommentBinding
 import com.ssafy.withssafy.src.dto.board.Comment
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.board.CommentAdapter
+import com.ssafy.withssafy.src.network.service.CommentService
 import com.ssafy.withssafy.src.network.service.StudyService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.runBlocking
@@ -76,7 +78,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
     }
 
     private fun initAdapter(){
-        studyCommentAdapter = CommentAdapter(requireContext())
+        studyCommentAdapter = CommentAdapter(requireContext(), false)
         binding.studyCommentFragmentRvComment.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = studyCommentAdapter
@@ -84,15 +86,17 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
         }
 
         teamViewModel.studyParentComments.observe(viewLifecycleOwner){
+            Log.d(TAG, "initAdapter: $it")
             studyCommentAdapter.commentList = it
         }
 
         teamViewModel.studyComments.observe(viewLifecycleOwner){
+            Log.d(TAG, "initAdapter: $it")
+
             studyCommentAdapter.commentAllList = it
         }
 
         studyCommentAdapter.postUserId = teamViewModel.study.value!!.user!!.id
-        Log.d(TAG, "initAdapter: ${studyCommentAdapter.postUserId}")
 
         // 댓글, 대댓글 작성 클릭 이벤트
         studyCommentAdapter.setAddReplyItemClickListener(object : CommentAdapter.ItemClickListener {
@@ -102,6 +106,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
                 binding.studyCommentFragmentTvWriterNick.text = writerNick
 
                 parentId = commentId
+                Log.d(TAG, "onClick: $parentId")
 
                 insertCommentAndReply()
             }
@@ -109,57 +114,74 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
 
         // 댓글 수정 클릭 이벤트
         studyCommentAdapter.setModifyItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                showKeyboard(binding.studyCommentFragmentEtComment)
 
+                val cmtList = teamViewModel.studyComments.value!!
+                binding.studyCommentFragmentEtComment.setText(cmtList[position].content)
+
+                updateComment(commentId, position, true)
             }
         })
 
         // 댓글 삭제 클릭 이벤트
         studyCommentAdapter.setDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                deleteComment(commentId, position, true)
             }
         })
 
         // 댓글 작성자에게 쪽지 보내기 클릭 이벤트
         studyCommentAdapter.setSendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showDialogSendMessage(writerUserId, userId)
             }
         })
 
         // 댓글 신고 클릭 이벤트
         studyCommentAdapter.setReportItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showReportDialog(commentId, false, null, studyCommentAdapter, null, 0, false)
 
             }
         })
 
         // 대댓글 수정 클릭 이벤트
         studyCommentAdapter.setReplyModifyItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                showKeyboard(binding.studyCommentFragmentEtComment)
 
+                val cmtList = boardViewModel.commentListOnPost.value!!
+
+                for (item in cmtList) {
+                    if(item.id == commentId) {
+                        binding.studyCommentFragmentEtComment.setText(item.content)
+                        break
+                    }
+                }
+
+                updateComment(commentId, position, false)
             }
         })
 
         // 대댓글 삭제 클릭 이벤트
         studyCommentAdapter.setReplyDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                deleteComment(commentId, position, false)
             }
         })
 
         // 대댓글 작성자에게 쪽지 보내기 클릭 이벤트
         studyCommentAdapter.setReplySendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showDialogSendMessage(writerUserId, userId)
             }
         })
 
         // 대댓글 신고 클릭 이벤트
         studyCommentAdapter.setReplyReportItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showReportDialog(commentId, false, null, studyCommentAdapter, null, 0, false)
             }
         })
     }
@@ -194,7 +216,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
                 }catch (e:HttpException){
                     Log.e(TAG, "insertCommentAndReply: ${e.message()}", )
                 }
-            }else if(parentId == -1 && contentLenChk(commentContent)){
+            }else if(parentId != -1 && contentLenChk(commentContent)){
                 val reply = Comment(
                     parentId,
                     studyId,
@@ -213,6 +235,9 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
                         studyCommentAdapter.notifyDataSetChanged()
                         clearEditText()
                         clearFocus(mainActivity)
+                    } else {
+                        showCustomToast("대댓글 등록 실패")
+                        Log.d(TAG, "insertCommentAndReply: ${response.message()}",)
                     }
                 }catch (e:HttpException){
                     Log.e(TAG, "insertCommentAndReply: ${e.message()}", )
@@ -230,6 +255,84 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
     }
 
     /**
+     * 댓글 수정
+     * @param commentId
+     * @param position
+     * @param adapterChk true - commentAdapter / false - replyAdapter
+     */
+    private fun updateComment(commentId: Int, position: Int, adapterChk: Boolean) {
+        binding.studyCommentFragmentTvConfirm.onThrottleClick {
+            val commentContent = binding.studyCommentFragmentEtComment.text.toString()
+
+            if (commentId > 0 && contentLenChk(commentContent)) {
+                val updateComment = Comment(commentId, commentContent)
+
+                var response: Response<Any?>
+                try {
+                    runBlocking {
+                        response = StudyService().modifyStudyComment(updateComment)
+                    }
+                    if(response.isSuccessful) {
+                        showCustomToast("댓글이 수정되었습니다.")
+                        runBlocking {
+                            teamViewModel.getStudyCommentByBoardId(studyId)
+                        }
+                        if(adapterChk) {
+                            studyCommentAdapter.notifyItemChanged(position)
+                        } else {
+                            studyCommentAdapter.commentReplyAdapter.notifyItemChanged(position)
+                            studyCommentAdapter.notifyDataSetChanged()
+                        }
+                        clearEditText()
+                        clearFocus(mainActivity)
+                    } else {
+                        showCustomToast("댓글 수정 실패")
+                        Log.d(TAG, "updateComment: ${response.code()}")
+                    }
+                } catch (e: HttpException) {
+                    Log.e(TAG, "updateComment: ${e.response()}", )
+                }
+            }
+        }.addDisposable()
+    }
+
+
+    /**
+     * 댓글 삭제
+     * @param commentId
+     * @param position
+     * @param adapterChk true - commentAdapter / false - replyAdapter
+     */
+    private fun deleteComment(commentId: Int, position: Int, adapterChk: Boolean) {
+        var response: Response<Any?>
+        try {
+            runBlocking {
+                response = StudyService().deleteStudyComment(commentId)
+            }
+            if(response.isSuccessful) {
+                showCustomToast("댓글이 삭제되었습니다.")
+                runBlocking {
+                    teamViewModel.getStudyCommentByBoardId(studyId)
+                }
+                if(adapterChk) {
+                    studyCommentAdapter.notifyItemRemoved(position)
+                } else {
+                    studyCommentAdapter.commentReplyAdapter.notifyItemRemoved(position)
+                    studyCommentAdapter.notifyDataSetChanged()
+                }
+
+            } else {
+                showCustomToast("댓글 삭제 실패")
+                Log.d(TAG, "deleteComment: ${response.message()}", )
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "deleteComment: ${e.response()}", )
+        }
+    }
+
+
+
+    /**
      * RxBinding의 Throttle 기능 사용하는 Button 함수
      * @param throttleSecond 해당 시간동안 중복 클릭 방지 (기본으로 1초)
      * @param subscribe 클릭 리스너 정의
@@ -242,6 +345,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
         .subscribe {
             subscribe?.invoke()
         }
+
     private fun showKeyboard(editText: EditText?) {
         if (editText == null) {
             return
