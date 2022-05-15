@@ -235,7 +235,7 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
      */
     private fun initCommentRecyclerView() {
 
-        commentAdapter = CommentAdapter(requireContext())
+        commentAdapter = CommentAdapter(requireContext(), true)
 
         binding.postDetailFragmentRvComment.apply {
             layoutManager = LinearLayoutManager(requireContext())

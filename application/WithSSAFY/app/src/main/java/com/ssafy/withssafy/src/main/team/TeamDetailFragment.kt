@@ -76,7 +76,7 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
         }
     }
     private fun initAdapter(){
-        studyCommentAdapter = CommentAdapter(requireContext())
+        studyCommentAdapter = CommentAdapter(requireContext(), false)
         teamViewModel.studyComments.observe(viewLifecycleOwner){
             studyCommentAdapter.commentAllList = it
         }

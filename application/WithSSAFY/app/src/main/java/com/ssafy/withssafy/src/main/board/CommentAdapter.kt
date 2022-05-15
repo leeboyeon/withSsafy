@@ -3,35 +3,27 @@ package com.ssafy.withssafy.src.main.board
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemCommentListBinding
-import com.ssafy.withssafy.src.dto.User
 import com.ssafy.withssafy.src.dto.board.Comment
-import com.ssafy.withssafy.src.viewmodel.BoardViewModel
 
 /**
  * @since 04/27/22
  * @author Jiwoo Choi
+ * @param boardOrStudy true : board 댓글 // false : study 댓글
  */
-class CommentAdapter (val context: Context) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
+class CommentAdapter (val context: Context, val boardOrStudy: Boolean) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
     private val TAG = "CommentAdapter_ws"
 
     lateinit var commentList: MutableList<Comment>
     lateinit var commentAllList : MutableList<Comment>
-    var commentReplyAdapter = ReplyAdapter(context)
+    var commentReplyAdapter = ReplyAdapter(context, boardOrStudy)
     lateinit var dialog: Dialog
 
     // 게시글 작성자
@@ -49,9 +41,19 @@ class CommentAdapter (val context: Context) : RecyclerView.Adapter<CommentAdapte
         fun bindInfo(comment: Comment) {
             binding.comment = comment
 
-            if(comment.userId == postUserId) {
-                nick.setTextColor(Color.parseColor("#2C64BF"))
-                nick.text = "익명(글쓴이)"
+            if(boardOrStudy == true) {  // board 댓글인 경우 - 익명
+                if(comment.userId == postUserId) {
+                    nick.setTextColor(Color.parseColor("#2C64BF"))
+                    nick.text = "익명(글쓴이)"
+                } else {
+                    nick.text = "익명${layoutPosition + 1}"
+                }
+            } else {    // study 댓글인 경우 실명
+                if(comment.userId == postUserId) {
+                    nick.setTextColor(Color.parseColor("#2C64BF"))
+                } else {
+//                    nick.text = comment.user!!.name
+                }
             }
 
             binding.executePendingBindings()
@@ -152,6 +154,11 @@ class CommentAdapter (val context: Context) : RecyclerView.Adapter<CommentAdapte
                     }
                 } else {    // 작성자가 아닌 경우 popup_menu(쪽지 보내기, 신고)
                     MenuInflater(context).inflate(R.menu.popup_menu, popup.menu)
+
+                    if(boardOrStudy == false) { //  스터디 댓글인 경우 신고 X, 신고 팝업 메뉴 숨기기
+                       val popupMenu: Menu = popup.menu
+                        popupMenu.findItem(R.id.report).isVisible = false
+                    }
 
                     popup.show()
                     popup.setOnMenuItemClickListener {

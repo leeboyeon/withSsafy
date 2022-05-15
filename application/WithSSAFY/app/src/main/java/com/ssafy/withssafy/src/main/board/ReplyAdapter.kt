@@ -19,8 +19,9 @@ import com.ssafy.withssafy.src.dto.board.Comment
 /**
  * @since 04/27/22
  * @author Jiwoo Choi
+ * @param boardOrStudy true : board 댓글 // false : study 댓글
  */
-class ReplyAdapter (val context: Context) : RecyclerView.Adapter<ReplyAdapter.ViewHolder>(){
+class ReplyAdapter (val context: Context, val boardOrStudy: Boolean) : RecyclerView.Adapter<ReplyAdapter.ViewHolder>(){
 
     lateinit var commentList: MutableList<Comment>
 
@@ -38,9 +39,19 @@ class ReplyAdapter (val context: Context) : RecyclerView.Adapter<ReplyAdapter.Vi
 
             binding.comment = comment
 
-            if(comment.userId == postUserId) {
-                nick.setTextColor(Color.parseColor("#2C64BF"))
-                nick.text = "익명(글쓴이)"
+            if(boardOrStudy == true) {  // board 댓글인 경우 - 익명
+                if(comment.userId == postUserId) {
+                    nick.setTextColor(Color.parseColor("#2C64BF"))
+                    nick.text = "익명(글쓴이)"
+                } else {
+                    nick.text = "익명${layoutPosition + 1}"
+                }
+            } else {    // study 댓글인 경우 실명
+                if(comment.userId == postUserId) {
+                    nick.setTextColor(Color.parseColor("#2C64BF"))
+                } else {
+//                    nick.text = comment.user!!.name
+                }
             }
 
             binding.executePendingBindings()
