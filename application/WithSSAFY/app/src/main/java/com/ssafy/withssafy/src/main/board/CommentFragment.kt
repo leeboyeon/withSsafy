@@ -112,7 +112,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
      * 댓글, 대댓글 recyclerView init + 아이템 클릭 이벤트
      */
     private fun initRecyclerView() {
-        commentAdapter = CommentAdapter(requireContext())
+        commentAdapter = CommentAdapter(requireContext(), true)
 
         binding.commentFragmentRvComment.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -146,7 +146,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
 
         // 댓글 수정 클릭 이벤트
         commentAdapter.setModifyItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
                 showKeyboard(binding.commentFragmentEtComment)
                 
                 val cmtList = boardViewModel.commentList.value!!

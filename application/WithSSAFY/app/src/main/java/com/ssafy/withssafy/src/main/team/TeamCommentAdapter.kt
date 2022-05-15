@@ -16,10 +16,10 @@ import com.ssafy.withssafy.databinding.ItemCommentListBinding
 import com.ssafy.withssafy.src.dto.board.Comment
 import com.ssafy.withssafy.src.main.board.ReplyAdapter
 
-class TeamCommentAdapter(val context: Context) : RecyclerView.Adapter<TeamCommentAdapter.CommentViewHolder>(){
+class TeamCommentAdapter(val context: Context, val boardOrStudy: Boolean) : RecyclerView.Adapter<TeamCommentAdapter.CommentViewHolder>(){
     lateinit var commentList: MutableList<Comment>
     lateinit var commentAllList : MutableList<Comment>
-    var commentReplyAdapter = ReplyAdapter(context)
+    var commentReplyAdapter = ReplyAdapter(context, boardOrStudy)
     var postUserId: Int = -1
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 

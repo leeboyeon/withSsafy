@@ -11,6 +11,7 @@ data class User(
     val deviceToken: String?
 ) {
     constructor() : this(id = 0, name = "", userId = "", password = "", studentId = "", classRoomId = 0, state = 0, deviceToken = "")
+    constructor(name: String) : this(id = 0, name = name, userId = "", password = "", studentId = "", classRoomId = 0, state = 0, deviceToken = "")
     constructor(id: Int, studentId: String?) : this(id = id, name = "", userId = "", password = "", studentId = studentId, classRoomId = 0, state = 0, deviceToken = "")
     constructor(id: Int, studentId: String?, classRoomId: Int) : this(id = id, name = "", userId = "", password = "", studentId = studentId, classRoomId = classRoomId, state = 0, deviceToken = "")
     constructor(userId: String, password: String) : this(id = 0, name = "", userId = userId, password = password, studentId = "", classRoomId = 0, state = 0, deviceToken = "")
