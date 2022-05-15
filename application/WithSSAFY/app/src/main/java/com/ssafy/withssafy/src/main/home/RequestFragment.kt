@@ -14,14 +14,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentRequestBinding
+import com.ssafy.withssafy.src.dto.FcmRequest
 import com.ssafy.withssafy.src.dto.User
+import com.ssafy.withssafy.src.network.service.FcmService
 import com.ssafy.withssafy.src.network.service.RecruitService
 import com.ssafy.withssafy.src.network.service.UserService
 import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
 import retrofit2.Response
 
 
 class RequestFragment : BaseFragment<FragmentRequestBinding>(FragmentRequestBinding::bind, R.layout.fragment_request) {
+    private val TAG = "RequestFragment_싸피"
     lateinit var requestAdapter: RequestAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,6 +91,35 @@ class RequestFragment : BaseFragment<FragmentRequestBinding>(FragmentRequestBind
                     userViewModel.getStateZeroUserList()
                 }
                 requestAdapter.notifyDataSetChanged()
+                try {
+                    val res = response.body()
+                    if(res != null) {
+                        val userToken = res.deviceToken
+
+                        val fcmRequest = FcmRequest(
+                            type = 2, 
+                            title = "교육생 인증 완료", 
+                            body = "SSAFY 교육생 인증이 완료되었습니다.\n이제부터 withSSAFY를 이용하실 수 있습니다.")
+                        
+                        if(userToken != null) {
+                            var pushNotiResponse : Response<Any?>
+                            runBlocking {
+                                
+                                    pushNotiResponse = FcmService().sendToMsg(fcmRequest, userToken)
+                            }
+                            
+                            if(pushNotiResponse.isSuccessful) {
+                                Log.d(TAG, "updateState: 교육생 인증 완료 fcm 전송 성공")
+                            } else {
+                                Log.e(TAG, "updateState: ${pushNotiResponse.message()}", )
+                            }
+                        }
+
+                    }
+
+                } catch (e : HttpException) {
+                    Log.e(TAG, "updateState: ${e.printStackTrace()}", )
+                }
             } else {
                 showCustomToast("승인을 실패했습니다.")
             }

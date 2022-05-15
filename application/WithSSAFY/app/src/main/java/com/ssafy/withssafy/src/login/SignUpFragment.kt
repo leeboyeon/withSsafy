@@ -13,6 +13,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.ssafy.withssafy.R
+import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentSignUpBinding
 import com.ssafy.withssafy.src.dto.User
@@ -369,7 +370,12 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                 }
 
                 override fun onSuccess(code: Int, responseData: User) {
-                    showCustomToast("회원가입이 완료되었습니다. 다시 로그인 해주세요.")
+                    if(responseData.studentId != null) {
+                        showCustomToast("회원가입이 완료되었습니다.\n교육생 인증 후 사용하실 수 있습니다.")
+                    } else {
+                        showCustomToast("회원가입이 완료되었습니다.\n다시 로그인 해주세요.")
+                    }
+                    ApplicationClass.sharedPreferencesUtil.addUser(User(responseData.id, responseData.password, responseData.studentId), responseData.classRoomId)
                     (requireActivity() as SingInActivity).onBackPressed()
                 }
 
