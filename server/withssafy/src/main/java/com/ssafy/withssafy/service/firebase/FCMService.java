@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.ssafy.withssafy.dto.firebase.FcmMessage;
+import com.ssafy.withssafy.dto.notification.NotificationRequestDto;
 import com.ssafy.withssafy.dto.user.UserDto;
 import com.ssafy.withssafy.service.notification.NotificationService;
 import com.ssafy.withssafy.service.user.UserService;
@@ -105,15 +106,15 @@ public class FCMService {
 
 //        log.info(response.body().string());
 
-//        if(response.isSuccessful()) {
-//            NotificationRequestDto noti = new NotificationRequestDto();
-////            UserDto user = userService. .selectUserByToken(targetToken);
-//            noti.setUser(user.getId());
-//            noti.setTitle(title);
-//            noti.setContent(body);
-//            noti.setType(type);
-//            notificationService.insert(noti);
-//        }
+        if(response.isSuccessful()) {
+            NotificationRequestDto noti = new NotificationRequestDto();
+            UserDto user = userService.findByDeviceToken(targetToken);
+            noti.setUser(user.getId());
+            noti.setTitle(title);
+            noti.setContent(body);
+            noti.setType(type);
+            notificationService.insert(noti);
+        }
     }
 
     /**
@@ -129,7 +130,7 @@ public class FCMService {
         // path는 application 초기 화면
         List<UserDto> users = userService.findAll();
         for (UserDto user : users) {
-            if (user.getDeviceToken() != null) {
+            if (user.getDeviceToken() != null || !user.getDeviceToken().isEmpty()) {
 //            if(user != null && !user.getToken().isEmpty() && user.getToken() != null) {
                 log.debug("broadcastmessage : {},{},{}", user.getDeviceToken(), title, body);
                 sendMessageTo(user.getDeviceToken(), title, body, img, type);
