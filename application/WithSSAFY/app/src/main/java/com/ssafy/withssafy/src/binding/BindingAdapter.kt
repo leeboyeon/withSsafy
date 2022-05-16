@@ -54,6 +54,15 @@ fun bindStudyLimitText(textView: TextView, study:Study){
 
 }
 
+@BindingAdapter("noticeLimitText")
+fun bindNoticeLimitText(textView: TextView, str:String){
+    if(str!!.length > 12){
+        textView.text = "${str.substring(0, 12)}..."
+    } else {
+        textView.text = str
+    }
+}
+
 @BindingAdapter("studyImageUrl")
 fun bindImageUrl(imageView: ImageView, url:String?){
     Glide.with(imageView.context)
