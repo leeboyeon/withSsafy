@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.service.sbcomment;
 
+import com.ssafy.withssafy.dto.board.BoardResponse;
 import com.ssafy.withssafy.dto.comment.CommentDto;
 import com.ssafy.withssafy.dto.comment.WriterDto;
 import com.ssafy.withssafy.dto.sbcomment.SbCommentDto;
@@ -35,58 +36,22 @@ public class SbCommentServiceImpl implements SbCommentService{
     @Override
     public List<SbCommentDto> findByUserId(Long userId) {
         List<SbComment> list = sbCommentRepository.findByUserId(userId);
-        List<SbCommentDto> result = new ArrayList<>();
-
-        for(SbComment comment : list) {
-            SbCommentDto dto = new SbCommentDto();
-            dto.setId(comment.getId());
-            dto.setContent(comment.getContent());
-            dto.setParent(comment.getParent());
-            dto.setUser(modelMapper.map(comment.getUser(), WriterDto.class));
-            dto.setBoardId(comment.getStudyBoard().getId());
-            dto.setWrite_dt(comment.getWrite_dt());
-            result.add(dto);
-        }
-
-        return result;
+        return list.stream().map(sbComment -> modelMapper.map(sbComment, SbCommentDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<SbCommentDto> findByBoardId(Long boardId) {
         List<SbComment> list = sbCommentRepository.findByBoardId(boardId);
-        List<SbCommentDto> result = new ArrayList<>();
-
-        for(SbComment comment : list) {
-            SbCommentDto dto = new SbCommentDto();
-            dto.setId(comment.getId());
-            dto.setContent(comment.getContent());
-            dto.setParent(comment.getParent());
-            dto.setUser(modelMapper.map(comment.getUser(), WriterDto.class));
-            dto.setBoardId(comment.getStudyBoard().getId());
-            dto.setWrite_dt(comment.getWrite_dt());
-            result.add(dto);
-        }
-
-        return result;
+        return list.stream().map(sbComment -> modelMapper.map(sbComment, SbCommentDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<SbCommentDto> findAll() {
         List<SbComment> list = sbCommentRepository.findAll();
-        List<SbCommentDto> result = new ArrayList<>();
-
-        for(SbComment comment : list) {
-            SbCommentDto dto = new SbCommentDto();
-            dto.setId(comment.getId());
-            dto.setContent(comment.getContent());
-            dto.setParent(comment.getParent());
-            dto.setUser(modelMapper.map(comment.getUser(), WriterDto.class));
-            dto.setBoardId(comment.getStudyBoard().getId());
-            dto.setWrite_dt(comment.getWrite_dt());
-            result.add(dto);
-        }
-
-        return result;
+        return list.stream().map(sbComment -> modelMapper.map(sbComment, SbCommentDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
