@@ -15,4 +15,6 @@ class MessageService {
     suspend fun getMessageByUserIdToGroup(id:Int) : Response<MutableList<Message>> = RetrofitUtil.messageApi.getMessageByUserIdToGroup(id)
 
     suspend fun getMessageTalk(fromId:Int, toId:Int) : Response<MutableList<Message>> = RetrofitUtil.messageApi.getMessageTalk(fromId, toId)
+
+    suspend fun getStudyJoinList(id1:Int, id2:Int) : Response<MutableList<Long>> = RetrofitUtil.messageApi.getStudyJoinList(id1,id2)
 }

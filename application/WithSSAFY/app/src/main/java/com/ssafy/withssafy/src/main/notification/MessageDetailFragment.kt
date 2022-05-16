@@ -52,8 +52,10 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
         runBlocking {
             if(fromId == ApplicationClass.sharedPreferencesUtil.getUser().id){
                 messageViewModel.getMessageTalk(toId, ApplicationClass.sharedPreferencesUtil.getUser().id)
+                messageViewModel.getJoinList(toId, ApplicationClass.sharedPreferencesUtil.getUser().id)
             }else{
                 messageViewModel.getMessageTalk(ApplicationClass.sharedPreferencesUtil.getUser().id, fromId)
+                messageViewModel.getJoinList(ApplicationClass.sharedPreferencesUtil.getUser().id,fromId)
             }
 
         }
@@ -78,6 +80,10 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
         messageViewModel.messageTalk.observe(viewLifecycleOwner){
             Log.d(TAG, "initAdapter: $it")
             detailAdapter.list = it
+        }
+        messageViewModel.joinList.observe(viewLifecycleOwner){
+            Log.d(TAG, "initAdapter: $it")
+            detailAdapter.joinList = it
         }
         binding.fragmentMessgaeDetailRv.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
@@ -137,8 +143,18 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
                         ApplicationClass.sharedPreferencesUtil.getUser().id,
                         fromId
                     )
-                    MessageService().insertMessage(message)
-                    dialog.dismiss()
+                    var response2 = MessageService().insertMessage(message)
+                    if(response2.isSuccessful){
+                        runBlocking {
+                            if(fromId == ApplicationClass.sharedPreferencesUtil.getUser().id){
+                                messageViewModel.getMessageTalk(toId, ApplicationClass.sharedPreferencesUtil.getUser().id)
+                            }else{
+                                messageViewModel.getMessageTalk(ApplicationClass.sharedPreferencesUtil.getUser().id, fromId)
+                            }
+                            detailAdapter.notifyDataSetChanged()
+                        }
+                    }
+                   dialog.dismiss()
                 }else{
                     Log.d(TAG, "showRequestDialog: ${response.code()}")
                 }

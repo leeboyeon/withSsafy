@@ -52,5 +52,13 @@ interface MessageApi {
      * */
     @GET("/message/list")
     suspend fun getMessageTalk(@Query("fromId")fromId:Int, @Query("toId")toId:Int) : Response<MutableList<Message>>
+
+    /**
+     * Message Get Study
+     * 상대방과 내가 같이 들어가있는 스터디목록 가져오기
+     * @author : LeeBoYeon
+     * */
+    @GET("/message/study/list")
+    suspend fun getStudyJoinList(@Query("id1")id1 : Int, @Query("id2")id2 : Int) : Response<MutableList<Long>>
 }
 

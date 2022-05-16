@@ -144,4 +144,6 @@ interface StudyApi {
      * */
     @GET("/team/last")
     suspend fun getTeamInfo() : Response<Team>
+
+
 }

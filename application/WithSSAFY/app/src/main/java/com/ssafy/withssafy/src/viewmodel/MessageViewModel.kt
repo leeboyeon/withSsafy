@@ -13,6 +13,7 @@ class MessageViewModel : ViewModel(){
     private val _messageSend = MutableLiveData<MutableList<Message>>()
     private val _messageGroup = MutableLiveData<MutableList<Message>>()
     private val _messageTalk = MutableLiveData<MutableList<Message>>()
+    private val _joinList = MutableLiveData<MutableList<Long>>()
 
     val messageReceive : LiveData<MutableList<Message>>
         get() = _messageReceive
@@ -22,6 +23,8 @@ class MessageViewModel : ViewModel(){
         get() = _messageGroup
     val messageTalk : LiveData<MutableList<Message>>
         get() = _messageTalk
+    val joinList : LiveData<MutableList<Long>>
+        get() = _joinList
 
     fun setMessageReceive(list : MutableList<Message>){
         _messageReceive.value = list
@@ -34,6 +37,9 @@ class MessageViewModel : ViewModel(){
     }
     fun setMessageTalk(list:MutableList<Message>){
         _messageTalk.value = list
+    }
+    fun setJoinList(list:MutableList<Long>){
+        _joinList.value = list
     }
 
     suspend fun getReceiveMessage(userId:Int){
@@ -78,6 +84,18 @@ class MessageViewModel : ViewModel(){
             if(response.code() == 200){
                 if(res!=null){
                     setMessageTalk(res)
+                }
+            }
+        }
+    }
+
+    suspend fun getJoinList(id1:Int,id2:Int){
+        val response = MessageService().getStudyJoinList(id1,id2)
+        viewModelScope.launch {
+            val res = response.body()
+            if(response.code() == 200){
+                if(res!=null){
+                    setJoinList(res)
                 }
             }
         }
