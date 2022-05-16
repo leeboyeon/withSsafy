@@ -293,6 +293,7 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
             }
 
             filename = if(response.isSuccessful) {
+
                 response.body()!!
             } else {
                 ""

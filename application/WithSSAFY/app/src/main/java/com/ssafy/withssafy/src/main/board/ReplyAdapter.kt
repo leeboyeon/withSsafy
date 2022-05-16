@@ -83,18 +83,18 @@ class ReplyAdapter (val context: Context, val boardOrStudy: Boolean) : RecyclerV
             moreBtn.setOnClickListener {
                 val popup = PopupMenu(context, moreBtn)
                 // 작성자인 경우 popup_menu_write 팝업 메뉴
-                if(comment.userId == userId) {
+                if(comment.user!!.id == userId) {
                     MenuInflater(context).inflate(R.menu.popup_menu_writer, popup.menu)
 
                     popup.show()
                     popup.setOnMenuItemClickListener {
                         when (it.itemId) {
                             R.id.modify -> {
-                                modifyItemClickListener.onClick(position, comment.id, comment.userId)
+                                modifyItemClickListener.onClick(position, comment.id, comment.user.id)
                                 return@setOnMenuItemClickListener true
                             }
                             R.id.delete -> {
-                                deleteItemClickListener.onClick(position, comment.id, comment.userId)
+                                deleteItemClickListener.onClick(position, comment.id, comment.user.id)
                                 return@setOnMenuItemClickListener true
                             }
                             else -> {
@@ -109,11 +109,11 @@ class ReplyAdapter (val context: Context, val boardOrStudy: Boolean) : RecyclerV
                     popup.setOnMenuItemClickListener {
                         when (it.itemId) {
                             R.id.sendNote -> {  // 쪽지 보내기 -> 댓글 작성자 id 필요
-                                sendNoteItemClickListener.onClick(position, comment.id, comment.userId)
+                                sendNoteItemClickListener.onClick(position, comment.id, comment.user.id)
                                 return@setOnMenuItemClickListener true
                             }
                             R.id.report -> {    // 신고 -> 댓글 작성자 id, 댓글 id
-                                reportItemClickListener.onClick(position, comment.id, comment.userId)
+                                reportItemClickListener.onClick(position, comment.id, comment.user.id)
                                 return@setOnMenuItemClickListener true
                             }
                             else -> {
