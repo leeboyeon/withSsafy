@@ -35,4 +35,9 @@ public interface MessageRepository  extends JpaRepository<Message,Long> {
             "or( m.u_from_id = :toId and m.u_to_id = :fromId)\n" +
             "order by send_dt desc", nativeQuery = true)
     List<Message> findChatList(Long toId,Long fromId);
+
+    @Query(value = "select s1.sb_id from tbl_study_member s1, tbl_study_member s2\n" +
+            "where s1.sb_id = s2.sb_id\n" +
+            "and s1.user_id = :id1 and s2.user_id = :id2", nativeQuery = true)
+    List<Long> findCommonStudy(Long id1,Long id2);
 }

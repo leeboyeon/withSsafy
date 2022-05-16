@@ -11,4 +11,5 @@ public interface MessageService {
     public List<MessageDto> findSendMessageByUid(Long id);
     public List<MessageDto> findList(Long id);
     public List<MessageDto> findChatList(Long toId, Long fromId);
+    public List<Long> findCommonStudy(Long id1, Long id2);
 }
