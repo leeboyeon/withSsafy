@@ -1,5 +1,6 @@
 package com.ssafy.withssafy.src.main.team
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentStudyBinding
+import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.network.service.StudyService
 import kotlinx.coroutines.runBlocking
 import retrofit2.Response
@@ -21,13 +23,17 @@ private const val TAG = "StudyFragment"
 class StudyFragment : BaseFragment<FragmentStudyBinding>(FragmentStudyBinding::bind, R.layout.fragment_study) {
     private lateinit var teamAdapter: TeamAdapter
     private var lastFilterText = ""
-
+    private lateinit var mainActivity : MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = teamViewModel
@@ -130,5 +136,10 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(FragmentStudyBinding::b
                 arguments = Bundle().apply {
                 }
             }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNavi(false)
     }
 }
