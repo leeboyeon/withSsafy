@@ -40,17 +40,20 @@
 
                 <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp">
 
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:weightSum="5" >
+                        android:padding="8dp"
+                        android:weightSum="5">
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkUser"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
+                            android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
                             android:elevation="5dp"
@@ -58,62 +61,62 @@
                             android:src="@drawable/user_icon" />
 
                         <Space
-                            android:layout_width="20dp"
+                            android:layout_width="10dp"
                             android:layout_height="wrap_content" />
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkEduSsafy"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
+                            android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
                             android:elevation="5dp"
-                            android:padding="2dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/ssafylogo" />
 
                         <Space
-                            android:layout_width="20dp"
+                            android:layout_width="10dp"
                             android:layout_height="wrap_content" />
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkGitSsafy"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
+                            android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
                             android:elevation="5dp"
-                            android:padding="2dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/git" />
 
                         <Space
-                            android:layout_width="20dp"
+                            android:layout_width="10dp"
                             android:layout_height="wrap_content" />
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkJobSsafy"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
+                            android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
                             android:elevation="5dp"
-                            android:padding="2dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/jobssafy" />
 
                         <Space
-                            android:layout_width="20dp"
+                            android:layout_width="10dp"
                             android:layout_height="wrap_content" />
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkYoutubeSsafy"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
+                            android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
                             android:elevation="5dp"
-                            android:padding="2dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/youtube"
                             app:useCompatPadding="false" />
