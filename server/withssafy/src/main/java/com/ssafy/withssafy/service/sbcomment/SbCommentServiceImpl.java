@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.service.sbcomment;
 
 import com.ssafy.withssafy.dto.comment.CommentDto;
+import com.ssafy.withssafy.dto.comment.WriterDto;
 import com.ssafy.withssafy.dto.sbcomment.SbCommentDto;
 import com.ssafy.withssafy.dto.sbcomment.SbCommentRequest;
 import com.ssafy.withssafy.dto.studyboard.StudyBoardResponse;
@@ -41,7 +42,7 @@ public class SbCommentServiceImpl implements SbCommentService{
             dto.setId(comment.getId());
             dto.setContent(comment.getContent());
             dto.setParent(comment.getParent());
-            dto.setUserId(comment.getUser().getId());
+            dto.setUser(modelMapper.map(comment.getUser(), WriterDto.class));
             dto.setBoardId(comment.getStudyBoard().getId());
             dto.setWrite_dt(comment.getWrite_dt());
             result.add(dto);
@@ -60,7 +61,7 @@ public class SbCommentServiceImpl implements SbCommentService{
             dto.setId(comment.getId());
             dto.setContent(comment.getContent());
             dto.setParent(comment.getParent());
-            dto.setUserId(comment.getUser().getId());
+            dto.setUser(modelMapper.map(comment.getUser(), WriterDto.class));
             dto.setBoardId(comment.getStudyBoard().getId());
             dto.setWrite_dt(comment.getWrite_dt());
             result.add(dto);
@@ -79,7 +80,7 @@ public class SbCommentServiceImpl implements SbCommentService{
             dto.setId(comment.getId());
             dto.setContent(comment.getContent());
             dto.setParent(comment.getParent());
-            dto.setUserId(comment.getUser().getId());
+            dto.setUser(modelMapper.map(comment.getUser(), WriterDto.class));
             dto.setBoardId(comment.getStudyBoard().getId());
             dto.setWrite_dt(comment.getWrite_dt());
             result.add(dto);
@@ -117,7 +118,7 @@ public class SbCommentServiceImpl implements SbCommentService{
         sbComment.updateStudyBoard(studyBoardRepository.findById(sbCommentRequest.getBoardId()).get());
         SbComment trans = sbCommentRepository.save(sbComment);
         SbCommentDto result = modelMapper.map(trans, SbCommentDto.class);
-        result.setUserId(trans.getUser().getId());
+        result.setUser(modelMapper.map(trans.getUser(), WriterDto.class));
         result.setBoardId(trans.getStudyBoard().getId());
         return result;
     }
