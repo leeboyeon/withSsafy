@@ -1,6 +1,7 @@
 package com.ssafy.withssafy.src.main.team
 
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.ssafy.withssafy.databinding.FragmentTeamDetailBinding
 import com.ssafy.withssafy.src.dto.Message
 import com.ssafy.withssafy.src.dto.study.StudyMember
 import com.ssafy.withssafy.src.dto.study.StudyMemberRequest
+import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.board.CommentAdapter
 import com.ssafy.withssafy.src.network.service.MessageService
 import com.ssafy.withssafy.src.network.service.StudyService
@@ -31,8 +33,20 @@ import kotlinx.coroutines.runBlocking
 
 private const val TAG = "TeamDetailFragment"
 class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamDetailBinding::bind, R.layout.fragment_team_detail) {
+    lateinit var mainActivity: MainActivity
+
     private var studyId = 0
     private lateinit var studyCommentAdapter: CommentAdapter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNavi(true)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +57,8 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.hideBottomNavi(true)
+
         binding.viewModel = teamViewModel
         runBlocking {
             teamViewModel.getStudy(studyId)
@@ -184,12 +200,9 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
             dialog.dismiss()
         }
     }
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TeamDetailFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivity.hideBottomNavi(false)
     }
 }

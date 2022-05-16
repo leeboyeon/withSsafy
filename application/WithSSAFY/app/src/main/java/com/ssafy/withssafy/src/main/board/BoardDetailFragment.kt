@@ -60,8 +60,14 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNavi(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.hideBottomNavi(true)
 
         if(typeId < 0) {
             binding.boardDetailFragmentBtnWritePost.visibility = View.INVISIBLE
@@ -265,6 +271,11 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding>(FragmentBoa
         } catch (e: HttpException) {
             Log.e(TAG, "deletePost: ${e.response()}", )
         }
+    }
+
+    override fun onDestroy() {
+        mainActivity.hideBottomNavi(false)
+        super.onDestroy()
     }
 
 }
