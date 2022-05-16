@@ -130,7 +130,7 @@ public class FCMService {
         // path는 application 초기 화면
         List<UserDto> users = userService.findAll();
         for (UserDto user : users) {
-            if (user.getDeviceToken() != null || !user.getDeviceToken().isEmpty()) {
+            if (user.getDeviceToken() != null) {
 //            if(user != null && !user.getToken().isEmpty() && user.getToken() != null) {
                 log.debug("broadcastmessage : {},{},{}", user.getDeviceToken(), title, body);
                 sendMessageTo(user.getDeviceToken(), title, body, img, type);
