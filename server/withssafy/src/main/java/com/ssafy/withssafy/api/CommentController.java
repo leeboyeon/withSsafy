@@ -59,7 +59,7 @@ public class CommentController {
 
     @PostMapping
     @ApiOperation(value = "댓글을 입력합니다.")
-    public ResponseEntity<CommentDto> insert(@RequestBody CommentDto commentDto){
+    public ResponseEntity<CommentResDto> insert(@RequestBody CommentDto commentDto){
 
         try {
             if(commentDto.getParentId() == null) {  // 게시글 작성자에게 알림 전송
@@ -75,8 +75,8 @@ public class CommentController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return new ResponseEntity<>(commentService.insert(commentDto), HttpStatus.OK);
+
     }
 
     @GetMapping("{boardId}")
