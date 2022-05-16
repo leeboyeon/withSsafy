@@ -55,4 +55,10 @@ public class MessageController {
     public ResponseEntity<List<MessageDto>> findChat(@RequestParam Long toId, @RequestParam Long fromId){
         return new ResponseEntity<>(messageService.findChatList(toId,fromId), HttpStatus.OK);
     }
+
+    @GetMapping("/study/list")
+    @ApiOperation(value = "상대와 공통으로 가입된 스터디 목록")
+    public ResponseEntity<List<Long>> findCommonStudy(@RequestParam Long id1, @RequestParam Long id2){
+        return new ResponseEntity<>(messageService.findCommonStudy(id1,id2), HttpStatus.OK);
+    }
 }

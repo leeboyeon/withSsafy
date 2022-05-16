@@ -70,5 +70,9 @@ public class MessageServiceImpl implements MessageService{
         return messages.stream().map(message -> modelMapper.map(message, MessageDto.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<Long> findCommonStudy(Long id1, Long id2) {
+        return messageRepository.findCommonStudy(id1,id2);
+    }
 
 }
