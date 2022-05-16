@@ -1,8 +1,13 @@
 package com.ssafy.withssafy.api;
 
+import com.ssafy.withssafy.dto.board.BoardResponse;
 import com.ssafy.withssafy.dto.comment.CommentDto;
 import com.ssafy.withssafy.dto.comment.CommentResDto;
+import com.ssafy.withssafy.dto.user.UserDto;
+import com.ssafy.withssafy.service.board.BoardService;
 import com.ssafy.withssafy.service.comment.CommentService;
+import com.ssafy.withssafy.service.firebase.FCMService;
+import com.ssafy.withssafy.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +30,15 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    BoardService boardService;
+
+    @Autowired
+    FCMService fcmService;
+
     @GetMapping
     @ApiOperation(value = "모든 메세지를 조회합니다.")
     public ResponseEntity<List<CommentResDto>> findAll(){
@@ -46,7 +60,23 @@ public class CommentController {
     @PostMapping
     @ApiOperation(value = "댓글을 입력합니다.")
     public ResponseEntity<CommentResDto> insert(@RequestBody CommentDto commentDto){
+
+        try {
+            if(commentDto.getParentId() == null) {  // 게시글 작성자에게 알림 전송
+                BoardResponse board = boardService.getBoardById(commentDto.getBoardId());
+                UserDto user = userService.findById(board.getUser().getId());
+                fcmService.sendMessageTo(user.getDeviceToken(), "댓글 알림", "사용자가 쓴 게시글에 댓글이 달렸습니다.", "", 2);
+            } else {    // 댓글 작성자에게 알림 전송
+                CommentDto parentComment = commentService.findById(commentDto.getParentId());
+                UserDto user = userService.findById(parentComment.getUserId());
+                fcmService.sendMessageTo(user.getDeviceToken(), "댓글 알림", "사용자가 쓴 댓글에 대댓글이 달렸습니다.", "", 2);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(commentService.insert(commentDto), HttpStatus.OK);
+
     }
 
     @GetMapping("{boardId}")

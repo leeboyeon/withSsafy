@@ -18,17 +18,37 @@ import com.ssafy.withssafy.src.dto.Message
 private const val TAG = "MessageDetailAdapter"
 class MessageDetailAdapter() : RecyclerView.Adapter<MessageDetailAdapter.DetailViewHolder>() {
     var list = mutableListOf<Message>()
+    var joinList = mutableListOf<Long>()
     inner class DetailViewHolder(private val binding:ItemMessageDetailTalkBinding) : RecyclerView.ViewHolder(binding.root){
         var type = itemView.findViewById<TextView>(R.id.fragment_messageDetail_type)
         fun bind(message: Message){
             binding.message = message
+
             if(message.u_fromId == ApplicationClass.sharedPreferencesUtil.getUser().id){
                 itemView.findViewById<TextView>(R.id.fragment_messageDetail_type).text = "보낸쪽지"
                 itemView.findViewById<TextView>(R.id.fragment_messageDetail_type).setTextColor(Color.parseColor("#FEC93A"))
+                itemView.findViewById<ImageButton>(R.id.fragment_messageDetail_applyCheck).visibility = View.INVISIBLE
+
             }else{
                 if(message.content.contains("지원하였습니다.")){
                     itemView.findViewById<ImageButton>(R.id.fragment_messageDetail_applyCheck).visibility = View.VISIBLE
+                    var tmp = message.content.substring(5,message.content.length)
+                    var id = ""
+                    for(i in 0..tmp.length-1){
+                        id += tmp[i]
+                        if(tmp[i] == ']'){
+                            break
+                        }
+                    }
+                    id = id.substring(0,id.length-1)
+                    for(item in joinList){
+                        if(item.toInt() == id.toInt()){
+                            Log.d(TAG, "bind: $item")
+                            itemView.findViewById<ImageButton>(R.id.fragment_messageDetail_applyCheck).visibility = View.INVISIBLE
+                        }
+                    }
                 }
+
             }
             binding.executePendingBindings()
         }

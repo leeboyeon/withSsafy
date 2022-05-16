@@ -40,19 +40,22 @@ class CommentAdapter (val context: Context, val boardOrStudy: Boolean) : Recycle
 
         fun bindInfo(comment: Comment) {
             binding.comment = comment
+            if(comment.user != null) {
+                if(boardOrStudy == true) {  // board 댓글인 경우 - 익명
+                    if(comment.user.id == postUserId) {
+                        nick.setTextColor(Color.parseColor("#2C64BF"))
+                        nick.text = "익명(글쓴이)"
+                    } else {
+                        nick.text = "익명"
+                    }
+                } else {    // study 댓글인 경우 실명
 
-            if(boardOrStudy == true) {  // board 댓글인 경우 - 익명
-                if(comment.userId == postUserId) {
-                    nick.setTextColor(Color.parseColor("#2C64BF"))
-                    nick.text = "익명(글쓴이)"
-                } else {
-                    nick.text = "익명${layoutPosition + 1}"
-                }
-            } else {    // study 댓글인 경우 실명
-                if(comment.userId == postUserId) {
-                    nick.setTextColor(Color.parseColor("#2C64BF"))
-                } else {
-//                    nick.text = comment.user!!.name
+                    if(comment.user.id == postUserId) {
+                        nick.text = "${comment.user.name}(글쓴이)"
+                        nick.setTextColor(Color.parseColor("#2C64BF"))
+                    } else {
+                        nick.text = comment.user.name
+                    }
                 }
             }
 
