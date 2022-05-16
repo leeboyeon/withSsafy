@@ -75,8 +75,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical" >
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -87,10 +87,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:padding="15dp"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/postDetailFragment_rvComment">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/postDetailFragment_clWriter"
@@ -284,14 +283,14 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/postDetailFragment_rvComment"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:clickable="false"
                         android:focusable="false"
-                        app:layout_constraintTop_toBottomOf="@+id/postDetailFragment_clPost"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/postDetailFragment_clPost"
                         tools:listitem="@layout/item_comment_list" />
                     <!--            app:layout_constrainedHeight="true"-->
 
