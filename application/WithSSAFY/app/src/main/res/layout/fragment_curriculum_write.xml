@@ -191,15 +191,17 @@
 
             <EditText
                 android:id="@+id/fragment_currculWrite_TitleEdit"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="15dp"
-                android:background="@drawable/edit_nonpadding_background"
+                android:background="@android:drawable/edit_text"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_currculWrite_TitleSpinner"
                 app:layout_constraintEnd_toStartOf="@+id/fragment_currculWrite_TitleSpinner"
+                app:layout_constraintStart_toEndOf="@+id/fragment_currculWrite_Title"
                 app:layout_constraintTop_toTopOf="@+id/fragment_currculWrite_TitleSpinner" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
