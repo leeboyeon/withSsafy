@@ -64,8 +64,8 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.core.widget.NestedScrollView
-            android:fillViewport="true"
             android:id="@+id/postDetailFragment_nsv"
+            android:fillViewport="true"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/postDetailFragment_clCommentAll">
+                        app:layout_constraintBottom_toTopOf="@+id/postDetailFragment_rvComment">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/postDetailFragment_clWriter"
@@ -281,29 +281,20 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/postDetailFragment_clCommentAll"
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/postDetailFragment_rvComment"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
                         app:layout_constraintTop_toBottomOf="@+id/postDetailFragment_clPost"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent">
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:listitem="@layout/item_comment_list" />
+                    <!--            app:layout_constrainedHeight="true"-->
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/postDetailFragment_rvComment"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:clickable="false"
-                            android:focusable="false"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:listitem="@layout/item_comment_list" />
-                        <!--            app:layout_constrainedHeight="true"-->
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
