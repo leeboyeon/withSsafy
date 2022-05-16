@@ -73,6 +73,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
         teamBuildAdapter = TeamBuildAdapter(requireContext())
         var tmpList = mutableListOf<Study>()
         var team = teamViewModel.teamInfo.value!!
+
         teamViewModel.teamBuildList.observe(viewLifecycleOwner){
             if(team!=null){
                 if(team!!.classification == 0){
@@ -119,6 +120,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
         binding.fragmentTeamBuildRv.apply{
             layoutManager = LinearLayoutManager(requireContext())
             adapter = teamBuildAdapter
+
         }
 
         teamBuildAdapter.setItemClickListener(object: TeamBuildAdapter.ItemClickListener {
@@ -135,6 +137,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
         })
         teamBuildAdapter.setDeleteClickListener(object: TeamBuildAdapter.DeleteClickListener {
             override fun onClick(position: Int, id: Int) {
+                Log.d(TAG, "onClick: $id $position")
                 deleteTeamBuilding(id,position)
             }
         })
@@ -168,9 +171,8 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
                     teamBuildAdapter.filter.filter("")
                 }else{
                     teamBuildAdapter.filter.filter(tab?.text.toString())
-                    lastFilterText = tab?.text.toString()
                 }
-
+                lastFilterText = tab?.text.toString()
                 teamBuildAdapter.notifyDataSetChanged()
             }
 
@@ -193,6 +195,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
                 teamViewModel.getTeamBuildListByRoomId(userViewModel.loginUserInfo.value!!.classRoomId)
             }
             teamBuildAdapter.notifyItemRemoved(position)
+            Log.d(TAG, "deleteTeamBuilding: ${lastFilterText}")
             teamBuildAdapter.filter.filter(lastFilterText)
         }
     }
@@ -204,5 +207,10 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
                 arguments = Bundle().apply {
                 }
             }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNavi(false)
     }
 }

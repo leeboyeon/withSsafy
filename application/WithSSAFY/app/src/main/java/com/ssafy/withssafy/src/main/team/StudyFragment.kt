@@ -119,6 +119,8 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(FragmentStudyBinding::b
             }
             teamAdapter.notifyItemRemoved(position)
             teamAdapter.filter.filter(lastFilterText)
+        }else{
+            Log.d(TAG, "deleteStudy: 노삭제")
         }
     }
     companion object {

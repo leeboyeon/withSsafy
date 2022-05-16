@@ -57,7 +57,7 @@ class TeamBuildAdapter(var context: Context) : RecyclerView.Adapter<TeamBuildAda
                             return@setOnMenuItemClickListener true
                         }
                         R.id.delete -> {
-                            deleteClickListener.onClick(position,list[position].id!!)
+                            deleteClickListener.onClick(layoutPosition,filteredList[position].id!!)
                             return@setOnMenuItemClickListener true
                         }else ->
                             return@setOnMenuItemClickListener false

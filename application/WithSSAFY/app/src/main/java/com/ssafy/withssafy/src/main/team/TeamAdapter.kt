@@ -58,11 +58,11 @@ class TeamAdapter(val context: Context) : RecyclerView.Adapter<TeamAdapter.TeamV
                 popup.setOnMenuItemClickListener {
                     when(it.itemId){
                         R.id.modify ->{
-                            modifyClickListener.onClick(position,list[position].id!!)
+                            modifyClickListener.onClick(position,filteredList[position].id!!)
                             return@setOnMenuItemClickListener true
                         }
                         R.id.delete -> {
-                            deleteClickListener.onClick(position,list[position].id!!)
+                            deleteClickListener.onClick(position, filteredList[position].id!!)
                             return@setOnMenuItemClickListener true
                         }else ->
                             return@setOnMenuItemClickListener false
