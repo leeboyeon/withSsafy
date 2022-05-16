@@ -56,6 +56,8 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
     // 수정인 경우 넘어오는 postId
     private var postId = -1
 
+    private var photoUpdateChk = false
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -91,23 +93,28 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
             runBlocking {
                 boardViewModel.getPostDetail(postId)
             }
-            boardViewModel.postDetail.observe(viewLifecycleOwner) {
-                binding.post = it
-                if(it.photoPath.isNotEmpty()) {
+
+            val post = boardViewModel.postDetail.value
+
+            if(post != null) {
+                binding.post = post
+                if(post.photoPath.isNotEmpty()) {
+                    photoUpdateChk = true
+
                     binding.postWriteFragmentFlPhotoGroup.visibility = View.VISIBLE
                     binding.postWriteFragmentTvPhotoName.visibility = View.VISIBLE
 
                     Glide.with(this)
-                        .load("${ApplicationClass.IMGS_URL}${it.photoPath}")
+                        .load("${ApplicationClass.IMGS_URL}${post.photoPath}")
                         .into(binding.postWriteFragmentIvPhoto)
 
                 } else {
                     binding.postWriteFragmentFlPhotoGroup.visibility = View.GONE
                     binding.postWriteFragmentTvPhotoName.visibility = View.GONE
                 }
-            }
 
-            modifyPostBtnClickEvent()
+                modifyPostBtnClickEvent()
+            }
         } else {
             registerPostBtnClickEvent()
         }
@@ -214,6 +221,7 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
         if(response.isSuccessful) {
             showCustomToast("게시글 등록이 완료되었습니다.")
             this@PostWriteFragment.findNavController().popBackStack()
+            boardViewModel.setBoardImgUri(Uri.EMPTY)
         } else {
             showCustomToast("게시글 등록에 실패했습니다.")
         }
@@ -234,7 +242,6 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
                     title = title,
                     content = content,
                     photoPath = getFileName())
-
                 modifyPost(post)
             } else {
                 showCustomToast("입력 값을 확인해 주세요.")
@@ -255,6 +262,8 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
         if(response.isSuccessful) {
             showCustomToast("게시글 수정이 완료되었습니다.")
             this@PostWriteFragment.findNavController().popBackStack()
+            boardViewModel.setBoardImgUri(Uri.EMPTY)
+            photoUpdateChk = false
         } else {
             showCustomToast("게시글 수정에 실패했습니다.")
         }
@@ -268,13 +277,18 @@ class PostWriteFragment : BaseFragment<FragmentPostWriteBinding>(FragmentPostWri
         var filename = ""
         var inputStream: InputStream? = null
 
-        boardViewModel.boardImgUri.observe(viewLifecycleOwner) {
-            if(it != null && it != Uri.EMPTY) {
-                try{
-                    inputStream = mainActivity.contentResolver.openInputStream(it)
-                }catch (e : IOException){
-                    e.printStackTrace()
-                }
+        val uri = boardViewModel.boardImgUri.value
+
+
+        if(uri != null && uri != Uri.EMPTY) {
+            try{
+                inputStream = mainActivity.contentResolver.openInputStream(uri)
+            }catch (e : IOException){
+                e.printStackTrace()
+            }
+        } else {
+            if(photoUpdateChk) {
+                filename = boardViewModel.postDetail.value!!.photoPath
             } else {
                 filename = ""
             }
