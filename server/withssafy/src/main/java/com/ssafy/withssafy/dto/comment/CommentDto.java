@@ -1,6 +1,5 @@
 package com.ssafy.withssafy.dto.comment;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,7 +8,7 @@ import lombok.ToString;
 public class CommentDto {
     private Long id;
     private Long boardId;
-    private Long userId;
+    private WriterDto User;
     private Long parentId;
     private String content;
     private String write_dt;
