@@ -74,6 +74,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(FragmentTeamBui
         var tmpList = mutableListOf<Study>()
         var team = teamViewModel.teamInfo.value!!
         teamViewModel.teamBuildList.observe(viewLifecycleOwner){
+            tmpList = mutableListOf<Study>()
             if(team!=null){
                 if(team!!.classification == 0){
                     for(item in it){
