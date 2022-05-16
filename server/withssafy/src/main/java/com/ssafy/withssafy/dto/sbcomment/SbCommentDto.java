@@ -13,7 +13,7 @@ public class SbCommentDto {
     private Long id;
     private Long boardId;
     private WriterDto User;
-    private Long parent;
+    private Long parentId;
     private String content;
     @ApiModelProperty(hidden = true)
     private String write_dt;

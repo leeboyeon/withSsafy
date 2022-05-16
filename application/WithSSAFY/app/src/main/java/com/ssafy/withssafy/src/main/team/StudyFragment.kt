@@ -21,6 +21,7 @@ private const val TAG = "StudyFragment"
 class StudyFragment : BaseFragment<FragmentStudyBinding>(FragmentStudyBinding::bind, R.layout.fragment_study) {
     private lateinit var teamAdapter: TeamAdapter
     private var lastFilterText = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,11 +36,13 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(FragmentStudyBinding::b
         }
         setListener()
     }
+
     private fun setListener(){
         initButtons()
         initTabLayout()
         initAdapter()
     }
+
     private fun initTabLayout(){
         val types = arrayListOf<String>("어학","프로그래밍","면접","취업","CS","자율","기타")
         for(item in types){

@@ -13,7 +13,7 @@ public class SbCommentRequest {
     private Long id;
     private Long boardId;
     private Long userId;
-    private Long parent;
+    private Long parentId;
     private String content;
     private String write_dt;
     public void setWriteDateTime(){

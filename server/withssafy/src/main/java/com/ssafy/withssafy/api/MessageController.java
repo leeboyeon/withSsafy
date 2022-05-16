@@ -1,7 +1,10 @@
 package com.ssafy.withssafy.api;
 
 import com.ssafy.withssafy.dto.message.MessageDto;
+import com.ssafy.withssafy.dto.user.UserDto;
+import com.ssafy.withssafy.service.firebase.FCMService;
 import com.ssafy.withssafy.service.message.MessageService;
+import com.ssafy.withssafy.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +22,23 @@ public class MessageController {
     @Autowired
     MessageService messageService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    FCMService fcmService;
+
     @PostMapping
     @ApiOperation(value = "특정 상대에게 메세지를 전송한다.")
     public ResponseEntity<?> sendMessage(@RequestBody MessageDto messageDto){
         messageService.sendMessage(messageDto);
+        UserDto fromUser = userService.findById(messageDto.u_toId);
+        try {
+            fcmService.sendMessageTo(fromUser.getDeviceToken(), "쪽지 알림", "쪽지가 수신되었습니다.", "", 2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

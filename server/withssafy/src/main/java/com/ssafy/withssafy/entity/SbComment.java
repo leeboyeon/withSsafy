@@ -23,8 +23,9 @@ public class SbComment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
-    private Long parent;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private SbComment parent;
 
     @Column(length = 500)
     private String content;
@@ -32,8 +33,13 @@ public class SbComment {
     @Column
     private String write_dt;
 
+    public void setParentId(Long id){
+        if(id != null)
+            parent = SbComment.builder().id(id).build();
+    }
+
     @Builder
-    public SbComment(Long id, StudyBoard studyBoard, User user, Long parent, String content, String write_dt){
+    public SbComment(Long id, StudyBoard studyBoard, User user, SbComment parent, String content, String write_dt){
         this.id = id;
         this.studyBoard = studyBoard;
         this.user = user;
