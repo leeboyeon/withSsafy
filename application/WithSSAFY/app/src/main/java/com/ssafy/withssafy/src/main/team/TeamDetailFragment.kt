@@ -37,6 +37,7 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
 
     private var studyId = 0
     private lateinit var studyCommentAdapter: CommentAdapter
+    private val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -100,9 +101,71 @@ class TeamDetailFragment : BaseFragment<FragmentTeamDetailBinding>(FragmentTeamD
             studyCommentAdapter.commentList = it
         }
         studyCommentAdapter.postUserId = teamViewModel.study.value!!.user!!.id
-        studyCommentAdapter.setAddReplyItemClickListener(object: CommentAdapter.ItemClickListener {
+        // 댓글, 대댓글 작성 클릭 이벤트
+        studyCommentAdapter.setAddReplyItemClickListener(object : CommentAdapter.ItemClickListener {
             override fun onClick(view: View, writerNick: String, position: Int, commentId: Int) {
+                var postId = bundleOf("studyId" to studyId)
+                this@TeamDetailFragment.findNavController().navigate(R.id.studyCommentFragment,postId)
+            }
+        })
 
+        // 댓글 수정 클릭 이벤트
+        studyCommentAdapter.setModifyItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                var postId = bundleOf("studyId" to studyId)
+                this@TeamDetailFragment.findNavController().navigate(R.id.studyCommentFragment,postId)
+            }
+        })
+
+        // 댓글 삭제 클릭 이벤트
+        studyCommentAdapter.setDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                var postId = bundleOf("studyId" to studyId)
+                this@TeamDetailFragment.findNavController().navigate(R.id.studyCommentFragment,postId)
+            }
+        })
+
+        // 댓글 작성자에게 쪽지 보내기 클릭 이벤트
+        studyCommentAdapter.setSendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showDialogSendMessage(writerUserId, userId)
+            }
+        })
+
+        // 댓글 신고 클릭 이벤트
+        studyCommentAdapter.setReportItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showReportDialog(commentId, false, null, studyCommentAdapter, null, 0, false)
+            }
+        })
+
+        // 대댓글 수정 클릭 이벤트
+        studyCommentAdapter.setReplyModifyItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                var postId = bundleOf("studyId" to studyId)
+                this@TeamDetailFragment.findNavController().navigate(R.id.studyCommentFragment,postId)
+            }
+        })
+
+        // 대댓글 삭제 클릭 이벤트
+        studyCommentAdapter.setReplyDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                var postId = bundleOf("studyId" to studyId)
+                this@TeamDetailFragment.findNavController().navigate(R.id.studyCommentFragment,postId)
+            }
+        })
+
+        // 대댓글 작성자에게 쪽지 보내기 클릭 이벤트
+        studyCommentAdapter.setReplySendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showDialogSendMessage(writerUserId, userId)
+            }
+        })
+
+        // 대댓글 신고 클릭 이벤트
+        studyCommentAdapter.setReplyReportItemClickListener(object : CommentAdapter.MenuClickListener {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showReportDialog(commentId, false, null, studyCommentAdapter, null, 0, false)
             }
         })
 
