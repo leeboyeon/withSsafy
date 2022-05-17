@@ -91,4 +91,12 @@ object CommonUtils {
         val imageBytes = Base64.decode(img, Base64.DEFAULT)
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
+
+    fun ellipsisContent(content: String) : String {
+        return if(content.length > 11) {
+            "${content.substring(0, 10)} •••"
+        } else {
+            content
+        }
+    }
 }
