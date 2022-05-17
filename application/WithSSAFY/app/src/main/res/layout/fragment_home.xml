@@ -51,8 +51,8 @@
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkUser"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
@@ -62,12 +62,12 @@
 
                         <Space
                             android:layout_width="10dp"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="match_parent" />
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkEduSsafy"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
@@ -77,12 +77,12 @@
 
                         <Space
                             android:layout_width="10dp"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="match_parent" />
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkGitSsafy"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
@@ -92,12 +92,12 @@
 
                         <Space
                             android:layout_width="10dp"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="match_parent" />
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkJobSsafy"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
@@ -107,12 +107,12 @@
 
                         <Space
                             android:layout_width="10dp"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="match_parent" />
 
                         <ImageButton
                             android:id="@+id/fragment_home_linkYoutubeSsafy"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_margin="3dp"
                             android:layout_weight="1"
                             android:background="@drawable/circle_back"
