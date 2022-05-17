@@ -1,6 +1,8 @@
 package com.ssafy.withssafy.src.main.board
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -19,14 +21,17 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentAdminJobWriteBinding
+import com.ssafy.withssafy.src.dto.FcmRequest
 import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.network.service.FcmService
 import com.ssafy.withssafy.src.network.service.RecruitService
 import com.ssafy.withssafy.src.network.service.StudyService
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -61,8 +66,15 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
         }
     }
 
+    override fun onResume() {
+        mainActivity.hideBottomNavi(true)
+        super.onResume()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.hideBottomNavi(true)
+
         if(recruitId != 0) {
             runBlocking {
                 recruitViewModel.getRecruit(recruitId)
@@ -305,7 +317,7 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
                     Log.d(TAG, "insertRecruit: ${response.code()}")
                     if (response.code() == 204) {
                         showCustomToast("채용 공고 작성이 완료되었습니다.")
-                        this@AdminJobWriteFragment.findNavController().popBackStack()
+                        showPushFcmDialog(recruit)
                     } else {
                         showCustomToast("채용 공고 작성이 실패했습니다.")
                     }
@@ -349,7 +361,8 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
                             val response = RecruitService().insertRecruit(recruit)
                             if(response.code() == 204){
                                 showCustomToast("추가되었습니다.")
-                                this@AdminJobWriteFragment.findNavController().popBackStack()
+                                showPushFcmDialog(recruit)
+//                                this@AdminJobWriteFragment.findNavController().popBackStack()
                             }
                         }
                     }
@@ -359,8 +372,7 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
             if(teamViewModel.uploadImageUri == Uri.EMPTY || teamViewModel.uploadImageUri == null) {
                 runBlocking {
                     val response = RecruitService().updateRecruit(recruit)
-                    Log.d(TAG, "updateRecruit: ${response.body()}")
-                    Log.d(TAG, "updateRecruit: ${response.code()}")
+
                     if (response.code() == 204) {
                         showCustomToast("채용 공고 수정이 완료되었습니다.")
                         this@AdminJobWriteFragment.findNavController().popBackStack()
@@ -414,14 +426,36 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
                 }
             }
         }
-
     }
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AdminJobWriteFragment().apply {
-                arguments = Bundle().apply {
+
+
+    private fun showPushFcmDialog(recruit: Recruit) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("")
+            .setMessage("전체 교육생에게게 푸시 알림을 전송시겠습니까?")
+            .setPositiveButton("전송", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface, which: Int) {
+                    val response : Response<Any?>
+                    runBlocking {
+                        response = FcmService().broadCastMsg(FcmRequest(type = 3, title = recruit.company, body = recruit.job))
+                    }
+                    if(response.isSuccessful) {
+                        showCustomToast("전체 교육생에게 푸시 알림이 전송되었습니다.")
+                        this@AdminJobWriteFragment.findNavController().popBackStack()
+                    }
                 }
-            }
+            })
+            .setNegativeButton("취소", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface, which: Int) {
+                    this@AdminJobWriteFragment.findNavController().popBackStack()
+                }
+            })
+            .create()
+            .show()
+    }
+
+    override fun onDestroyView() {
+        mainActivity.hideBottomNavi(false)
+        super.onDestroyView()
     }
 }

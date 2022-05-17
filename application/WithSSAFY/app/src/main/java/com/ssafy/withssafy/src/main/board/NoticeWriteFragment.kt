@@ -1,6 +1,8 @@
 package com.ssafy.withssafy.src.main.board
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -18,16 +20,20 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.FragmentNoticeWriteBinding
+import com.ssafy.withssafy.src.dto.FcmRequest
+import com.ssafy.withssafy.src.dto.Recruit
 import com.ssafy.withssafy.src.dto.notice.Notice
 import com.ssafy.withssafy.src.dto.notice.NoticeRequest
 import com.ssafy.withssafy.src.dto.study.Study
 import com.ssafy.withssafy.src.main.MainActivity
+import com.ssafy.withssafy.src.network.service.FcmService
 import com.ssafy.withssafy.src.network.service.NoticeService
 import com.ssafy.withssafy.src.network.service.StudyService
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -57,9 +63,15 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
         }
     }
 
+    override fun onResume() {
+        mainActivity.hideBottomNavi(true)
+        super.onResume()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.hideBottomNavi(true)
+
         getClassRoomListInit()
         initSpinner()
         selectSpinner()
@@ -250,7 +262,8 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
                     val response = NoticeService().insertNotice(notice)
                     if (response.code() == 204) {
                         showCustomToast("공지사항이 등록되었습니다.")
-                        this@NoticeWriteFragment.findNavController().popBackStack()
+                        showPushFcmDialog(notice)
+//                        this@NoticeWriteFragment.findNavController().popBackStack()
                     } else {
                         showCustomToast("공지사항 등록에 실패했습니다.")
                     }
@@ -280,7 +293,8 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
                             val response = NoticeService().insertNotice(notice)
                             if (response.code() == 204) {
                                 showCustomToast("공지사항이 등록되었습니다.")
-                                this@NoticeWriteFragment.findNavController().popBackStack()
+                                showPushFcmDialog(notice)
+//                                this@NoticeWriteFragment.findNavController().popBackStack()
                                 noticeViewModel.setUploadImageUri(null)
                             } else {
                                 showCustomToast("공지사항 등록에 실패했습니다.")
@@ -408,4 +422,33 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
     }
 
 
+    private fun showPushFcmDialog(notice: Notice) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("")
+            .setMessage("전체 교육생에게게 푸시 알림을 전송시겠습니까?")
+            .setPositiveButton("전송", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface, which: Int) {
+                    val response : Response<Any?>
+                    runBlocking {
+                        response = FcmService().broadCastMsg(FcmRequest(type = 1, title = notice.title, body = notice.content))
+                    }
+                    if(response.isSuccessful) {
+                        showCustomToast("전체 교육생에게 푸시 알림이 전송되었습니다.")
+                        this@NoticeWriteFragment.findNavController().popBackStack()
+                    }
+                }
+            })
+            .setNegativeButton("취소", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface, which: Int) {
+                    this@NoticeWriteFragment.findNavController().popBackStack()
+                }
+            })
+            .create()
+            .show()
+    }
+
+    override fun onDestroyView() {
+        mainActivity.hideBottomNavi(false)
+        super.onDestroyView()
+    }
 }
