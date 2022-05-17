@@ -26,3 +26,15 @@
     - JAVA 17
 
 
+### 🔎 Frontend [Android APK 설치 방법]
+
+    1. D201 배포사이트에서 APK파일을 다운로드합니다.
+
+    2. 다운로드 받은 APK 파일을 사용자 휴대폰에 업로드합니다.
+    - 기종에 따라 방식이 다를 수 있습니다.  [참고](https://sbnet.co.kr/install-apk-on-android/)
+
+    3. 휴대폰에서 APK 파일을 찾아 클릭 후 설치를 진행해주세요.
+
+    
+
+
