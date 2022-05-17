@@ -8,9 +8,6 @@ plugins {
 
 android {
     signingConfigs {
-        debug {
-            storeFile file('%USERPROFILE%\\debug.keystore')
-        }
         release {
             storeFile file('C:\\SSAFY\\withSSAFYKey\\withssafy.jks')
             storePassword 'withssafyd201'
