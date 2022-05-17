@@ -37,12 +37,12 @@ class FirebaseMessagingService : FirebaseMessagingService() {
             val mainPendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, mainIntent, 0)
 
             val builder1 = NotificationCompat.Builder(this, SingInActivity.channel_id)
-                .setSmallIcon(R.drawable.alert) // 알림 아이콘 앱 아이콘으로 바꾸기
+                .setSmallIcon(R.drawable.ic_app_icon)
                 .setContentTitle(messageTitle)
                 .setContentText(messageContent)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(messageContent))
                 .setAutoCancel(true)
-                .setColor(Color.argb(0,255, 153, 13))   // 색상도 앱 색상으로 바꾸기기
+                .setColor(Color.argb(0,47, 61, 168))
                .setContentIntent(mainPendingIntent)
 
             NotificationManagerCompat.from(this).apply {
