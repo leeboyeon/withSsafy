@@ -22,7 +22,7 @@
     - Spring boot 2.4.5
     - MyBatis 2.2.2
     - Lombok
-    - Maven 4.0.0
+    - Gradle 7.4.1
     - JAVA 17
 
 
