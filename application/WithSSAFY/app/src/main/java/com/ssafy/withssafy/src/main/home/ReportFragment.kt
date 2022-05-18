@@ -151,9 +151,9 @@ class ReportFragment : BaseFragment<FragmentReportBinding>(FragmentReportBinding
 
                         runBlocking {
                             if(boardOrComment) {    // board
-                                fcmResponse = FcmService().sendToMsg(FcmRequest(type = 2, title = "신고 접수 처리", body = "[${CommonUtils.ellipsisContent(report.board!!.title)}] \n게시글에 대해 접수한 신고 내역이 반려되었습니다."), report.user.deviceToken)
+                                fcmResponse = FcmService().sendToMsg(FcmRequest(type = 2, title = "신고 접수 처리", body = "[${CommonUtils.ellipsisContent(report.board!!.title)}] 게시글에 대해 접수한 신고 내역이 반려되었습니다."), report.user.deviceToken)
                             } else {
-                                fcmResponse = FcmService().sendToMsg(FcmRequest(type = 2, title = "신고 접수 처리", body = "[${CommonUtils.ellipsisContent(report.comment!!.content)}] \n댓글에 대해 접수한 신고 내역이 반려되었습니다."), report.user.deviceToken)
+                                fcmResponse = FcmService().sendToMsg(FcmRequest(type = 2, title = "신고 접수 처리", body = "[${CommonUtils.ellipsisContent(report.comment!!.content)}] 댓글에 대해 접수한 신고 내역이 반려되었습니다."), report.user.deviceToken)
                             }
                         }
 
