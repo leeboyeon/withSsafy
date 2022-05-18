@@ -20,9 +20,10 @@
 
     💡 Backend - Springboot
     - Spring boot 2.4.5
-    - MyBatis 2.2.2
     - Lombok
-    - Maven 4.0.0
+    - JPA
+    - QuertDSL
+    - Gradle 7.4.1
     - JAVA 17
 
 
@@ -72,11 +73,11 @@
     - 빌드 후, 앱을 실행해 사용하시면 됩니다.
 
 
-### 🔎 E-R Diagram
+### 🔎 [E-R Diagram](./withssafyerd.png)
 
 ### 🔎 프로젝트 내 외부서비스 정보
 
-### 🔎 DataBase 덤프 파일 최신본
+### 🔎 [DataBase 덤프 파일 최신본](./Dump20220517.sql)
 
 ### 🔎 시연시나리오
 

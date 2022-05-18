@@ -263,58 +263,68 @@ class PostDetailFragment : BaseFragment<FragmentPostDetailBinding>(FragmentPostD
         // 댓글, 대댓글 작성 클릭 이벤트
         commentAdapter.setAddReplyItemClickListener(object : CommentAdapter.ItemClickListener {
             override fun onClick(view: View, writerNick: String, position: Int, commentId: Int) {
+                this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_commentFragment,
+                    bundleOf("postId" to postId))
             }
         })
 
         // 댓글 수정 클릭 이벤트
         commentAdapter.setModifyItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_commentFragment,
+                    bundleOf("postId" to postId))
             }
         })
 
         // 댓글 삭제 클릭 이벤트
         commentAdapter.setDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_commentFragment,
+                    bundleOf("postId" to postId))
             }
         })
 
         // 댓글 작성자에게 쪽지 보내기 클릭 이벤트
         commentAdapter.setSendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-                mainActivity.showDialogSendMessage(userId,ApplicationClass.sharedPreferencesUtil.getUser().id)
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showDialogSendMessage(writerUserId, userId)
             }
         })
 
         // 댓글 신고 클릭 이벤트
         commentAdapter.setReportItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showReportDialog(commentId, false, null, commentAdapter, null, 0, false)
             }
         })
 
         // 대댓글 수정 클릭 이벤트
         commentAdapter.setReplyModifyItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_commentFragment,
+                    bundleOf("postId" to postId))
             }
         })
 
         // 대댓글 삭제 클릭 이벤트
         commentAdapter.setReplyDeleteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                this@PostDetailFragment.findNavController().navigate(R.id.action_postDetailFragment_to_commentFragment,
+                    bundleOf("postId" to postId))
             }
         })
 
         // 대댓글 작성자에게 쪽지 보내기 클릭 이벤트
         commentAdapter.setReplySendNoteItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-                mainActivity.showDialogSendMessage(userId,ApplicationClass.sharedPreferencesUtil.getUser().id)
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showDialogSendMessage(writerUserId, userId)
             }
         })
 
         // 대댓글 신고 클릭 이벤트
         commentAdapter.setReplyReportItemClickListener(object : CommentAdapter.MenuClickListener {
-            override fun onClick(position: Int, commentId: Int, userId: Int) {
-
+            override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
+                mainActivity.showReportDialog(commentId, false, null, commentAdapter, null, 0, false)
             }
         })
     }

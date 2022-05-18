@@ -65,11 +65,11 @@ public class CommentController {
             if(commentDto.getParentId() == null) {  // 게시글 작성자에게 알림 전송
                 BoardResponse board = boardService.getBoardById(commentDto.getBoardId());
                 UserDto user = userService.findById(board.getUser().getId());
-                fcmService.sendMessageTo(user.getDeviceToken(), "댓글 알림", "사용자가 쓴 게시글에 댓글이 달렸습니다.", "", 2);
+                fcmService.sendMessageTo(user.getDeviceToken(), "댓글 알림", ellipsisContent(board.getTitle()) + " 게시글에 댓글이 달렸습니다.", "", 2);
             } else {    // 댓글 작성자에게 알림 전송
                 CommentDto parentComment = commentService.findById(commentDto.getParentId());
                 UserDto user = userService.findById(parentComment.getUserId());
-                fcmService.sendMessageTo(user.getDeviceToken(), "댓글 알림", "사용자가 쓴 댓글에 대댓글이 달렸습니다.", "", 2);
+                fcmService.sendMessageTo(user.getDeviceToken(), "댓글 알림", ellipsisContent(parentComment.getContent()) + " 댓글에 대댓글이 달렸습니다.", "", 2);
             }
 
         } catch (Exception e) {
@@ -89,5 +89,13 @@ public class CommentController {
     @ApiOperation(value = "사용자가 남긴 댓글을 조회합니다. *(URL 잘 보고 할 것 comment/u/{userId})")
     public ResponseEntity<List<CommentResDto>> findByUserId(@PathVariable Long userId){
         return new ResponseEntity<>(commentService.findByUserId(userId), HttpStatus.OK);
+    }
+
+    private String ellipsisContent(String content) {
+        if(content.length() > 11) {
+            return "[" + content.substring(0, 10) + "•••]";
+        } else {
+            return "[" + content + "]";
+        }
     }
 }

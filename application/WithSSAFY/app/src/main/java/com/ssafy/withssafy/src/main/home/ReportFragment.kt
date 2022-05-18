@@ -24,17 +24,20 @@ import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.BaseFragment
 import com.ssafy.withssafy.databinding.DialogReportDetailBinding
 import com.ssafy.withssafy.databinding.FragmentReportBinding
+import com.ssafy.withssafy.src.dto.FcmRequest
 import com.ssafy.withssafy.src.dto.report.Report
 import com.ssafy.withssafy.src.dto.report.ReportRequest
 import com.ssafy.withssafy.src.main.MainActivity
 import com.ssafy.withssafy.src.main.board.CommentAdapter
 import com.ssafy.withssafy.src.network.service.BoardService
 import com.ssafy.withssafy.src.network.service.CommentService
+import com.ssafy.withssafy.src.network.service.FcmService
 import com.ssafy.withssafy.src.network.service.ReportService
 import com.ssafy.withssafy.util.CommonUtils
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import retrofit2.Response
+import java.lang.Exception
 
 class ReportFragment : BaseFragment<FragmentReportBinding>(FragmentReportBinding::bind, R.layout.fragment_report) {
     private val TAG = "ReportFragment_싸피"
@@ -142,6 +145,27 @@ class ReportFragment : BaseFragment<FragmentReportBinding>(FragmentReportBinding
                         homeViewModel.getReportList()
                     }
                     reportDetailAdapter.notifyItemRemoved(position)
+
+                    try {
+                        val fcmResponse : Response<Any?>
+
+                        runBlocking {
+                            if(boardOrComment) {    // board
+                                fcmResponse = FcmService().sendToMsg(FcmRequest(type = 2, title = "신고 접수 처리", body = "[${CommonUtils.ellipsisContent(report.board!!.title)}] 게시글에 대해 접수한 신고 내역이 반려되었습니다."), report.user.deviceToken)
+                            } else {
+                                fcmResponse = FcmService().sendToMsg(FcmRequest(type = 2, title = "신고 접수 처리", body = "[${CommonUtils.ellipsisContent(report.comment!!.content)}] 댓글에 대해 접수한 신고 내역이 반려되었습니다."), report.user.deviceToken)
+                            }
+                        }
+
+                        if(fcmResponse.isSuccessful) {
+                            Log.d(TAG, "showReportHandlingDialog: $fcmResponse")
+                        } else {
+                            Log.e(TAG, "showReportHandlingDialog: ${fcmResponse.message()}")
+                        }
+                    } catch (e : Exception) {
+                        Log.e(TAG, "showReportHandlingDialog: ${e.printStackTrace()}", )
+                    }
+
                 }
             }
 
@@ -164,6 +188,22 @@ class ReportFragment : BaseFragment<FragmentReportBinding>(FragmentReportBinding
                             homeViewModel.getReportList()
                         }
                         reportDetailAdapter.notifyDataSetChanged()
+                        try {
+                            val fcmResponse : Response<Any?>
+
+                            runBlocking {
+                                fcmResponse = FcmService().sendToMsg(FcmRequest(type = 2, title = "신고 접수 처리", body = "[${CommonUtils.ellipsisContent(report.board.title)}] 접수하신 신고 내역에 대해 해당 게시글은 처리대상 게시글로 판단되어 삭제 처리 되었습니다."), report.user.deviceToken)
+                            }
+
+                            if(fcmResponse.isSuccessful) {
+                                Log.d(TAG, "showReportHandlingDialog: $fcmResponse")
+                            } else {
+                                Log.e(TAG, "showReportHandlingDialog: ${fcmResponse.message()}")
+                            }
+                        } catch (e : Exception) {
+                            Log.e(TAG, "showReportHandlingDialog: ${e.printStackTrace()}", )
+                        }
+
                     } else {
                         showCustomToast("게시글 삭제 통신 오류")
                         Log.e(TAG, "showReportHandlingDialog: ${deletePostResponse.message()}", )
@@ -182,6 +222,21 @@ class ReportFragment : BaseFragment<FragmentReportBinding>(FragmentReportBinding
                             homeViewModel.getReportList()
                         }
                         reportDetailAdapter.notifyDataSetChanged()
+                        try {
+                            val fcmResponse : Response<Any?>
+
+                            runBlocking {
+                                fcmResponse = FcmService().sendToMsg(FcmRequest(type = 2, title = "신고 접수 처리", body = "[${CommonUtils.ellipsisContent(report.comment.content)}] 접수하신 신고 내역에 대해 해당 댓글은 처리대상 댓글로 판단되어 삭제 처리 되었습니다."), report.user.deviceToken)
+                            }
+
+                            if(fcmResponse.isSuccessful) {
+                                Log.d(TAG, "showReportHandlingDialog: $fcmResponse")
+                            } else {
+                                Log.e(TAG, "showReportHandlingDialog: ${fcmResponse.message()}")
+                            }
+                        } catch (e : Exception) {
+                            Log.e(TAG, "showReportHandlingDialog: ${e.printStackTrace()}", )
+                        }
                     } else {
                         showCustomToast("댓글 삭제 통신 오류")
                         Log.e(TAG, "showReportHandlingDialog: ${deleteCmtResponse.message()}", )

@@ -2,10 +2,7 @@ package com.ssafy.withssafy.src.main.board
 
 import android.content.Context
 import android.graphics.Color
-import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -104,6 +101,11 @@ class ReplyAdapter (val context: Context, val boardOrStudy: Boolean) : RecyclerV
                     }
                 } else {    // 작성자가 아닌 경우 popup_menu(쪽지 보내기, 신고)
                     MenuInflater(context).inflate(R.menu.popup_menu, popup.menu)
+
+                    if(boardOrStudy == false) { //  스터디 댓글인 경우 신고 X, 신고 팝업 메뉴 숨기기
+                        val popupMenu: Menu = popup.menu
+                        popupMenu.findItem(R.id.report).isVisible = false
+                    }
 
                     popup.show()
                     popup.setOnMenuItemClickListener {

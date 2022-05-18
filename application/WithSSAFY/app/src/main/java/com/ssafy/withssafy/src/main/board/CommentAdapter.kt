@@ -41,7 +41,7 @@ class CommentAdapter (val context: Context, val boardOrStudy: Boolean) : Recycle
         fun bindInfo(comment: Comment) {
             binding.comment = comment
             if(comment.user != null) {
-                if(boardOrStudy == true) {  // board 댓글인 경우 - 익명
+                if(boardOrStudy) {  // board 댓글인 경우 - 익명
                     if(comment.user.id == postUserId) {
                         nick.setTextColor(Color.parseColor("#2C64BF"))
                         nick.text = "익명(글쓴이)"
@@ -59,7 +59,7 @@ class CommentAdapter (val context: Context, val boardOrStudy: Boolean) : Recycle
                 }
             }
 
-            binding.executePendingBindings()
+
 
             // 대댓글 rv adapter 추가하기
             val replyList = mutableListOf<Comment>()
@@ -69,7 +69,7 @@ class CommentAdapter (val context: Context, val boardOrStudy: Boolean) : Recycle
                 }
             }
 
-//            commentReplyAdapter = ReplyAdapter(context)
+            commentReplyAdapter = ReplyAdapter(context, boardOrStudy)
 //                commentNestedAdapter.submitList(list)
             commentReplyAdapter.commentList = replyList
             commentReplyAdapter.postUserId = postUserId
@@ -107,8 +107,8 @@ class CommentAdapter (val context: Context, val boardOrStudy: Boolean) : Recycle
                     replyReportItemClickListener.onClick(position, commentId, userId)
                 }
             })
-            
 
+            binding.executePendingBindings()
         }
     }
 
