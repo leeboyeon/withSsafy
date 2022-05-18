@@ -21,7 +21,8 @@
     💡 Backend - Springboot
     - Spring boot 2.4.5
     - MyBatis 2.2.2
-    - Lombok
+    - JPA
+    - QuertDSL
     - Gradle 7.4.1
     - JAVA 17
 
