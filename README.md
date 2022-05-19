@@ -4,6 +4,8 @@
 
 🔗 [D201의 노션 보러가기](https://www.notion.so/WITH-SSAFY-c41eedd044294bb78557f7471f049ce7)
 
+🔗 [D201의 스웨거 보러가기](https://k6d201.p.ssafy.io/swagger-ui.html)
+
 ### 👀 기획의도
 
     SSAFY 생활을 마무리하며 불편함을 느꼈던 다양한 플랫폼, 팀빌딩, 스터디 등등을 해결하고자 SSAFY인들만을 위한 SSAFY 애플리케이션을 기획
