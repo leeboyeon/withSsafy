@@ -6,7 +6,7 @@
 
 ### 🔎 개발환경
 
-    💡 Infra 
+    💡 Infra
     - AWS EC2
     - Ubuntu 20.04
     - nginx 1.18.0
