@@ -15,6 +15,7 @@
     - Jenkins 2.289.2
 
     💡 Frontend - Android Native
+    - Android Studio Bumblebee | 2021.1.1 Patch 3
     - MVVM Pattern
     - Android SDK MIN 26
     - Android SDK Target 30
@@ -43,7 +44,7 @@
 
     1. Android Studio를 설치합니다.
 
-    ⁂ 다운로드 시, Android Studio 2020.3.1.24 Windows 버전을 권장드립니다.
+    ⁂ 다운로드 시, Android Studio Bumblebee 2021.1.1 Patch 3 Windows 버전을 권장드립니다.
     
     2. Android Studio를 실행 후, File > Open에서 Client 프로젝트를 선택한 후 'OK'를 클릭해주세요.
     
