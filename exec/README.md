@@ -32,7 +32,8 @@
     1. D201 배포사이트에서 APK파일을 다운로드합니다.
 
     2. 다운로드 받은 APK 파일을 사용자 휴대폰에 업로드합니다.
-    - 기종에 따라 방식이 다를 수 있습니다. ![참고](https://sbnet.co.kr/install-apk-on-android/)
+    - 기종에 따라 방식이 다를 수 있습니다. 
+    [참고](https://sbnet.co.kr/install-apk-on-android/)
 
     3. 휴대폰에서 APK 파일을 찾아 클릭 후 설치를 진행해주세요.
 
@@ -40,7 +41,7 @@
 
     1. Android Studio를 설치합니다.
 
-    - [설치경로](https://developer.android.com/studio?gclid=Cj0KCQjw1a6EBhC0ARIsAOiTkrHs2pne0fbirqMfuaqgSYhktBtCr_y7qyEZ9YptQ6pHlX8BuYxiIAEaAmIIEALw_wcB&gclsrc=aw.ds)
+    [설치경로](https://developer.android.com/studio?gclid=Cj0KCQjw1a6EBhC0ARIsAOiTkrHs2pne0fbirqMfuaqgSYhktBtCr_y7qyEZ9YptQ6pHlX8BuYxiIAEaAmIIEALw_wcB&gclsrc=aw.ds)
 
     ⁂ 다운로드 시, Android Studio 2020.3.1.24 Windows 버전을 권장드립니다.
     
