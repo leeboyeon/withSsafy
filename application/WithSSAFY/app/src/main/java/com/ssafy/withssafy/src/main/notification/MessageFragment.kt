@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
@@ -51,8 +52,15 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(FragmentMessageBind
                 var groupId = bundleOf("fromId" to fromId,"toId" to toId)
                 this@MessageFragment.findNavController().navigate(R.id.messageDetailFragment, groupId)
             }
-
         })
+        val groupHelperCallback = MessageGroupHelperCallback().apply {
+            setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)
+        }
+        ItemTouchHelper(groupHelperCallback).attachToRecyclerView(binding.fragmentMessageGroupRv)
+        binding.fragmentMessageGroupRv.setOnTouchListener { v, event ->
+            groupHelperCallback.removePreviousClamp(binding.fragmentMessageGroupRv)
+            false
+        }
     }
     companion object {
         @JvmStatic

@@ -60,5 +60,21 @@ interface MessageApi {
      * */
     @GET("/message/study/list")
     suspend fun getStudyJoinList(@Query("id1")id1 : Int, @Query("id2")id2 : Int) : Response<MutableList<Long>>
+
+    /**
+     * Message Group delete
+     * 메시지를 삭제한다 (상대방 나 모두)
+     * @author : LeeBoYeon
+     * */
+    @DELETE("/message")
+    suspend fun deleteGroupMsg(@Query("id1")id1:Int, @Query("id2")id2:Int) : Response<Any?>
+
+    /**
+     * Message Detail delete
+     * 메시지를 삭제한다 ( 개개인 )
+     * @author : LeeBoYeon
+     * */
+    @DELETE("/message/{id}")
+    suspend fun deleteDetailMsg(@Path("id") id: Int) : Response<Any?>
 }
 

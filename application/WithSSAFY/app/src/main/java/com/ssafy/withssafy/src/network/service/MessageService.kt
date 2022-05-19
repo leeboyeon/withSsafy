@@ -17,4 +17,8 @@ class MessageService {
     suspend fun getMessageTalk(fromId:Int, toId:Int) : Response<MutableList<Message>> = RetrofitUtil.messageApi.getMessageTalk(fromId, toId)
 
     suspend fun getStudyJoinList(id1:Int, id2:Int) : Response<MutableList<Long>> = RetrofitUtil.messageApi.getStudyJoinList(id1,id2)
+
+    suspend fun deleteGroupMsg(id1: Int, id2: Int) : Response<Any?> = RetrofitUtil.messageApi.deleteGroupMsg(id1, id2)
+
+    suspend fun deleteDetailMsg(id:Int) : Response<Any?> = RetrofitUtil.messageApi.deleteDetailMsg(id)
 }

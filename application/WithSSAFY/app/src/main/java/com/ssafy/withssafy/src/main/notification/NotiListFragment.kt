@@ -84,7 +84,7 @@ class NotiListFragment : BaseFragment<FragmentNotiListBinding>(FragmentNotiListB
         binding.notiListRv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
         // Recyclerview 스와이프해서 DELETE
-        val notiListRvHelperCallback = NotiListRvHelperCallback(notiListAdapter).apply {
+        val notiListRvHelperCallback = NotiListRvHelperCallback().apply {
             setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)
         }
 

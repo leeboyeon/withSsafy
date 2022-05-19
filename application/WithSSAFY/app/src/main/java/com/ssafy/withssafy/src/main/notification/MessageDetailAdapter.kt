@@ -1,22 +1,33 @@
 package com.ssafy.withssafy.src.main.notification
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.gun0912.tedpermission.provider.TedPermissionProvider.context
 import com.ssafy.withssafy.R
 import com.ssafy.withssafy.config.ApplicationClass
 import com.ssafy.withssafy.databinding.ItemMessageDetailTalkBinding
 import com.ssafy.withssafy.src.dto.Message
+import com.ssafy.withssafy.src.network.service.MessageService
+import com.ssafy.withssafy.src.viewmodel.MessageViewModel
+import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 
 private const val TAG = "MessageDetailAdapter"
-class MessageDetailAdapter() : RecyclerView.Adapter<MessageDetailAdapter.DetailViewHolder>() {
+class MessageDetailAdapter(var context: Context, var messageViewModel: MessageViewModel) : RecyclerView.Adapter<MessageDetailAdapter.DetailViewHolder>() {
     var list = mutableListOf<Message>()
     var joinList = mutableListOf<Long>()
     inner class DetailViewHolder(private val binding:ItemMessageDetailTalkBinding) : RecyclerView.ViewHolder(binding.root){
@@ -86,10 +97,41 @@ class MessageDetailAdapter() : RecyclerView.Adapter<MessageDetailAdapter.DetailV
                     itemClickListener.onClick(it,position,list[position].u_toId,list[position].u_fromId,studyId,tmpTitle)
                 }
             }
-
+            itemView.setOnLongClickListener {
+                showDialog(list[position],position)
+                false
+            }
         }
     }
+    private fun showDialog(message:Message,position: Int){
+        var flag  = false
+        var alertDialog = AlertDialog.Builder(context)
+            .setTitle("삭제")
+            .setMessage("메시지를 삭제하시겠습니까?")
+            .setPositiveButton("삭제", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    var response : Response<Any?>
+                    runBlocking {
+                        response = MessageService().deleteDetailMsg(message.id)
+                    }
+                    if(response.isSuccessful){
+                        Toast.makeText(context, "삭제되었습니다",Toast.LENGTH_SHORT).show()
+                        runBlocking {
+                            messageViewModel.getMessageTalk(message.u_toId, message.u_fromId)
+                        }
+                        notifyItemRemoved(position)
+                    }
 
+                }
+            })
+            .setNeutralButton("취소", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    dialog!!.dismiss()
+                }
+            })
+            .create()
+            .show()
+    }
     override fun getItemCount(): Int {
         return list.size
     }

@@ -6,18 +6,18 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.withssafy.R
-import java.lang.Math.min
 
-class NotiListRvHelperCallback() : ItemTouchHelper.Callback() {
-
+class MessageGroupHelperCallback() : ItemTouchHelper.Callback() {
     // swipe_view 를 swipe 했을 때 <삭제> 화면이 보이도록 고정하기 위한 변수들
     private var currentPosition: Int? = null
     private var previousPosition: Int? = null
     private var currentDx = 0f
     private var clamp = 0f
 
-    // 이동 방향 결정하기
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
         return makeMovementFlags(0, LEFT or RIGHT)
     }
 
@@ -29,18 +29,13 @@ class NotiListRvHelperCallback() : ItemTouchHelper.Callback() {
         return false
     }
 
-
-    // 스와이프 일어날 때 동작
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
     }
-
-    // drag된 view가 drop 되었거나, swipe가 cancel되거나 complete되었을 때 호출
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         currentDx = 0f                                      // 현재 x 위치 초기화
         previousPosition = viewHolder.adapterPosition       // 드래그 또는 스와이프 동작이 끝난 view의 position 기억하기
         getDefaultUIUtil().clearView(getView(viewHolder))
     }
-
     // ItemTouchHelper가 ViewHolder를 스와이프 되었거나 드래그 되었을 때 호출
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         viewHolder?.let {
@@ -48,7 +43,6 @@ class NotiListRvHelperCallback() : ItemTouchHelper.Callback() {
             getDefaultUIUtil().onSelected(getView(it))
         }
     }
-
     // 아이템을 터치하거나 스와이프하는 등 뷰에 변화가 생길 경우 호출
     override fun onChildDraw(
         c: Canvas,
@@ -94,7 +88,7 @@ class NotiListRvHelperCallback() : ItemTouchHelper.Callback() {
 
     // swipe_view 반환 -> swipe_view만 이동할 수 있게 해줌
     private fun getView(viewHolder: RecyclerView.ViewHolder) : View = viewHolder.itemView.findViewById(
-        R.id.swipe_layout_noti_list)
+        R.id.swipe_messageGroup_list)
 
     // swipe_view 를 swipe 했을 때 <삭제> 화면이 보이도록 고정
     private fun clampViewPositionHorizontal(
@@ -120,7 +114,7 @@ class NotiListRvHelperCallback() : ItemTouchHelper.Callback() {
         else dX / 2
 
         // newX가 0보다 작은지 확인
-        return min(newX, max)
+        return Math.min(newX, max)
     }
 
     // isClamped를 view의 tag로 관리

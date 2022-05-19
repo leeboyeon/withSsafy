@@ -76,7 +76,7 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>(Fragmen
         }
     }
     private fun initAdapter(){
-        detailAdapter = MessageDetailAdapter()
+        detailAdapter = MessageDetailAdapter(requireContext(),messageViewModel)
         messageViewModel.messageTalk.observe(viewLifecycleOwner){
             Log.d(TAG, "initAdapter: $it")
             detailAdapter.list = it
