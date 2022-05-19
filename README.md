@@ -1,6 +1,7 @@
 # With SSAFY
 
 🔗 [위드싸피 바로가기](https://k6d201.p.ssafy.io/)
+
 🔗 [D201의 노션 보러가기](https://www.notion.so/WITH-SSAFY-c41eedd044294bb78557f7471f049ce7)
 
 ### 👀 기획의도
