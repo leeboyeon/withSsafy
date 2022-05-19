@@ -77,4 +77,18 @@ public class MessageController {
     public ResponseEntity<List<Long>> findCommonStudy(@RequestParam Long id1, @RequestParam Long id2){
         return new ResponseEntity<>(messageService.findCommonStudy(id1,id2), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "쪽지 삭제")
+    public ResponseEntity<?> deleteMessage(@PathVariable Long id){
+        messageService.deleteMessage(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("")
+    @ApiOperation(value = "쪽지 그룹 삭제")
+    public ResponseEntity<?> deleteMessageAll(@RequestParam Long id1, @RequestParam Long id2){
+        messageService.deleteMessageAll(id1, id2);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
