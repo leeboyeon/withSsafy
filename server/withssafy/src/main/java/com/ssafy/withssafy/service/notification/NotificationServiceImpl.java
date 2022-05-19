@@ -28,7 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<NotificationResponseDto> findAll() {
-        return notificationRepository.findAll().stream().map(notification -> modelMapper.map(notification, NotificationResponseDto.class)).collect(Collectors.toList());
+        return notificationRepository.findAllOrderByDateTimeDesc().stream().map(notification -> modelMapper.map(notification, NotificationResponseDto.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -72,8 +72,8 @@ public class NotificationServiceImpl implements NotificationService {
             throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
         }
 
-        List<Notification> notifications = notificationRepository.findByUserId(userId);
-        List<NotificationResponseDto> result = new ArrayList<NotificationResponseDto>();
+        List<Notification> notifications = notificationRepository.findByUserIdOrderByDateTimeDesc(userId);
+        List<NotificationResponseDto> result = new ArrayList<>();
         for (Notification notification : notifications) {
             NotificationResponseDto r = modelMapper.map(notification, NotificationResponseDto.class);
             r.setUser(modelMapper.map(notification.getUser(), UserDto.class));
@@ -90,8 +90,8 @@ public class NotificationServiceImpl implements NotificationService {
             throw new InvalidRequestException(ErrorCode.NOT_JOINED_USER_ID);
         }
 
-        List<Notification> notifications = notificationRepository.findByUserIdAndType(userId, type);
-        List<NotificationResponseDto> result = new ArrayList<NotificationResponseDto>();
+        List<Notification> notifications = notificationRepository.findByUserIdAndTypeOrderByDateTimeDesc(userId, type);
+        List<NotificationResponseDto> result = new ArrayList<>();
         for (Notification notification : notifications) {
             NotificationResponseDto r = modelMapper.map(notification, NotificationResponseDto.class);
             r.setUser(modelMapper.map(notification.getUser(), UserDto.class));
