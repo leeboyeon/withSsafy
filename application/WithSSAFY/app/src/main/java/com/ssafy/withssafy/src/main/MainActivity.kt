@@ -256,12 +256,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             dialog.dismiss()
         }
         dialogView.findViewById<TextView>(R.id.fragment_messageDetail_dialog_insert).setOnClickListener {
-            var message = Message(
-                dialogView.findViewById<EditText>(R.id.fragment_messageDetail_dialog_sendMsgContent).text.toString(),
-                0,
-                ApplicationClass.sharedPreferencesUtil.getUser().id,
-                toId
-            )
+            var message : Message
+            if(fromId == ApplicationClass.sharedPreferencesUtil.getUser().id){
+                message = Message(
+                    dialogView.findViewById<EditText>(R.id.fragment_messageDetail_dialog_sendMsgContent).text.toString(),
+                    0,
+                    fromId,
+                    toId
+                )
+            }else{
+                message = Message(
+                    dialogView.findViewById<EditText>(R.id.fragment_messageDetail_dialog_sendMsgContent).text.toString(),
+                    0,
+                    toId,
+                    fromId
+                )
+            }
 
             runBlocking {
                 val response = MessageService().insertMessage(message)
