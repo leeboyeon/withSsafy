@@ -2,8 +2,10 @@ package com.ssafy.withssafy.repository;
 
 import com.ssafy.withssafy.entity.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface MessageRepository  extends JpaRepository<Message,Long> {
@@ -40,4 +42,9 @@ public interface MessageRepository  extends JpaRepository<Message,Long> {
             "where s1.sb_id = s2.sb_id\n" +
             "and s1.user_id = :id1 and s2.user_id = :id2", nativeQuery = true)
     List<Long> findCommonStudy(Long id1,Long id2);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from tbl_message m where (m.u_to_id = :id1 and m.u_from_id= :id2) or (m.u_to_id = :id2 and m.u_from_id= :id1)", nativeQuery = true)
+    int deleteMessageAll(Long id1, Long id2);
 }

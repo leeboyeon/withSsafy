@@ -75,4 +75,13 @@ public class MessageServiceImpl implements MessageService{
         return messageRepository.findCommonStudy(id1,id2);
     }
 
+    @Override
+    public void deleteMessage(Long id){
+        messageRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteMessageAll(Long id1, Long id2){
+        messageRepository.deleteMessageAll(id1, id2);
+    }
 }
