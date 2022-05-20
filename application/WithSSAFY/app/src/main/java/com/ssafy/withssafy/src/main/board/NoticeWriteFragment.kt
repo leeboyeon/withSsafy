@@ -432,9 +432,9 @@ class NoticeWriteFragment : BaseFragment<FragmentNoticeWriteBinding>(FragmentNot
                     runBlocking {
                         response = FcmService().broadCastMsg(FcmRequest(type = 1, title = notice.title, body = notice.content))
                     }
+                    this@NoticeWriteFragment.findNavController().popBackStack()
                     if(response.isSuccessful) {
                         showCustomToast("전체 교육생에게 푸시 알림이 전송되었습니다.")
-                        this@NoticeWriteFragment.findNavController().popBackStack()
                     }
                 }
             })

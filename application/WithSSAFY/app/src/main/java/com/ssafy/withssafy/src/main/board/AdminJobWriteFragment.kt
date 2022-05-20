@@ -439,9 +439,9 @@ class AdminJobWriteFragment : BaseFragment<FragmentAdminJobWriteBinding>(Fragmen
                     runBlocking {
                         response = FcmService().broadCastMsg(FcmRequest(type = 3, title = recruit.company, body = recruit.job))
                     }
+                    this@AdminJobWriteFragment.findNavController().popBackStack()
                     if(response.isSuccessful) {
                         showCustomToast("전체 교육생에게 푸시 알림이 전송되었습니다.")
-                        this@AdminJobWriteFragment.findNavController().popBackStack()
                     }
                 }
             })

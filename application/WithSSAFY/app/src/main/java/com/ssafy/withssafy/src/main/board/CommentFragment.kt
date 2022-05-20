@@ -335,6 +335,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                             commentAdapter.notifyItemChanged(position)
                         } else {
                             commentAdapter.commentReplyAdapter.notifyItemChanged(position)
+                            commentAdapter.commentReplyAdapter.userNum = 0
                             commentAdapter.notifyDataSetChanged()
                         }
 //                        commentAdapter.notifyDataSetChanged()
@@ -373,6 +374,7 @@ class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBind
                     commentAdapter.notifyItemRemoved(position)
                 } else {
                     commentAdapter.commentReplyAdapter.notifyItemRemoved(position)
+                    commentAdapter.commentReplyAdapter.userNum = 0
                     commentAdapter.notifyDataSetChanged()
                 }
 

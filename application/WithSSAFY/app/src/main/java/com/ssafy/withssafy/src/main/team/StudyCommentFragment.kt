@@ -151,7 +151,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
             override fun onClick(position: Int, commentId: Int, writerUserId: Int) {
                 showKeyboard(binding.studyCommentFragmentEtComment)
 
-                val cmtList = boardViewModel.commentListOnPost.value!!
+                val cmtList = teamViewModel.studyComments.value!!
 
                 for (item in cmtList) {
                     if(item.id == commentId) {
@@ -281,6 +281,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
                             studyCommentAdapter.notifyItemChanged(position)
                         } else {
                             studyCommentAdapter.commentReplyAdapter.notifyItemChanged(position)
+                            studyCommentAdapter.commentReplyAdapter.userNum = 0
                             studyCommentAdapter.notifyDataSetChanged()
                         }
                         clearEditText()
@@ -318,6 +319,7 @@ class StudyCommentFragment : BaseFragment<FragmentStudyCommentBinding>(FragmentS
                     studyCommentAdapter.notifyItemRemoved(position)
                 } else {
                     studyCommentAdapter.commentReplyAdapter.notifyItemRemoved(position)
+                    studyCommentAdapter.commentReplyAdapter.userNum = 0
                     studyCommentAdapter.notifyDataSetChanged()
                 }
 

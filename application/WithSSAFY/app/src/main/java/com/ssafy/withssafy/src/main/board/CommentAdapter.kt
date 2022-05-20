@@ -39,6 +39,8 @@ class CommentAdapter (val context: Context, val boardOrStudy: Boolean) : Recycle
         val addReply = binding.commentItemIbAddReply
 
         fun bindInfo(comment: Comment) {
+            commentReplyAdapter.userNum += 1
+
             binding.comment = comment
             if(comment.user != null) {
                 if(boardOrStudy) {  // board 댓글인 경우 - 익명
@@ -46,7 +48,7 @@ class CommentAdapter (val context: Context, val boardOrStudy: Boolean) : Recycle
                         nick.setTextColor(Color.parseColor("#2C64BF"))
                         nick.text = "익명(글쓴이)"
                     } else {
-                        nick.text = "익명"
+                        nick.text = "익명${commentReplyAdapter.userNum}"
                     }
                 } else {    // study 댓글인 경우 실명
 
@@ -69,7 +71,7 @@ class CommentAdapter (val context: Context, val boardOrStudy: Boolean) : Recycle
                 }
             }
 
-            commentReplyAdapter = ReplyAdapter(context, boardOrStudy)
+//            commentReplyAdapter = ReplyAdapter(context, boardOrStudy)
 //                commentNestedAdapter.submitList(list)
             commentReplyAdapter.commentList = replyList
             commentReplyAdapter.postUserId = postUserId

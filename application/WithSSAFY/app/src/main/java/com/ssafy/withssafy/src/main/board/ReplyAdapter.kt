@@ -28,6 +28,8 @@ class ReplyAdapter (val context: Context, val boardOrStudy: Boolean) : RecyclerV
     // 현재 로그인한 유저의 아이디
     val userId = ApplicationClass.sharedPreferencesUtil.getUser().id
 
+    var userNum = 0
+
     inner class ViewHolder(private val binding: ItemReplyListBinding) : RecyclerView.ViewHolder(binding.root) {
         val nick = binding.replyItemTvUserNick
         val moreBtn = binding.replyItemIvMoreBtn
@@ -36,13 +38,18 @@ class ReplyAdapter (val context: Context, val boardOrStudy: Boolean) : RecyclerV
 
             binding.comment = comment
 
+            userNum += 1
+
             if(comment.user != null) {
                 if(boardOrStudy == true) {  // board 댓글인 경우 - 익명
+
+
                     if(comment.user.id == postUserId) {
                         nick.setTextColor(Color.parseColor("#2C64BF"))
                         nick.text = "익명(글쓴이)"
                     } else {
-                        nick.text = "익명"
+
+                        nick.text = "익명${userNum}"
                     }
                 } else {    // study 댓글인 경우 실명
 
