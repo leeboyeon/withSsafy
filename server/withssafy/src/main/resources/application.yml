@@ -1,12 +1,5 @@
 spring:
 
-# MYSQL
-#  datasource:
-##    url: jdbc:mysql://localhost:3306/thirdeye_test?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-#    url: jdbc:mysql://localhost:3306/thirdeye_test
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    username: root
-#    password: ssafy
   devtools:
     livereload:
       enabled: true
@@ -16,11 +9,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ws
     password: 1q2w3e4r!!
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/withssafyLocal?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    username: root
-#    password: ssafy
 
 
   # JPA 세팅
@@ -42,74 +30,6 @@ spring:
     basename: messages
     encoding: UTF-8
 
-#  servlet:
-#    multipart:
-#      max-file-size: 10MB
-#      max-request-size: 10MB
-##      location: C:/Users/dahon/Desktop/ #다훈 local 경로
-#      location: C:/SSAFY/mentoring/imgs/ #동진 local 경로
-##      location: /home/ubuntu/images/ #aws 경로
-
-#  # Security OAuth
-#  security:
-#    oauth2.client:
-#      registration:
-#        google:
-#          clientId: 81325643619-id2cv0v6ulnggm10an4r8s1a6sudrh0k.apps.googleusercontent.com
-#          clientSecret: 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
-#          scope:
-#            - email
-#            - profile
-#        # 페이스북
-#        facebook:
-#          clientId: '{페이스북 client-id}'
-#          clientSecret: '{페이스북 client-secret}'
-#          scope:
-#            - email
-#            - public_profile
-#        naver:
-#          clientId: 7rwirnQcF46qMFREGpC8
-#          clientSecret: _WCL1BVKlU
-#          clientAuthenticationMethod: post
-#          authorizationGrantType: authorization_code
-#          redirectUri: http://localhost:8080/login/oauth2/code/naver # "{baseUrl}/{action}/oauth2/code/{registrationId}"
-#          scope:
-#            - nickname
-#            - email
-#            - profile_image
-#          clientName: Naver
-#        kakao:
-#          clientId: 1cf11cc86c37308680b750c1405a1927
-#          clientSecret: ssEdj84Bgw6ZWfeKqSOxAgkkjwSL5Gfj
-#          clientAuthenticationMethod: post
-#          authorizationGrantType: authorization_code
-#          redirectUri: http://localhost:8080/login/oauth2/code/kakao  # "{baseUrl}/{action}/oauth2/code/{registrationId}"
-#          scope:
-#            - profile_nickname
-#            - profile_image
-#            - account_email
-#          clientName: Kakao
-#      # Provider 설정
-#      provider:
-#        naver:
-#          authorizationUri: https://nid.naver.com/oauth2.0/authorize
-#          tokenUri: https://nid.naver.com/oauth2.0/token
-#          userInfoUri: https://openapi.naver.com/v1/nid/me
-#          userNameAttribute: response
-#        kakao:
-#          authorizationUri: https://kauth.kakao.com/oauth/authorize
-#          tokenUri: https://kauth.kakao.com/oauth/token
-#          userInfoUri: https://kapi.kakao.com/v2/user/me
-#          userNameAttribute: id
-  # GCP 세팅
-#  cloud:
-#    gcp:
-#      project-id: thirdeye-344907
-#      firestore:
-#        enabled: false
-#      storage:
-#        credentials:
-#          location: classpath:serviceAccountKey.json
 
 logging.level:
   org:
